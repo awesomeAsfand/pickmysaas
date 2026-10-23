@@ -24,3 +24,10 @@ compatibility_date = "2026-01-31"
 # and a clean build, not from a deployed Worker: if the forms fail in
 # production, set the flag on the Worker itself (Cloudflare dashboard →
 # Settings → Runtime) rather than here, so it never reaches the build.
+
+# The adapter adds a SESSION KV binding for Astro sessions. Left without an id,
+# wrangler tries to create "pickmysaas-session" on every deploy and fails once
+# it exists, so pin the existing namespace here.
+[[kv_namespaces]]
+binding = "SESSION"
+id = "519c2ac631374bf2b80be94af0603ed6"
