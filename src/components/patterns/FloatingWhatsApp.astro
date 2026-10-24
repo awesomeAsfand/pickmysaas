@@ -1,0 +1,64 @@
+---
+/**
+ * FloatingWhatsApp
+ *
+ * A round WhatsApp button fixed to the bottom-right corner of every page,
+ * opening a chat with `siteConfig.whatsapp` and a greeting already typed in
+ * the page's language. Renders nothing when no number is configured.
+ *
+ * Sits below the back-to-top button, which BaseLayout lifts above it, and
+ * under the consent banner (z-40 against the banner's z-50).
+ */
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import { whatsAppUrl } from '@/lib/booking';
+import { t, type Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const href = whatsAppUrl(t('common.whatsappMessage', locale));
+const label = t('common.whatsappChat', locale);
+---
+
+{
+  href && (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      class="floating-whatsapp fixed bottom-6 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full text-white shadow-lg transition-transform duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 print:hidden"
+    >
+      <Icon name="whatsapp" class="h-7 w-7" />
+    </a>
+  )
+}
+
+<style>
+  /* WhatsApp green, a step deeper than the brand's #25D366 so the white
+     glyph clears 3:1 contrast (non-text contrast, WCAG 1.4.11). */
+  .floating-whatsapp {
+    background-color: #1da851;
+    /* Clear the iOS home indicator. */
+    margin-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .floating-whatsapp:hover {
+    background-color: #189146;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .floating-whatsapp {
+      animation: floating-whatsapp-in 0.4s ease-out 1s backwards;
+    }
+  }
+
+  @keyframes floating-whatsapp-in {
+    from {
+      opacity: 0;
+      transform: translateY(1rem);
+    }
+  }
+</style>

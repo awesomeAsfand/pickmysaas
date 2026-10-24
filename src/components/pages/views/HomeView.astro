@@ -21,11 +21,11 @@ import BlogCard from '@/components/blog/BlogCard.astro';
 import CtaBand from '@/components/patterns/CtaBand.astro';
 import StackMarquee from '@/components/landing/StackMarquee.astro';
 import { getCollection } from 'astro:content';
-import siteConfig from '@/config/site.config';
-import { getPostUrl, getPublishedPosts } from '@/lib/blog';
+import { getPostUrl, getPublishedPosts, BLOG_VISIBLE } from '@/lib/blog';
 import { getVisibleProjects } from '@/lib/projects';
 import ProjectCard from '@/components/projects/ProjectCard.astro';
-import { t, tData, defaultLocale, localizedPath } from '@/i18n';
+import { t, tData, defaultLocale, localizedPath, getLocales } from '@/i18n';
+import { bookingLinkAttrs, whatsAppUrl } from '@/lib/booking';
 
 interface Props {
   /** Locale whose copy and content this page renders. Defaults to the site default. */
@@ -42,6 +42,10 @@ interface Testimonial {
   name: string;
   role: string;
 }
+interface Step {
+  title: string;
+  description: string;
+}
 
 const { locale = defaultLocale } = Astro.props;
 
@@ -54,7 +58,7 @@ if (projectItems.length === 0 && locale !== defaultLocale) {
 const featuredProjects = projectItems
   .filter((p) => p.data.featured)
   .sort((a, b) => a.data.order - b.data.order)
-  .slice(0, 4);
+  .slice(0, 3);
 
 let postItems = await getPublishedPosts(locale);
 if (postItems.length === 0 && locale !== defaultLocale) {
@@ -67,11 +71,10 @@ const posts = [...postItems]
   })
   .slice(0, 4);
 
-// Hero marquee — a focused subset of the tech stack, in this order, pulled from
-// the same `stack` collection so icons and links stay single-sourced. Seven logos
-// are wide enough to fill the constrained hero width and loop seamlessly on their
-// own; the Tech-stack section further down still shows the full stack.
-const heroStackOrder = ['Astro', 'Tailwind CSS', 'TypeScript', 'React', 'GitHub', 'Vercel', 'Claude'];
+// Hero marquee — the tech stack, in this order, pulled from the `stack`
+// collection so icons and links stay single-sourced. StackMarquee repeats the
+// set to fill the hero width, so five logos still loop seamlessly.
+const heroStackOrder = ['Python', 'Django', 'Bootstrap', 'HTML5', 'CSS3'];
 const heroStackItems = (await getCollection('stack'))
   .filter((e) => heroStackOrder.includes(e.data.name))
   .sort((a, b) => heroStackOrder.indexOf(a.data.name) - heroStackOrder.indexOf(b.data.name))
@@ -87,15 +90,13 @@ const hero = tData<{
   badge: string;
   titleLine1: string;
   titleLine2: string;
-  titleLine3: string;
   description: string;
   /** Shorter variant shown below the `sm` breakpoint so the hero stays compact on phones. */
   descriptionMobile: string;
-  github: string;
-  getStarted: string;
+  primaryCta: string;
 }>('pages.home.hero', locale)!;
-const workWithMe = tData<{ badge: string; heading: string; lead: string; cards: IconCard[]; cta: string }>(
-  'pages.home.workWithMe',
+const whyUs = tData<{ badge: string; heading: string; lead: string; cards: IconCard[]; cta: string }>(
+  'pages.home.whyUs',
   locale
 )!;
 const servicesSection = tData<{ badge: string; heading: string; lead: string; learnMore: string; cards: IconCard[] }>(
@@ -103,6 +104,7 @@ const servicesSection = tData<{ badge: string; heading: string; lead: string; le
   locale
 )!;
 const portfolio = tData<{ badge: string; heading: string; lead: string; viewAll: string }>('pages.home.portfolio', locale)!;
+const processSection = tData<{ badge: string; heading: string; lead: string; steps: Step[] }>('pages.home.process', locale)!;
 const testimonials = tData<{ badge: string; heading: string; lead: string; items: Testimonial[] }>(
   'pages.home.testimonials',
   locale
@@ -111,45 +113,39 @@ const aboutTeaser = tData<{
   badge: string;
   headingLine1: string;
   headingLine2: string;
+  para1: string;
   para2: string;
   moreAboutMe: string;
   statsIntro: string;
   stat1: string;
   stat2: string;
   stat3: string;
-  basedIn: string;
+  stat4: string;
 }>('pages.home.aboutTeaser', locale)!;
 const blogSection = tData<{ badge: string; heading: string; viewAll: string }>('pages.home.blog', locale)!;
-const cta = tData<{ badge: string; heading: string; description: string; primary: string; secondary: string }>(
+const cta = tData<{ badge: string; heading: string; description: string; primary: string; whatsapp: string }>(
   'pages.home.cta',
   locale
 )!;
 
 const servicesUrl = localizedPath('/services', locale);
+const whatsAppHref = whatsAppUrl(t('common.whatsappMessage', locale));
 const projectsUrl = localizedPath('/projects', locale);
 const aboutUrl = localizedPath('/about', locale);
 const contactUrl = localizedPath('/contact', locale);
 const blogUrl = localizedPath('/blog', locale);
-// The getting-started guide lives at the default-locale URL; link there so the
-// CTA always resolves even before a locale has translated that post.
-const getStartedUrl = '/blog/astro-rocket-getting-started';
 
-// About-teaser copy with the configured location woven in (mirrors the original
-// page's conditional). Falls back to a location-free sentence when no city is set.
-const city = siteConfig.address?.city;
-const country = siteConfig.address?.country;
-const location = city ? (country ? `${city}, ${country}` : city) : '';
-const aboutPara1 = location
-  ? t('pages.home.aboutTeaser.para1WithLocation', locale, { location })
-  : t('pages.home.aboutTeaser.para1NoLocation', locale);
-const basedInDisplay = `${city ?? 'Your City'}${country ? `, ${country}` : ''}`;
+// Every configured locale has a home page, even with i18n off (see
+// i18n.config.ts), so they are offered as alternates: hreflang tags and the
+// header language switcher.
+const homeAlternates = getLocales().map((loc) => ({ locale: loc, url: localizedPath('/', loc) }));
 ---
 
 <LandingLayout
   title={t('pages.home.meta.title', locale)}
   description={t('pages.home.meta.description', locale)}
-  includePersonSchema={true}
   includeProfessionalServiceSchema={true}
+  localeAlternates={homeAlternates}
 >
   <!-- Hero -->
   <!-- data-header-flip-anchor: the floating header keeps its over-the-hero
@@ -172,7 +168,7 @@ const basedInDisplay = `${city ?? 'Your City'}${country ? `, ${country}` : ''}`;
         the 640px boundary. */}
     <h1 slot="title" class="!text-[clamp(2rem,12.6vw,3rem)] sm:!text-5xl md:!text-6xl lg:!text-7xl">
       <span class="text-brand-600 dark:text-foreground [-webkit-text-fill-color:currentColor] whitespace-nowrap">{hero.titleLine1}</span><br />
-      <span class="text-brand-600 dark:text-foreground [-webkit-text-fill-color:currentColor]">{hero.titleLine2}</span><br class="md:hidden" /><span class="text-brand-600 dark:text-foreground [-webkit-text-fill-color:currentColor]">{' '}{hero.titleLine3}</span>
+      <span class="text-brand-600 dark:text-foreground [-webkit-text-fill-color:currentColor]">{hero.titleLine2}</span>
     </h1>
 
     <p slot="description" class="!text-balance">
@@ -181,14 +177,9 @@ const basedInDisplay = `${city ?? 'Your City'}${country ? `, ${country}` : ''}`;
     </p>
 
    <Fragment slot="actions">
-      <Button size="lg" href="https://github.com/hansmartensdev/Astro-Rocket">
-        {hero.github}
-        <Icon name="arrow-right" size="sm" />
-      </Button>
-      <Button size="lg" variant="outline" href={getStartedUrl}>
-        <Icon name="rocket" size="sm" />
-        {hero.getStarted}
-        <Icon name="arrow-right" size="sm" />
+      <Button size="lg" {...bookingLinkAttrs(contactUrl)}>
+        {hero.primaryCta}
+        <Icon name="arrow-right" size="sm" class="rtl:-scale-x-100" />
       </Button>
     </Fragment>
 
@@ -199,7 +190,9 @@ const basedInDisplay = `${city ?? 'Your City'}${country ? `, ${country}` : ''}`;
          phones. cardWidth="auto" lets each card hug its logo + name so the logos sit
          close together; StackMarquee repeats the set to fill the row so the loop
          stays seamless. -->
-    <div slot="bottom" class="mx-auto w-full max-w-6xl px-6">
+    <!-- dir="ltr": the marquee's scroll loop is built for a left-to-right
+         track, and the logos are Latin brand names in either language. -->
+    <div slot="bottom" class="mx-auto w-full max-w-6xl px-6" dir="ltr">
       <!-- Tablet & up: the animated tech-stack marquee. -->
       <div class="hp-hero-marquee" aria-hidden="true">
         <StackMarquee items={heroStackItems} rows={1} duration={55} pauseOnHover={false} linked={false} cardWidth="auto" gap="1rem" />
@@ -252,26 +245,26 @@ const basedInDisplay = `${city ?? 'Your City'}${country ? `, ${country}` : ''}`;
     </div>
   </section>
 
-  <!-- Work with me -->
+  <!-- Why PickMySaaS -->
   <section class="relative z-10 py-[var(--space-section-md)] bg-background border-t border-border">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
       <div class="flex flex-col items-center gap-4 text-center" data-reveal>
         <div class="flex flex-col items-center gap-6">
           <Badge variant="brand" pill>
             <Icon name="handshake" size="sm" />
-            {workWithMe.badge}
+            {whyUs.badge}
           </Badge>
           <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground text-balance">
-            {workWithMe.heading}
+            {whyUs.heading}
           </h2>
         </div>
         <p class="text-lg text-foreground-muted max-w-2xl mx-auto text-balance">
-          {workWithMe.lead}
+          {whyUs.lead}
         </p>
       </div>
 
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {workWithMe.cards.map((card, i) => (
+        {whyUs.cards.map((card, i) => (
           <ProofTile icon={card.icon} title={card.title} data-reveal data-reveal-delay={i || undefined}>
             {card.description}
           </ProofTile>
@@ -280,8 +273,8 @@ const basedInDisplay = `${city ?? 'Your City'}${country ? `, ${country}` : ''}`;
 
       <div class="flex justify-center mt-4" data-reveal>
         <Button size="lg" href={servicesUrl} class="cta-btn-brand">
-          {workWithMe.cta}
-          <Icon name="arrow-right" size="sm" />
+          {whyUs.cta}
+          <Icon name="arrow-right" size="sm" class="rtl:-scale-x-100" />
         </Button>
       </div>
     </div>
@@ -305,7 +298,7 @@ const basedInDisplay = `${city ?? 'Your City'}${country ? `, ${country}` : ''}`;
         </p>
       </div>
 
-      <div class="grid gap-6 md:grid-cols-2">
+      <div class="grid gap-6 md:grid-cols-3">
         {/* One card component for the homepage, the projects index, the
             paginated pages and the tag archive. The homepage used to carry
             its own copy of this markup, so a change to the card reached three
@@ -318,14 +311,43 @@ const basedInDisplay = `${city ?? 'Your City'}${country ? `, ${country}` : ''}`;
       <div class="text-center mt-4">
         <Button variant="brand-outline" href={projectsUrl}>
           {portfolio.viewAll}
-          <Icon name="arrow-right" size="sm" />
+          <Icon name="arrow-right" size="sm" class="rtl:-scale-x-100" />
         </Button>
       </div>
     </div>
   </section>
 
-  <!-- Testimonials -->
+  <!-- How we work -->
   <section class="relative z-10 py-[var(--space-section-md)] bg-background border-t border-border">
+    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
+      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
+        <div class="flex flex-col items-center gap-6">
+          <Badge variant="brand" pill>
+            <Icon name="route" size="sm" />
+            {processSection.badge}
+          </Badge>
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground text-balance">
+            {processSection.heading}
+          </h2>
+        </div>
+        <p class="text-lg text-foreground-muted max-w-2xl mx-auto text-balance">
+          {processSection.lead}
+        </p>
+      </div>
+
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {processSection.steps.map((step, i) => (
+          <ProofTile number={i + 1} title={step.title} data-reveal data-reveal-delay={i || undefined}>
+            {step.description}
+          </ProofTile>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials — hidden until there are real client quotes in pages.home.testimonials.items. -->
+  {testimonials.items.length > 0 && (
+  <section class="relative z-10 py-[var(--space-section-md)] bg-background-secondary border-t border-border">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
       <div class="flex flex-col items-center gap-4 text-center" data-reveal>
         <div class="flex flex-col items-center gap-6">
@@ -371,15 +393,16 @@ const basedInDisplay = `${city ?? 'Your City'}${country ? `, ${country}` : ''}`;
       </div>
     </div>
   </section>
+  )}
 
   <!-- About Teaser -->
   <section class="relative z-10 py-[var(--space-section-md)] bg-background-secondary border-t border-border">
     <div class="mx-auto max-w-6xl px-6">
       <div class="grid gap-10 glitch:grid-cols-2 glitch:gap-12">
-        <div class="flex flex-col justify-center sm:items-center sm:text-center glitch:items-start glitch:text-left" data-reveal data-reveal-ease="smooth">
+        <div class="flex flex-col justify-center sm:items-center sm:text-center glitch:items-start glitch:text-start" data-reveal data-reveal-ease="smooth">
           <div class="flex flex-col gap-6 mb-6 sm:items-center glitch:items-start">
             <Badge variant="brand" pill class="self-start sm:self-center glitch:self-start">
-              <Icon name="user" size="sm" />
+              <Icon name="users" size="sm" />
               {aboutTeaser.badge}
             </Badge>
             <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
@@ -388,14 +411,14 @@ const basedInDisplay = `${city ?? 'Your City'}${country ? `, ${country}` : ''}`;
             </h2>
           </div>
           <p class="text-lg text-foreground-muted leading-relaxed mb-4 sm:mb-0 sm:max-w-xl glitch:mb-4 glitch:max-w-none">
-           {aboutPara1}
+           {aboutTeaser.para1}
           </p>
           <p class="text-lg text-foreground-muted leading-relaxed mb-8 sm:max-w-xl glitch:max-w-none sm:hidden glitch:block">
            {aboutTeaser.para2}
           </p>
            <Button variant="brand-outline" href={aboutUrl} class="self-start sm:self-center glitch:self-start sm:hidden glitch:inline-flex">
             {aboutTeaser.moreAboutMe}
-            <Icon name="arrow-right" size="sm" />
+            <Icon name="arrow-right" size="sm" class="rtl:-scale-x-100" />
           </Button>
         </div>
         <Card variant="elevated" padding="lg" class="h-full flex flex-col" data-reveal data-reveal-delay="1" data-reveal-ease="smooth">
@@ -405,34 +428,32 @@ const basedInDisplay = `${city ?? 'Your City'}${country ? `, ${country}` : ''}`;
               <Icon name="history" class="w-10 h-10 text-brand-500" />
               <p class="text-sm font-semibold text-foreground">{aboutTeaser.stat1}</p>
             </div>
-            <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 h-full">
-              <svg class="w-10 h-10 text-brand-500" viewBox="0 0 1280 1280" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M815.039 94.6439C824.758 106.709 829.714 122.99 839.626 155.553L1056.17 866.901C976.107 825.368 889.072 795.413 797.281 779.252L656.29 302.798C653.983 295.002 646.822 289.654 638.693 289.654C630.542 289.654 623.368 295.03 621.08 302.853L481.795 779.011C389.579 795.1 302.146 825.109 221.741 866.793L439.347 155.388L439.348 155.388C449.291 122.882 454.262 106.629 463.982 94.5853C472.562 83.9531 483.723 75.6958 496.4 70.6002C510.76 64.8284 527.756 64.8284 561.749 64.8284H717.174C751.212 64.8284 768.23 64.8284 782.603 70.6123C795.292 75.7184 806.459 83.9923 815.039 94.6439Z" fill="currentColor"/>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M840.951 900.754C805.253 931.279 734.002 952.097 651.929 952.097C551.197 952.097 466.767 920.737 444.363 878.561C436.354 902.732 434.558 930.396 434.558 948.068C434.558 948.068 429.281 1034.84 489.636 1095.2C489.636 1063.86 515.042 1038.46 546.381 1038.46C600.097 1038.46 600.036 1085.32 599.987 1123.34C599.986 1124.48 599.984 1125.61 599.984 1126.73C599.984 1184.44 635.255 1233.91 685.416 1254.77C677.924 1239.36 673.721 1222.05 673.721 1203.77C673.721 1148.73 706.034 1128.23 743.588 1104.41L743.588 1104.41C773.469 1085.46 806.668 1064.41 829.548 1022.17C841.486 1000.13 848.265 974.893 848.265 948.068C848.265 931.573 845.702 915.676 840.951 900.754Z" fill="currentColor"/>
-              </svg>
+            <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 cursor-default h-full">
+              <Icon name="sparkles" class="w-10 h-10 text-brand-500" />
               <p class="text-sm font-semibold text-foreground">{aboutTeaser.stat2}</p>
-            </a>
+            </div>
             <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 cursor-default h-full">
               <Icon name="globe" class="w-10 h-10 text-brand-500" />
               <p class="text-sm font-semibold text-foreground">{aboutTeaser.stat3}</p>
             </div>
             <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 cursor-default h-full">
               <Icon name="map-pin" class="w-10 h-10 text-brand-500" />
-              <p class="text-sm font-semibold text-foreground">{aboutTeaser.basedIn} <br class="sm:hidden" />{basedInDisplay}</p>
+              <p class="text-sm font-semibold text-foreground">{aboutTeaser.stat4}</p>
             </div>
           </div>
         </Card>
         <div class="hidden sm:flex justify-center glitch:hidden" data-reveal data-reveal-delay="2">
           <Button variant="brand-outline" href={aboutUrl}>
             {aboutTeaser.moreAboutMe}
-            <Icon name="arrow-right" size="sm" />
+            <Icon name="arrow-right" size="sm" class="rtl:-scale-x-100" />
           </Button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Blog -->
+  <!-- Blog — only while the blog is visible (siteConfig.blog.visible). -->
+  {BLOG_VISIBLE && (
   <section class="relative z-10 py-[var(--space-section-md)] bg-background border-t border-border">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
       <div class="flex flex-col items-center gap-6 text-center" data-reveal>
@@ -466,11 +487,12 @@ const basedInDisplay = `${city ?? 'Your City'}${country ? `, ${country}` : ''}`;
       <div class="flex justify-center">
         <Button variant="brand-outline" href={blogUrl}>
           {blogSection.viewAll}
-          <Icon name="arrow-right" size="sm" />
+          <Icon name="arrow-right" size="sm" class="rtl:-scale-x-100" />
         </Button>
       </div>
     </div>
   </section>
+  )}
 
  <!-- CTA — `secondary` so it alternates with the `background` Blog section above and the `background` Footer below. -->
   <section class="relative z-10 py-[var(--space-section-md)] bg-background-secondary border-t border-border">
@@ -482,14 +504,16 @@ const basedInDisplay = `${city ?? 'Your City'}${country ? `, ${country}` : ''}`;
         {cta.description}
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button size="lg" href={contactUrl}>
+        <Button size="lg" {...bookingLinkAttrs(contactUrl)}>
           {cta.primary}
-          <Icon name="arrow-right" size="sm" />
+          <Icon name="arrow-right" size="sm" class="rtl:-scale-x-100" />
         </Button>
-        <Button size="lg" variant="outline" class="cta-btn-brand" href={aboutUrl}>
-          {cta.secondary}
-          <Icon name="arrow-right" size="sm" />
-        </Button>
+        {whatsAppHref && (
+          <Button size="lg" variant="outline" class="cta-btn-brand" href={whatsAppHref}>
+            <Icon name="whatsapp" size="sm" />
+            {cta.whatsapp}
+          </Button>
+        )}
       </div>
     </CtaBand>
   </section>

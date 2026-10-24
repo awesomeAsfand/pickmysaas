@@ -17,6 +17,7 @@ import ContactForm from '@/components/patterns/ContactForm.astro';
 import siteConfig from '@/config/site.config';
 import { resolveSocialLinks } from '@/lib/utils';
 import { t, tData, defaultLocale } from '@/i18n';
+import { bookingLinkAttrs, whatsAppUrl } from '@/lib/booking';
 
 interface Props {
   /** Locale whose copy this page renders. Defaults to the site default. */
@@ -31,8 +32,46 @@ const hero = tData<{ badge: string; titleLead: string; titleHighlight: string; d
 )!;
 
 const socialLinks = resolveSocialLinks(siteConfig.socialLinks);
+const whatsAppHref = whatsAppUrl(t('common.whatsappMessage', locale));
 
-const channels = [
+interface Channel {
+  icon: string;
+  label: string;
+  value: string;
+  note: string;
+  href: string;
+  external: boolean;
+  /** Set on the booking card, so it opens the Cal.com popup (see BookingPopup). */
+  dataCalLink?: string;
+}
+
+// Booking and WhatsApp lead: the quickest ways to a conversation. Each only
+// shows when it is configured in site.config.ts.
+const channels: Channel[] = [
+  ...(siteConfig.booking?.calLink
+    ? (() => {
+        const { href, 'data-cal-link': dataCalLink } = bookingLinkAttrs('');
+        return [{
+          icon: 'calendar',
+          label: t('pages.contact.bookingLabel', locale),
+          value: t('pages.contact.bookingNote', locale),
+          note: t('pages.contact.bookingNote', locale),
+          href,
+          external: true,
+          dataCalLink,
+        }];
+      })()
+    : []),
+  ...(whatsAppHref
+    ? [{
+        icon: 'whatsapp',
+        label: t('common.whatsappChat', locale),
+        value: t('pages.contact.whatsappNote', locale),
+        note: t('pages.contact.whatsappNote', locale),
+        href: whatsAppHref,
+        external: true,
+      }]
+    : []),
   {
     icon: 'mail',
     label: t('pages.contact.emailLabel', locale),
@@ -98,6 +137,7 @@ const channels = [
               <a
                 href={ch.href}
                 {...ch.external ? { target: '_blank', rel: 'noopener noreferrer' } : {}}
+                data-cal-link={ch.dataCalLink}
                 class="block group"
               >
                 <Card hover padding="sm" class="h-full">
@@ -116,18 +156,20 @@ const channels = [
             ))}
           </div>
 
-          <!-- Location card -->
+          <!-- Location card — only when siteConfig.address is set. -->
+          {siteConfig.address && (
           <Card hover padding="sm" class="bg-brand-500/5 border-brand-500/20">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 shrink-0 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500">
                 <Icon name="map-pin" size="sm" />
               </div>
               <div>
-                <p class="font-semibold text-sm text-foreground">{siteConfig.address?.city ?? 'Your City'}</p>
-                <p class="text-xs text-foreground-muted mt-0.5">{t('pages.contact.basedIn', locale, { country: siteConfig.address?.country ?? 'Your Country' })}</p>
+                <p class="font-semibold text-sm text-foreground">{siteConfig.address.city}</p>
+                <p class="text-xs text-foreground-muted mt-0.5">{t('pages.contact.basedIn', locale, { country: siteConfig.address.country })}</p>
               </div>
             </div>
           </Card>
+          )}
 
         </div>
 

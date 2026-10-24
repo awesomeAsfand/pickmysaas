@@ -19,6 +19,7 @@ import { join, relative } from 'node:path';
 
 import en from '../i18n/en.json';
 import nl from '../i18n/nl.json';
+import ar from '../i18n/ar.json';
 
 const ROOT = process.cwd();
 const SCANNED = ['src/components', 'src/layouts'];
@@ -120,4 +121,19 @@ describe('every locale carries every key', () => {
       expect(flatten(dictionary).filter((key) => !expected.has(key))).toEqual([]);
     });
   }
+});
+
+// Arabic covers the home page and the chrome around it, not the whole site, so
+// it is only held to the second rule: every key it carries must exist in en.json.
+describe('ar.json (home page only)', () => {
+  it('has no key that en.json does not', () => {
+    const expected = new Set(flatten(en));
+    expect(flatten(ar).filter((key) => !expected.has(key))).toEqual([]);
+  });
+
+  it('translates every home page key', () => {
+    const home = (keys: string[]) => keys.filter((key) => key.startsWith('pages.home.'));
+    const actual = new Set(flatten(ar));
+    expect(home(flatten(en)).filter((key) => !actual.has(key))).toEqual([]);
+  });
 });

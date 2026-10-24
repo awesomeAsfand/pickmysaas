@@ -17,6 +17,8 @@ import Button from '@/components/ui/form/Button/Button.astro';
 import { Hero } from '@/components/hero';
 import CtaBand from '@/components/patterns/CtaBand.astro';
 import { t, tData, defaultLocale, localizedPath } from '@/i18n';
+import { cn } from '@/lib/cn';
+import { bookingLinkAttrs, whatsAppUrl } from '@/lib/booking';
 
 interface Props {
   /** Locale whose copy this page renders. Defaults to the site default. */
@@ -32,7 +34,16 @@ interface Service {
   heading: string;
   paragraphs: string[];
   included: IncludedItem[];
-  ctaLabel: string;
+}
+interface Package {
+  name: string;
+  for: string;
+  price: string;
+  /** Shown before the price, e.g. "from". Empty for a fixed price. */
+  pricePrefix: string;
+  bonus: string;
+  features: string[];
+  cta: string;
 }
 interface ProcessStep {
   title: string;
@@ -55,9 +66,13 @@ const hero = tData<{ badge: string; titleLead: string; titleHighlight: string; d
   'pages.services.hero',
   locale
 )!;
-const design = tData<Service>('pages.services.design', locale)!;
-const development = tData<Service>('pages.services.development', locale)!;
-const performance = tData<Service>('pages.services.performance', locale)!;
+const web = tData<Service>('pages.services.web', locale)!;
+const packages = tData<{ badge: string; heading: string; lead: string; recommended: string; items: Package[]; note: string }>(
+  'pages.services.packages',
+  locale
+)!;
+const saas = tData<Service>('pages.services.saas', locale)!;
+const ai = tData<Service>('pages.services.ai', locale)!;
 const processSection = tData<{ badge: string; heading: string; lead: string; steps: ProcessStep[] }>(
   'pages.services.process',
   locale
@@ -69,12 +84,14 @@ const cta = tData<{ badge: string; heading: string; description: string; primary
 )!;
 
 const contactUrl = localizedPath('/contact', locale);
-const aboutUrl = localizedPath('/about', locale);
+const whatsAppHref = whatsAppUrl(t('common.whatsappMessage', locale));
+/** The middle package is the one we recommend. */
+const RECOMMENDED_PACKAGE = 1;
 ---
 <PageLayout
   title={t('pages.services.meta.title', locale)}
   description={t('pages.services.meta.description', locale)}
-  footerBackground="secondary"
+  footerBackground="default"
 >
   <Hero layout="centered" size="sm" class="isolate services-hero pb-[calc(var(--space-section-sm)_+_var(--space-stack-lg))]" showHeroHalo>
     <Badge slot="badge" variant="brand" pill>
@@ -91,23 +108,23 @@ const aboutUrl = localizedPath('/about', locale);
     </p>
 
     <Fragment slot="actions">
-      <Button size="lg" href="#design" variant="outline" class="hero-btn-opaque">
+      <Button size="lg" href="#websites" variant="outline" class="hero-btn-opaque">
         {hero.jumpLabels[0]}
         <Icon name="arrow-down" size="sm" class="hero-jump-arrow" />
       </Button>
-      <Button size="lg" href="#development" variant="outline" class="hero-btn-opaque">
+      <Button size="lg" href="#saas" variant="outline" class="hero-btn-opaque">
         {hero.jumpLabels[1]}
         <Icon name="arrow-down" size="sm" class="hero-jump-arrow" />
       </Button>
-      <Button size="lg" href="#performance" variant="outline" class="hero-btn-opaque">
+      <Button size="lg" href="#ai-mvps" variant="outline" class="hero-btn-opaque">
         {hero.jumpLabels[2]}
         <Icon name="arrow-down" size="sm" class="hero-jump-arrow" />
       </Button>
     </Fragment>
   </Hero>
 
-  <!-- Design -->
-  <section id="design" class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+  <!-- Websites -->
+  <section id="websites" class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
     <div class="mx-auto max-w-6xl px-6">
       <div class="grid gap-10 glitch:grid-cols-2 glitch:gap-12 glitch:items-start">
         <!-- Text -->
@@ -115,13 +132,13 @@ const aboutUrl = localizedPath('/about', locale);
           <div class="flex flex-col gap-6 sm:items-center glitch:items-start">
             <Badge variant="brand" pill class="self-start sm:self-center glitch:self-start">
               <Icon name="layout" size="sm" />
-              {design.badge}
+              {web.badge}
             </Badge>
             <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-              {design.heading}
+              {web.heading}
             </h2>
           </div>
-          {design.paragraphs.map((paragraph) => (
+          {web.paragraphs.map((paragraph) => (
             <p class="text-lg text-foreground-muted leading-relaxed sm:max-w-xl sm:mx-auto glitch:max-w-none glitch:mx-0">
               {paragraph}
             </p>
@@ -137,7 +154,7 @@ const aboutUrl = localizedPath('/about', locale);
               <h3 class="font-display text-base font-semibold text-foreground">{includedLabel}</h3>
             </div>
             <ul class="flex flex-col gap-3">
-              {design.included.map((item) => (
+              {web.included.map((item) => (
                 <li class="flex items-start gap-3">
                   <Icon name="check" size="sm" class="text-brand-500 shrink-0 mt-1" />
                   <p class="text-sm text-foreground-muted leading-relaxed">
@@ -152,22 +169,83 @@ const aboutUrl = localizedPath('/about', locale);
     </div>
   </section>
 
-  <!-- Development -->
-  <section id="development" class="py-[var(--space-section-md)] bg-background border-t border-border">
+  <!-- Website packages -->
+  <section id="packages" class="py-[var(--space-section-md)] bg-background border-t border-border">
+    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
+      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
+        <div class="flex flex-col items-center gap-6">
+          <Badge variant="brand" pill>
+            <Icon name="tag" size="sm" />
+            {packages.badge}
+          </Badge>
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground text-balance">
+            {packages.heading}
+          </h2>
+        </div>
+        <p class="text-lg text-foreground-muted max-w-2xl mx-auto text-balance">
+          {packages.lead}
+        </p>
+      </div>
+
+      <div class="grid gap-6 lg:grid-cols-3">
+        {packages.items.map((pkg, i) => {
+          const recommended = i === RECOMMENDED_PACKAGE;
+          return (
+            <Card
+              variant="elevated"
+              padding="lg"
+              class={cn('flex flex-col h-full', recommended && 'ring-2 ring-brand-500')}
+              data-reveal
+              data-reveal-delay={i || undefined}
+            >
+              <div class="flex items-center justify-between gap-3">
+                <h3 class="font-display text-xl font-bold text-foreground">{pkg.name}</h3>
+                {recommended && <Badge variant="brand" pill>{packages.recommended}</Badge>}
+              </div>
+              <p class="mt-2 text-sm text-foreground-muted leading-relaxed">{pkg.for}</p>
+              <p class="mt-6 flex items-baseline gap-2">
+                {pkg.pricePrefix && <span class="text-sm text-foreground-muted">{pkg.pricePrefix}</span>}
+                <span class="font-display text-4xl font-bold text-foreground">{pkg.price}</span>
+              </p>
+              <p class="mt-3 text-sm font-semibold text-brand-700 dark:text-brand-400">{pkg.bonus}</p>
+              <ul class="mt-6 mb-8 flex flex-1 flex-col gap-3 border-t border-border pt-6">
+                {pkg.features.map((feature) => (
+                  <li class="flex items-start gap-3">
+                    <Icon name="check" size="sm" class="text-brand-500 shrink-0 mt-0.5" />
+                    <span class="text-sm text-foreground-muted leading-relaxed">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <Button size="lg" fullWidth variant={recommended ? 'primary' : 'outline'} {...bookingLinkAttrs(contactUrl)}>
+                {pkg.cta}
+              </Button>
+            </Card>
+          );
+        })}
+      </div>
+
+      <p class="text-sm text-foreground-muted text-center max-w-3xl mx-auto text-balance" data-reveal>
+        {packages.note}
+      </p>
+    </div>
+  </section>
+
+  <!-- SaaS products -->
+  <section id="saas" class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
     <div class="mx-auto max-w-6xl px-6">
       <div class="grid gap-10 glitch:grid-cols-2 glitch:gap-12 glitch:items-start">
         <!-- Text -->
         <div class="flex flex-col gap-4 sm:items-center sm:text-center glitch:order-2 glitch:items-start glitch:text-left" data-reveal data-reveal-delay="1" data-reveal-ease="smooth">
           <div class="flex flex-col gap-6 sm:items-center glitch:items-start">
             <Badge variant="brand" pill class="self-start sm:self-center glitch:self-start">
-              <Icon name="code" size="sm" />
-              {development.badge}
+              <Icon name="layers" size="sm" />
+              {saas.badge}
             </Badge>
             <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-              {development.heading}
+              {saas.heading}
             </h2>
           </div>
-          {development.paragraphs.map((paragraph) => (
+          {saas.paragraphs.map((paragraph) => (
             <p class="text-lg text-foreground-muted leading-relaxed sm:max-w-xl sm:mx-auto glitch:max-w-none glitch:mx-0">
               {paragraph}
             </p>
@@ -178,12 +256,12 @@ const aboutUrl = localizedPath('/about', locale);
           <Card variant="elevated" padding="lg" class="h-full flex flex-col justify-center">
             <div class="flex items-center gap-3 pb-4 mb-4 border-b border-border sm:justify-center glitch:justify-start">
               <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-                <Icon name="code" size="md" />
+                <Icon name="layers" size="md" />
               </div>
               <h3 class="font-display text-base font-semibold text-foreground">{includedLabel}</h3>
             </div>
             <ul class="flex flex-col gap-3">
-              {development.included.map((item) => (
+              {saas.included.map((item) => (
                 <li class="flex items-start gap-3">
                   <Icon name="check" size="sm" class="text-brand-500 shrink-0 mt-1" />
                   <p class="text-sm text-foreground-muted leading-relaxed">
@@ -198,22 +276,22 @@ const aboutUrl = localizedPath('/about', locale);
     </div>
   </section>
 
-  <!-- Performance -->
-  <section id="performance" class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+  <!-- AI-first MVPs -->
+  <section id="ai-mvps" class="py-[var(--space-section-md)] bg-background border-t border-border">
     <div class="mx-auto max-w-6xl px-6">
       <div class="grid gap-10 glitch:grid-cols-2 glitch:gap-12 glitch:items-start">
         <!-- Text -->
         <div class="flex flex-col gap-4 sm:items-center sm:text-center glitch:items-start glitch:text-left" data-reveal data-reveal-ease="smooth">
           <div class="flex flex-col gap-6 sm:items-center glitch:items-start">
             <Badge variant="brand" pill class="self-start sm:self-center glitch:self-start">
-              <Icon name="zap" size="sm" />
-              {performance.badge}
+              <Icon name="sparkles" size="sm" />
+              {ai.badge}
             </Badge>
             <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-              {performance.heading}
+              {ai.heading}
             </h2>
           </div>
-          {performance.paragraphs.map((paragraph) => (
+          {ai.paragraphs.map((paragraph) => (
             <p class="text-lg text-foreground-muted leading-relaxed sm:max-w-xl sm:mx-auto glitch:max-w-none glitch:mx-0">
               {paragraph}
             </p>
@@ -224,12 +302,12 @@ const aboutUrl = localizedPath('/about', locale);
           <Card variant="elevated" padding="lg" class="h-full flex flex-col justify-center">
             <div class="flex items-center gap-3 pb-4 mb-4 border-b border-border sm:justify-center glitch:justify-start">
               <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-                <Icon name="zap" size="md" />
+                <Icon name="sparkles" size="md" />
               </div>
               <h3 class="font-display text-base font-semibold text-foreground">{includedLabel}</h3>
             </div>
             <ul class="flex flex-col gap-3">
-              {performance.included.map((item) => (
+              {ai.included.map((item) => (
                 <li class="flex items-start gap-3">
                   <Icon name="check" size="sm" class="text-brand-500 shrink-0 mt-1" />
                   <p class="text-sm text-foreground-muted leading-relaxed">
@@ -245,7 +323,7 @@ const aboutUrl = localizedPath('/about', locale);
   </section>
 
   <!-- Process -->
-  <section class="py-[var(--space-section-md)] bg-background border-t border-border">
+  <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
       <div class="flex flex-col items-center gap-4 text-center" data-reveal>
         <div class="flex flex-col items-center gap-6">
@@ -273,7 +351,7 @@ const aboutUrl = localizedPath('/about', locale);
   </section>
 
   <!-- Questions & answers -->
-  <section id="faq" class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+  <section id="faq" class="py-[var(--space-section-md)] bg-background border-t border-border">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
       <div class="flex flex-col items-center gap-4 text-center" data-reveal>
         <div class="flex flex-col items-center gap-6">
@@ -317,7 +395,7 @@ const aboutUrl = localizedPath('/about', locale);
   </section>
 
   <!-- CTA -->
-  <section class="relative z-10 py-[var(--space-section-md)] bg-background border-t border-border">
+  <section class="relative z-10 py-[var(--space-section-md)] bg-background-secondary border-t border-border">
     <CtaBand>
       <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">
         {cta.heading}
@@ -326,14 +404,16 @@ const aboutUrl = localizedPath('/about', locale);
         {cta.description}
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button size="lg" href={contactUrl}>
+        <Button size="lg" {...bookingLinkAttrs(contactUrl)}>
           {cta.primary}
           <Icon name="arrow-right" size="sm" />
         </Button>
-        <Button size="lg" variant="outline" class="cta-btn-brand" href={aboutUrl}>
-          {cta.secondary}
-          <Icon name="arrow-right" size="sm" />
-        </Button>
+        {whatsAppHref && (
+          <Button size="lg" variant="outline" class="cta-btn-brand" href={whatsAppHref}>
+            <Icon name="whatsapp" size="sm" />
+            {cta.secondary}
+          </Button>
+        )}
       </div>
     </CtaBand>
   </section>

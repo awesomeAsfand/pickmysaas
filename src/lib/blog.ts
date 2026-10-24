@@ -10,6 +10,9 @@ import siteConfig from '@/config/site.config';
 import { defaultLocale, localizedPath, isEnabled, getLocales } from '@/i18n';
 import { tagToSlug, findTagBySlug } from '@/lib/tags';
 
+/** Whether the blog is linked from the nav, home page, footer and feeds. See `siteConfig.blog.visible`. */
+export const BLOG_VISIBLE = siteConfig.blog?.visible ?? true;
+
 /** Number of regular (non-featured) posts shown per blog index page. */
 export const BLOG_POSTS_PER_PAGE = siteConfig.blog?.postsPerPage ?? 12;
 

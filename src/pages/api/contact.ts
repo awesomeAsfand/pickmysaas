@@ -16,6 +16,78 @@ const escapeHtml = (value: string): string =>
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
 
+/** The notification the site owner receives for each submission. */
+interface Notification {
+  subject: string;
+  replyTo: string;
+  html: string;
+  text: string;
+}
+
+type SendResult = { ok: true } | { ok: false; error: unknown; visitorMessage: string };
+
+const NOT_CONFIGURED = 'Email service is not configured';
+const SEND_FAILED = 'Failed to send email';
+
+/** Cloudflare's `send_email` binding, as much of it as this endpoint uses. */
+interface SendEmailBinding {
+  send(message: { from: string; to: string; subject: string; html: string; text: string; replyTo: string }): Promise<unknown>;
+}
+
+/**
+ * Deliver through the Worker's `EMAIL` send binding (wrangler.toml) to the
+ * address in the `CONTACT_TO_EMAIL` secret. Cloudflare sends to a verified
+ * Email Routing destination for free; the sender is an address on the site's
+ * own domain, which has Email Routing on.
+ */
+async function sendViaCloudflare(notification: Notification): Promise<SendResult> {
+  // `cloudflare:workers` only resolves inside the Workers runtime. Importing it
+  // through a variable keeps the bundler from resolving it, so the Vercel and
+  // Netlify builds still compile.
+  const specifier = 'cloudflare:workers';
+  let env: Record<string, unknown>;
+  try {
+    ({ env } = await import(/* @vite-ignore */ specifier));
+  } catch (error) {
+    return { ok: false, error, visitorMessage: NOT_CONFIGURED };
+  }
+
+  const binding = env.EMAIL as SendEmailBinding | undefined;
+  const to = env.CONTACT_TO_EMAIL as string | undefined;
+  if (!binding || !to) {
+    return { ok: false, error: 'EMAIL binding or CONTACT_TO_EMAIL secret is missing on the Worker', visitorMessage: NOT_CONFIGURED };
+  }
+
+  try {
+    await binding.send({
+      from: `website@${siteConfig.email.split('@')[1]}`,
+      to,
+      ...notification,
+    });
+    return { ok: true };
+  } catch (error) {
+    return { ok: false, error, visitorMessage: SEND_FAILED };
+  }
+}
+
+/** Deliver through Resend to `siteConfig.email`. */
+async function sendViaResend(notification: Notification): Promise<SendResult> {
+  const apiKey = import.meta.env.RESEND_API_KEY;
+  if (!apiKey) {
+    return { ok: false, error: 'RESEND_API_KEY is not set', visitorMessage: NOT_CONFIGURED };
+  }
+
+  const toEmail = siteConfig.email;
+  const fromEmail = import.meta.env.RESEND_FROM_EMAIL || toEmail;
+  const { error } = await new Resend(apiKey).emails.send({
+    from: `Contact Form <${fromEmail}>`,
+    to: toEmail,
+    ...notification,
+  });
+
+  return error ? { ok: false, error, visitorMessage: error.message || SEND_FAILED } : { ok: true };
+}
+
 const contactSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(100),
   email: z.email('Please enter a valid email address'),
@@ -63,43 +135,31 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    // Send email via Resend
-    const apiKey = import.meta.env.RESEND_API_KEY;
-    if (!apiKey) {
-      console.error('RESEND_API_KEY is not set');
-      return new Response(
-        JSON.stringify({ success: false, errors: { form: ['Email service is not configured'] } }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-
-    const resend = new Resend(apiKey);
-
-    const toEmail = siteConfig.email;
-    const fromEmail = import.meta.env.RESEND_FROM_EMAIL || toEmail;
     const siteLabel = siteConfig.name;
-
-    const subject = result.data.subject
-      ? `[${siteLabel}] ${result.data.subject}`
-      : `[${siteLabel}] New contact from ${result.data.name}`;
-
-    const { error } = await resend.emails.send({
-      from: `Contact Form <${fromEmail}>`,
-      to: toEmail,
+    const notification: Notification = {
+      subject: result.data.subject
+        ? `[${siteLabel}] ${result.data.subject}`
+        : `[${siteLabel}] New contact from ${result.data.name}`,
+      // Replying in the inbox answers the visitor, not the site.
       replyTo: result.data.email,
-      subject,
       html: `
         <p><strong>Name:</strong> ${escapeHtml(result.data.name)}</p>
         <p><strong>Email:</strong> ${escapeHtml(result.data.email)}</p>
         <p><strong>Message:</strong></p>
         <p>${escapeHtml(result.data.message).replace(/\n/g, '<br>')}</p>
       `,
-    });
+      text: `Name: ${result.data.name}\nEmail: ${result.data.email}\n\n${result.data.message}`,
+    };
 
-    if (error) {
-      console.error('Resend error:', error);
+    const sent =
+      siteConfig.contactForm?.sendVia === 'cloudflare'
+        ? await sendViaCloudflare(notification)
+        : await sendViaResend(notification);
+
+    if (!sent.ok) {
+      console.error('Contact form delivery failed:', sent.error);
       return new Response(
-        JSON.stringify({ success: false, errors: { form: [error.message || 'Failed to send email'] } }),
+        JSON.stringify({ success: false, errors: { form: [sent.visitorMessage] } }),
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }

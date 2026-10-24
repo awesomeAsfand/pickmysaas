@@ -72,7 +72,12 @@ export function createProfessionalServiceSchema(): WithContext<LocalBusiness> {
         }
       : {}),
     areaServed: [
-      { '@type': 'Country', name: 'Netherlands' },
+      { '@type': 'Country', name: 'United Arab Emirates' },
+      { '@type': 'Country', name: 'Saudi Arabia' },
+      { '@type': 'Country', name: 'Qatar' },
+      { '@type': 'Country', name: 'Kuwait' },
+      { '@type': 'Country', name: 'Bahrain' },
+      { '@type': 'Country', name: 'Oman' },
       { '@type': 'Country', name: 'Worldwide' },
     ],
     sameAs: siteConfig.socialLinks,

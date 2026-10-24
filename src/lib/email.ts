@@ -1,4 +1,5 @@
 import { RESEND_API_KEY, RESEND_AUDIENCE_ID } from 'astro:env/server';
+import siteConfig from '@/config/site.config';
 
 /**
  * Whether the email-backed forms have the keys they need.
@@ -19,8 +20,12 @@ import { RESEND_API_KEY, RESEND_AUDIENCE_ID } from 'astro:env/server';
  * submit instead of inviting input that cannot go anywhere.
  */
 
-/** The contact form needs a key to send with. */
-export const contactConfigured = Boolean(RESEND_API_KEY);
+/**
+ * The contact form needs a way to send: Cloudflare's send binding, or a Resend
+ * key. The Cloudflare binding and its recipient secret only exist on the
+ * deployed Worker, so choosing it counts as configured here.
+ */
+export const contactConfigured = siteConfig.contactForm?.sendVia === 'cloudflare' || Boolean(RESEND_API_KEY);
 
 /** The newsletter needs an audience to add the address to as well. */
 export const newsletterConfigured = Boolean(RESEND_API_KEY && RESEND_AUDIENCE_ID);

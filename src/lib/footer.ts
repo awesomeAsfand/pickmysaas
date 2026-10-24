@@ -1,5 +1,5 @@
 import { getFooterNavItems, footerLinkGroups, resolveNavItem } from '@/config/nav.config';
-import { getPublishedPosts, collectTopTags, getTagUrl } from '@/lib/blog';
+import { getPublishedPosts, collectTopTags, getTagUrl, getBlogBaseUrl, BLOG_VISIBLE } from '@/lib/blog';
 import { getVisibleProjects, getProjectUrl } from '@/lib/projects';
 import { defaultLocale, t } from '@/i18n';
 import type { FooterLinkGroup } from '@/components/layout/Footer.astro';
@@ -31,7 +31,10 @@ export async function getDerivedFooterGroups(
   const groups: FooterLinkGroup[] = [];
 
   // The site's own pages, from the footer nav a site already configures.
-  const navLinks = getFooterNavItems(locale).map((item) => ({
+  // The Blog link goes while the blog is hidden (siteConfig.blog.visible).
+  const navLinks = getFooterNavItems(locale)
+    .filter((item) => BLOG_VISIBLE || item.href !== getBlogBaseUrl(locale))
+    .map((item) => ({
     label: item.label,
     href: item.href,
     external: item.external,
@@ -43,7 +46,7 @@ export async function getDerivedFooterGroups(
   // The most-used tags. Real pages, and they show the tagging off at the same
   // time — a footer full of a site's own subjects reads better than a footer
   // full of its section names twice over.
-  const posts = await getPublishedPosts(locale);
+  const posts = BLOG_VISIBLE ? await getPublishedPosts(locale) : [];
   const topics = collectTopTags(posts, TOPICS_LIMIT).map((tag) => ({
     label: tag,
     href: getTagUrl(tag, locale),

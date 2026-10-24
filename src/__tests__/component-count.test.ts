@@ -15,8 +15,6 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
 import registry from '../../component-registry.json';
-import en from '../i18n/en.json';
-import siteConfig from '../config/site.config';
 
 const COUNT = Object.keys(registry.components).length;
 const read = (p: string) => readFileSync(join(process.cwd(), p), 'utf8');
@@ -32,14 +30,6 @@ describe('component count', () => {
         expect(() => readFileSync(join(process.cwd(), file)), `${name} → ${file}`).not.toThrow();
       }
     }
-  });
-
-  it('site.config quotes it', () => {
-    expect(siteConfig.description).toContain(`${COUNT} designed components`);
-  });
-
-  it('the English dictionary quotes it', () => {
-    expect(JSON.stringify(en)).toContain(`${COUNT} designed components`);
   });
 
   it('no file anywhere quotes a count the registry cannot justify', () => {
@@ -81,11 +71,6 @@ describe('component count', () => {
       }
     }
     expect(wrong, `not a total (${COUNT}) or a category count`).toEqual([]);
-  });
-
-  it('the showcase page and its post quote it', () => {
-    expect(read('src/pages/components.astro')).toContain(`${COUNT} production components`);
-    expect(read('src/content/blog/en/component-library.mdx')).toContain(`${COUNT} Components Ready to Use`);
   });
 
   it('the README quotes it, and its category breakdown adds up', () => {

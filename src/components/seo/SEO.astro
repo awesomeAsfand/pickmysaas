@@ -82,12 +82,13 @@ function getImageType(url: string): string | undefined {
 }
 const ogImageType = getImageType(ogImage);
 
-// hreflang alternates — only emitted when i18n is enabled with >1 locale.
-// `x-default` points at the default-locale URL per Google's recommendation.
-// Prefer caller-provided, verified alternates (e.g. a blog post's real
+// hreflang alternates — emitted when i18n is enabled with >1 locale, or when
+// the caller passes verified alternates (the home page has an Arabic version
+// while i18n is off). `x-default` points at the default-locale URL per Google's
+// recommendation. Prefer caller-provided alternates (e.g. a blog post's real
 // per-locale URLs); otherwise fall back to swapping the locale segment of the
 // current path, which is correct for pages that share a slug across locales.
-const i18nOn = i18nIsEnabled();
+const i18nOn = i18nIsEnabled() || (localeAlternates?.length ?? 0) > 1;
 const resolvedAlternates =
   localeAlternates && localeAlternates.length > 0
     ? localeAlternates

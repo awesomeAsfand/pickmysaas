@@ -18,6 +18,8 @@ export interface SiteConfig {
   author: string;
   email: string;
   phone?: string;
+  /** WhatsApp number in international format, digits only (e.g. 971501234567). Adds a "Chat on WhatsApp" button. */
+  whatsapp?: string;
   address?: {
     street: string;
     city: string;
@@ -32,6 +34,24 @@ export interface SiteConfig {
    * inferred from the URL). Off by default; an explicit `<Header
    * showSocialLinks>` prop still overrides this per-usage.
    */
+  /**
+   * How the contact form delivers its notification email.
+   * - 'cloudflare': the Worker's `EMAIL` send binding (wrangler.toml), to the
+   *   address in the `CONTACT_TO_EMAIL` Worker secret. That address must be a
+   *   verified destination in Cloudflare Email Routing; sending to it is free.
+   * - 'resend': the Resend API, with `RESEND_API_KEY`. Default.
+   */
+  contactForm?: {
+    sendVia?: 'cloudflare' | 'resend';
+  };
+  /**
+   * Call booking. With `calLink` set, every "Book a free call" button opens
+   * the Cal.com booking popup for it; without it they go to the contact page.
+   */
+  booking?: {
+    /** Cal.com event path, the part after `cal.com/`, e.g. `name/30min`. */
+    calLink?: string;
+  };
   header?: {
     showSocialLinks?: boolean;
   };
@@ -207,6 +227,12 @@ export interface SiteConfig {
    * where they are for backwards compatibility and may fold in at a major.)
    */
   blog?: {
+    /**
+     * Whether the blog is linked from the site: the Blog item in the header and
+     * footer nav, the home page blog section, the footer Topics column and the
+     * RSS links. The blog routes build either way. Default true.
+     */
+    visible?: boolean;
     /** Regular (non-featured) posts shown per blog index page. Default 12. */
     postsPerPage?: number;
     /** How many of the most-used tags to surface in the blog tag cloud. Default 10. */
@@ -264,36 +290,36 @@ const siteConfig: SiteConfig = {
   // import this file, uses the same values. Change them there.
   name: SITE_NAME,
   description:
-    'A free, fast Astro 7 starter theme to build anything on: 44 designed components, 8 colour themes, dark mode, and built-in i18n.',
-  tagline: 'Astro 7 starter theme to build anything on',
-  footerNote: 'Free & open source · MIT licensed',
+    'PickMySaaS designs and builds bilingual websites, SaaS platforms and AI-first MVPs for startups and businesses in the UAE, Saudi Arabia, Qatar and across the GCC.',
+  tagline: 'Websites, SaaS & AI MVPs for the Gulf',
+  footerNote: 'Working worldwide · Focused on the GCC',
   url: SITE_URL || SITE_URL_FALLBACK,
   // Generated at build time from `name`, `tagline` and the brand colour below.
   // Point this at a file in `public/` to use your own — it has to be a raster
   // (PNG or JPEG): social platforms don't render SVG share images.
   ogImage: '/og/default.png',
-  author: 'Hans Martens',
-  email: 'hello@hansmartens.dev',
-  address: {
-    street: '',
-    city: 'Amsterdam',
-    state: '',
-    zip: '',
-    country: 'the Netherlands',
+  author: 'PickMySaaS',
+  email: 'info@pickmysaas.com',
+  // No address on purpose: PickMySaaS works worldwide. Setting one adds a
+  // location card to the contact page and a postal address to the
+  // structured data.
+  // Add PickMySaaS profiles here (LinkedIn, X, Instagram…). They feed the
+  // footer and contact-page icons and the structured data's sameAs.
+  socialLinks: [],
+  whatsapp: '923495533955',
+  contactForm: {
+    // Cloudflare Email Routing sends to the verified Gmail behind info@. The
+    // address itself is the CONTACT_TO_EMAIL secret on the Worker, not here:
+    // this repo is public.
+    sendVia: 'cloudflare',
   },
-  socialLinks: [
-    'https://github.com/hansmartensdev',
-    'https://x.com/hansmartens_dev',
-    'https://www.linkedin.com/in/hansmartensdev',
-    'https://bsky.app/profile/hansmartensdev.bsky.social',
-  ],
+  booking: {
+    // "Book a free call" opens this Cal.com event in a popup.
+    calLink: 'asfand-yar-khan-o7957h/30min',
+  },
   header: {
     // Flip to `true` to show the social icons (incl. GitHub) in the header.
     showSocialLinks: false,
-  },
-  twitter: {
-    site: 'https://x.com/hansmartens_dev',
-    creator: '@hansmartens_dev',
   },
   verification: {
     google: GOOGLE_SITE_VERIFICATION,
@@ -357,11 +383,13 @@ const siteConfig: SiteConfig = {
     },
   },
   newsletter: {
-    // On by default: the form knows whether it has keys and says so itself,
-    // in dev only. Set RESEND_API_KEY and RESEND_AUDIENCE_ID to make it work.
-    enabled: true,
+    // Off while there is no blog to send. To turn on: set RESEND_API_KEY and
+    // RESEND_AUDIENCE_ID, then flip to true.
+    enabled: false,
   },
   blog: {
+    // Off until the first PickMySaaS post is published. Flip to true then.
+    visible: false,
     postsPerPage: 12,
     tagCloudLimit: 10,
   },
@@ -372,7 +400,7 @@ const siteConfig: SiteConfig = {
   i18n: i18nConfig,
   branding: {
     logo: {
-      alt: 'Astro Rocket',
+      alt: 'PickMySaaS',
       // image: '/logo.svg', // Optional: set to a file in public/ to use a custom logo image instead of the letter monogram.
       imageUrl: '/favicon.svg',
     },

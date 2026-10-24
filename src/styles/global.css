@@ -13,6 +13,10 @@
 @import '@fontsource-variable/manrope';
 @import '@fontsource-variable/outfit';
 @import '@fontsource-variable/jetbrains-mono';
+/* Arabic (the /ar home page). Each face carries a unicode-range, so a browser
+   only downloads these when a page actually shows Arabic text. */
+@import '@fontsource-variable/noto-sans-arabic';
+@import '@fontsource-variable/noto-kufi-arabic';
 
 /* Metric-adjusted fallback fonts.
    The variable fonts above arrive after first paint, so headings and body
@@ -156,6 +160,28 @@
 
   /* Container */
   --container-max: 1200px;
+}
+
+/* -------------------------------------------------------------------------
+   Arabic
+   -------------------------------------------------------------------------
+   Manrope and Outfit have no Arabic glyphs, so the Arabic faces sit second in
+   each stack: Latin words (brand names, "SaaS") keep the theme fonts and
+   Arabic letters fall through to Noto. Higher specificity than the theme
+   files' `html[data-theme]`, so this holds under every colour theme.
+
+   Unlayered on purpose, so it beats the `tracking-*` and `leading-*`
+   utilities: any letter-spacing pulls apart the joined letters of Arabic
+   script, and Arabic needs more line height than the Latin 1.1 headings. */
+html:lang(ar) {
+  --font-sans: 'Manrope Variable', 'Noto Sans Arabic Variable', var(--theme-font-sans);
+  --font-display: 'Outfit Variable', 'Noto Kufi Arabic Variable', var(--theme-font-sans);
+}
+html:lang(ar) * {
+  letter-spacing: 0;
+}
+html:lang(ar) :is(h1, h2, h3, h4, h5, h6) {
+  line-height: 1.5;
 }
 
 /* -------------------------------------------------------------------------

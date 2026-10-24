@@ -198,7 +198,12 @@ const configJson = JSON.stringify(consentConfig);
           if (typeof w.gtag !== 'function') {
             w.dataLayer = w.dataLayer || [];
             if (typeof w.gtag !== 'function') {
-              w.gtag = function(...args: unknown[]) { w.dataLayer.push(args as unknown as Record<string, unknown>); };
+              // gtag.js only reads an Arguments object as a command: pushing a
+              // plain array (rest params) is silently ignored, so keep `arguments`.
+              w.gtag = function () {
+                // eslint-disable-next-line prefer-rest-params
+                w.dataLayer.push(arguments as unknown as Record<string, unknown>);
+              };
             }
           }
 

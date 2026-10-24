@@ -29,7 +29,7 @@ const { title, description, badge, badgeIcon, background = 'secondary' } = Astro
 
 // Phone-only cards: a focused subset of the stack, in stack order. Tablet & up
 // show the full marquee instead, so these four only ever render on phones.
-const cardNames = ['Astro', 'Tailwind CSS', 'TypeScript', 'React'];
+const cardNames = ['Python', 'Django', 'Bootstrap', 'HTML5'];
 const items = await getCollection('stack');
 const cards = items
   .filter((item) => cardNames.includes(item.data.name))

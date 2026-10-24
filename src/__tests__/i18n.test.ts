@@ -62,8 +62,8 @@ describe('i18n tData() helper', () => {
   });
 
   it('returns the Dutch structured value when locale is nl', () => {
-    const hero = tData<{ badge: string }>('pages.about.hero', 'nl');
-    expect(hero?.badge).toBe('Over');
+    const hero = tData<{ badge: string }>('pages.contact.hero', 'nl');
+    expect(hero?.badge).toBe('Start een project');
   });
 
   it('falls back to the default-locale value when the locale has no entry', () => {
@@ -161,13 +161,13 @@ describe('i18n swapLocaleInPath()', () => {
 describe('i18n meta titles never embed the site name', () => {
   // SEO.astro renders the document <title> as `${title} — ${siteConfig.name}`,
   // so any meta-title dictionary value that already contains the site name
-  // would render it twice (e.g. "Blog — Astro Rocket — Astro Rocket"). Every
+  // would render it twice (e.g. "Blog — PickMySaaS — PickMySaaS"). Every
   // key below feeds that `title` prop and must therefore stay brand-free.
   //
   // The shipped brand is checked as a literal on purpose: importing
   // site.config.ts here would pull in `astro:env/server` (see i18n.config.ts),
   // and this guards the theme's own default dictionaries against a regression.
-  const SITE_NAME = 'Astro Rocket';
+  const SITE_NAME = 'PickMySaaS';
   const METATITLE_KEYS = [
     'blog.metaTitle',
     'blog.pageMetaTitle',
@@ -182,7 +182,7 @@ describe('i18n meta titles never embed the site name', () => {
     'pages.contact.meta.title',
   ];
 
-  const cases = ['en', 'nl'].flatMap((locale) =>
+  const cases = ['en', 'nl', 'ar'].flatMap((locale) =>
     METATITLE_KEYS.map((key) => [locale, key] as [string, string])
   );
 

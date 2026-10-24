@@ -7,11 +7,14 @@ import JsonLd from '@/components/seo/JsonLd.astro';
 import Analytics from '@/components/layout/Analytics.astro';
 import ConsentBanner from '@/components/ui/overlay/ConsentBanner';
 import CursorTrail from '@/components/effects/CursorTrail.astro';
+import BookingPopup from '@/components/patterns/BookingPopup.astro';
+import FloatingWhatsApp from '@/components/patterns/FloatingWhatsApp.astro';
+import { whatsAppUrl } from '@/lib/booking';
 import { createWebsiteSchema, createOrganizationSchema, createPersonSchema, createProfessionalServiceSchema } from '@/lib/schema';
 import type { Thing, WithContext } from 'schema-dts';
 import siteConfig from '@/config/site.config';
-import { t, getLocaleFromPath } from '@/i18n';
-import { getRssUrl } from '@/lib/blog';
+import { t, getLocaleFromPath, getLocaleDirection } from '@/i18n';
+import { getRssUrl, BLOG_VISIBLE } from '@/lib/blog';
 
 interface Props {
   title?: string;
@@ -65,6 +68,8 @@ if (includeProfessionalServiceSchema) {
 schemas.push(...extraSchemas);
 
 const locale = getLocaleFromPath(Astro.url.pathname);
+// The floating WhatsApp button takes the bottom-right corner; back-to-top sits above it.
+const hasWhatsApp = whatsAppUrl() !== undefined;
 const commentsConfig = siteConfig.articleFeatures?.comments;
 
 let commentsPreconnectHref: string | null = null;
@@ -88,7 +93,7 @@ if (commentsConfig?.enabled) {
 ---
 
 <!doctype html>
-<html lang={locale} class="scroll-smooth dark" data-theme="blue" data-theme-mode="system">
+<html lang={locale} dir={getLocaleDirection(locale)} class="scroll-smooth dark" data-theme="blue" data-theme-mode="system">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -123,7 +128,7 @@ if (commentsConfig?.enabled) {
     />
 
     <!-- RSS Feed -->
-    <link rel="alternate" type="application/rss+xml" title={`${siteConfig.name} RSS Feed`} href={getRssUrl(locale)} />
+    {BLOG_VISIBLE && <link rel="alternate" type="application/rss+xml" title={`${siteConfig.name} RSS Feed`} href={getRssUrl(locale)} />}
 
     <!-- JSON-LD Structured Data -->
     <JsonLd schema={schemas} />
@@ -335,14 +340,16 @@ if (commentsConfig?.enabled) {
     <slot name="footer" />
 
     <ConsentBanner />
+    <BookingPopup />
+    <FloatingWhatsApp locale={locale} />
 
     {siteConfig.effects?.cursorTrail !== false && <CursorTrail />}
 
-    <!-- Back to top button -->
+    <!-- Back to top button (lifted above the WhatsApp button when there is one) -->
     <button
       id="back-to-top"
       aria-label={t('common.backToTop', locale)}
-      class="fixed bottom-6 right-6 z-50 h-12 w-12"
+      class={`fixed ${hasWhatsApp ? 'bottom-24' : 'bottom-6'} right-6 z-50 h-12 w-12`}
       style="opacity:0;translate:0 2rem;pointer-events:none"
     >
       <!-- Scroll-progress ring (rotated so arc starts at 12 o'clock) -->

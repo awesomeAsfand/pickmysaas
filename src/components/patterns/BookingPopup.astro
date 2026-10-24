@@ -1,0 +1,85 @@
+---
+/**
+ * BookingPopup
+ *
+ * Opens the Cal.com booking calendar in a popup when a visitor clicks any link
+ * carrying `data-cal-link` (see `bookingLinkAttrs` in lib/booking). Cal.com's
+ * embed script is only fetched on that first click, so pages that are never
+ * booked from pay nothing for it. Modifier clicks (new tab) fall through to the
+ * link's own href, the Cal.com page.
+ *
+ * Rendered once in BaseLayout; renders no markup of its own.
+ */
+---
+
+<script>
+  const CAL_ORIGIN = 'https://app.cal.com';
+  const CAL_EMBED_SRC = `${CAL_ORIGIN}/embed/embed.js`;
+  const NAMESPACE = 'booking';
+
+  type CalFn = ((...args: unknown[]) => void) & {
+    loaded?: boolean;
+    q?: unknown[];
+    ns?: Record<string, CalFn>;
+  };
+  type CalWindow = Window & { Cal?: CalFn };
+
+  // Cal.com's loader stub, from their embed snippet: queues calls until
+  // embed.js has loaded and replays them. Defined only on the first click.
+  function loadCal(): CalFn {
+    const w = window as CalWindow;
+    if (w.Cal) return w.Cal;
+    const push = (api: CalFn, args: unknown) => api.q!.push(args);
+    const cal: CalFn = function (...args: unknown[]) {
+      if (!cal.loaded) {
+        cal.ns = {};
+        cal.q = cal.q || [];
+        const script = document.createElement('script');
+        script.src = CAL_EMBED_SRC;
+        document.head.appendChild(script);
+        cal.loaded = true;
+      }
+      if (args[0] === 'init') {
+        const api: CalFn = function (...apiArgs: unknown[]) {
+          push(api, apiArgs);
+        };
+        api.q = [];
+        const namespace = args[1];
+        if (typeof namespace === 'string') {
+          cal.ns![namespace] = cal.ns![namespace] || api;
+          push(cal.ns![namespace], args);
+          push(cal, ['initNamespace', namespace]);
+        } else {
+          push(cal, args);
+        }
+        return;
+      }
+      push(cal, args);
+    };
+    w.Cal = cal;
+    return cal;
+  }
+
+  let initialised = false;
+
+  function openBooking(calLink: string) {
+    const cal = loadCal();
+    if (!initialised) {
+      cal('init', NAMESPACE, { origin: CAL_ORIGIN });
+      initialised = true;
+    }
+    // Match the site's current colour mode.
+    const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+    cal.ns![NAMESPACE]('modal', { calLink, config: { layout: 'month_view', theme } });
+  }
+
+  document.addEventListener('click', (event) => {
+    if (event.defaultPrevented || event.button !== 0) return;
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const link = (event.target as Element | null)?.closest<HTMLElement>('[data-cal-link]');
+    const calLink = link?.dataset.calLink;
+    if (!calLink) return;
+    event.preventDefault();
+    openBooking(calLink);
+  });
+</script>

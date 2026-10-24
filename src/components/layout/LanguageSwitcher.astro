@@ -7,7 +7,9 @@
  * at the site root (no prefix); additional locales live under `/<locale>/`.
  *
  * Renders nothing when i18n is disabled or only one locale is
- * configured, so it has zero cost on single-locale sites.
+ * configured, so it has zero cost on single-locale sites. With i18n
+ * disabled, a page that passes `alternates` for two or more locales
+ * still gets a switcher between exactly those.
  *
  * Pure HTML <a> links — no JS framework, no client-side routing.
  * The only script is for opening/closing the dropdown panel.
@@ -38,10 +40,12 @@ interface Props {
 
 const { class: className, compact = false, alternates } = Astro.props;
 
-const enabled = i18nIsEnabled();
 const currentPath = Astro.url.pathname;
 const currentLocale = getLocaleFromPath(currentPath);
-const locales = enabled ? getLocales() : [];
+// With i18n off, a page that has its own translations (the home page) passes
+// them as `alternates`, and only those locales are offered.
+const locales = i18nIsEnabled() ? getLocales() : Object.keys(alternates ?? {});
+const enabled = locales.length > 1;
 
 const triggerLabel = t('nav.selectLanguage', currentLocale);
 const currentLanguageLabel = t('nav.currentLanguage', currentLocale);
@@ -94,7 +98,7 @@ const currentLanguageLabel = t('nav.currentLanguage', currentLocale);
 
       <div
         class={cn(
-          'lang-panel absolute right-0 top-full mt-2 z-50',
+          'lang-panel absolute end-0 top-full mt-2 z-50',
           'w-48 rounded-xl border border-border bg-background shadow-lg',
           'p-1.5 hidden'
         )}

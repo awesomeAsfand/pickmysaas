@@ -26,6 +26,8 @@
     "readMore": "Read more",
     "loading": "Loading…",
     "backToTop": "Back to top",
+    "whatsappChat": "Chat on WhatsApp",
+    "whatsappMessage": "Hi PickMySaaS, I'd like to talk about a project.",
     "search": "Search",
     "submit": "Submit",
     "cancel": "Cancel",
@@ -103,7 +105,7 @@
   },
   "projects": {
     "title": "Projects",
-    "description": "Things I've built",
+    "description": "Things we've built",
     "viewProject": "View project",
     "viewSource": "View source",
     "noProjectsFound": "No projects found.",
@@ -115,12 +117,12 @@
     "galleryNextImage": "Next image",
     "galleryPreviousImage": "Previous image",
     "metaTitle": "Projects",
-    "metaDescription": "Selected work — websites, tools, and open-source projects built by Astro Rocket.",
+    "metaDescription": "Selected work: websites, platforms and tools designed and built by PickMySaaS.",
     "heroBadge": "Selected work",
-    "heroDescription": "Work I'm most proud of.",
+    "heroDescription": "Websites, platforms and tools we've designed and built.",
     "allProjects": "All projects",
     "pageMetaTitle": "Projects — Page {page}",
-    "pageMetaDescription": "Page {page} of {total} — selected work, tools, and open-source projects by Astro Rocket.",
+    "pageMetaDescription": "Page {page} of {total}: websites, platforms and tools designed and built by PickMySaaS.",
     "pageBadge": "Page {page} of {total}",
     "tagMetaTitle": "#{tag} — Projects",
     "tagMetaDescription": "Projects tagged \"{tag}\".",
@@ -133,11 +135,11 @@
     "moreProjects": "More projects",
     "ctaBadge": "Let's talk",
     "ctaHeading": "Let's talk about what you need",
-    "ctaLead": "Every website I build is its own custom design, made with the care you see here. Tell me what you have in mind.",
-    "ctaPrimary": "Send a message",
-    "ctaSecondary": "More about me",
+    "ctaLead": "Every product we build is designed around the business behind it, with the care you see here. Tell us what you have in mind.",
+    "ctaPrimary": "Book a free call",
+    "ctaSecondary": "About PickMySaaS",
     "closingHeading": "Have a project in mind?",
-    "closingLead": "Whether it's a new build or something that needs a fresh perspective — I'd love to hear about it."
+    "closingLead": "Whether it's a new build or something that needs a fresh perspective, we'd love to hear about it."
   },
   "pagination": {
     "page": "Page {current} of {total}",
@@ -180,13 +182,13 @@
     "heading": "Get in touch",
     "name": "Name",
     "email": "Email",
-    "subject": "Subject",
-    "message": "Message",
+    "subject": "What do you want to build?",
+    "message": "Tell us about your project",
     "send": "Send message",
     "sending": "Sending…",
-    "success": "Message sent successfully!",
+    "success": "Thanks! We'll reply within 24 hours.",
     "genericError": "Something went wrong",
-    "notConfigured": "Not configured yet — set RESEND_API_KEY to switch this on. Only you can see this line.",
+    "notConfigured": "Not configured yet — choose how the form sends in site.config.ts (contactForm.sendVia). Only you can see this line.",
     "unavailable": "This form is not available right now.",
     "error": "Failed to send message. Please try again."
   },
@@ -216,7 +218,6 @@
   },
   "footer": {
     "copyright": "© {year} {siteName}",
-    "credit": "Theme by <a href=\"https://hansmartens.dev\" class=\"transition-colors hover:text-foreground\" target=\"_blank\" rel=\"noopener noreferrer\">Hans Martens Dev</a>",
     "builtWith": "Built with Astro Rocket",
     "groups": {
       "site": "Site",
@@ -229,245 +230,367 @@
   "pages": {
     "about": {
       "meta": {
-        "title": "About — Free Open-Source Astro 7 Theme",
-        "description": "What Astro Rocket is and how it's built: a free Astro 7 starter theme with 44 designed components, 8 colour themes, i18n, and dark mode."
+        "title": "About — A Founder-Led Product Studio for the Gulf",
+        "description": "PickMySaaS is a founder-led product studio, led by Asfand Yar Khan, building bilingual websites, SaaS platforms and AI-first MVPs for founders and businesses across the GCC."
       },
       "hero": {
-        "badge": "About",
-        "titleLead": "Astro Rocket —",
-        "typingWords": ["Lightning-fast", "Starter theme", "44 Components", "8 Themes", "Dark Mode", "Built-in i18n"],
-        "typingWordsMobile": ["Lightning-fast", "Starter theme", "8 Themes", "Dark Mode", "Built-in i18n"],
-        "description": "A free, open-source Astro 7 starter\u00a0theme to build anything on."
+        "badge": "About us",
+        "titleLead": "PickMySaaS —",
+        "typingWords": [
+          "Web design",
+          "SaaS products",
+          "AI-first MVPs",
+          "Arabic & English",
+          "Built for the GCC"
+        ],
+        "typingWordsMobile": [
+          "Web design",
+          "SaaS products",
+          "AI-first MVPs",
+          "Bilingual"
+        ],
+        "description": "A founder-led product studio that turns ideas into websites and software people actually use, for founders and businesses across the Gulf."
       },
       "whatYouGet": {
-        "badge": "What you get",
-        "heading": "Everything a website needs",
-        "lead": "The component library is the heart of the theme. Everything else is already on board.",
+        "badge": "What we bring",
+        "heading": "Everything a launch needs, under one roof",
+        "lead": "Design, engineering and growth, without juggling three different vendors.",
         "items": [
           {
-            "icon": "component",
-            "title": "44 designed components",
-            "description": "From buttons to hero sections: typed, accessible, consistent, and documented in a live showcase."
+            "icon": "languages",
+            "title": "Arabic & English by default",
+            "description": "Right-to-left layouts, Arabic typography and bilingual content, planned from day one."
           },
           {
-            "icon": "layout",
-            "title": "Pages to start from",
-            "description": "Home, about, services, contact, blog, projects, and 404, fully designed and responsive, ready to make your own."
-          },
-          {
-            "icon": "palette",
-            "title": "8 colour themes",
-            "description": "Switch the whole site's palette live from the header. Light and dark mode included."
-          },
-          {
-            "icon": "book-open",
-            "title": "Blog with table of contents",
-            "description": "MDX, RSS, tags, comments, related posts, and a scroll-spy table of contents. Write and publish."
-          },
-          {
-            "icon": "image",
-            "title": "Projects with galleries",
-            "description": "A portfolio section with image galleries, video slides, tags, and its own table of contents."
-          },
-          {
-            "icon": "globe",
-            "title": "Full i18n, opt-in",
-            "description": "Blog, projects, navigation, forms, and 404: all localized per locale. Off by default, at zero cost when unused."
+            "icon": "code",
+            "title": "Modern, proven engineering",
+            "description": "Built in Python and Django, the framework behind Instagram, so your product is fast, secure and easy to grow."
           },
           {
             "icon": "search",
-            "title": "Site search",
-            "description": "Fast static search (Pagefind) with a ⌘K modal: zero JavaScript until it's opened."
+            "title": "Built to be found",
+            "description": "SEO and AI-search readiness built in. We even made our own tool, Snippet Tester, to measure it."
           },
           {
-            "icon": "trending-up",
-            "title": "SEO toolkit",
-            "description": "Metadata, sitemaps, structured data, and OG images, correct out of the box."
+            "icon": "sparkles",
+            "title": "AI where it earns its place",
+            "description": "Chatbots, document processing and automation, used where they save time or money, not as a gimmick."
           },
           {
-            "icon": "server",
-            "title": "Forms & deploy",
-            "description": "Spam-protected contact and newsletter forms, and one-switch deploys to Vercel, Netlify, or Cloudflare."
+            "icon": "globe",
+            "title": "Ready for the region",
+            "description": "Local payment methods, data-protection requirements and GCC hosting when your sector needs it."
+          },
+          {
+            "icon": "key-round",
+            "title": "Yours to keep",
+            "description": "Your domain and website are in your name, and the code is handed over at launch. No lock-in."
           }
         ]
       },
       "principles": {
-        "badge": "Design Principles",
-        "heading": "Built with intention",
-        "lead": "Every decision in Astro Rocket, from component structure to default config, is driven by the same three principles.",
+        "badge": "How we work",
+        "heading": "Three things we don't compromise on",
+        "lead": "The same three rules shape every project, from a three-page website to a full SaaS platform.",
         "items": [
-          { "icon": "zap", "title": "Performance First", "description": "Zero JavaScript by default. Every component is optimised for speed, Core Web Vitals, and lean output." },
-          { "icon": "award", "title": "Developer Experience", "description": "TypeScript throughout, sensible defaults, and a component library you can drop straight into any page." },
-          { "icon": "rocket", "title": "Modern from the Ground Up", "description": "Astro 7, Tailwind CSS 4, and a clean architecture that's easy to extend and maintain." }
+          {
+            "icon": "zap",
+            "title": "Ship early, learn fast",
+            "description": "A working version in your hands within weeks, so decisions come from real users instead of guesses."
+          },
+          {
+            "icon": "compass",
+            "title": "Built for the region",
+            "description": "Gulf customers expect Arabic done right, local payments and fast mobile experiences. We design for that from the start."
+          },
+          {
+            "icon": "handshake",
+            "title": "Honest advice",
+            "description": "If something isn't worth building, or there's a cheaper way, we'll tell you, even if it means a smaller project."
+          }
         ]
       },
       "stack": {
         "badge": "Tools & Tech",
-        "title": "The Stack",
-        "description": "The technologies powering Astro Rocket, chosen for performance, great developer experience, and long-term reliability."
+        "title": "The tools we build with",
+        "description": "Python and Django for the engine; Bootstrap, HTML and CSS for the interface. Proven technology that keeps your product fast, secure and easy to maintain."
       },
       "faq": {
         "badge": "Good to know",
         "heading": "Frequently asked questions",
-        "lead": "Everything you need to know before getting started.",
+        "lead": "About PickMySaaS and how we work.",
         "cards": [
           {
-            "icon": "rocket",
-            "title": "About Astro",
+            "icon": "building-2",
+            "title": "About PickMySaaS",
             "items": [
-              { "question": "What is Astro?", "answer": "Astro is a modern web framework built for content-driven sites. It ships zero JavaScript by default — only sending what the page actually needs. The result is fast load times, excellent Core Web Vitals scores, and lean, maintainable code." },
-              { "question": "Why build with Astro?", "answer": "Astro is the right tool for content-heavy sites: minimal JavaScript, clean HTML, great SEO out of the box, and a developer experience that stays out of your way. It's lean, purposeful, and built to last." },
-              { "question": "What can I build with Astro Rocket?", "answer": "Portfolios, business sites, marketing pages, blogs, documentation sites — any content-driven project. Astro Rocket gives you the structure, components, and defaults to hit the ground running." },
-              { "question": "Is Astro Rocket listed on the official Astro themes directory?", "answer": "Yes. <a href=\"https://astro.build/themes/details/astro-rocket/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"underline underline-offset-2 decoration-brand-500 hover:text-brand-400 transition-colors\">Astro Rocket</a> is listed on the official Astro themes directory as a free, production-ready theme." },
-              { "question": "Will Astro Rocket keep up with new Astro releases?", "answer": "Yes. Astro Rocket is actively maintained and updated to track new Astro releases. Follow along on the blog or watch the GitHub repository for updates." }
+              {
+                "question": "Who is PickMySaaS?",
+                "answer": "A founder-led product studio run by Asfand Yar Khan, building websites, SaaS platforms and AI-first MVPs. Five years of shipping for clients worldwide, now focused on founders and businesses across the GCC."
+              },
+              {
+                "question": "Where are you based?",
+                "answer": "We work remotely with clients worldwide, with a focus on the Gulf. Calls happen on video, WhatsApp or phone, in Arabic or English."
+              },
+              {
+                "question": "Do you only work with Gulf companies?",
+                "answer": "No. The Gulf is our focus, but we work with clients anywhere."
+              },
+              {
+                "question": "What kind of clients do you work with?",
+                "answer": "Founders validating an idea, SMEs that need a stronger web presence, and larger teams that need a product built fast."
+              }
             ]
           },
           {
-            "icon": "code-2",
-            "title": "Using the theme",
+            "icon": "handshake",
+            "title": "Working with us",
             "items": [
-              { "question": "Is it free to use?", "answer": "Yes, completely free. Astro Rocket is MIT licensed — use it for personal and commercial projects, no attribution required." },
-              { "question": "How do I switch themes?", "answer": "Change a single line in your config. Astro Rocket ships with 8 hand-crafted colour themes — swap between them instantly without touching a line of CSS." },
-              { "question": "Does it support TypeScript?", "answer": "Yes, TypeScript is used throughout. All components, configs, and utilities are fully typed." },
-              { "question": "How do I add my own language for i18n?", "answer": "Astro Rocket's i18n is config-driven. Add your locale to the i18n config file, create a matching translation file, and the routing and UI adapt automatically." },
-              { "question": "Where do I report bugs or suggest features?", "answer": "Open an issue or start a discussion on the <a href=\"https://github.com/hansmartensdev/astro-rocket\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"underline underline-offset-2 decoration-brand-500 hover:text-brand-400 transition-colors\">GitHub repository</a>. Contributions and feedback are always welcome." }
+              {
+                "question": "Do you work in Arabic?",
+                "answer": "Yes. We build fully bilingual products, and right-to-left layouts are standard, not an extra."
+              },
+              {
+                "question": "What does “AI-first” mean?",
+                "answer": "AI is part of the product’s core from the first design, such as an assistant that answers your customers or a tool that reads documents for you. It isn’t bolted on later."
+              },
+              {
+                "question": "Can you take over an existing product?",
+                "answer": "Usually, yes. We review it first and tell you honestly whether to improve it or rebuild."
+              },
+              {
+                "question": "How do we get started?",
+                "answer": "Book a free 30-minute call or message us on WhatsApp. We’ll talk through your idea and send you a clear proposal."
+              }
             ]
           }
         ]
       },
-      "openSource": {
-        "badge": "Open Source",
-        "heading": "Built in the open",
-        "description": "Astro Rocket is free, open source, and MIT licensed. Browse the source, open issues, submit PRs, or just clone it and build something great.",
-        "button": "View on GitHub",
+      "proof": {
+        "badge": "Our work",
+        "heading": "Proof, not promises",
+        "description": "Five years of shipping websites and products for clients worldwide. Here are a few that are live today.",
+        "button": "See our projects",
         "cards": [
-          { "title": "Made by Hans Martens Dev", "text": "Astro Rocket was designed and built by <a href=\"https://hansmartens.dev\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"underline underline-offset-2 decoration-brand-500 hover:text-brand-400 transition-colors\">Hans Martens Dev</a> — an Astro theme developer in Veghel, the Netherlands." },
-          { "title": "MIT License", "text": "Free to use in personal and commercial projects. No attribution required, though a star on GitHub is always appreciated." },
-          { "title": "Actively maintained", "text": "The theme is kept up to date with new Astro releases and regularly improved based on community feedback." }
+          {
+            "title": "Founded by Asfand Yar Khan",
+            "text": "PickMySaaS is led by Asfand Yar Khan, a developer with five years of experience designing and building websites and products for clients worldwide. When you work with PickMySaaS, you work with Asfand directly, from the first call to launch day and beyond."
+          },
+          {
+            "title": "GulfNurseries",
+            "text": "A directory of 3,000+ nurseries across six GCC countries, built for a client."
+          },
+          {
+            "title": "Healing with Attia",
+            "text": "A trust-first website for an online therapy practice serving clients in four countries."
+          },
+          {
+            "title": "Snippet Tester",
+            "text": "Our own tool that scores how well Google and AI assistants can read any web page."
+          }
         ]
       },
       "cta": {
-        "badge": "Get started",
-        "heading": "Ready to build?",
-        "description": "Clone Astro Rocket, pick a theme, and launch your next project in minutes.",
-        "button": "Get Started"
+        "badge": "Let's talk",
+        "heading": "Have an idea? Let's pick the right build.",
+        "description": "Book a free 30-minute call. No pressure, no jargon, just an honest conversation about what you need.",
+        "button": "Book a free call"
       }
     },
     "services": {
       "meta": {
-        "title": "Services — Web Design, Development & Optimisation",
-        "description": "Freelance web design, development, and optimisation: sleek, lightning-fast custom Astro websites. A free first talk, one clear proposal, one fixed price."
+        "title": "Services — Web Design, SaaS & AI MVP Development",
+        "description": "Bilingual websites from $500, SaaS platforms and AI-first MVPs for startups and businesses in the UAE, Saudi Arabia and across the GCC. A free first call, a clear proposal and a fixed price."
       },
       "includedLabel": "What you get",
       "hero": {
         "badge": "Services",
-        "titleLead": "Web design, development,",
-        "titleHighlight": "and optimisation",
-        "description": "Three services, one product: a sleek, lightning-fast custom Astro website you're proud to put your name on.",
-        "jumpLabels": ["Web design", "Web development", "Web optimisation"]
+        "titleLead": "Websites, SaaS platforms",
+        "titleHighlight": "and AI-first MVPs",
+        "description": "Three ways to launch, one team: from a sharper website to a full software product, designed and built for the Gulf.",
+        "jumpLabels": [
+          "Websites",
+          "SaaS products",
+          "AI-first MVPs"
+        ]
       },
-      "design": {
-        "badge": "Design",
-        "heading": "Web design",
+      "web": {
+        "badge": "Websites",
+        "heading": "Web design & development",
         "paragraphs": [
-          "Web design is how your website looks and feels: the layout, the colours, the images, and the way visitors find their way around.",
-          "I design every website around your business — your brand, your content, and the customers you want to reach — so it makes a strong first impression and guides people straight to what matters. Clean, modern, and made to work on every screen, from a desktop monitor to a phone."
+          "Your website is often the first conversation a customer has with you. It needs to look credible, load fast and make the next step obvious.",
+          "We design and build bilingual websites in Arabic and English around your business and your customers. They go live within a week, with right-to-left layouts done properly and every page built to rank in Google and be understood by AI assistants. The domain and website are in your name: you own it."
         ],
         "included": [
           {
-            "lead": "A design that's yours",
-            "text": "shaped around your business, your brand, and the customers you want to reach."
+            "lead": "A design that’s yours",
+            "text": "shaped around your brand and the customers you want to reach."
           },
           {
-            "lead": "A strong first impression",
-            "text": "a clean, modern look that shows people who you are the moment your page opens."
+            "lead": "Arabic and English, done right",
+            "text": "full right-to-left layouts and Arabic type that reads beautifully."
           },
           {
-            "lead": "Clear navigation",
-            "text": "a layout that guides visitors straight to what matters to them."
+            "lead": "Fast on every phone",
+            "text": "pages that open instantly, even on mobile data."
           },
           {
-            "lead": "A design for every screen",
-            "text": "looks and works beautifully on phone, tablet, and desktop."
+            "lead": "Found by Google and AI",
+            "text": "SEO and AI-search readiness built in, measured with our own Snippet Tester."
           },
           {
-            "lead": "Your content at its best",
-            "text": "your words and images given a layout that makes them easy to read and good to look at."
+            "lead": "Built to convert",
+            "text": "WhatsApp, booking and enquiry forms placed where customers actually use them."
+          }
+        ]
+      },
+      "packages": {
+        "badge": "Website packages",
+        "heading": "Simple, fixed prices",
+        "lead": "Pick what fits now. You can upgrade later.",
+        "recommended": "Recommended",
+        "items": [
+          {
+            "name": "Starter",
+            "for": "For small businesses that need a professional site, fast.",
+            "price": "$500",
+            "pricePrefix": "",
+            "bonus": "Free domain + Google Business setup",
+            "features": [
+              "Up to 3 pages",
+              "Arabic and English",
+              "WhatsApp, call and map buttons",
+              "Contact form",
+              "Basic SEO and Google Maps link",
+              "Hosting and SSL setup",
+              "Live in 1 week",
+              "1 round of revisions",
+              "2 weeks of support"
+            ],
+            "cta": "Book Starter"
+          },
+          {
+            "name": "Business",
+            "for": "For businesses that need more pages, a custom design or an online store.",
+            "price": "$800",
+            "pricePrefix": "",
+            "bonus": "Free domain + Google Business setup",
+            "features": [
+              "Up to 7 pages, custom designed",
+              "Arabic and English",
+              "Online store, booking, menu or listings",
+              "Order alerts by email",
+              "Full SEO and AI-search setup",
+              "Hosting and SSL setup",
+              "Live in 1 week",
+              "2 rounds of revisions",
+              "1 month of support"
+            ],
+            "cta": "Book Business"
+          },
+          {
+            "name": "Premium",
+            "for": "For larger sites, bigger online stores and a fully custom design.",
+            "price": "$1,000",
+            "pricePrefix": "from",
+            "bonus": "Free domain + Google Business setup",
+            "features": [
+              "Up to 15 pages, fully custom premium design",
+              "Arabic and English copy written for you",
+              "Advanced store and integrations: CRM, booking, delivery",
+              "Custom animations and interactions",
+              "Analytics and conversion tracking",
+              "SEO content plan",
+              "Timeline based on your project",
+              "3 rounds of revisions",
+              "2 months of priority support"
+            ],
+            "cta": "Book a call"
           }
         ],
-        "ctaLabel": "Discuss a design project"
+        "note": "Hosting and SSL are set up in every package. Extra pages and work beyond your package are quoted separately. Timelines count business days (Sunday to Thursday) from when we have your content. The domain renews yearly at cost."
       },
-      "development": {
-        "badge": "Development",
-        "heading": "Web development",
+      "saas": {
+        "badge": "SaaS",
+        "heading": "SaaS products",
         "paragraphs": [
-          "Web development is the building of your website: turning the design into the code that runs in your visitor's browser.",
-          "I build with Astro, a modern framework trusted for some of the fastest websites online. That makes your site quick to load, safe, and easy to look after for years to come. And it's yours from day one, with the code, the domain, and the hosting all in your name."
+          "A SaaS product is software your customers subscribe to and use online, from booking platforms and dashboards to marketplaces and internal tools.",
+          "We take you from idea to a working platform in 4 to 8 weeks, built in Python and Django, the framework behind Instagram. You get user accounts and roles, subscriptions and billing, admin dashboards and the integrations your business runs on, all built for Gulf customers, with local payment methods and GCC hosting when your sector requires it."
         ],
         "included": [
           {
-            "lead": "A lightning-fast website",
-            "text": "built with Astro, the framework behind some of the fastest websites online."
+            "lead": "Product thinking, not just code",
+            "text": "we help decide what to build first and what can wait."
           },
           {
-            "lead": "A secure, reliable website",
-            "text": "one that stays safe and keeps working, year after year."
+            "lead": "Accounts, roles and subscriptions",
+            "text": "everything a real SaaS needs to sign up customers and charge them."
           },
           {
-            "lead": "Full ownership",
-            "text": "the code, the domain, and the hosting all in your name from day one."
+            "lead": "Local payments",
+            "text": "connected to the payment methods your customers already use."
           },
           {
-            "lead": "Care after launch",
-            "text": "your website kept updated and secure with the monthly care plan, while you run your business."
+            "lead": "Data where it needs to be",
+            "text": "GCC hosting and data-protection requirements (PDPL) built in when your sector asks for them."
           },
           {
             "lead": "Room to grow",
-            "text": "space to add new pages and features whenever your business needs them."
+            "text": "a clean architecture that scales from your first customer to your thousandth."
           }
-        ],
-        "ctaLabel": "See recent projects"
+        ]
       },
-      "performance": {
-        "badge": "Optimisation",
-        "heading": "Web optimisation",
+      "ai": {
+        "badge": "AI",
+        "heading": "AI-first MVPs",
         "paragraphs": [
-          "Web optimisation is the work that makes your website perform: loading quickly, ranking well in search, and working for everyone.",
-          "I build speed, SEO, and accessibility in from the very first line, not as an afterthought. That means your website is easy for Google to find and understand, opens fast for every visitor, and can be used by everyone who lands on it."
+          "An MVP (minimum viable product) is the smallest version of your idea that real users can try. It’s the fastest, cheapest way to find out if it works.",
+          "We build MVPs with AI at their core, in Python, the language modern AI is built in: assistants that answer customers in Arabic and English, tools that read and process documents, and automation that saves hours of manual work. You get a working product in 4 to 8 weeks, ready to show users and investors."
         ],
         "included": [
           {
-            "lead": "A website Google and AI can find",
-            "text": "built so search engines and AI assistants can read, understand, and recommend your pages."
+            "lead": "A working product in weeks",
+            "text": "not slides or mock-ups, but something real people can use."
           },
           {
-            "lead": "Speed on every device",
-            "text": "pages that stay quick, even on a phone or a slower connection."
+            "lead": "AI that does real work",
+            "text": "chatbots, document processing and automation built around your use case."
           },
           {
-            "lead": "A website for everyone",
-            "text": "accessible for every visitor, whatever their device or ability."
+            "lead": "Arabic-capable AI",
+            "text": "assistants and tools that understand and respond in Arabic and English."
           },
           {
-            "lead": "High performance scores",
-            "text": "strong marks on Google's own speed and quality checks (Lighthouse)."
+            "lead": "Investor-ready",
+            "text": "a product you can demo, measure and build a pitch around."
           },
           {
-            "lead": "Optimisation from day one",
-            "text": "speed, SEO, and accessibility built in from the very first line."
+            "lead": "A path to scale",
+            "text": "when the MVP proves itself, it grows into a full product without starting over."
           }
-        ],
-        "ctaLabel": "Start a project"
+        ]
       },
       "process": {
         "badge": "How it works",
         "heading": "How a project runs",
-        "lead": "From your first message to a live website.",
+        "lead": "From your first call to a live product.",
         "steps": [
-          { "title": "First contact", "description": "You send a message through the contact form. I reply within a working day, and we plan a free, informational talk about what you need. No obligations." },
-          { "title": "Proposal", "description": "After our talk you get one clear document: what I'll build, when it's ready, and the fixed price. You decide with everything on the table." },
-          { "title": "Design & build", "description": "I work in short cycles. You follow the progress on a staging link, and you see your website take shape." },
-          { "title": "Launch & support", "description": "Your website goes live on your own domain and hosting, in your name. Afterwards I stay reachable, and there's a monthly care plan if you want regular updates." }
+          {
+            "title": "Discover",
+            "description": "You book a free 30-minute call or message us on WhatsApp. We talk through the problem, your users and your deadline. No obligation."
+          },
+          {
+            "title": "Scope",
+            "description": "You get one clear proposal: what we’ll build, when it’s ready and one fixed price. You decide with everything on the table."
+          },
+          {
+            "title": "Build",
+            "description": "We work in short sprints with a demo every week, so you see your product take shape and can steer it."
+          },
+          {
+            "title": "Launch & grow",
+            "description": "Your product goes live, with the domain and code in your name. Afterwards we stay reachable, and the monthly care plan keeps it updated, secure and growing."
+          }
         ]
       },
       "faq": {
@@ -479,22 +602,52 @@
             "icon": "tag",
             "title": "Before we start",
             "items": [
-              { "question": "What does a website cost?", "answer": "Every project gets one fixed price, agreed before we start. No hourly billing, no surprises afterwards. The free talk — and the free check, if there's already a website — tells me what your project needs, and you get the price in one clear proposal." },
-              { "question": "How long does a project take?", "answer": "That depends on the size of the website. The proposal names the timeline together with the price, so you know both before we start." },
-              { "question": "What happens with my current website?", "answer": "It stays online until the new one is ready. Your content, your web address, and your Google rankings come along. I check your current website before our first talk, so you get clear answers from the start." },
-              { "question": "Do I need to arrange hosting or a domain?", "answer": "No. I set up the hosting and the domain for you, in your own name. If you already have a domain, we simply keep it." },
-              { "question": "Do we need to meet in person?", "answer": "It's not needed. Most projects run entirely by phone, video, and email. I work with clients worldwide, and time zones are rarely a problem." }
+              {
+                "question": "What does a project cost?",
+                "answer": "Websites have fixed package prices: Starter $500, Business $800, and Premium from $1,000. SaaS and AI projects get one fixed price in your proposal, agreed before we start. No hourly billing, no surprises."
+              },
+              {
+                "question": "How long does it take?",
+                "answer": "Websites go live in about a week. SaaS platforms and AI MVPs typically take 4 to 8 weeks. Your proposal names the exact timeline."
+              },
+              {
+                "question": "Do you build in Arabic?",
+                "answer": "Yes. Bilingual Arabic and English is our default, not an add-on."
+              },
+              {
+                "question": "What happens to my current website?",
+                "answer": "It stays online until the new one is ready. Your content, your domain and your Google rankings come with you."
+              },
+              {
+                "question": "Do we need to meet in person?",
+                "answer": "No. Projects run by video, WhatsApp and email, and we work across Gulf time zones."
+              }
             ]
           },
           {
             "icon": "user",
-            "title": "Working with me",
+            "title": "Working with us",
             "items": [
-              { "question": "Are you a company or agency?", "answer": "I'm a one-person business: a freelancer, not an agency. You work directly with the person doing the work, from the first talk to the finished website. No sales team, no account managers, no handoffs." },
-              { "question": "Can I change the website myself after launch?", "answer": "You can simply send me your changes, and the monthly care plan exists exactly for that. If you want to edit the website yourself, say so in the first talk and I set the site up for it." },
-              { "question": "Do you also build webshops?", "answer": "No. Big online shops are the one thing I don't build. Everything else that needs a custom Astro website, I build: tell me in the first talk what you have in mind, and I'll be honest about whether I'm the right builder for it." },
-              { "question": "Is the website really mine?", "answer": "Completely. The domain, the hosting, and the code are in your name from day one. If you ever want to move on, you take everything with you: you're never locked in." },
-              { "question": "What happens if something breaks after launch?", "answer": "Very little can break: the website has no plugins and no database to fail. And I stay reachable after launch; for regular updates and monitoring there is the monthly care plan." }
+              {
+                "question": "Who will I work with?",
+                "answer": "Asfand, directly. PickMySaaS is founder-led: the person you talk to on the first call is the person who designs and builds your product. No account managers, no handoffs."
+              },
+              {
+                "question": "Is the product really mine?",
+                "answer": "Yes. The domain is registered in your name and the code is handed over when the project is complete. Hosting can run on your own account, or we manage it for you under the care plan. Either way, you can take everything with you."
+              },
+              {
+                "question": "What’s in the care plan?",
+                "answer": "A monthly plan that keeps your website or product updated, secure and backed up, with small changes included. Ask about it on the call."
+              },
+              {
+                "question": "Can I edit the website myself after launch?",
+                "answer": "Yes, if you want to. Tell us on the first call and we’ll set it up for easy editing. Or send us your changes under the care plan."
+              },
+              {
+                "question": "Is there anything you don’t build?",
+                "answer": "If it runs on the web, we build it: websites, online stores, SaaS platforms, dashboards, APIs and AI tools, all in Python and Django. What we don’t build is native iPhone or Android apps. Instead we build fast, mobile-friendly web apps that work on any phone, no app store needed."
+              }
             ]
           }
         ]
@@ -502,25 +655,28 @@
       "cta": {
         "badge": "Let's talk",
         "heading": "Let's talk about what you need",
-        "description": "The first talk is free and informative, with no obligations: by phone, video, or email. You get honest answers, and after the talk one clear proposal with a timeline and a fixed price.",
-        "primary": "Send a message",
-        "secondary": "More about me"
+        "description": "The first call is free, with no obligation. You get honest answers, and then one clear proposal with a timeline and a fixed price.",
+        "primary": "Book a free call",
+        "secondary": "Chat on WhatsApp"
       }
     },
     "contact": {
       "meta": {
-        "title": "Contact",
-        "description": "Starting something new? I design and build new websites from scratch — tell me about your project and I'll get back to you within 1 business day."
+        "title": "Contact — Start Your Project",
+        "description": "Tell us about your website, SaaS or AI idea. Book a free 30-minute call, message us on WhatsApp, or send the form. We reply within 24 hours."
       },
       "hero": {
         "badge": "Start a project",
-        "titleLead": "Tell me about your",
-        "titleHighlight": "new project",
-        "description": "I'd love to hear from you. Send a message with the form below, or reach out on one of the other channels below."
+        "titleLead": "Tell us about your",
+        "titleHighlight": "next project",
+        "description": "Book a free call, message us on WhatsApp, or send the form below. However you reach out, Asfand replies personally."
       },
       "formTitle": "Project details",
-      "channelsTitle": "Other channels",
-      "channelsSubtitle": "Prefer a direct channel? Pick whichever works best.",
+      "channelsTitle": "Other ways to reach us",
+      "channelsSubtitle": "Prefer to talk? Pick whichever suits you. We reply within 24 hours.",
+      "bookingLabel": "Book a free call",
+      "bookingNote": "30 minutes on video, at a time that suits you",
+      "whatsappNote": "Usually the fastest reply",
       "emailLabel": "Email",
       "emailNote": "Drop us a line",
       "socialNote": "Follow along",
@@ -528,82 +684,87 @@
     },
     "home": {
       "meta": {
-        "title": "Free open-source Astro 7 theme",
-        "description": "A free, fast Astro 7 starter theme to build anything on: 44 designed components, 8 colour themes, dark mode, and built-in i18n."
+        "title": "Websites, SaaS & AI MVPs for the Gulf",
+        "description": "PickMySaaS designs and builds bilingual websites, SaaS platforms and AI-first MVPs for startups and businesses in the UAE, Saudi Arabia, Qatar and across the GCC."
       },
       "hero": {
-        "badge": "Available for new projects",
-        "titleLine1": "Astro Rocket —",
-        "titleLine2": "Web Designer",
-        "titleLine3": "& Developer",
-        "description": "A free, lightning-fast Astro 7 starter theme to build anything on: 44 designed components, 8 colour themes, and dark mode.",
-        "descriptionMobile": "A free, lightning-fast Astro 7 starter theme to build anything on: 44 designed components and 8 colour themes.",
-        "github": "Get it on GitHub",
-        "getStarted": "Get started"
+        "badge": "Now taking projects across the GCC",
+        "titleLine1": "Web Designer",
+        "titleLine2": "& Developer",
+        "description": "We design and build fast websites, SaaS platforms and AI-first MVPs for founders and businesses across the UAE, Saudi Arabia and the wider GCC. Bilingual in Arabic and English, and ready for local payments from day one.",
+        "descriptionMobile": "Websites, SaaS and AI-first MVPs for UAE, Saudi and GCC businesses. Bilingual and ready to launch.",
+        "primaryCta": "Book a free call"
       },
       "services": {
-        "badge": "What I do",
-        "heading": "Design, build, optimise",
-        "lead": "Every project gets all three services.",
+        "badge": "What we build",
+        "heading": "Three ways to launch",
+        "lead": "Whether you need a sharper website, a full SaaS platform, or a working AI product to show investors, we take it from first sketch to live.",
         "learnMore": "Learn more",
         "cards": [
-          { "icon": "layout", "title": "Web Design", "description": "Interfaces that feel obvious. Layouts shaped around your content, your brand, and how people actually read on a screen." },
-          { "icon": "code", "title": "Web Development", "description": "Sites built to last. Astro, Tailwind, and a clean architecture: fast on day one, easy to maintain on day 500." },
-          { "icon": "trending-up", "title": "Web Optimisation", "description": "SEO, Core Web Vitals, and accessibility, built in from day one so your site ranks, loads well, and works for every visitor." }
+          { "icon": "layout", "title": "Web Design & Development", "description": "Bilingual Arabic–English websites that load fast, rank well and turn visitors into enquiries. Right-to-left layouts done properly, not as an afterthought." },
+          { "icon": "layers", "title": "SaaS Products", "description": "Multi-tenant platforms with subscriptions, dashboards and user roles. Connected to the local payment methods your customers already use, and hosted in the GCC when your sector requires it." },
+          { "icon": "sparkles", "title": "AI-first MVPs", "description": "A working product with AI at its core: Arabic chatbots, document processing, smart automation. Shipped in weeks, so you can test with real users before you raise or scale." }
         ]
       },
-      "workWithMe": {
-        "badge": "Work with me",
-        "heading": "Let's build your website",
-        "lead": "What you get when we work together.",
+      "whyUs": {
+        "badge": "Why PickMySaaS",
+        "heading": "Built for how the Gulf does business",
+        "lead": "What you get on every project.",
         "cards": [
-          { "icon": "palette", "title": "Custom design", "description": "Designed around your business, your content, and your customers." },
-          { "icon": "zap", "title": "A lightning-fast website", "description": "Pages that open instantly, on every phone and every connection." },
-          { "icon": "search", "title": "Found by Google and AI", "description": "Every page built so search engines and AI assistants read it cleanly and customers can find you." },
-          { "icon": "shield-check", "title": "Zero maintenance", "description": "Kept up to date and secure with the care plan, so you can focus on your business." }
+          { "icon": "languages", "title": "Arabic & English, natively", "description": "Full RTL layouts, Arabic type that reads properly, and content planned in both languages from the first wireframe." },
+          { "icon": "zap", "title": "Weeks, not quarters", "description": "Fixed-scope sprints and an early working demo, so you see progress every week instead of one big reveal at the end." },
+          { "icon": "shield-check", "title": "Compliant by design", "description": "Built with UAE and Saudi data-protection law (PDPL) in mind, with GCC hosting options for when your clients ask where their data sits." },
+          { "icon": "search", "title": "Found by Google and AI", "description": "We built Snippet Tester to measure exactly this. Every page we ship is structured so Google, ChatGPT and other AI assistants read it cleanly, in both languages." }
         ],
-        "cta": "Read my services page"
+        "cta": "See how we work"
       },
       "portfolio": {
         "badge": "Selected work",
-        "heading": "Projects I've built",
-        "lead": "A selection of recent work.",
+        "heading": "Products we've shipped",
+        "lead": "From a GCC-wide directory platform to our own AI-search tool.",
         "viewAll": "View all projects"
       },
-      "testimonials": {
-        "badge": "Testimonials",
-        "heading": "What clients say",
-        "lead": "Real words from finished projects.",
-        "items": [
-          { "quote": "The new site launched on time and hit every goal we set. Performance improved dramatically — load times dropped and the feedback from our customers has been overwhelmingly positive.", "name": "Alex Morgan", "role": "Founder, Bright Studio" },
-          { "quote": "Straightforward from first conversation to final handover. The right questions were asked, we were kept in the loop throughout, and the end result exceeded what we imagined. Would recommend without hesitation.", "name": "Sarah Chen", "role": "CEO, Luma Agency" }
+      "process": {
+        "badge": "How we work",
+        "heading": "From idea to launch in four steps",
+        "lead": "No surprises, from the first call to launch day.",
+        "steps": [
+          { "title": "Discover", "description": "A free call to understand the problem, the users and the deadline." },
+          { "title": "Scope", "description": "A clear proposal with fixed deliverables and price. No surprises." },
+          { "title": "Build", "description": "Weekly demos you can click through, not status reports." },
+          { "title": "Launch & grow", "description": "Go live, measure, and keep improving with an optional care plan." }
         ]
       },
+      "testimonials": {
+        "badge": "Client stories",
+        "heading": "What founders say",
+        "lead": "Real words from finished projects.",
+        "items": []
+      },
       "aboutTeaser": {
-        "badge": "About me",
-        "headingLine1": "Designer, developer,",
-        "headingLine2": "and blogger.",
-        "para1WithLocation": "Sixteen years of hands-on experience, based in {location} and available for clients worldwide. I build with Astro because it aligns with how I think about the web: lean, purposeful, and built to last.",
-        "para1NoLocation": "Sixteen years of hands-on experience and available for clients worldwide. I build with Astro because it aligns with how I think about the web: lean, purposeful, and built to last.",
-        "para2": "On the blog, I share the ideas and decisions that shape my work.",
-        "moreAboutMe": "More about me",
-        "statsIntro": "A few things about me.",
-        "stat1": "16 Years Experience",
-        "stat2": "Building with Astro",
+        "badge": "About us",
+        "headingLine1": "Product builders,",
+        "headingLine2": "focused on the Gulf.",
+        "para1": "For five years we've been building websites and digital products for clients worldwide. Today we partner with founders, SMEs and enterprise teams across the GCC to turn ideas into products people actually use. We pair modern engineering with AI tooling to move fast without cutting corners.",
+        "para2": "On the blog, we share what we learn building for the region, from Arabic UX to launching SaaS in Saudi Arabia.",
+        "moreAboutMe": "About PickMySaaS",
+        "statsIntro": "At a glance",
+        "stat1": "5 Years Experience",
+        "stat2": "AI-first by default",
         "stat3": "Working worldwide",
-        "basedIn": "Based in"
+        "stat4": "Focused on the GCC"
       },
       "blog": {
-        "badge": "From the blog",
-        "heading": "Featured",
-        "viewAll": "View all posts"
+        "badge": "Insights",
+        "heading": "Notes from the build",
+        "viewAll": "Read all insights"
       },
       "cta": {
         "badge": "Let's talk",
-        "heading": "Let's talk about what you need",
-        "description": "The first talk is free and informative, with no obligations. And from the first conversation to the final delivery, it's me.",
-        "primary": "Send a message",
-        "secondary": "More about me"
+        "heading": "Have an idea? Let's pick the right build.",
+        "description": "Book a free 30-minute call. We'll scope your project, suggest the fastest path to launch, and give you a clear estimate. No obligation.",
+        "primary": "Book a free call",
+        "whatsapp": "Chat on WhatsApp"
       }
     }
   }

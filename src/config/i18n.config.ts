@@ -31,12 +31,17 @@ export interface I18nConfig {
   detectBrowserLocale?: boolean;
 }
 
+// Arabic is listed so `/ar` resolves to `lang="ar" dir="rtl"` and content can
+// carry `locale: ar`, but i18n stays off: only the home page has an Arabic
+// version (`src/pages/ar/index.astro`), so no other page gets an `/ar/...`
+// copy. Turning `enabled` on would emit every page in Arabic.
 const i18nConfig: I18nConfig = {
   enabled: false,
   defaultLocale: 'en',
-  locales: ['en'],
+  locales: ['en', 'ar'],
   localeNames: {
     en: 'English',
+    ar: 'العربية',
     nl: 'Nederlands',
     de: 'Deutsch',
     fr: 'Français',

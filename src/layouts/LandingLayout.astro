@@ -21,6 +21,8 @@ interface Props {
   includeOrgSchema?: boolean;
   includePersonSchema?: boolean;
   includeProfessionalServiceSchema?: boolean;
+  /** Other-language versions of this page. Two or more turn on hreflang tags and the header language switcher. */
+  localeAlternates?: { locale: string; url: string }[];
 }
 
 const {
@@ -33,7 +35,12 @@ const {
   includeOrgSchema = false,
   includePersonSchema = false,
   includeProfessionalServiceSchema = false,
+  localeAlternates,
 } = Astro.props;
+
+const languageAlternates = localeAlternates
+  ? Object.fromEntries(localeAlternates.map(({ locale, url }) => [locale, url]))
+  : undefined;
 ---
 
 <BaseLayout
@@ -46,6 +53,7 @@ const {
   includeOrgSchema={includeOrgSchema}
   includePersonSchema={includePersonSchema}
   includeProfessionalServiceSchema={includeProfessionalServiceSchema}
+  localeAlternates={localeAlternates}
 >
   <Header
     slot="header"
@@ -60,6 +68,7 @@ const {
     autoHide={false}
     scrollProgressPosition="top"
     invertOnReturn={false}
+    languageAlternates={languageAlternates}
   />
 
   <slot />

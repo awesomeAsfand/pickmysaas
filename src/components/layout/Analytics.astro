@@ -19,6 +19,10 @@
  * - PUBLIC_UMAMI_SRC: Umami script URL (defaults to Umami Cloud; override when self-hosting)
  * - PUBLIC_CONSENT_ENABLED: Enable cookie consent integration (boolean)
  *
+ * Every gtag() stub pushes `arguments`, as Google's snippet does. gtag.js only
+ * reads an Arguments object as a command; a rest-params array is silently
+ * ignored, so the page loads GA and records nothing.
+ *
  * CSP: All is:inline scripts here are STATIC (no define:vars). Dynamic values are
  * passed via <script type="application/json"> data elements. Pin each script's
  * sha256 hash in astro.config.mjs → security.csp.scriptDirective.hashes.
@@ -147,7 +151,8 @@ const analyticsDataJson = JSON.stringify({
       (function(){
         const d = JSON.parse(document.getElementById('analytics-data').textContent);
         window.dataLayer = window.dataLayer || [];
-        function gtag(...args){window.dataLayer.push(args);}
+        // eslint-disable-next-line prefer-rest-params -- gtag.js only reads an Arguments object
+        function gtag(){window.dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', d.gaId);
       })();
@@ -161,7 +166,8 @@ const analyticsDataJson = JSON.stringify({
     (function(){
       const d = JSON.parse(document.getElementById('analytics-data').textContent);
       window.dataLayer = window.dataLayer || [];
-      function gtag(...args){window.dataLayer.push(args);}
+      // eslint-disable-next-line prefer-rest-params -- gtag.js only reads an Arguments object
+      function gtag(){window.dataLayer.push(arguments);}
 
       let stored = null;
       try {
@@ -228,7 +234,8 @@ const analyticsDataJson = JSON.stringify({
       (function(){
         const d = JSON.parse(document.getElementById('analytics-data').textContent);
         window.dataLayer = window.dataLayer || [];
-        function gtag(...args){window.dataLayer.push(args);}
+        // eslint-disable-next-line prefer-rest-params -- gtag.js only reads an Arguments object
+        function gtag(){window.dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', d.gaId);
       })();
@@ -274,7 +281,8 @@ const analyticsDataJson = JSON.stringify({
         s.src = 'https://www.googletagmanager.com/gtag/js?id=' + d.gaId;
         document.head.appendChild(s);
         window.dataLayer = window.dataLayer || [];
-        function gtag(...args){window.dataLayer.push(args);}
+        // eslint-disable-next-line prefer-rest-params -- gtag.js only reads an Arguments object
+        function gtag(){window.dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', d.gaId);
       }

@@ -25,6 +25,17 @@ compatibility_date = "2026-01-31"
 # production, set the flag on the Worker itself (Cloudflare dashboard →
 # Settings → Runtime) rather than here, so it never reaches the build.
 
+# Contact form notifications (src/pages/api/contact.ts). Sending to an address
+# verified in Email Routing is free on every plan. The recipient is the
+# CONTACT_TO_EMAIL secret, set on the Worker in the dashboard rather than here,
+# because this repo is public: Settings → Variables and Secrets → Add → Secret.
+#
+# The sender is pinned to the one address contact.ts sends from (website@ on
+# siteConfig.email's domain); local builds refuse the binding without it.
+[[send_email]]
+name = "EMAIL"
+allowed_sender_addresses = ["website@pickmysaas.com"]
+
 # The adapter adds a SESSION KV binding for Astro sessions. Left without an id,
 # wrangler tries to create "pickmysaas-session" on every deploy and fails once
 # it exists, so pin the existing namespace here.

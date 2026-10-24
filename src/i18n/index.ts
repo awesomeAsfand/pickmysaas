@@ -50,6 +50,14 @@ export function getLocaleName(locale: Locale): string {
   return i18nConfig.localeNames?.[locale] ?? locale;
 }
 
+/** Locales written right to left. */
+const RTL_LOCALES = new Set(['ar', 'fa', 'he', 'ur']);
+
+/** Text direction for a locale, for `<html dir>`. Matches on the language subtag, so `ar-SA` is RTL too. */
+export function getLocaleDirection(locale: Locale): 'ltr' | 'rtl' {
+  return RTL_LOCALES.has(locale.split('-')[0].toLowerCase()) ? 'rtl' : 'ltr';
+}
+
 export function isValidLocale(locale: string | undefined): locale is Locale {
   if (!locale) return false;
   return i18nConfig.locales.includes(locale);
@@ -119,7 +127,12 @@ export function tData<T = unknown>(key: string, locale: Locale = defaultLocale):
  */
 export function localizedPath(path: string, locale: Locale = defaultLocale): string {
   const normalized = path.startsWith('/') ? path : `/${path}`;
-  if (!isEnabled()) return normalized;
+  // With i18n off, every configured locale still has its own home page (see
+  // i18n.config.ts), so the root — the logo and the Home link — stays in the
+  // reader's language. Every other page exists in the default locale only.
+  if (!isEnabled()) {
+    return normalized === '/' && locale !== defaultLocale && isValidLocale(locale) ? `/${locale}` : normalized;
+  }
   if (locale === defaultLocale) return normalized;
   return `/${locale}${normalized === '/' ? '' : normalized}`;
 }
