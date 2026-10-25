@@ -325,7 +325,8 @@ const siteConfig: SiteConfig = {
     google: GOOGLE_SITE_VERIFICATION,
     bing: BING_SITE_VERIFICATION,
   },
-  authorImage: '/avatar.svg',
+  // The brand mark, generated at build time from the logo (see src/lib/favicon).
+  authorImage: '/apple-touch-icon.png',
   blogImageOverlay: true,
   effects: {
     cursorTrail: true,

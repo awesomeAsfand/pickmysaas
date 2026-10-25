@@ -1,30 +1,27 @@
 {
   "name": "pickmysaas",
-  "version": "2.6.0",
+  "version": "1.0.0",
+  "private": true,
   "packageManager": "pnpm@10.33.0",
-  "description": "Astro Rocket — A production-ready Astro 7 theme built on Tailwind CSS v4",
+  "description": "PickMySaaS — websites, SaaS platforms and AI-first MVPs for the Gulf. Built on the Astro Rocket theme.",
   "type": "module",
-  "author": "Hans Martens",
+  "author": "Asfand Yar Khan",
   "license": "MIT",
   "keywords": [
+    "pickmysaas",
     "astro",
-    "astro-theme",
-    "theme",
-    "tailwind",
-    "tailwindcss",
-    "typescript",
-    "blog",
-    "starter",
-    "boilerplate",
-    "seo"
+    "web-design",
+    "saas",
+    "gcc",
+    "arabic"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/hansmartensdev/astro-rocket"
+    "url": "https://github.com/awesomeAsfand/pickmysaas"
   },
-  "homepage": "https://github.com/hansmartensdev/astro-rocket#readme",
+  "homepage": "https://pickmysaas.com",
   "bugs": {
-    "url": "https://github.com/hansmartensdev/astro-rocket/issues"
+    "url": "https://github.com/awesomeAsfand/pickmysaas/issues"
   },
   "scripts": {
     "dev": "astro dev",

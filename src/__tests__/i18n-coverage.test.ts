@@ -18,7 +18,6 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
 import en from '../i18n/en.json';
-import nl from '../i18n/nl.json';
 import ar from '../i18n/ar.json';
 
 const ROOT = process.cwd();
@@ -103,28 +102,11 @@ describe('interface text lives in the locale files', () => {
   });
 });
 
-describe('every locale carries every key', () => {
-  const locales = { nl };
-
-  for (const [name, dictionary] of Object.entries(locales)) {
-    it(`${name}.json has no key missing against en.json`, () => {
-      const expected = flatten(en);
-      const actual = new Set(flatten(dictionary));
-      // A missing key falls back to the default locale silently, so the page
-      // renders the default language in place of the translation and nothing
-      // reports it.
-      expect(expected.filter((key) => !actual.has(key))).toEqual([]);
-    });
-
-    it(`${name}.json has no key that en.json does not`, () => {
-      const expected = new Set(flatten(en));
-      expect(flatten(dictionary).filter((key) => !expected.has(key))).toEqual([]);
-    });
-  }
-});
-
 // Arabic covers the home page and the chrome around it, not the whole site, so
-// it is only held to the second rule: every key it carries must exist in en.json.
+// it is not held to carrying every key: only that every key it has exists in
+// en.json, and that the home page is complete. A language that translates the
+// whole site should also be checked for keys missing against en.json, since a
+// missing key silently falls back to English.
 describe('ar.json (home page only)', () => {
   it('has no key that en.json does not', () => {
     const expected = new Set(flatten(en));

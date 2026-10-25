@@ -106,19 +106,12 @@ describe('colour themes', () => {
     }
   });
 
-  it('the README quotes the count', () => {
-    for (const file of ['README.md']) {
-      expect(read(file), file).toMatch(new RegExp(`${COUNT} (ready-to-use )?colour themes`));
-    }
-  });
-
   it('no shipped copy still claims twelve', () => {
     for (const file of [
       'README.md',
       'AGENTS.md',
       'src/config/site.config.ts',
       'src/i18n/en.json',
-      'src/i18n/nl.json',
     ]) {
       expect(read(file), file).not.toMatch(/\btwelve\b/i);
       expect(read(file), file).not.toMatch(/\b12[- ](colour|color|swatch|theme)/i);

@@ -17,8 +17,8 @@ describe('i18n t() helper', () => {
     expect(t('common.readMore', 'en')).toBe('Read more');
   });
 
-  it('returns the Dutch translation when locale is nl', () => {
-    expect(t('common.readMore', 'nl')).toBe('Lees meer');
+  it('returns the Arabic translation when locale is ar', () => {
+    expect(t('common.readMore', 'ar')).toBe('اقرأ المزيد');
   });
 
   it('falls back to the default-locale string when the locale has no entry', () => {
@@ -32,7 +32,7 @@ describe('i18n t() helper', () => {
 
   it('interpolates {placeholder} variables', () => {
     expect(t('blog.readingTime', 'en', { minutes: 5 })).toBe('5 min read');
-    expect(t('blog.readingTime', 'nl', { minutes: 5 })).toBe('5 min leestijd');
+    expect(t('common.themeMode', 'ar', { mode: 'dark' })).toBe('المظهر: dark');
   });
 
   it('leaves unknown placeholders untouched', () => {
@@ -61,9 +61,9 @@ describe('i18n tData() helper', () => {
     );
   });
 
-  it('returns the Dutch structured value when locale is nl', () => {
-    const hero = tData<{ badge: string }>('pages.contact.hero', 'nl');
-    expect(hero?.badge).toBe('Start een project');
+  it('returns the Arabic structured value when locale is ar', () => {
+    const hero = tData<{ badge: string }>('pages.home.hero', 'ar');
+    expect(hero?.badge).toBe('نستقبل مشاريع جديدة في دول الخليج');
   });
 
   it('falls back to the default-locale value when the locale has no entry', () => {
@@ -109,8 +109,7 @@ describe('i18n locale helpers', () => {
 
   it('returns the display name when configured, otherwise the code', () => {
     expect(getLocaleName('en')).toBe('English');
-    // 'nl' is in localeNames even though it's not in the active locales list
-    expect(getLocaleName('nl')).toBe('Nederlands');
+    expect(getLocaleName('ar')).toBe('العربية');
     expect(getLocaleName('xx')).toBe('xx');
   });
 });
@@ -126,7 +125,7 @@ describe('i18n getLocaleFromPath()', () => {
   });
 
   it('returns the default locale when the first segment is not a configured locale', () => {
-    // Default config only has 'en' active — 'nl' is not recognized
+    // The default config's locales are 'en' and 'ar' — 'nl' is not one
     expect(getLocaleFromPath('/nl/about')).toBe('en');
     expect(getLocaleFromPath('/zh-cn/blog')).toBe('en');
   });
@@ -182,7 +181,7 @@ describe('i18n meta titles never embed the site name', () => {
     'pages.contact.meta.title',
   ];
 
-  const cases = ['en', 'nl', 'ar'].flatMap((locale) =>
+  const cases = ['en', 'ar'].flatMap((locale) =>
     METATITLE_KEYS.map((key) => [locale, key] as [string, string])
   );
 

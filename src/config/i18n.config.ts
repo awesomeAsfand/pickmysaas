@@ -42,10 +42,6 @@ const i18nConfig: I18nConfig = {
   localeNames: {
     en: 'English',
     ar: 'العربية',
-    nl: 'Nederlands',
-    de: 'Deutsch',
-    fr: 'Français',
-    es: 'Español',
   },
   detectBrowserLocale: false,
 };
