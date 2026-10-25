@@ -55,7 +55,14 @@ async function sendViaCloudflare(notification: Notification): Promise<SendResult
   const binding = env.EMAIL as SendEmailBinding | undefined;
   const to = env.CONTACT_TO_EMAIL as string | undefined;
   if (!binding || !to) {
-    return { ok: false, error: 'EMAIL binding or CONTACT_TO_EMAIL secret is missing on the Worker', visitorMessage: NOT_CONFIGURED };
+    // Name exactly what is missing, and which bindings the Worker does have
+    // (names only, never values), so the Worker logs say how to fix it.
+    const missing = [!binding && 'the EMAIL send binding', !to && 'the CONTACT_TO_EMAIL secret'].filter(Boolean).join(' and ');
+    return {
+      ok: false,
+      error: `Missing ${missing} on the Worker. Bindings present: ${Object.keys(env).join(', ') || 'none'}`,
+      visitorMessage: NOT_CONFIGURED,
+    };
   }
 
   try {
