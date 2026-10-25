@@ -73,6 +73,9 @@ const {
     rows={5}
   />
 
+  <!-- The page's language, so the server answers in it. -->
+  <input type="hidden" name="locale" value={locale} />
+
   <!-- Honeypot field for spam protection -->
   <div class="hidden" aria-hidden="true">
     <input type="text" name="honeypot" tabindex="-1" autocomplete="off" />

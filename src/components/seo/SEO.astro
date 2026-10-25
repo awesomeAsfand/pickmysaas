@@ -93,17 +93,22 @@ const resolvedAlternates =
   localeAlternates && localeAlternates.length > 0
     ? localeAlternates
     : getLocales().map((loc) => ({ locale: loc, url: swapLocaleInPath(Astro.url.pathname, loc) }));
+// hreflang has to repeat each page's canonical URL exactly, and canonical URLs
+// end in a slash (directory-style output), while some alternates — project
+// translations, for one — are built without it.
+const matchCanonical = (url: string) =>
+  canonicalURL.pathname.endsWith('/') && !url.endsWith('/') && !/\.[a-z0-9]+$/i.test(url) ? `${url}/` : url;
 const hreflangAlternates = i18nOn
   ? resolvedAlternates.map((alt) => ({
       hreflang: alt.locale,
-      href: new URL(alt.url, Astro.site).toString(),
+      href: new URL(matchCanonical(alt.url), Astro.site).toString(),
     }))
   : [];
 const xDefaultUrl =
   resolvedAlternates.find((alt) => alt.locale === defaultLocale)?.url ??
   resolvedAlternates[0]?.url ??
   swapLocaleInPath(Astro.url.pathname, defaultLocale);
-const xDefaultHref = i18nOn ? new URL(xDefaultUrl, Astro.site).toString() : null;
+const xDefaultHref = i18nOn ? new URL(matchCanonical(xDefaultUrl), Astro.site).toString() : null;
 ---
 
 <!-- Primary Meta Tags -->

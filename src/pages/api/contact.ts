@@ -4,6 +4,7 @@ import type { APIRoute } from 'astro';
 import { z } from 'astro/zod';
 import { Resend } from 'resend';
 import siteConfig from '@/config/site.config';
+import { t, resolveLocale } from '@/i18n';
 
 // Escape user-supplied values before they are interpolated into the
 // notification email's HTML, so a message containing markup (links,
@@ -24,10 +25,15 @@ interface Notification {
   text: string;
 }
 
-type SendResult = { ok: true } | { ok: false; error: unknown; visitorMessage: string };
+/**
+ * A failed send carries the developer-facing cause (logged) and the dictionary
+ * key of what the visitor is told, in the page's language.
+ */
+type SendResult = { ok: true } | { ok: false; error: unknown; visitorKey: VisitorKey };
+type VisitorKey = typeof NOT_CONFIGURED | typeof SEND_FAILED;
 
-const NOT_CONFIGURED = 'Email service is not configured';
-const SEND_FAILED = 'Failed to send email';
+const NOT_CONFIGURED = 'contact.unavailable';
+const SEND_FAILED = 'contact.error';
 
 /** Cloudflare's `send_email` binding, as much of it as this endpoint uses. */
 interface SendEmailBinding {
@@ -49,7 +55,7 @@ async function sendViaCloudflare(notification: Notification): Promise<SendResult
   try {
     ({ env } = await import(/* @vite-ignore */ specifier));
   } catch (error) {
-    return { ok: false, error, visitorMessage: NOT_CONFIGURED };
+    return { ok: false, error, visitorKey: NOT_CONFIGURED };
   }
 
   const binding = env.EMAIL as SendEmailBinding | undefined;
@@ -61,7 +67,7 @@ async function sendViaCloudflare(notification: Notification): Promise<SendResult
     return {
       ok: false,
       error: `Missing ${missing} on the Worker. Bindings present: ${Object.keys(env).join(', ') || 'none'}`,
-      visitorMessage: NOT_CONFIGURED,
+      visitorKey: NOT_CONFIGURED,
     };
   }
 
@@ -73,7 +79,7 @@ async function sendViaCloudflare(notification: Notification): Promise<SendResult
     });
     return { ok: true };
   } catch (error) {
-    return { ok: false, error, visitorMessage: SEND_FAILED };
+    return { ok: false, error, visitorKey: SEND_FAILED };
   }
 }
 
@@ -81,7 +87,7 @@ async function sendViaCloudflare(notification: Notification): Promise<SendResult
 async function sendViaResend(notification: Notification): Promise<SendResult> {
   const apiKey = import.meta.env.RESEND_API_KEY;
   if (!apiKey) {
-    return { ok: false, error: 'RESEND_API_KEY is not set', visitorMessage: NOT_CONFIGURED };
+    return { ok: false, error: 'RESEND_API_KEY is not set', visitorKey: NOT_CONFIGURED };
   }
 
   const toEmail = siteConfig.email;
@@ -92,8 +98,11 @@ async function sendViaResend(notification: Notification): Promise<SendResult> {
     ...notification,
   });
 
-  return error ? { ok: false, error, visitorMessage: error.message || SEND_FAILED } : { ok: true };
+  return error ? { ok: false, error, visitorKey: SEND_FAILED } : { ok: true };
 }
+
+/** Fields with a message of their own in `contact.errors.*`. */
+const FIELDS_WITH_MESSAGES = new Set(['name', 'email', 'subject', 'message']);
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(100),
@@ -104,8 +113,11 @@ const contactSchema = z.object({
 });
 
 export const POST: APIRoute = async ({ request }) => {
+  // Answer in the language of the page the form was sent from.
+  let locale = resolveLocale(undefined);
   try {
     const formData = await request.formData();
+    locale = resolveLocale(formData.get('locale')?.toString());
 
     const data = {
       name: formData.get('name')?.toString() || '',
@@ -119,13 +131,14 @@ export const POST: APIRoute = async ({ request }) => {
     const result = contactSchema.safeParse(data);
 
     if (!result.success) {
+      // One message per field, in the page's language. The schema's own
+      // (English) messages stay for tests and logs.
       const fieldErrors: Record<string, string[]> = {};
       for (const error of result.error.issues) {
         const field = error.path[0] as string;
-        if (!fieldErrors[field]) {
-          fieldErrors[field] = [];
-        }
-        fieldErrors[field].push(error.message);
+        fieldErrors[field] ??= [
+          FIELDS_WITH_MESSAGES.has(field) ? t(`contact.errors.${field}`, locale) : t(SEND_FAILED, locale),
+        ];
       }
 
       return new Response(
@@ -166,7 +179,7 @@ export const POST: APIRoute = async ({ request }) => {
     if (!sent.ok) {
       console.error('Contact form delivery failed:', sent.error);
       return new Response(
-        JSON.stringify({ success: false, errors: { form: [sent.visitorMessage] } }),
+        JSON.stringify({ success: false, errors: { form: [t(sent.visitorKey, locale)] } }),
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
@@ -179,7 +192,7 @@ export const POST: APIRoute = async ({ request }) => {
     console.error('Contact form error:', error);
 
     return new Response(
-      JSON.stringify({ success: false, errors: { form: ['An unexpected error occurred'] } }),
+      JSON.stringify({ success: false, errors: { form: [t(SEND_FAILED, locale)] } }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }

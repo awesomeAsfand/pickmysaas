@@ -30,8 +30,8 @@ const locale = getLocaleFromPath(Astro.url.pathname);
       class="theme-swatch relative h-3.5 w-3.5 rounded-full transition-transform duration-150 focus-visible:outline-none"
       data-theme-id={theme.id}
       style={`background-color:${theme.color};--swatch:${theme.color}`}
-      title={theme.name}
-      aria-label={t('theme.swatchLabel', locale, { name: theme.name })}
+      title={t(`theme.names.${theme.id}`, locale)}
+      aria-label={t('theme.swatchLabel', locale, { name: t(`theme.names.${theme.id}`, locale) })}
     />
   ))}
 </div>

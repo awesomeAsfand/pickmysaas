@@ -8,13 +8,18 @@
 /**
  * Convert a human-readable tag (e.g. "Web Performance") to a URL slug
  * (e.g. "web-performance"). Two-way deterministic — pair with `findTagBySlug`.
+ *
+ * Letters from any script are kept, so an Arabic tag ("منصة أدلة") gets an
+ * Arabic slug ("منصة-ادلة") rather than an empty one. Combining marks are
+ * dropped: Latin accents ("café" → "cafe") and the Arabic hamza and vowel
+ * signs that NFKD splits off.
  */
 export function tagToSlug(tag: string): string {
   return tag
     .toLowerCase()
     .normalize('NFKD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/\p{M}/gu, '')
+    .replace(/[^\p{L}\p{N}]+/gu, '-')
     .replace(/^-+|-+$/g, '');
 }
 

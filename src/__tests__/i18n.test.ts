@@ -79,16 +79,14 @@ describe('i18n tData() helper', () => {
 });
 
 describe('i18n getSecondaryLocales()', () => {
-  it('returns an empty list when i18n is disabled (single locale)', () => {
-    // Default config: enabled is false and locales is ['en'], so there are no
-    // extra locales to generate prefixed routes for.
-    expect(getSecondaryLocales()).toEqual([]);
+  it('returns the non-default locales: Arabic', () => {
+    // The site config has i18n on with English at the root and Arabic under /ar.
+    expect(getSecondaryLocales()).toEqual(['ar']);
   });
 });
 
 describe('i18n localizedPath()', () => {
-  it('returns the path unchanged when i18n is disabled (single locale)', () => {
-    // With default config (locales: ['en']), i18n is effectively off
+  it('leaves default-locale paths unprefixed', () => {
     expect(localizedPath('/about')).toBe('/about');
     expect(localizedPath('/')).toBe('/');
     expect(localizedPath('blog/hello')).toBe('/blog/hello');
@@ -151,9 +149,9 @@ describe('i18n swapLocaleInPath()', () => {
     expect(swapLocaleInPath('/about', 'en')).toBe('/about');
   });
 
-  it('returns the same path when i18n is disabled, regardless of target', () => {
-    // With default config (single locale), localizedPath is a no-op
-    expect(swapLocaleInPath('/about', 'nl')).toBe('/about');
+  it('prefixes the path with a secondary locale', () => {
+    expect(swapLocaleInPath('/about', 'ar')).toBe('/ar/about');
+    expect(swapLocaleInPath('/ar/about', 'en')).toBe('/about');
   });
 });
 

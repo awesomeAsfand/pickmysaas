@@ -7,6 +7,18 @@ vi.mock('astro:content', () => ({
   getCollection: vi.fn(async () => []),
 }));
 
+// The single-locale guarantee is what's under test, so pin that config rather
+// than reading the site's (which has i18n on).
+vi.mock('@/config/i18n.config', () => ({
+  default: {
+    enabled: false,
+    defaultLocale: 'en',
+    locales: ['en'],
+    localeNames: { en: 'English' },
+    detectBrowserLocale: false,
+  },
+}));
+
 import {
   getPostSlug,
   getPostUrl,
@@ -16,7 +28,7 @@ import {
   getSecondaryLocales,
 } from '@/lib/blog';
 
-// These run with the default i18n config (single locale 'en', i18n off), so
+// These run with a single-locale config (i18n off), so
 // every URL must stay unprefixed — this is the non-breaking guarantee for the
 // single-locale sites that make up the majority of installs.
 describe('blog URL helpers (i18n disabled — default)', () => {

@@ -125,7 +125,7 @@ export const footerLinkGroups: FooterLinkGroupConfig[] = [
     titleKey: 'footer.groups.questions',
     title: 'Got questions?',
     links: [
-      { label: 'FAQ', href: '/about#faq' },
+      { label: 'FAQ', href: '/about#faq', labelKey: 'nav.items.faq' },
       { label: 'Contact', href: '/contact', labelKey: 'nav.items.contact' },
     ],
   },

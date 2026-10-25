@@ -8,7 +8,7 @@ The website for [PickMySaaS](https://pickmysaas.com), a founder-led product stud
   <a href="https://www.typescriptlang.org"><img src="https://img.shields.io/badge/TypeScript-5.7-3178c6?logo=typescript&logoColor=white" alt="TypeScript" /></a>
 </p>
 
-- **Live site:** https://pickmysaas.com (Arabic home page at `/ar`)
+- **Live site:** https://pickmysaas.com (Arabic at https://pickmysaas.com/ar)
 - **Hosting:** Cloudflare Workers. Every push to `main` deploys.
 - **Built on:** the [Astro Rocket](https://github.com/hansmartensdev/astro-rocket) theme by Hans Martens (MIT, see [LICENSE](LICENSE)).
 
@@ -25,6 +25,8 @@ astro dev --background   # http://localhost:4321
 ```
 
 Manage the background dev server with `astro dev stop`, `astro dev status` and `astro dev logs`. If a page shows content you have already changed or deleted, stop the server, delete `.astro/data-store.json` and start it again.
+
+If `pnpm build:cloudflare` crashes with "The Workers runtime failed to start" (`std::terminate`) after you've run the site locally with `wrangler dev`, delete the `.wrangler` folder and build again. It only holds local test state.
 
 ## Commands
 
@@ -45,9 +47,9 @@ Manage the background dev server with `astro dev stop`, `astro dev status` and `
 | To change… | Edit |
 |---|---|
 | Page copy (English) | `src/i18n/en.json`, under `pages.home`, `pages.about`, `pages.services`, `pages.contact` |
-| Arabic home page copy | `src/i18n/ar.json` |
+| Arabic copy (every page) | `src/i18n/ar.json`, same keys as `en.json` (a test checks they match) |
 | Page layouts | `src/components/pages/views/*View.astro` |
-| Projects | `src/content/projects/en/*.mdx` (Arabic card text in `src/content/projects/ar/`) |
+| Projects | `src/content/projects/en/*.mdx`, Arabic in `src/content/projects/ar/*.mdx` (same file names) |
 | Blog posts | `src/content/blog/en/*.mdx` |
 | Tech-stack logos | `src/content/stack/*.mdx` |
 | Site name, email, booking, WhatsApp, blog switch | `src/config/site.config.ts` |
@@ -59,11 +61,16 @@ Manage the background dev server with `astro dev stop`, `astro dev status` and `
 - `booking.calLink`: the Cal.com event every "Book a free call" button opens as a popup. Remove it and the buttons go to `/contact`.
 - `whatsapp`: the number for the WhatsApp buttons, digits only. Remove it and the buttons disappear.
 - `contactForm.sendVia`: how the contact form sends (`cloudflare`, see below).
-- `blog.visible`: `false` until the first real post is published. While it's off, the blog is left out of the header, footer, home page and RSS links. Flip it to `true` when posts exist.
+- `blog.visible`: whether the blog is part of the site. It's set in `src/config/blog-visibility.ts`, so the sitemap can read it too. It stays `false` until the first real post is published, and while it's off the blog is left out of the header, footer, home page, RSS links and sitemap. Flip `BLOG_VISIBLE` to `true` when posts exist.
 
 ## Languages
 
-English is the default. Only the home page has an Arabic version (`/ar`, right to left), built from `src/i18n/ar.json`. Full-site translation (`i18n.config.ts` → `enabled`) stays off, so no other page gets a half-translated `/ar/...` copy. Turning it on would build every page in Arabic, which needs every page's copy translated first.
+The whole site is in English (at `/`) and Arabic (under `/ar`, right to left). Every page has both versions, linked by the EN/AR switch in the header and by `hreflang` tags for search engines.
+
+- **Interface and page copy:** `src/i18n/en.json` and `src/i18n/ar.json`. They must carry exactly the same keys. A test fails if Arabic is missing one, because a missing key would quietly show English on an Arabic page.
+- **Projects:** each project has an English file in `src/content/projects/en/` and an Arabic one with the same name in `src/content/projects/ar/`.
+- **Blog posts,** once the blog is on: put Arabic posts in `src/content/blog/ar/`.
+- **The contact form** replies (validation errors, failures) in the language of the page it was sent from.
 
 ## Deployment and secrets
 

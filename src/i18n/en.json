@@ -1,4 +1,37 @@
 {
+  "consent": {
+    "ui": {
+      "heading": "Cookie preferences",
+      "description": "We use cookies to see how visitors use the site, so we can improve it. You choose which ones we may use.",
+      "acceptAll": "Accept all",
+      "declineAll": "Decline all",
+      "customize": "Customize",
+      "savePreferences": "Save preferences",
+      "settingsHeading": "Privacy settings",
+      "alwaysOnLabel": "Always on",
+      "privacyPolicyLabel": "Privacy policy",
+      "bannerAriaLabel": "Cookie consent",
+      "reopenerAriaLabel": "Open cookie settings"
+    },
+    "categories": {
+      "necessary": {
+        "label": "Necessary",
+        "description": "Needed for the site to work, such as remembering your cookie choice. These can't be turned off."
+      },
+      "analytics": {
+        "label": "Analytics",
+        "description": "Google Analytics: anonymous statistics about which pages are visited, so we can improve the site."
+      },
+      "marketing": {
+        "label": "Marketing",
+        "description": "Advertising cookies. We don't run ads on this site, so these stay off unless you allow them."
+      },
+      "preferences": {
+        "label": "Preferences",
+        "description": "Remember choices you make on the site, such as your colour theme."
+      }
+    }
+  },
   "nav": {
     "skipToContent": "Skip to content",
     "openMenu": "Open menu",
@@ -19,7 +52,8 @@
       "projects": "Projects",
       "blog": "Blog",
       "about": "About",
-      "contact": "Contact"
+      "contact": "Contact",
+      "faq": "FAQ"
     }
   },
   "common": {
@@ -70,13 +104,13 @@
     "shareOn": "Share on {platform}",
     "copyLink": "Copy link",
     "metaTitle": "Blog",
-    "metaDescription": "The Astro Rocket blog: practical guides to setting up, configuring, and building with the theme.",
+    "metaDescription": "Insights from PickMySaaS on building websites, SaaS platforms and AI products for the Gulf.",
     "heroBadge": "All posts",
-    "heroDescription": "Everything you need to know about Astro\u00a0Rocket, explained in practical guides.",
+    "heroDescription": "Notes from the build: what we learn designing and launching products for the Gulf.",
     "allPosts": "All posts",
     "noPosts": "No posts found",
     "pageMetaTitle": "Blog — Page {page}",
-    "pageMetaDescription": "Page {page} of {total} — practical guides to setting up, configuring, and building with Astro Rocket.",
+    "pageMetaDescription": "Page {page} of {total}: insights on websites, SaaS platforms and AI products for the Gulf.",
     "pageBadge": "Page {page} of {total}",
     "newestPosts": "Newest posts",
     "tagMetaTitle": "#{tag} — Blog",
@@ -108,6 +142,7 @@
     "description": "Things we've built",
     "viewProject": "View project",
     "viewSource": "View source",
+    "viewLiveSite": "View live site",
     "noProjectsFound": "No projects found.",
     "carouselChooseSlide": "Choose slide",
     "carouselNextSlide": "Next slide",
@@ -190,7 +225,13 @@
     "genericError": "Something went wrong",
     "notConfigured": "Not configured yet — choose how the form sends in site.config.ts (contactForm.sendVia). Only you can see this line.",
     "unavailable": "This form is not available right now.",
-    "error": "Failed to send message. Please try again."
+    "error": "Failed to send message. Please try again.",
+    "errors": {
+      "name": "Your name should be between 2 and 100 characters.",
+      "email": "Please enter a valid email address.",
+      "subject": "Please keep this under 200 characters.",
+      "message": "Your message should be between 10 and 5,000 characters."
+    }
   },
   "theme": {
     "selectColourTheme": "Select colour theme",
@@ -202,7 +243,17 @@
     "dark": "Dark",
     "currentlyLight": "Currently light",
     "currentlyDark": "Currently dark",
-    "swatchLabel": "{name} theme"
+    "swatchLabel": "{name} theme",
+    "names": {
+      "purple": "Purple",
+      "violet": "Violet",
+      "indigo": "Indigo",
+      "blue": "Blue",
+      "sky": "Sky",
+      "cyan": "Cyan",
+      "teal": "Teal",
+      "emerald": "Emerald"
+    }
   },
   "search": {
     "placeholder": "Search posts, projects, and pages…",
