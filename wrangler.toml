@@ -36,6 +36,12 @@ compatibility_date = "2026-01-31"
 name = "EMAIL"
 allowed_sender_addresses = ["website@pickmysaas.com"]
 
+# Worker logs (dashboard → Observability). Set here because a deploy applies
+# this file's settings, so a dashboard-only toggle would be switched back off.
+[observability.logs]
+enabled = true
+invocation_logs = true
+
 # The adapter adds a SESSION KV binding for Astro sessions. Left without an id,
 # wrangler tries to create "pickmysaas-session" on every deploy and fails once
 # it exists, so pin the existing namespace here.

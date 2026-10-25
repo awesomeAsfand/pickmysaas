@@ -137,8 +137,9 @@ const blogUrl = localizedPath('/blog', locale);
 
 // Every configured locale has a home page, even with i18n off (see
 // i18n.config.ts), so they are offered as alternates: hreflang tags and the
-// header language switcher.
-const homeAlternates = getLocales().map((loc) => ({ locale: loc, url: localizedPath('/', loc) }));
+// header language switcher. The trailing slash matches the canonical URL
+// (`/ar/`), which hreflang has to repeat exactly.
+const homeAlternates = getLocales().map((loc) => ({ locale: loc, url: localizedPath('/', loc).replace(/\/?$/, '/') }));
 ---
 
 <LandingLayout
