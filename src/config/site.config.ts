@@ -2,6 +2,7 @@ import { SITE_URL, GOOGLE_SITE_VERIFICATION, BING_SITE_VERIFICATION } from 'astr
 import i18nConfig, { type I18nConfig } from './i18n.config';
 import { SITE_URL_FALLBACK } from './site-url';
 import { SITE_NAME, THEME_COLOR } from './branding';
+import { BLOG_VISIBLE } from './blog-visibility';
 
 export { i18nConfig };
 export type { I18nConfig };
@@ -389,8 +390,8 @@ const siteConfig: SiteConfig = {
     enabled: false,
   },
   blog: {
-    // Off until the first PickMySaaS post is published. Flip to true then.
-    visible: false,
+    // Set in ./blog-visibility.ts, which the sitemap (astro.config.mjs) reads too.
+    visible: BLOG_VISIBLE,
     postsPerPage: 12,
     tagCloudLimit: 10,
   },

@@ -19,6 +19,7 @@ import {
   disagreementMessage,
 } from './scripts/site-url-agreement.mjs';
 import { SITE_NAME, THEME_COLOR } from './src/config/branding.ts';
+import { BLOG_VISIBLE } from './src/config/blog-visibility.ts';
 
 /**
  * Load `.env` into `process.env` before anything below reads it.
@@ -399,7 +400,11 @@ export default defineConfig({
   integrations: [
     react(),
     mdx(),
-    sitemap(),
+    // While the blog is hidden (src/config/blog-visibility.ts), keep its
+    // empty pages out of the sitemap so search engines aren't sent to them.
+    sitemap({
+      filter: (page) => BLOG_VISIBLE || !/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?blog(\/|$)/.test(new URL(page).pathname),
+    }),
     icon(),
     siteUrlCheck(),
     pagefind(),

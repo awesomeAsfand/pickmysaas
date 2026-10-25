@@ -13,7 +13,7 @@ import { whatsAppUrl } from '@/lib/booking';
 import { createWebsiteSchema, createOrganizationSchema, createPersonSchema, createProfessionalServiceSchema } from '@/lib/schema';
 import type { Thing, WithContext } from 'schema-dts';
 import siteConfig from '@/config/site.config';
-import { t, getLocaleFromPath, getLocaleDirection } from '@/i18n';
+import { t, tData, getLocaleFromPath, getLocaleDirection } from '@/i18n';
 import { getRssUrl, BLOG_VISIBLE } from '@/lib/blog';
 
 interface Props {
@@ -68,6 +68,11 @@ if (includeProfessionalServiceSchema) {
 schemas.push(...extraSchemas);
 
 const locale = getLocaleFromPath(Astro.url.pathname);
+// Cookie banner text in the page's language (consent.* in the locale files).
+const consentText = tData<{
+  ui: Record<string, string>;
+  categories: Record<string, { label: string; description: string }>;
+}>('consent', locale);
 // The floating WhatsApp button takes the bottom-right corner; back-to-top sits above it.
 const hasWhatsApp = whatsAppUrl() !== undefined;
 const commentsConfig = siteConfig.articleFeatures?.comments;
@@ -339,7 +344,7 @@ if (commentsConfig?.enabled) {
 
     <slot name="footer" />
 
-    <ConsentBanner />
+    <ConsentBanner ui={consentText?.ui} categoryText={consentText?.categories} />
     <BookingPopup />
     <FloatingWhatsApp locale={locale} />
 
