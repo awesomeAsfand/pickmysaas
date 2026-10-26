@@ -451,7 +451,7 @@
     "services": {
       "meta": {
         "title": "Services — Web Design, SaaS & AI MVP Development",
-        "description": "Bilingual websites from $500, SaaS platforms and AI-first MVPs for startups and businesses in the UAE, Saudi Arabia and across the GCC. A free first call, a clear proposal and a fixed price."
+        "description": "Bilingual websites from $300, SaaS platforms and AI-first MVPs for startups and businesses in the UAE, Saudi Arabia and across the GCC. A free first call, a clear proposal and a fixed price."
       },
       "includedLabel": "What you get",
       "hero": {
@@ -504,7 +504,7 @@
           {
             "name": "Starter",
             "for": "For small businesses that need a professional site, fast.",
-            "price": "$500",
+            "price": "$300",
             "pricePrefix": "",
             "bonus": "Free domain + Google Business setup",
             "features": [
@@ -523,7 +523,7 @@
           {
             "name": "Business",
             "for": "For businesses that need more pages, a custom design or an online store.",
-            "price": "$800",
+            "price": "$500",
             "pricePrefix": "",
             "bonus": "Free domain + Google Business setup",
             "features": [
@@ -542,7 +542,7 @@
           {
             "name": "Premium",
             "for": "For larger sites, bigger online stores and a fully custom design.",
-            "price": "$1,000",
+            "price": "$700",
             "pricePrefix": "from",
             "bonus": "Free domain + Google Business setup",
             "features": [
@@ -655,7 +655,7 @@
             "items": [
               {
                 "question": "What does a project cost?",
-                "answer": "Websites have fixed package prices: Starter $500, Business $800, and Premium from $1,000. SaaS and AI projects get one fixed price in your proposal, agreed before we start. No hourly billing, no surprises."
+                "answer": "Websites have fixed package prices: Starter $300, Business $500, and Premium from $700. SaaS and AI projects get one fixed price in your proposal, agreed before we start. No hourly billing, no surprises."
               },
               {
                 "question": "How long does it take?",
