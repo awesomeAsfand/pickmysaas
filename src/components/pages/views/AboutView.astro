@@ -55,7 +55,7 @@ const contactUrl = localizedPath('/contact', locale);
 
 const hero = tData<{
   badge: string;
-  titleLead: string;
+  title: string;
   typingWords: string[];
   /** Shorter set for phones (below sm), dropping the one word wide enough to clip at the hero size. */
   typingWordsMobile: string[];
@@ -90,15 +90,18 @@ const cta = tData<{ badge: string; heading: string; description: string; button:
       <Icon name="users" size="sm" />
       {hero.badge}
     </Badge>
-    <h1 slot="title">
-      <span class="text-foreground [-webkit-text-fill-color:currentColor]">{hero.titleLead}</span><br />
-      <span class="text-brand-500 [-webkit-text-fill-color:var(--color-brand-500)] sm:hidden">
+    <h1 slot="title" class="!text-4xl md:!text-5xl lg:!text-6xl">
+      <span class="text-foreground [-webkit-text-fill-color:currentColor]">{hero.title}</span>
+    </h1>
+    {/* Outside the h1: TypingEffect prints an inline script, which search engines would read as heading text. */}
+    <p slot="title" class="mt-4 font-display text-2xl font-bold text-brand-500 md:text-3xl">
+      <span class="[-webkit-text-fill-color:var(--color-brand-500)] sm:hidden">
         <TypingEffect words={hero.typingWordsMobile} />
       </span>
-      <span class="text-brand-500 [-webkit-text-fill-color:var(--color-brand-500)] hidden sm:inline">
+      <span class="[-webkit-text-fill-color:var(--color-brand-500)] hidden sm:inline">
         <TypingEffect words={hero.typingWords} />
       </span>
-    </h1>
+    </p>
 
     <p slot="description" class="!text-balance">
       {hero.description}

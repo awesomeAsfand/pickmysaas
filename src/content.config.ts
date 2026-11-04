@@ -106,6 +106,10 @@ const projects = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
+      /** Longer name for the browser tab and Google, when `title` alone is just the brand. */
+      seoTitle: z.string().optional(),
+      /** Shorter summary for Google, when `description` is too long to show in full. */
+      seoDescription: z.string().optional(),
       description: z.string(),
       /**
        * Lucide icon shown on the project card, e.g. "rocket", "book-open",

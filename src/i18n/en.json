@@ -151,8 +151,8 @@
     "galleryClose": "Close lightbox",
     "galleryNextImage": "Next image",
     "galleryPreviousImage": "Previous image",
-    "metaTitle": "Projects",
-    "metaDescription": "Selected work: websites, platforms and tools designed and built by PickMySaaS.",
+    "metaTitle": "Projects: Websites and Platforms We've Built",
+    "metaDescription": "Websites and platforms built by PickMySaaS: a directory of 3,000+ Gulf nurseries, a therapist site with WhatsApp booking, and a free AI search readiness tool.",
     "heroBadge": "Selected work",
     "heroDescription": "Websites, platforms and tools we've designed and built.",
     "allProjects": "All projects",
@@ -282,11 +282,11 @@
     "about": {
       "meta": {
         "title": "About — A Founder-Led Product Studio for the Gulf",
-        "description": "PickMySaaS is a founder-led product studio, led by Asfand Yar Khan, building bilingual websites, SaaS platforms and AI-first MVPs for founders and businesses across the GCC."
+        "description": "PickMySaaS is a founder-led studio run by Asfand Yar Khan. We build websites, SaaS platforms and MVPs in Arabic and English for businesses across the GCC."
       },
       "hero": {
         "badge": "About us",
-        "titleLead": "PickMySaaS —",
+        "title": "PickMySaaS: a founder-led product studio for the Gulf",
         "typingWords": [
           "Web design",
           "SaaS products",
@@ -450,8 +450,8 @@
     },
     "services": {
       "meta": {
-        "title": "Services — Web Design, SaaS & AI MVP Development",
-        "description": "Bilingual websites from $300, SaaS platforms and AI-first MVPs for startups and businesses in the UAE, Saudi Arabia and across the GCC. A free first call, a clear proposal and a fixed price."
+        "title": "Website Design from $300, SaaS & MVP Development",
+        "description": "Website design packages at $300, $500 and from $700. SaaS and MVP development at one fixed price per proposal. Built in Arabic and English for GCC businesses."
       },
       "includedLabel": "What you get",
       "hero": {
@@ -654,15 +654,19 @@
             "title": "Before we start",
             "items": [
               {
-                "question": "What does a project cost?",
-                "answer": "Websites have fixed package prices: Starter $300, Business $500, and Premium from $700. SaaS and AI projects get one fixed price in your proposal, agreed before we start. No hourly billing, no surprises."
+                "question": "How much does a website cost?",
+                "answer": "Websites have fixed package prices: Starter $300, Business $500, and Premium from $700. No hourly billing, no surprises."
               },
               {
-                "question": "How long does it take?",
+                "question": "How much does SaaS or MVP development cost?",
+                "answer": "Every product is different, so SaaS platforms and MVPs get one fixed price in your proposal, agreed before we start. No hourly billing, no surprises."
+              },
+              {
+                "question": "How long does it take to build a website or SaaS product?",
                 "answer": "Websites go live in about a week. SaaS platforms and AI MVPs typically take 4 to 8 weeks. Your proposal names the exact timeline."
               },
               {
-                "question": "Do you build in Arabic?",
+                "question": "Can you build my website in Arabic and English?",
                 "answer": "Yes. Bilingual Arabic and English is our default, not an add-on."
               },
               {
@@ -670,8 +674,8 @@
                 "answer": "It stays online until the new one is ready. Your content, your domain and your Google rankings come with you."
               },
               {
-                "question": "Do we need to meet in person?",
-                "answer": "No. Projects run by video, WhatsApp and email, and we work across Gulf time zones."
+                "question": "Do you work with clients in Saudi Arabia, the UAE and across the GCC without a local office?",
+                "answer": "Yes. We work fully remotely, so you never need to meet in person. Projects run by video, WhatsApp and email, and we work across Gulf time zones."
               }
             ]
           },
@@ -714,7 +718,7 @@
     "contact": {
       "meta": {
         "title": "Contact — Start Your Project",
-        "description": "Tell us about your website, SaaS or AI idea. Book a free 30-minute call, message us on WhatsApp, or send the form. We reply within 24 hours."
+        "description": "Tell us about your website, SaaS or MVP idea. Book a free 30-minute call, message us on WhatsApp, or send the form. We reply within 24 hours."
       },
       "hero": {
         "badge": "Start a project",
@@ -735,13 +739,13 @@
     },
     "home": {
       "meta": {
-        "title": "Websites, SaaS & AI MVPs for the Gulf",
-        "description": "PickMySaaS designs and builds bilingual websites, SaaS platforms and AI-first MVPs for startups and businesses in the UAE, Saudi Arabia, Qatar and across the GCC."
+        "title": "Website Design, SaaS & MVP Development for the GCC",
+        "description": "Website design from $300, plus SaaS and AI MVP development for businesses in the UAE, Saudi Arabia and across the GCC. Arabic and English. Book a free call."
       },
       "hero": {
         "badge": "Now taking projects across the GCC",
-        "titleLine1": "Websites, SaaS",
-        "titleLine2": "& AI MVPs for the Gulf",
+        "titleLine1": "Website design, SaaS",
+        "titleLine2": "and MVP development for Gulf businesses",
         "description": "We design and build fast websites, SaaS platforms and AI-first MVPs for founders and businesses across the UAE, Saudi Arabia and the wider GCC. Bilingual in Arabic and English, and ready for local payments from day one.",
         "descriptionMobile": "Websites, SaaS and AI-first MVPs for UAE, Saudi and GCC businesses. Bilingual and ready to launch.",
         "primaryCta": "Book a free call"

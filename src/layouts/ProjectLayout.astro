@@ -24,6 +24,10 @@ import {
 
 interface Props {
   title: string;
+  /** Browser-tab and search title, when it should say more than the on-page `title`. */
+  seoTitle?: string;
+  /** Search and social summary, when `description` is too long to show in full. */
+  seoDescription?: string;
   description: string;
   meta?: string[];
   url?: string;
@@ -42,6 +46,8 @@ interface Props {
 
 const {
   title,
+  seoTitle,
+  seoDescription,
   description,
   meta = [],
   url,
@@ -106,8 +112,8 @@ const languageAlternates = Object.fromEntries(
 ---
 
 <BaseLayout
-  title={title}
-  description={description}
+  title={seoTitle ?? title}
+  description={seoDescription ?? description}
   image={ogImage}
   imageAlt={ogImageAlt}
   localeAlternates={projectTranslations}
