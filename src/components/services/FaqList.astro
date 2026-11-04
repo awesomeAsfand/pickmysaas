@@ -1,0 +1,29 @@
+---
+/** An accordion of questions. Items sharing a `name` close each other when opened. */
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+
+interface Props {
+  items: { question: string; answer: string }[];
+  name: string;
+}
+
+const { items, name } = Astro.props;
+---
+<div class="w-full">
+  {items.map((item) => (
+    <details class="border-b border-border last:border-0" name={name}>
+      <summary class="flex w-full items-center justify-between text-sm py-4 text-left font-medium text-foreground transition-colors hover:text-foreground-secondary cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+        {item.question}
+        <Icon name="chevron-down" size="sm" class="faq-icon shrink-0 text-foreground-muted transition-transform duration-200" />
+      </summary>
+      <div class="pb-4 text-sm text-foreground-muted leading-relaxed" set:html={item.answer} />
+    </details>
+  ))}
+</div>
+
+<style is:global>
+  /* FAQ accordion: rotate the chevron while an item is open. */
+  details[open] > summary .faq-icon {
+    transform: rotate(180deg);
+  }
+</style>

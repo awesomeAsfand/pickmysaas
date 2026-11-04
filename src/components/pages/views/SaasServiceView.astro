@@ -1,0 +1,279 @@
+---
+/**
+ * SaasServiceView — the SaaS development page, shared by `/services/saas` and
+ * the locale-prefixed route. Written for someone planning a product: whether
+ * they need SaaS, what goes in the first version, what moves the price and what
+ * differs between Gulf countries. All copy is in `pages.serviceSaas`.
+ */
+import { Image } from 'astro:assets';
+import PageLayout from '@/layouts/PageLayout.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import ProofTile from '@/components/ui/data-display/ProofTile/ProofTile.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import { Hero } from '@/components/hero';
+import Breadcrumbs from '@/components/seo/Breadcrumbs.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import SectionHeading from '@/components/services/SectionHeading.astro';
+import DataTable from '@/components/services/DataTable.astro';
+import FaqList from '@/components/services/FaqList.astro';
+import ServiceCta from '@/components/services/ServiceCta.astro';
+import { getVisibleProjects, getProjectUrl } from '@/lib/projects';
+import { createFAQSchema } from '@/lib/schema';
+import { t, tData, defaultLocale, localizedPath } from '@/i18n';
+import { bookingLinkAttrs } from '@/lib/booking';
+
+interface Props {
+  /** Locale whose copy this page renders. Defaults to the site default. */
+  locale?: string;
+}
+
+interface TitleText {
+  title: string;
+  text: string;
+}
+
+const { locale = defaultLocale } = Astro.props;
+
+const page = tData<{
+  breadcrumb: string;
+  hero: { badge: string; titleLead: string; titleHighlight: string; description: string };
+  answer: { heading: string; paragraphs: string[] };
+  types: { badge: string; heading: string; lead: string; items: { icon: string; title: string; description: string }[] };
+  fit: {
+    badge: string;
+    heading: string;
+    lead: string;
+    options: { title: string; when: string; next: string; link: 'websites' | 'mvp' | 'contact'; linkLabel: string }[];
+  };
+  scope: { badge: string; heading: string; lead: string; nowTitle: string; now: string[]; laterTitle: string; later: string[]; note: string };
+  cost: {
+    badge: string;
+    heading: string;
+    lead: string;
+    factorLabel: string;
+    simplerLabel: string;
+    moreLabel: string;
+    rows: { factor: string; simpler: string; more: string }[];
+    note: string;
+  };
+  gulf: {
+    badge: string;
+    heading: string;
+    lead: string;
+    countryLabel: string;
+    stripeLabel: string;
+    lawLabel: string;
+    rows: { country: string; stripe: string; law: string; url?: string }[];
+    sourceLabel: string;
+    sourceUrl: string;
+    notes: string[];
+  };
+  example: { badge: string; heading: string; lead: string; points: TitleText[]; link: string; honest: string };
+  stack: { badge: string; heading: string; lead: string; items: TitleText[] };
+  faq: { badge: string; heading: string; lead: string; items: { question: string; answer: string }[] };
+  cta: { heading: string; description: string; primary: string; secondary: string };
+}>('pages.serviceSaas', locale)!;
+
+const contactUrl = localizedPath('/contact', locale);
+const fitLinks = {
+  websites: localizedPath('/services/websites', locale),
+  mvp: `${localizedPath('/services', locale)}#ai-mvps`,
+  contact: contactUrl,
+};
+const example = (await getVisibleProjects(locale)).find((p) => p.id === `${locale}/gulfnurseries`);
+const breadcrumbs = [
+  { label: t('common.home', locale), href: localizedPath('/', locale) },
+  { label: t('nav.items.services', locale), href: localizedPath('/services', locale) },
+  { label: page.breadcrumb },
+];
+---
+<PageLayout
+  title={t('pages.serviceSaas.meta.title', locale)}
+  description={t('pages.serviceSaas.meta.description', locale)}
+  footerBackground="default"
+>
+  <JsonLd schema={createFAQSchema(page.faq.items)} />
+
+  <Hero layout="centered" size="sm" class="isolate" showHeroHalo>
+    <Badge slot="badge" variant="brand" pill>
+      <Icon name="layers" size="sm" />
+      {page.hero.badge}
+    </Badge>
+    <h1 slot="title" class="!text-4xl md:!text-5xl lg:!text-6xl">
+      <span class="text-foreground">{page.hero.titleLead}</span><br />
+      <span class="text-brand-500">{page.hero.titleHighlight}</span>
+    </h1>
+    <p slot="description">{page.hero.description}</p>
+    <Fragment slot="actions">
+      <Button size="lg" {...bookingLinkAttrs(contactUrl)}>
+        {page.cta.primary}
+        <Icon name="arrow-right" size="sm" />
+      </Button>
+    </Fragment>
+  </Hero>
+
+  <!-- The direct answer -->
+  <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+    <div class="mx-auto max-w-3xl px-6">
+      <Breadcrumbs items={breadcrumbs} class="mb-8" />
+      <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground text-balance mb-6">{page.answer.heading}</h2>
+      <div class="flex flex-col gap-4">
+        {page.answer.paragraphs.map((paragraph) => (
+          <p class="text-lg text-foreground-muted leading-relaxed">{paragraph}</p>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- What we build -->
+  <section class="py-[var(--space-section-md)] bg-background border-t border-border">
+    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="layers" badge={page.types.badge} heading={page.types.heading} lead={page.types.lead} />
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {page.types.items.map((item, i) => (
+          <ProofTile icon={item.icon} title={item.title} data-reveal data-reveal-delay={i % 3 || undefined}>
+            {item.description}
+          </ProofTile>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Do you need SaaS? -->
+  <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="compass" badge={page.fit.badge} heading={page.fit.heading} lead={page.fit.lead} />
+      <div class="grid gap-6 lg:grid-cols-3">
+        {page.fit.options.map((option, i) => (
+          <Card variant="elevated" padding="lg" class="flex flex-col h-full" data-reveal data-reveal-delay={i || undefined}>
+            <h3 class="font-display text-xl font-bold text-foreground mb-3">{option.title}</h3>
+            <p class="text-sm text-foreground-muted leading-relaxed mb-3">{option.when}</p>
+            <p class="text-sm font-medium text-foreground leading-relaxed mb-6 flex-1">{option.next}</p>
+            <a href={fitLinks[option.link]} class="inline-flex items-center gap-2 text-sm font-semibold text-brand-700 dark:text-brand-400">
+              {option.linkLabel}
+              <Icon name="arrow-right" size="sm" />
+            </a>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- First version -->
+  <section class="py-[var(--space-section-md)] bg-background border-t border-border">
+    <div class="mx-auto max-w-5xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="list-checks" badge={page.scope.badge} heading={page.scope.heading} lead={page.scope.lead} />
+      <div class="grid gap-6 md:grid-cols-2">
+        <Card variant="elevated" padding="lg" class="ring-2 ring-brand-500" data-reveal>
+          <h3 class="font-display text-lg font-bold text-foreground mb-4">{page.scope.nowTitle}</h3>
+          <ul class="flex flex-col gap-3">
+            {page.scope.now.map((item) => (
+              <li class="flex items-start gap-3">
+                <Icon name="check" size="sm" class="text-brand-500 shrink-0 mt-0.5" />
+                <span class="text-sm text-foreground-muted leading-relaxed">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </Card>
+        <Card variant="elevated" padding="lg" data-reveal data-reveal-delay="1">
+          <h3 class="font-display text-lg font-bold text-foreground mb-4">{page.scope.laterTitle}</h3>
+          <ul class="flex flex-col gap-3">
+            {page.scope.later.map((item) => (
+              <li class="flex items-start gap-3">
+                <Icon name="clock" size="sm" class="text-foreground-muted shrink-0 mt-0.5" />
+                <span class="text-sm text-foreground-muted leading-relaxed">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      </div>
+      <p class="text-sm text-foreground-muted text-center max-w-2xl mx-auto text-balance" data-reveal>{page.scope.note}</p>
+    </div>
+  </section>
+
+  <!-- Cost -->
+  <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+    <div class="mx-auto max-w-5xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="tag" badge={page.cost.badge} heading={page.cost.heading} lead={page.cost.lead} />
+      <DataTable
+        headers={[page.cost.factorLabel, page.cost.simplerLabel, page.cost.moreLabel]}
+        rows={page.cost.rows.map((row) => [row.factor, row.simpler, row.more])}
+      />
+      <p class="text-sm text-foreground-muted text-center max-w-2xl mx-auto text-balance" data-reveal>{page.cost.note}</p>
+    </div>
+  </section>
+
+  <!-- Selling in the Gulf -->
+  <section class="py-[var(--space-section-md)] bg-background border-t border-border">
+    <div class="mx-auto max-w-5xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="globe" badge={page.gulf.badge} heading={page.gulf.heading} lead={page.gulf.lead} />
+      <DataTable
+        headers={[page.gulf.countryLabel, page.gulf.stripeLabel, page.gulf.lawLabel]}
+        rows={page.gulf.rows.map((row) => [row.country, row.stripe, row.url ? { text: row.law, href: row.url } : row.law])}
+      />
+      <p class="text-sm text-foreground-muted" data-reveal>
+        <a href={page.gulf.sourceUrl} target="_blank" rel="noopener" class="underline underline-offset-2">{page.gulf.sourceLabel}</a>
+      </p>
+      <div class="flex flex-col gap-4 max-w-3xl" data-reveal>
+        {page.gulf.notes.map((note) => <p class="text-foreground-muted leading-relaxed">{note}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Worked example -->
+  <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="baby" badge={page.example.badge} heading={page.example.heading} lead={page.example.lead} />
+      <div class="grid gap-8 lg:grid-cols-2 lg:items-center">
+        {example?.data.image && (
+          <a href={getProjectUrl(example.id, locale)} class="block overflow-hidden rounded-xl border border-border" data-reveal>
+            <Image src={example.data.image} alt={example.data.imageAlt ?? example.data.title} widths={[640, 960]} sizes="(min-width: 1024px) 50vw, 100vw" class="w-full h-auto" />
+          </a>
+        )}
+        <div class="flex flex-col gap-5" data-reveal data-reveal-delay="1">
+          {page.example.points.map((point) => (
+            <div>
+              <h3 class="font-display text-base font-semibold text-foreground mb-1">{point.title}</h3>
+              <p class="text-sm text-foreground-muted leading-relaxed">{point.text}</p>
+            </div>
+          ))}
+          <p class="text-sm text-foreground-muted leading-relaxed border-t border-border pt-4">{page.example.honest}</p>
+          {example && (
+            <a href={getProjectUrl(example.id, locale)} class="inline-flex items-center gap-2 text-sm font-semibold text-brand-700 dark:text-brand-400">
+              {page.example.link}
+              <Icon name="arrow-right" size="sm" />
+            </a>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How we build -->
+  <section class="py-[var(--space-section-md)] bg-background border-t border-border">
+    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="code" badge={page.stack.badge} heading={page.stack.heading} lead={page.stack.lead} />
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {page.stack.items.map((item, i) => (
+          <ProofTile number={i + 1} title={item.title} data-reveal data-reveal-delay={i || undefined}>
+            {item.text}
+          </ProofTile>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Questions -->
+  <section id="faq" class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+    <div class="mx-auto max-w-3xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="info" badge={page.faq.badge} heading={page.faq.heading} lead={page.faq.lead} />
+      <Card variant="elevated" padding="lg" data-reveal>
+        <FaqList items={page.faq.items} name="saas-faq" />
+      </Card>
+    </div>
+  </section>
+
+  <ServiceCta locale={locale} cta={page.cta} class="bg-background" />
+</PageLayout>

@@ -1,0 +1,255 @@
+---
+/**
+ * WebsitesServiceView — the website design page, shared by `/services/websites`
+ * and the locale-prefixed route. Written for someone choosing and buying a site:
+ * the prices first, then which package to pick, how their market searches and
+ * how to compare offers. All copy is in `pages.serviceWebsites`.
+ */
+import { Image } from 'astro:assets';
+import PageLayout from '@/layouts/PageLayout.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import { Hero } from '@/components/hero';
+import Breadcrumbs from '@/components/seo/Breadcrumbs.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import PackagesSection from '@/components/services/PackagesSection.astro';
+import SectionHeading from '@/components/services/SectionHeading.astro';
+import DataTable from '@/components/services/DataTable.astro';
+import FaqList from '@/components/services/FaqList.astro';
+import ServiceCta from '@/components/services/ServiceCta.astro';
+import { getVisibleProjects, getProjectUrl } from '@/lib/projects';
+import { createFAQSchema } from '@/lib/schema';
+import { t, tData, defaultLocale, localizedPath, swapLocaleInPath } from '@/i18n';
+import { bookingLinkAttrs } from '@/lib/booking';
+
+interface Props {
+  /** Locale whose copy this page renders. Defaults to the site default. */
+  locale?: string;
+}
+
+const { locale = defaultLocale } = Astro.props;
+
+const page = tData<{
+  breadcrumb: string;
+  hero: { badge: string; titleLead: string; titleHighlight: string; description: string };
+  answer: { heading: string; paragraphs: string[] };
+  guide: {
+    badge: string;
+    heading: string;
+    lead: string;
+    situationLabel: string;
+    packageLabel: string;
+    rows: { situation: string; pkg: string; link?: 'saas' }[];
+  };
+  market: {
+    badge: string;
+    heading: string;
+    lead: string;
+    countryLabel: string;
+    leadLabel: string;
+    dataLabel: string;
+    meaningLabel: string;
+    rows: { country: string; language: string; data: string; meaning: string }[];
+    note: string;
+  };
+  arabic: {
+    badge: string;
+    heading: string;
+    lead: string;
+    shortcutLabel: string;
+    oursLabel: string;
+    rows: { shortcut: string; ours: string }[];
+    sourceLabel: string;
+    sourceUrl: string;
+    proof: string;
+    proofLink: string;
+  };
+  maps: { badge: string; heading: string; paragraphs: string[] };
+  compare: { badge: string; heading: string; lead: string; items: { question: string; answer: string }[] };
+  prepare: { badge: string; heading: string; lead: string; items: string[] };
+  example: { badge: string; heading: string; lead: string; points: { title: string; text: string }[]; link: string };
+  faq: { badge: string; heading: string; lead: string; items: { question: string; answer: string }[] };
+  cta: { heading: string; description: string; primary: string; secondary: string };
+}>('pages.serviceWebsites', locale)!;
+
+const contactUrl = localizedPath('/contact', locale);
+const saasUrl = localizedPath('/services/saas', locale);
+const otherLocale = locale === defaultLocale ? 'ar' : defaultLocale;
+const otherLanguageUrl = swapLocaleInPath(localizedPath('/services/websites', locale), otherLocale);
+const example = (await getVisibleProjects(locale)).find((p) => p.id === `${locale}/healing-with-attia`);
+const breadcrumbs = [
+  { label: t('common.home', locale), href: localizedPath('/', locale) },
+  { label: t('nav.items.services', locale), href: localizedPath('/services', locale) },
+  { label: page.breadcrumb },
+];
+---
+<PageLayout
+  title={t('pages.serviceWebsites.meta.title', locale)}
+  description={t('pages.serviceWebsites.meta.description', locale)}
+  footerBackground="secondary"
+>
+  <JsonLd schema={createFAQSchema(page.faq.items)} />
+
+  <Hero layout="centered" size="sm" class="isolate" showHeroHalo>
+    <Badge slot="badge" variant="brand" pill>
+      <Icon name="layout" size="sm" />
+      {page.hero.badge}
+    </Badge>
+    <h1 slot="title" class="!text-4xl md:!text-5xl lg:!text-6xl">
+      <span class="text-foreground">{page.hero.titleLead}</span><br />
+      <span class="text-brand-500">{page.hero.titleHighlight}</span>
+    </h1>
+    <p slot="description">{page.hero.description}</p>
+    <Fragment slot="actions">
+      <Button size="lg" href="#packages" variant="outline" class="hero-btn-opaque">
+        {t('pages.services.packages.badge', locale)}
+        <Icon name="arrow-down" size="sm" />
+      </Button>
+      <Button size="lg" {...bookingLinkAttrs(contactUrl)}>
+        {page.cta.primary}
+        <Icon name="arrow-right" size="sm" />
+      </Button>
+    </Fragment>
+  </Hero>
+
+  <!-- The direct answer -->
+  <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+    <div class="mx-auto max-w-3xl px-6">
+      <Breadcrumbs items={breadcrumbs} class="mb-8" />
+      <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground text-balance mb-6">{page.answer.heading}</h2>
+      <div class="flex flex-col gap-4">
+        {page.answer.paragraphs.map((paragraph) => (
+          <p class="text-lg text-foreground-muted leading-relaxed">{paragraph}</p>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <PackagesSection locale={locale} />
+
+  <!-- Which package -->
+  <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+    <div class="mx-auto max-w-4xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="compass" badge={page.guide.badge} heading={page.guide.heading} lead={page.guide.lead} />
+      <DataTable
+        headers={[page.guide.situationLabel, page.guide.packageLabel]}
+        rows={page.guide.rows.map((row) => [row.situation, row.link ? { text: row.pkg, href: saasUrl } : row.pkg])}
+      />
+    </div>
+  </section>
+
+  <!-- Search language research -->
+  <section class="py-[var(--space-section-md)] bg-background border-t border-border">
+    <div class="mx-auto max-w-5xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="search" badge={page.market.badge} heading={page.market.heading} lead={page.market.lead} />
+      <DataTable
+        headers={[page.market.countryLabel, page.market.leadLabel, page.market.dataLabel, page.market.meaningLabel]}
+        rows={page.market.rows.map((row) => [row.country, row.language, row.data, row.meaning])}
+      />
+      <p class="text-sm text-foreground-muted max-w-3xl" data-reveal>{page.market.note}</p>
+    </div>
+  </section>
+
+  <!-- Arabic done right -->
+  <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+    <div class="mx-auto max-w-4xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="languages" badge={page.arabic.badge} heading={page.arabic.heading} lead={page.arabic.lead} />
+      <DataTable
+        headers={[page.arabic.shortcutLabel, page.arabic.oursLabel]}
+        rows={page.arabic.rows.map((row) => [row.shortcut, row.ours])}
+      />
+      <p class="text-sm text-foreground-muted" data-reveal>
+        <a href={page.arabic.sourceUrl} target="_blank" rel="noopener" class="underline underline-offset-2">{page.arabic.sourceLabel}</a>
+        <span class="mx-1" aria-hidden="true">·</span>
+        {page.arabic.proof}
+        <a href={otherLanguageUrl} class="underline underline-offset-2">{page.arabic.proofLink}</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Google Maps -->
+  <section class="py-[var(--space-section-md)] bg-background border-t border-border">
+    <div class="mx-auto max-w-3xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="map-pin" badge={page.maps.badge} heading={page.maps.heading} />
+      <div class="flex flex-col gap-4" data-reveal>
+        {page.maps.paragraphs.map((paragraph) => (
+          <p class="text-lg text-foreground-muted leading-relaxed">{paragraph}</p>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparing offers -->
+  <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="list-checks" badge={page.compare.badge} heading={page.compare.heading} lead={page.compare.lead} />
+      <ol class="grid gap-6 md:grid-cols-2">
+        {page.compare.items.map((item, i) => (
+          <li data-reveal data-reveal-delay={i % 2 || undefined}>
+            <Card variant="elevated" padding="lg" class="h-full">
+              <h3 class="font-display text-base font-semibold text-foreground mb-2">{i + 1}. {item.question}</h3>
+              <p class="text-sm text-foreground-muted leading-relaxed">{item.answer}</p>
+            </Card>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Real example -->
+  <section class="py-[var(--space-section-md)] bg-background border-t border-border">
+    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="heart-handshake" badge={page.example.badge} heading={page.example.heading} lead={page.example.lead} />
+      <div class="grid gap-8 lg:grid-cols-2 lg:items-center">
+        <div class="flex flex-col gap-5 lg:order-2" data-reveal data-reveal-delay="1">
+          {page.example.points.map((point) => (
+            <div>
+              <h3 class="font-display text-base font-semibold text-foreground mb-1">{point.title}</h3>
+              <p class="text-sm text-foreground-muted leading-relaxed">{point.text}</p>
+            </div>
+          ))}
+          {example && (
+            <a href={getProjectUrl(example.id, locale)} class="inline-flex items-center gap-2 text-sm font-semibold text-brand-700 dark:text-brand-400">
+              {page.example.link}
+              <Icon name="arrow-right" size="sm" />
+            </a>
+          )}
+        </div>
+        {example?.data.image && (
+          <a href={getProjectUrl(example.id, locale)} class="block overflow-hidden rounded-xl border border-border lg:order-1" data-reveal>
+            <Image src={example.data.image} alt={example.data.imageAlt ?? example.data.title} widths={[640, 960]} sizes="(min-width: 1024px) 50vw, 100vw" class="w-full h-auto" />
+          </a>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- What to prepare -->
+  <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+    <div class="mx-auto max-w-4xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="clipboard-list" badge={page.prepare.badge} heading={page.prepare.heading} lead={page.prepare.lead} />
+      <ul class="grid gap-3 sm:grid-cols-2" data-reveal>
+        {page.prepare.items.map((item) => (
+          <li class="flex items-start gap-3">
+            <Icon name="check" size="sm" class="text-brand-500 shrink-0 mt-1" />
+            <span class="text-foreground-muted leading-relaxed">{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Questions -->
+  <section id="faq" class="py-[var(--space-section-md)] bg-background border-t border-border">
+    <div class="mx-auto max-w-3xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="info" badge={page.faq.badge} heading={page.faq.heading} lead={page.faq.lead} />
+      <Card variant="elevated" padding="lg" data-reveal>
+        <FaqList items={page.faq.items} name="websites-faq" />
+      </Card>
+    </div>
+  </section>
+
+  <ServiceCta locale={locale} cta={page.cta} class="bg-background-secondary" />
+</PageLayout>

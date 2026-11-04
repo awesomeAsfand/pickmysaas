@@ -1,0 +1,60 @@
+---
+/**
+ * A comparison table for the service pages. Cells are text, or `{ text, href }`
+ * for a link. On a phone each row stacks into a card, with its column labels
+ * shown above each value, so nothing has to scroll sideways.
+ */
+interface Cell {
+  text: string;
+  href?: string;
+}
+
+interface Props {
+  headers: string[];
+  rows: (string | Cell)[][];
+}
+
+const { headers, rows } = Astro.props;
+const toCell = (cell: string | Cell): Cell => (typeof cell === 'string' ? { text: cell } : cell);
+const isExternal = (href: string) => href.startsWith('http');
+---
+<div class="rounded-xl border border-border bg-background-elevated" data-reveal>
+  <table class="w-full border-collapse text-sm max-sm:block">
+    <thead class="max-sm:hidden">
+      <tr class="border-b border-border">
+        {headers.map((header) => (
+          <th scope="col" class="px-4 py-3 text-start font-semibold text-foreground">{header}</th>
+        ))}
+      </tr>
+    </thead>
+    <tbody class="max-sm:block">
+      {rows.map((row) => (
+        <tr class="border-b border-border last:border-0 max-sm:block max-sm:py-3">
+          {row.map(toCell).map((cell, i) => (
+            <td
+              data-label={i === 0 ? undefined : headers[i]}
+              class:list={[
+                'px-4 py-3 align-top leading-relaxed max-sm:block max-sm:py-1',
+                i === 0
+                  ? 'font-medium text-foreground'
+                  : 'text-foreground-muted max-sm:before:block max-sm:before:text-xs max-sm:before:font-semibold max-sm:before:text-foreground max-sm:before:content-[attr(data-label)]',
+              ]}
+            >
+              {cell.href ? (
+                <a
+                  href={cell.href}
+                  class="text-brand-600 dark:text-brand-400 underline underline-offset-2"
+                  {...(isExternal(cell.href) ? { target: '_blank', rel: 'noopener' } : {})}
+                >
+                  {cell.text}
+                </a>
+              ) : (
+                cell.text
+              )}
+            </td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

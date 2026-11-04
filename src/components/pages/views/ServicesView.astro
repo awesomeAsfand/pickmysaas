@@ -16,8 +16,9 @@ import ProofTile from '@/components/ui/data-display/ProofTile/ProofTile.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import { Hero } from '@/components/hero';
 import CtaBand from '@/components/patterns/CtaBand.astro';
+import PackagesSection from '@/components/services/PackagesSection.astro';
+import FaqList from '@/components/services/FaqList.astro';
 import { t, tData, defaultLocale, localizedPath } from '@/i18n';
-import { cn } from '@/lib/cn';
 import { bookingLinkAttrs, whatsAppUrl } from '@/lib/booking';
 
 interface Props {
@@ -33,19 +34,9 @@ interface Service {
   badge: string;
   heading: string;
   paragraphs: string[];
+  /** Label of the link to the service's own page. */
+  more?: string;
   included: IncludedItem[];
-}
-interface Package {
-  name: string;
-  for: string;
-  price: string;
-  /** Approximate conversions shown under the USD price. */
-  priceLocal: string[];
-  /** Shown before the price, e.g. "from". Empty for a fixed price. */
-  pricePrefix: string;
-  bonus: string;
-  features: string[];
-  cta: string;
 }
 interface ProcessStep {
   title: string;
@@ -69,10 +60,6 @@ const hero = tData<{ badge: string; titleLead: string; titleHighlight: string; d
   locale
 )!;
 const web = tData<Service>('pages.services.web', locale)!;
-const packages = tData<{ badge: string; heading: string; lead: string; recommended: string; items: Package[]; note: string }>(
-  'pages.services.packages',
-  locale
-)!;
 const saas = tData<Service>('pages.services.saas', locale)!;
 const ai = tData<Service>('pages.services.ai', locale)!;
 const processSection = tData<{ badge: string; heading: string; lead: string; steps: ProcessStep[] }>(
@@ -87,8 +74,8 @@ const cta = tData<{ badge: string; heading: string; description: string; primary
 
 const contactUrl = localizedPath('/contact', locale);
 const whatsAppHref = whatsAppUrl(t('common.whatsappMessage', locale));
-/** The middle package is the one we recommend. */
-const RECOMMENDED_PACKAGE = 1;
+const websitesUrl = localizedPath('/services/websites', locale);
+const saasUrl = localizedPath('/services/saas', locale);
 ---
 <PageLayout
   title={t('pages.services.meta.title', locale)}
@@ -145,6 +132,10 @@ const RECOMMENDED_PACKAGE = 1;
               {paragraph}
             </p>
           ))}
+          <Button variant="outline" href={websitesUrl} class="self-start sm:self-center glitch:self-start">
+            {web.more}
+            <Icon name="arrow-right" size="sm" />
+          </Button>
         </div>
         <!-- Card -->
         <div class="sm:max-w-xl sm:mx-auto glitch:max-w-none glitch:mx-0" data-reveal data-reveal-delay="1" data-reveal-ease="smooth">
@@ -171,69 +162,7 @@ const RECOMMENDED_PACKAGE = 1;
     </div>
   </section>
 
-  <!-- Website packages -->
-  <section id="packages" class="py-[var(--space-section-md)] bg-background border-t border-border">
-    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
-      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
-        <div class="flex flex-col items-center gap-6">
-          <Badge variant="brand" pill>
-            <Icon name="tag" size="sm" />
-            {packages.badge}
-          </Badge>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground text-balance">
-            {packages.heading}
-          </h2>
-        </div>
-        <p class="text-lg text-foreground-muted max-w-2xl mx-auto text-balance">
-          {packages.lead}
-        </p>
-      </div>
-
-      <div class="grid gap-6 lg:grid-cols-3">
-        {packages.items.map((pkg, i) => {
-          const recommended = i === RECOMMENDED_PACKAGE;
-          return (
-            <Card
-              variant="elevated"
-              padding="lg"
-              class={cn('flex flex-col h-full', recommended && 'ring-2 ring-brand-500')}
-              data-reveal
-              data-reveal-delay={i || undefined}
-            >
-              <div class="flex items-center justify-between gap-3">
-                <h3 class="font-display text-xl font-bold text-foreground">{pkg.name}</h3>
-                {recommended && <Badge variant="brand" pill>{packages.recommended}</Badge>}
-              </div>
-              <p class="mt-2 text-sm text-foreground-muted leading-relaxed">{pkg.for}</p>
-              <p class="mt-6 flex items-baseline gap-2">
-                {pkg.pricePrefix && <span class="text-sm text-foreground-muted">{pkg.pricePrefix}</span>}
-                <span class="font-display text-4xl font-bold text-foreground">{pkg.price}</span>
-              </p>
-              <p class="mt-2 flex flex-wrap gap-x-3 text-sm text-foreground-muted">
-                {pkg.priceLocal.map((price) => <span class="whitespace-nowrap">{price}</span>)}
-              </p>
-              <p class="mt-3 text-sm font-semibold text-brand-700 dark:text-brand-400">{pkg.bonus}</p>
-              <ul class="mt-6 mb-8 flex flex-1 flex-col gap-3 border-t border-border pt-6">
-                {pkg.features.map((feature) => (
-                  <li class="flex items-start gap-3">
-                    <Icon name="check" size="sm" class="text-brand-500 shrink-0 mt-0.5" />
-                    <span class="text-sm text-foreground-muted leading-relaxed">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-              <Button size="lg" fullWidth variant={recommended ? 'primary' : 'outline'} {...bookingLinkAttrs(contactUrl)}>
-                {pkg.cta}
-              </Button>
-            </Card>
-          );
-        })}
-      </div>
-
-      <p class="text-sm text-foreground-muted text-center max-w-3xl mx-auto text-balance" data-reveal>
-        {packages.note}
-      </p>
-    </div>
-  </section>
+  <PackagesSection locale={locale} />
 
   <!-- SaaS products -->
   <section id="saas" class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
@@ -255,6 +184,10 @@ const RECOMMENDED_PACKAGE = 1;
               {paragraph}
             </p>
           ))}
+          <Button variant="outline" href={saasUrl} class="self-start sm:self-center glitch:self-start">
+            {saas.more}
+            <Icon name="arrow-right" size="sm" />
+          </Button>
         </div>
         <!-- Card -->
         <div class="sm:max-w-xl sm:mx-auto glitch:order-1 glitch:max-w-none glitch:mx-0" data-reveal data-reveal-ease="smooth">
@@ -382,17 +315,7 @@ const RECOMMENDED_PACKAGE = 1;
               </div>
               <h3 class="font-display text-base font-semibold text-foreground">{card.title}</h3>
             </div>
-            <div class="w-full">
-              {card.items.map((item) => (
-                <details class="border-b border-border last:border-0" name={`services-faq-${cardIndex}`}>
-                  <summary class="flex w-full items-center justify-between text-sm py-4 text-left font-medium text-foreground transition-colors hover:text-foreground-secondary cursor-pointer list-none [&::-webkit-details-marker]:hidden">
-                    {item.question}
-                    <Icon name="chevron-down" size="sm" class="faq-icon shrink-0 text-foreground-muted transition-transform duration-200" />
-                  </summary>
-                  <div class="pb-4 text-sm text-foreground-muted leading-relaxed" set:html={item.answer} />
-                </details>
-              ))}
-            </div>
+            <FaqList items={card.items} name={`services-faq-${cardIndex}`} />
           </Card>
         ))}
       </div>
@@ -425,11 +348,6 @@ const RECOMMENDED_PACKAGE = 1;
 </PageLayout>
 
 <style is:global>
-  /* FAQ accordion: rotate the chevron while an item is open. */
-  details[open] > summary .faq-icon {
-    transform: rotate(180deg);
-  }
-
   /* Gentle "scroll down" bounce on the hero jump-button arrows — same motion
      language as the homepage hero scroll indicator. */
   .services-hero .hero-jump-arrow {

@@ -1,0 +1,39 @@
+---
+/** The closing call to action on a service page. */
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import CtaBand from '@/components/patterns/CtaBand.astro';
+import { t, localizedPath } from '@/i18n';
+import { bookingLinkAttrs, whatsAppUrl } from '@/lib/booking';
+
+interface Props {
+  locale: string;
+  cta: { heading: string; description: string; primary: string; secondary: string };
+  class?: string;
+}
+
+const { locale, cta, class: className } = Astro.props;
+const whatsAppHref = whatsAppUrl(t('common.whatsappMessage', locale));
+---
+<section class:list={['relative z-10 py-[var(--space-section-md)] border-t border-border', className]}>
+  <CtaBand>
+    <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">
+      {cta.heading}
+    </h2>
+    <p class="text-lg text-foreground-muted mb-8 text-balance">
+      {cta.description}
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <Button size="lg" {...bookingLinkAttrs(localizedPath('/contact', locale))}>
+        {cta.primary}
+        <Icon name="arrow-right" size="sm" />
+      </Button>
+      {whatsAppHref && (
+        <Button size="lg" variant="outline" class="cta-btn-brand" href={whatsAppHref}>
+          <Icon name="whatsapp" size="sm" />
+          {cta.secondary}
+        </Button>
+      )}
+    </div>
+  </CtaBand>
+</section>

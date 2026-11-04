@@ -456,8 +456,8 @@
       "includedLabel": "What you get",
       "hero": {
         "badge": "Services",
-        "titleLead": "Websites, SaaS platforms",
-        "titleHighlight": "and AI-first MVPs",
+        "titleLead": "Website design, SaaS platforms",
+        "titleHighlight": "and MVP development",
         "description": "Three ways to launch, one team: from a sharper website to a full software product, designed and built for the Gulf.",
         "jumpLabels": [
           "Websites",
@@ -468,6 +468,7 @@
       "web": {
         "badge": "Websites",
         "heading": "Web design & development",
+        "more": "More about website design",
         "paragraphs": [
           "Your website is often the first conversation a customer has with you. It needs to look credible, load fast and make the next step obvious.",
           "We design and build bilingual websites in Arabic and English around your business and your customers. They go live within a week, with right-to-left layouts done properly and every page built to rank in Google and be understood by AI assistants. The domain and website are in your name: you own it."
@@ -567,6 +568,7 @@
       "saas": {
         "badge": "SaaS",
         "heading": "SaaS products",
+        "more": "More about SaaS development",
         "paragraphs": [
           "A SaaS product is software your customers subscribe to and use online, from booking platforms and dashboards to marketplaces and internal tools.",
           "We take you from idea to a working platform in 4 to 8 weeks, built in Python and Django, the framework behind Instagram. You get user accounts and roles, subscriptions and billing, admin dashboards and the integrations your business runs on, all built for Gulf customers, with local payment methods and GCC hosting when your sector requires it."
@@ -722,6 +724,549 @@
         "badge": "Let's talk",
         "heading": "Let's talk about what you need",
         "description": "The first call is free, with no obligation. You get honest answers, and then one clear proposal with a timeline and a fixed price.",
+        "primary": "Book a free call",
+        "secondary": "Chat on WhatsApp"
+      }
+    },
+    "serviceSaas": {
+      "meta": {
+        "title": "SaaS Development for Saudi Arabia, the UAE & the GCC",
+        "description": "SaaS and web application development for Gulf startups and businesses. A working platform in 4 to 8 weeks, at one fixed price, built in Python and Django."
+      },
+      "breadcrumb": "SaaS development",
+      "hero": {
+        "badge": "SaaS development",
+        "titleLead": "SaaS development",
+        "titleHighlight": "for Gulf startups and businesses",
+        "description": "We take your idea from a first call to a working platform in 4 to 8 weeks, at one fixed price agreed before we start."
+      },
+      "answer": {
+        "heading": "Looking for a SaaS development company?",
+        "paragraphs": [
+          "PickMySaaS is a founder-led studio that builds SaaS platforms and web applications for businesses in Saudi Arabia, the UAE and across the GCC. A first version typically takes 4 to 8 weeks and costs one fixed price, agreed in your proposal before any work starts.",
+          "You work directly with Asfand, the person who designs and builds your product. There are no account managers and no handoffs. We work fully remotely, with a demo every week, so you see the product take shape and can steer it."
+        ]
+      },
+      "types": {
+        "badge": "What we build",
+        "heading": "Software your customers log in to",
+        "lead": "SaaS means customers subscribe to your software and use it online. These are the kinds of product we build.",
+        "items": [
+          {
+            "icon": "calendar",
+            "title": "Booking platforms",
+            "description": "Customers pick a time and pay or confirm online, and your team manages it all from one screen."
+          },
+          {
+            "icon": "layout-dashboard",
+            "title": "Dashboards",
+            "description": "One place for your customers or staff to see their numbers, orders, reports and status."
+          },
+          {
+            "icon": "map-pin",
+            "title": "Directories and marketplaces",
+            "description": "Searchable listings with maps and owner accounts, earning through paid plans or advertising."
+          },
+          {
+            "icon": "wrench",
+            "title": "Internal tools",
+            "description": "Software that replaces the spreadsheets and WhatsApp threads your team runs on today."
+          },
+          {
+            "icon": "sparkles",
+            "title": "AI products",
+            "description": "Assistants that answer in Arabic and English, and tools that read and process documents."
+          },
+          {
+            "icon": "plug",
+            "title": "APIs and integrations",
+            "description": "Connections between your product and the systems your business already uses."
+          }
+        ]
+      },
+      "fit": {
+        "badge": "Before you build",
+        "heading": "Do you actually need SaaS?",
+        "lead": "Often you don’t, at least not yet. This is how we’d decide on a first call.",
+        "options": [
+          {
+            "title": "A website is enough",
+            "when": "Customers need to find you, trust you and contact you. Nobody needs to log in.",
+            "next": "Start with a website from $300.",
+            "link": "websites",
+            "linkLabel": "See website packages"
+          },
+          {
+            "title": "Start with an MVP",
+            "when": "You have an idea but no paying users yet, and you need to find out whether people want it.",
+            "next": "Build the smallest version real users can try.",
+            "link": "mvp",
+            "linkLabel": "See AI-first MVPs"
+          },
+          {
+            "title": "Build the SaaS platform",
+            "when": "People already want it or pay for it by hand, and you need accounts, roles and subscriptions to serve them.",
+            "next": "Book a call and we’ll scope the first version.",
+            "link": "contact",
+            "linkLabel": "Book a free call"
+          }
+        ]
+      },
+      "scope": {
+        "badge": "Scope",
+        "heading": "What goes in the first version",
+        "lead": "Most SaaS projects run late because they try to launch everything. We help you decide what to build first and what can wait.",
+        "nowTitle": "Build first",
+        "now": [
+          "The one job customers will pay for, working from start to finish",
+          "User accounts and roles, so each person sees only what they should",
+          "Plans and subscriptions",
+          "An admin dashboard to run the business without calling a developer",
+          "Arabic and English, with right-to-left layouts from day one",
+          "One payment method that works in your first country"
+        ],
+        "laterTitle": "Usually wait",
+        "later": [
+          "Extra countries, currencies and payment providers",
+          "Advanced reports, until you know what customers ask for",
+          "Integrations nobody has requested yet",
+          "AI features that don’t save time or money",
+          "Features for customer types you don’t have yet"
+        ],
+        "note": "We don’t build native iPhone or Android apps. We build fast web apps that work on any phone, with no app store needed."
+      },
+      "cost": {
+        "badge": "Cost",
+        "heading": "What affects the price of a SaaS product",
+        "lead": "We don’t publish one SaaS price, because a booking tool and a multi-country marketplace are different projects. These are the things that move your fixed price.",
+        "factorLabel": "What we look at",
+        "simplerLabel": "Keeps it simpler",
+        "moreLabel": "Takes more work",
+        "rows": [
+          {
+            "factor": "User types",
+            "simpler": "One customer type and one admin",
+            "more": "Several roles with different screens and permissions"
+          },
+          {
+            "factor": "Payments",
+            "simpler": "Manual invoices or one provider",
+            "more": "Subscriptions across several countries and providers"
+          },
+          {
+            "factor": "Integrations",
+            "simpler": "None, or one well-documented service",
+            "more": "Older systems such as your existing CRM or accounting software"
+          },
+          {
+            "factor": "Countries",
+            "simpler": "One country and currency",
+            "more": "Several countries with their own rules and prices"
+          },
+          {
+            "factor": "AI",
+            "simpler": "No AI, or one clear task",
+            "more": "Assistants trained on your data, in Arabic and English"
+          },
+          {
+            "factor": "Hosting",
+            "simpler": "Standard cloud hosting",
+            "more": "GCC hosting when your sector requires it"
+          }
+        ],
+        "note": "You get one fixed price in your proposal, with no hourly billing. You pay by invoice and bank transfer: 50% upfront and 50% once the job is done."
+      },
+      "gulf": {
+        "badge": "Selling in the Gulf",
+        "heading": "Payments and data rules differ by country",
+        "lead": "A platform that sells across the GCC can’t assume one setup works everywhere. Here is what we checked on 4 November 2026.",
+        "countryLabel": "Country",
+        "stripeLabel": "Stripe lists it as supported",
+        "lawLabel": "Data protection law to plan for",
+        "rows": [
+          {
+            "country": "United Arab Emirates",
+            "stripe": "Yes",
+            "law": "Federal Decree-Law No. 45 of 2021",
+            "url": "https://www.clydeco.com/en/insights/2021/11/uae-issues-landmark-personal-data-protection-law"
+          },
+          {
+            "country": "Saudi Arabia",
+            "stripe": "No",
+            "law": "Personal Data Protection Law, fully enforceable since 14 September 2024",
+            "url": "https://www.clydeco.com/fr/insights/2024/09/saudi-arabia-s-personal-data-protection-law-become"
+          },
+          {
+            "country": "Oman",
+            "stripe": "No",
+            "law": "Personal Data Protection Law, Royal Decree 6/2022",
+            "url": "https://www.clydeco.com/en/insights/2022/2/data-protection-law-issued-in-oman"
+          },
+          {
+            "country": "Qatar",
+            "stripe": "No",
+            "law": "Confirm with a local adviser"
+          },
+          {
+            "country": "Kuwait",
+            "stripe": "No",
+            "law": "Confirm with a local adviser"
+          },
+          {
+            "country": "Bahrain",
+            "stripe": "No",
+            "law": "Confirm with a local adviser"
+          }
+        ],
+        "sourceLabel": "Stripe’s list of supported countries",
+        "sourceUrl": "https://stripe.com/global",
+        "notes": [
+          "What this means for you: where Stripe isn’t an option, we connect PayPal or another provider that works in your country, and we confirm the right one with you before we build.",
+          "The UAE and Oman laws both control the use of personal data and sending it abroad, and the Saudi law sets conditions on transfers too. So where your data is stored, and what users agree to at sign-up, are decisions to make early. This is planning information, not legal advice."
+        ]
+      },
+      "example": {
+        "badge": "A real example",
+        "heading": "How GulfNurseries was built to pay for itself",
+        "lead": "A client project: one directory covering 3,000+ nurseries across all six GCC countries.",
+        "points": [
+          {
+            "title": "The problem",
+            "text": "Parents had no single place to compare nurseries. Information was scattered across social media, outdated listings and word of mouth."
+          },
+          {
+            "title": "How it earns",
+            "text": "Listings are free to claim, which gets owners to keep them up to date. Paid plans and advertising then give owners more visibility."
+          },
+          {
+            "title": "How people use it",
+            "text": "Parents search by city and neighbourhood on a map, compare fees and curriculum, then call or WhatsApp in one tap. In the Gulf, that’s how people contact a business."
+          },
+          {
+            "title": "How it gets found",
+            "text": "Parent guides on licensing, starting age and choosing a nursery are written to rank in search, so growth doesn’t depend only on ads."
+          }
+        ],
+        "link": "Read the GulfNurseries case study",
+        "honest": "GulfNurseries is a directory with paid plans. We’re showing it because it uses the same parts as a SaaS product: accounts, plans and multi-country data."
+      },
+      "stack": {
+        "badge": "How we build",
+        "heading": "Proven technology, and code you own",
+        "lead": "Boring choices are good for a business. These keep your product fast, secure and easy to hand to another developer one day.",
+        "items": [
+          {
+            "title": "Python and Django",
+            "text": "The framework behind Instagram. User logins, permissions and an admin area come built in, so your budget goes to what makes your product different."
+          },
+          {
+            "title": "A demo every week",
+            "text": "We work in short sprints, so you see real software early and can change direction before it gets expensive."
+          },
+          {
+            "title": "You own everything",
+            "text": "The domain is registered in your name and the code is handed over when the project is complete. No lock-in."
+          },
+          {
+            "title": "After launch",
+            "text": "We stay reachable, and the monthly care plan keeps your product updated, secure and backed up."
+          }
+        ]
+      },
+      "faq": {
+        "badge": "Questions",
+        "heading": "SaaS development questions",
+        "lead": "What founders and businesses ask before they start.",
+        "items": [
+          {
+            "question": "How much does SaaS development cost?",
+            "answer": "Every product is different, so you get one fixed price in your proposal, agreed before we start. There is no hourly billing. You pay 50% upfront and 50% once the job is done, by invoice and bank transfer."
+          },
+          {
+            "question": "How long does it take to build a SaaS product?",
+            "answer": "Typically 4 to 8 weeks for a first version. Your proposal names the exact timeline."
+          },
+          {
+            "question": "What is the difference between SaaS and a web application?",
+            "answer": "A web application is software people use in a browser, with nothing to install. SaaS is a web application your customers subscribe to. We build both."
+          },
+          {
+            "question": "Do you work with clients in Saudi Arabia and the UAE without a local office?",
+            "answer": "Yes. We work fully remotely, by video, WhatsApp and email, across Gulf time zones. You never need to meet in person."
+          },
+          {
+            "question": "Can you take over a product someone else built?",
+            "answer": "Usually, yes. We review it first and tell you honestly whether to improve it or rebuild."
+          },
+          {
+            "question": "Can the platform be in Arabic?",
+            "answer": "Yes. Bilingual Arabic and English is our default, not an add-on."
+          },
+          {
+            "question": "Should I hire a local or an international developer?",
+            "answer": "A local team can meet you in person. A remote studio like ours costs you no travel and works by video and WhatsApp. Either way, ask who will actually build your product and whether you’ll own the code."
+          }
+        ]
+      },
+      "cta": {
+        "heading": "Tell us what your platform should do",
+        "description": "Book a free 30-minute call. We’ll talk through your users and your deadline, tell you honestly if you need SaaS at all, and send one clear proposal.",
+        "primary": "Book a free call",
+        "secondary": "Chat on WhatsApp"
+      }
+    },
+    "serviceWebsites": {
+      "meta": {
+        "title": "Website Design for Gulf Businesses, from $300",
+        "description": "Website design and development in Arabic and English for businesses in the UAE, Saudi Arabia and the GCC. Fixed packages at $300, $500 and from $700."
+      },
+      "breadcrumb": "Website design",
+      "hero": {
+        "badge": "Website design",
+        "titleLead": "Website design",
+        "titleHighlight": "for Gulf businesses",
+        "description": "Bilingual websites in Arabic and English, at published fixed prices."
+      },
+      "answer": {
+        "heading": "Looking for a web design company?",
+        "paragraphs": [
+          "PickMySaaS is a founder-led studio that designs and builds business websites for companies in the UAE, Saudi Arabia, Oman and across the GCC. Packages cost $300, $500 or from $700, and the prices are published, so you know the cost before you call.",
+          "Starter and Business websites go live in 1 week from when we have your content. Every site is built in Arabic and English, and the domain and website are in your name."
+        ]
+      },
+      "guide": {
+        "badge": "Which package",
+        "heading": "Which package fits your business",
+        "lead": "Start with what your website has to do. You can upgrade later.",
+        "situationLabel": "Your situation",
+        "packageLabel": "Choose",
+        "rows": [
+          {
+            "situation": "You need customers to find you, trust you and call or WhatsApp. Three pages are enough.",
+            "pkg": "Starter, $300"
+          },
+          {
+            "situation": "You’re a clinic, restaurant or service business that needs booking, a menu or listings.",
+            "pkg": "Business, $500"
+          },
+          {
+            "situation": "You want to sell online with a small store and get order alerts by email.",
+            "pkg": "Business, $500"
+          },
+          {
+            "situation": "You have up to 15 pages, a bigger store, or need CRM, booking and delivery connected.",
+            "pkg": "Premium, from $700"
+          },
+          {
+            "situation": "You want your Arabic and English copy written for you, with an SEO content plan.",
+            "pkg": "Premium, from $700"
+          },
+          {
+            "situation": "Customers need to log in, subscribe or manage accounts.",
+            "pkg": "SaaS, by proposal",
+            "link": "saas"
+          }
+        ]
+      },
+      "market": {
+        "badge": "Our research",
+        "heading": "Which language your customers search in",
+        "lead": "In November 2026 we studied Google Ads Keyword Planner data for website searches in all six GCC countries. It changes how a site should be built in each one.",
+        "countryLabel": "Country",
+        "leadLabel": "Leading language",
+        "dataLabel": "Terms reaching 100+ searches a month",
+        "meaningLabel": "What it means for your site",
+        "rows": [
+          {
+            "country": "Saudi Arabia",
+            "language": "Arabic",
+            "data": "9 Arabic, 1 English",
+            "meaning": "Lead in Arabic, with titles in the words Saudis actually search."
+          },
+          {
+            "country": "UAE",
+            "language": "English",
+            "data": "26 English, 3 Arabic",
+            "meaning": "Lead in English. Keep a real Arabic version: few strong Arabic pages compete for those searches."
+          },
+          {
+            "country": "Qatar",
+            "language": "English",
+            "data": "2 English, 0 Arabic",
+            "meaning": "English for hiring searches, with Arabic close behind on smaller terms."
+          },
+          {
+            "country": "Oman",
+            "language": "English",
+            "data": "1 English group, 0 Arabic",
+            "meaning": "English for hiring searches. Local competitors we reviewed were English only, so Arabic stands out."
+          },
+          {
+            "country": "Kuwait",
+            "language": "Arabic, slightly",
+            "data": "None",
+            "meaning": "A small market in both languages. Arabic has more measurable terms."
+          },
+          {
+            "country": "Bahrain",
+            "language": "Mixed",
+            "data": "None",
+            "meaning": "A small market in both languages. Build both."
+          }
+        ],
+        "note": "Keyword Planner shows ranges, not exact counts, and we split the terms by the script they’re written in. Treat this as a direction, not a precise measure."
+      },
+      "arabic": {
+        "badge": "Arabic websites",
+        "heading": "What “Arabic done right” actually means",
+        "lead": "Many “bilingual” sites are English sites with translated text. These are the differences a customer and Google both notice.",
+        "shortcutLabel": "The shortcut",
+        "oursLabel": "What we do",
+        "rows": [
+          {
+            "shortcut": "Flipping the page with CSS",
+            "ours": "Setting the direction in the HTML, as the W3C recommends, so the layout mirrors properly"
+          },
+          {
+            "shortcut": "One address with a language toggle",
+            "ours": "A separate Arabic address, like /ar/, that Google can list and pair with the English page"
+          },
+          {
+            "shortcut": "English keywords translated word for word",
+            "ours": "Arabic titles built on the words people really search, such as تصميم مواقع"
+          },
+          {
+            "shortcut": "English titles left on Arabic pages",
+            "ours": "Arabic titles and descriptions for what Google shows in search results"
+          },
+          {
+            "shortcut": "Forms and error messages still in English",
+            "ours": "Buttons, forms and error messages in the language of the page"
+          },
+          {
+            "shortcut": "Arabic squeezed into sizes set for English",
+            "ours": "Arabic type sized on its own, so headings fit on a phone and read comfortably"
+          }
+        ],
+        "sourceLabel": "W3C guidance on page direction",
+        "sourceUrl": "https://www.w3.org/International/questions/qa-html-dir",
+        "proof": "You can see this on the site you’re reading.",
+        "proofLink": "Open this page in Arabic"
+      },
+      "maps": {
+        "badge": "Google Maps",
+        "heading": "Getting into the map box on Google",
+        "paragraphs": [
+          "We reviewed 54 Google results pages across the six GCC countries in November 2026. Every “web design company” search we checked for Dubai, Riyadh and Doha showed a map box of three local businesses above the regular results. Your customers’ searches for “clinic in Riyadh” or “restaurant in Dubai” work in a similar way.",
+          "A business usually needs a real address and a Google Business Profile to appear there. That’s why every package includes Google Business setup: you have the address, so this is an opening a website alone can’t reach. Google decides who appears, so nobody can honestly promise you a place in it."
+        ]
+      },
+      "compare": {
+        "badge": "Comparing offers",
+        "heading": "Six questions to ask any web designer",
+        "lead": "Ask these before you pay anyone, including us. Here are our answers.",
+        "items": [
+          {
+            "question": "Who owns the domain and the website?",
+            "answer": "You do. Both are in your name, and the code is handed over at launch."
+          },
+          {
+            "question": "Who will I actually talk to?",
+            "answer": "Asfand, directly. The person on your first call designs and builds your site."
+          },
+          {
+            "question": "What exactly does the price include?",
+            "answer": "Hosting and SSL setup are in every package, along with a free domain and Google Business setup. The domain renews yearly at cost. Extra work is quoted separately."
+          },
+          {
+            "question": "How many rounds of changes do I get?",
+            "answer": "One on Starter, two on Business and three on Premium."
+          },
+          {
+            "question": "How do I pay?",
+            "answer": "By invoice and bank transfer: 50% upfront and 50% once the job is done."
+          },
+          {
+            "question": "What happens after launch?",
+            "answer": "Support is included for 2 weeks to 2 months, depending on the package. After that, the monthly care plan is optional."
+          }
+        ]
+      },
+      "prepare": {
+        "badge": "Getting started",
+        "heading": "What to have ready",
+        "lead": "Your timeline starts when we have your content, so this is the fastest way to go live. Don’t have it all? Tell us on the call and we’ll work out what’s missing.",
+        "items": [
+          "Your logo and brand colours, if you have them",
+          "Your services or products, with prices if you show them",
+          "Your address, opening hours, phone and WhatsApp number",
+          "Photos of your work, team or premises",
+          "Your current domain and website details, if you have one",
+          "Two or three websites you like, and why"
+        ]
+      },
+      "example": {
+        "badge": "A real example",
+        "heading": "Healing with Attia: a website that has to earn trust",
+        "lead": "A client project for a UK-certified psychotherapist with clients in Pakistan, the UK, the UAE and Saudi Arabia.",
+        "points": [
+          {
+            "title": "The problem",
+            "text": "People looking for therapy are often anxious and unsure where to start, so the site had to feel calm and make the first step easy."
+          },
+          {
+            "title": "The design",
+            "text": "A calm, uncluttered layout that puts trust and credentials first, with each service explained clearly."
+          },
+          {
+            "title": "The booking",
+            "text": "Booking through WhatsApp, the channel her clients already use every day, not a form they might abandon."
+          },
+          {
+            "title": "Being found",
+            "text": "A blog answering what people actually search for, such as how to choose a therapist and whether online therapy works."
+          }
+        ],
+        "link": "Read the Healing with Attia case study"
+      },
+      "faq": {
+        "badge": "Questions",
+        "heading": "Website design questions",
+        "lead": "What businesses ask before they start.",
+        "items": [
+          {
+            "question": "How much does a website cost?",
+            "answer": "Starter is $300 (about SAR 1,125 or AED 1,100), Business is $500 (about SAR 1,875 or AED 1,835) and Premium starts from $700 (about SAR 2,625 or AED 2,570)."
+          },
+          {
+            "question": "How long does it take to build a website?",
+            "answer": "Starter and Business go live in 1 week. Premium depends on your project. Timelines count business days, Sunday to Thursday, from when we have your content."
+          },
+          {
+            "question": "Do you work with businesses in the Gulf without a local office?",
+            "answer": "Yes. We work fully remotely, by video, WhatsApp and email, across Gulf time zones."
+          },
+          {
+            "question": "What happens to my current website?",
+            "answer": "It stays online until the new one is ready. Your content and domain come with you, and we redirect your old pages to protect your Google rankings."
+          },
+          {
+            "question": "Can you build an online store?",
+            "answer": "Yes. Stores are part of the Business and Premium packages. They can take bank transfer and cash on delivery, and we can connect Stripe, PayPal or another payment provider that works in your country."
+          },
+          {
+            "question": "Can I edit the website myself after launch?",
+            "answer": "Yes, if you want to. Tell us on the first call and we’ll set it up for easy editing. Or send us your changes under the care plan."
+          },
+          {
+            "question": "Will my website rank on Google?",
+            "answer": "Nobody can honestly guarantee a ranking. Every package includes SEO setup, and Business and Premium go further. Rankings then depend on your market and your content."
+          }
+        ]
+      },
+      "cta": {
+        "heading": "Not sure which package fits?",
+        "description": "Send us your current site or describe your business. We’ll tell you which package you need, and whether you need less than you think.",
         "primary": "Book a free call",
         "secondary": "Chat on WhatsApp"
       }

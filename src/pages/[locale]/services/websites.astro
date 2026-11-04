@@ -1,0 +1,13 @@
+---
+import WebsitesServiceView from '@/components/pages/views/WebsitesServiceView.astro';
+import { getSecondaryLocales } from '@/i18n';
+
+// Locale-prefixed Websites page (`/<locale>/services/websites`).
+export function getStaticPaths() {
+  return getSecondaryLocales().map((locale) => ({ params: { locale } }));
+}
+
+const { locale } = Astro.params;
+---
+
+<WebsitesServiceView locale={locale} />

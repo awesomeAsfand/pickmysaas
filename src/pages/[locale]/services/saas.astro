@@ -1,0 +1,13 @@
+---
+import SaasServiceView from '@/components/pages/views/SaasServiceView.astro';
+import { getSecondaryLocales } from '@/i18n';
+
+// Locale-prefixed SaaS page (`/<locale>/services/saas`).
+export function getStaticPaths() {
+  return getSecondaryLocales().map((locale) => ({ params: { locale } }));
+}
+
+const { locale } = Astro.params;
+---
+
+<SaasServiceView locale={locale} />

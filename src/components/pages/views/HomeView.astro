@@ -129,6 +129,8 @@ const cta = tData<{ badge: string; heading: string; description: string; primary
 )!;
 
 const servicesUrl = localizedPath('/services', locale);
+/** Where each service card leads, in card order. The AI card has no page of its own yet. */
+const serviceCardUrls = [localizedPath('/services/websites', locale), localizedPath('/services/saas', locale), servicesUrl];
 const whatsAppHref = whatsAppUrl(t('common.whatsappMessage', locale));
 const projectsUrl = localizedPath('/projects', locale);
 const aboutUrl = localizedPath('/about', locale);
@@ -232,7 +234,7 @@ const homeAlternates = getLocales().map((loc) => ({ locale: loc, url: localizedP
       <div class="grid gap-6 sm:grid-cols-3">
         {servicesSection.cards.map((card, i) => (
           <ProofTile
-            href={servicesUrl}
+            href={serviceCardUrls[i]}
             icon={card.icon}
             title={card.title}
             data-reveal
