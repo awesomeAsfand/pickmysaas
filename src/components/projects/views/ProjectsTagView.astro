@@ -16,7 +16,7 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import { Hero } from '@/components/hero';
 import { t, defaultLocale } from '@/i18n';
-import { getProjectsBaseUrl } from '@/lib/projects';
+import { getProjectsBaseUrl, getProjectTagAlternates } from '@/lib/projects';
 
 interface Props {
   /** Locale whose projects this archive renders. Defaults to the site default. */
@@ -33,13 +33,16 @@ const { locale = defaultLocale, tag, projects, visibleTags } = Astro.props;
 
 const projectsHref = getProjectsBaseUrl(locale);
 const countKey = projects.length === 1 ? 'projects.tagCountOne' : 'projects.tagCountOther';
+const languageAlternates = await getProjectTagAlternates(tag, locale);
 ---
 
 <PageLayout
   title={t('projects.tagMetaTitle', locale, { tag })}
   description={t('projects.tagMetaDescription', locale, { tag })}
+  noindex
   eagerReveal
   footerBackground="secondary"
+  languageAlternates={languageAlternates}
 >
   <Hero layout="centered" size="sm" class="isolate" showHeroHalo>
     <Badge slot="badge" variant="brand" pill>

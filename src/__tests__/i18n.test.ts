@@ -87,9 +87,19 @@ describe('i18n getSecondaryLocales()', () => {
 
 describe('i18n localizedPath()', () => {
   it('leaves default-locale paths unprefixed', () => {
-    expect(localizedPath('/about')).toBe('/about');
+    expect(localizedPath('/about')).toBe('/about/');
     expect(localizedPath('/')).toBe('/');
-    expect(localizedPath('blog/hello')).toBe('/blog/hello');
+    expect(localizedPath('blog/hello')).toBe('/blog/hello/');
+  });
+
+  it('ends page URLs in a slash, as their canonical URLs do', () => {
+    expect(localizedPath('/about/')).toBe('/about/');
+    expect(localizedPath('/about#faq')).toBe('/about/#faq');
+    expect(localizedPath('/contact?from=home')).toBe('/contact/?from=home');
+  });
+
+  it('leaves file URLs without a slash', () => {
+    expect(localizedPath('/rss.xml')).toBe('/rss.xml');
   });
 });
 
@@ -146,12 +156,12 @@ describe('i18n stripLocaleFromPath()', () => {
 
 describe('i18n swapLocaleInPath()', () => {
   it('returns the path unchanged when targeting the default locale (no prefix added)', () => {
-    expect(swapLocaleInPath('/about', 'en')).toBe('/about');
+    expect(swapLocaleInPath('/about', 'en')).toBe('/about/');
   });
 
   it('prefixes the path with a secondary locale', () => {
-    expect(swapLocaleInPath('/about', 'ar')).toBe('/ar/about');
-    expect(swapLocaleInPath('/ar/about', 'en')).toBe('/about');
+    expect(swapLocaleInPath('/about', 'ar')).toBe('/ar/about/');
+    expect(swapLocaleInPath('/ar/about', 'en')).toBe('/about/');
   });
 });
 

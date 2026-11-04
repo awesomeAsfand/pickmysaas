@@ -88,14 +88,15 @@ const ogImageType = getImageType(ogImage);
 // recommendation. Prefer caller-provided alternates (e.g. a blog post's real
 // per-locale URLs); otherwise fall back to swapping the locale segment of the
 // current path, which is correct for pages that share a slug across locales.
-const i18nOn = i18nIsEnabled() || (localeAlternates?.length ?? 0) > 1;
+// A noindexed page isn't a search result, so it has no alternates to declare.
+const i18nOn = !noindex && (i18nIsEnabled() || (localeAlternates?.length ?? 0) > 1);
 const resolvedAlternates =
   localeAlternates && localeAlternates.length > 0
     ? localeAlternates
     : getLocales().map((loc) => ({ locale: loc, url: swapLocaleInPath(Astro.url.pathname, loc) }));
 // hreflang has to repeat each page's canonical URL exactly, and canonical URLs
-// end in a slash (directory-style output), while some alternates — project
-// translations, for one — are built without it.
+// end in a slash (directory-style output). `localizedPath` already builds them
+// that way; this covers an alternate a caller wrote by hand.
 const matchCanonical = (url: string) =>
   canonicalURL.pathname.endsWith('/') && !url.endsWith('/') && !/\.[a-z0-9]+$/i.test(url) ? `${url}/` : url;
 const hreflangAlternates = i18nOn

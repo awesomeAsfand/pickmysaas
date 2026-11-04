@@ -121,20 +121,33 @@ export function tData<T = unknown>(key: string, locale: Locale = defaultLocale):
 }
 
 /**
+ * Pages build to directories (`/about/index.html`), so a page's real URL and
+ * its canonical tag end in a slash, and a link without one goes through a
+ * redirect first. Files like `/rss.xml` keep their form, and a query or
+ * `#anchor` stays after the slash.
+ */
+function withTrailingSlash(path: string): string {
+  const end = path.search(/[?#]/);
+  const pathname = end === -1 ? path : path.slice(0, end);
+  if (pathname.endsWith('/') || /\.[a-z0-9]+$/i.test(pathname)) return path;
+  return `${pathname}/${path.slice(pathname.length)}`;
+}
+
+/**
  * Build a locale-prefixed URL. The default locale stays at the root
  * (no prefix) when `prefixDefaultLocale` is false, matching Astro's
  * native i18n routing behavior.
  */
 export function localizedPath(path: string, locale: Locale = defaultLocale): string {
-  const normalized = path.startsWith('/') ? path : `/${path}`;
+  const normalized = withTrailingSlash(path.startsWith('/') ? path : `/${path}`);
   // With i18n off, every configured locale still has its own home page (see
   // i18n.config.ts), so the root — the logo and the Home link — stays in the
   // reader's language. Every other page exists in the default locale only.
   if (!isEnabled()) {
-    return normalized === '/' && locale !== defaultLocale && isValidLocale(locale) ? `/${locale}` : normalized;
+    return normalized === '/' && locale !== defaultLocale && isValidLocale(locale) ? `/${locale}/` : normalized;
   }
   if (locale === defaultLocale) return normalized;
-  return `/${locale}${normalized === '/' ? '' : normalized}`;
+  return `/${locale}${normalized}`;
 }
 
 /**

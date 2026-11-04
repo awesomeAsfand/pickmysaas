@@ -402,8 +402,14 @@ export default defineConfig({
     mdx(),
     // While the blog is hidden (src/config/blog-visibility.ts), keep its
     // empty pages out of the sitemap so search engines aren't sent to them.
+    // Project tag pages stay out too: they only re-list the case studies and
+    // are noindexed (ProjectsTagView).
     sitemap({
-      filter: (page) => BLOG_VISIBLE || !/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?blog(\/|$)/.test(new URL(page).pathname),
+      filter: (page) => {
+        const { pathname } = new URL(page);
+        if (/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?projects\/tag\//.test(pathname)) return false;
+        return BLOG_VISIBLE || !/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?blog(\/|$)/.test(pathname);
+      },
     }),
     icon(),
     siteUrlCheck(),

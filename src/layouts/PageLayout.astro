@@ -24,9 +24,11 @@ interface Props {
    * - last section `bg-background-secondary` → footer `default`
    */
   footerBackground?: 'default' | 'secondary' | 'invert';
+  /** Language switcher links for a page whose translation isn't at the same path in each locale. */
+  languageAlternates?: Record<string, string>;
 }
 
-const { title, description, image, imageAlt, noindex, nofollow, showScrollProgress = false, eagerReveal = false, footerBackground = 'default' } = Astro.props;
+const { title, description, image, imageAlt, noindex, nofollow, showScrollProgress = false, eagerReveal = false, footerBackground = 'default', languageAlternates } = Astro.props;
 
 ---
 
@@ -48,6 +50,7 @@ const { title, description, image, imageAlt, noindex, nofollow, showScrollProgre
     showActiveState
     showCta={false}
     showScrollProgress={showScrollProgress}
+    languageAlternates={languageAlternates}
   />
 
   <main class="min-h-screen pt-16">

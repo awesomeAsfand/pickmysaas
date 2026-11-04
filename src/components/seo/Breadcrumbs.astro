@@ -19,10 +19,10 @@ interface Props {
 
 const { items, class: className } = Astro.props;
 
-// Build schema items with full URLs
+// Build schema items with full URLs. The last crumb has no link: it's this page.
 const schemaItems = items.map((item) => ({
   name: item.label,
-  url: item.href ? new URL(item.href, siteConfig.url).toString() : siteConfig.url,
+  url: new URL(item.href ?? Astro.url.pathname, siteConfig.url).toString(),
 }));
 
 const schema = createBreadcrumbSchema(schemaItems);

@@ -53,7 +53,7 @@ export async function buildRssFeed({
     .map((post) => {
       // getPostUrl prefixes the locale for every locale but the default one,
       // so a translated feed links to the translated pages.
-      const link = `${base}${getPostUrl(post.id, locale)}/`;
+      const link = `${base}${getPostUrl(post.id, locale)}`;
       const categories = post.data.tags
         .map((tag) => `<category>${escapeXml(tag)}</category>`)
         .join('\n        ');

@@ -185,7 +185,7 @@ function isActive(href: string): boolean {
   if (stripLocaleFromPath(href) === '/') {
     return currentPath === href || currentPath === `${href}/`;
   }
-  return currentPath === href || currentPath.startsWith(href + '/');
+  return currentPath === href || currentPath.startsWith(href.endsWith('/') ? href : `${href}/`);
 }
 
 function getSocialIconData(url: string): { icon: string; label: string } {

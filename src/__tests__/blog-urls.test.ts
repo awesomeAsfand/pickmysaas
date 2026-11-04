@@ -40,25 +40,25 @@ describe('blog URL helpers (i18n disabled — default)', () => {
   });
 
   it('builds an unprefixed post URL', () => {
-    expect(getPostUrl('en/hello-world')).toBe('/blog/hello-world');
+    expect(getPostUrl('en/hello-world')).toBe('/blog/hello-world/');
     // Even a non-default locale stays unprefixed while i18n is off.
-    expect(getPostUrl('nl/hallo-wereld', 'nl')).toBe('/blog/hallo-wereld');
+    expect(getPostUrl('nl/hallo-wereld', 'nl')).toBe('/blog/hallo-wereld/');
   });
 
   it('builds the blog index base URL', () => {
-    expect(getBlogBaseUrl()).toBe('/blog');
-    expect(getBlogBaseUrl('nl')).toBe('/blog');
+    expect(getBlogBaseUrl()).toBe('/blog/');
+    expect(getBlogBaseUrl('nl')).toBe('/blog/');
   });
 
   it('maps page 1 to the blog root and pages 2+ to /blog/page/N', () => {
-    expect(getBlogPageUrl(1)).toBe('/blog');
-    expect(getBlogPageUrl(2)).toBe('/blog/page/2');
-    expect(getBlogPageUrl(5)).toBe('/blog/page/5');
+    expect(getBlogPageUrl(1)).toBe('/blog/');
+    expect(getBlogPageUrl(2)).toBe('/blog/page/2/');
+    expect(getBlogPageUrl(5)).toBe('/blog/page/5/');
   });
 
   it('builds a tag URL from the slugified tag', () => {
-    expect(getTagUrl('astro-rocket')).toBe('/blog/tag/astro-rocket');
-    expect(getTagUrl('Web Performance')).toBe('/blog/tag/web-performance');
+    expect(getTagUrl('astro-rocket')).toBe('/blog/tag/astro-rocket/');
+    expect(getTagUrl('Web Performance')).toBe('/blog/tag/web-performance/');
   });
 
   it('exposes no secondary locales when i18n is off', () => {

@@ -19,6 +19,7 @@ import BlogCta from '@/components/blog/BlogCta.astro';
 import {
   BLOG_POSTS_PER_PAGE,
   BLOG_TAG_CLOUD_LIMIT,
+  BLOG_VISIBLE,
   collectTopTags,
   getBlogBaseUrl,
   getBlogPageUrl,
@@ -51,6 +52,7 @@ const topTags = collectTopTags(posts, BLOG_TAG_CLOUD_LIMIT);
 <PageLayout
   title={t('blog.pageMetaTitle', locale, { page })}
   description={t('blog.pageMetaDescription', locale, { page, total: totalPages })}
+  noindex={!BLOG_VISIBLE}
   showScrollProgress
   eagerReveal
   footerBackground="secondary"

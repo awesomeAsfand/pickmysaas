@@ -137,9 +137,8 @@ const blogUrl = localizedPath('/blog', locale);
 
 // Every configured locale has a home page, even with i18n off (see
 // i18n.config.ts), so they are offered as alternates: hreflang tags and the
-// header language switcher. The trailing slash matches the canonical URL
-// (`/ar/`), which hreflang has to repeat exactly.
-const homeAlternates = getLocales().map((loc) => ({ locale: loc, url: localizedPath('/', loc).replace(/\/?$/, '/') }));
+// header language switcher.
+const homeAlternates = getLocales().map((loc) => ({ locale: loc, url: localizedPath('/', loc) }));
 ---
 
 <LandingLayout
@@ -160,16 +159,16 @@ const homeAlternates = getLocales().map((loc) => ({ locale: loc, url: localizedP
        the body this colour while the hero covers that edge, and clears it
        after. Same value as --bar-color in global.css, which ends the hero's
        gradient. See `paintBody` in BaseLayout.astro. -->
-  <Hero layout="centered" size="xl" class="hero-dark-gradient" fullHeight data-header-flip-anchor data-bar-color="#000">
+  <Hero layout="centered" size="xl" class="hero-dark-gradient max-sm:!pt-24" fullHeight data-header-flip-anchor data-bar-color="#000">
     <Badge slot="badge" variant="brand" pill pulse class="dark:text-brand-200">{hero.badge}</Badge>
 
-    {/* 12.6vw fills the mobile column (~95-98% at 320-390px), sized to the
-        English demo strings — translated hero copy is the site owner's to
-        refit. The 3rem cap keeps the size continuous with sm:text-5xl at
-        the 640px boundary. */}
-    <h1 slot="title" class="!text-[clamp(2rem,12.6vw,3rem)] sm:!text-5xl md:!text-6xl lg:!text-7xl">
-      <span class="text-brand-600 dark:text-foreground [-webkit-text-fill-color:currentColor] whitespace-nowrap">{hero.titleLine1}</span><br />
-      <span class="text-brand-600 dark:text-foreground [-webkit-text-fill-color:currentColor]">{hero.titleLine2}</span>
+    {/* 10.5vw fits the English first line on one line at 320-430px. The longer
+        Arabic heading takes 8vw to stay at three lines, which keeps the button
+        clear of the cookie banner. The 3rem cap keeps the size continuous with
+        sm:text-5xl at the 640px boundary. */}
+    <h1 slot="title" class="!text-[clamp(2rem,10.5vw,3rem)] max-sm:rtl:!text-[8vw] sm:!text-5xl md:!text-6xl lg:!text-7xl">
+      <span class="block !text-balance text-brand-600 dark:text-foreground [-webkit-text-fill-color:currentColor]">{hero.titleLine1}</span>
+      <span class="block !text-balance text-brand-600 dark:text-foreground [-webkit-text-fill-color:currentColor]">{hero.titleLine2}</span>
     </h1>
 
     <p slot="description" class="!text-balance">

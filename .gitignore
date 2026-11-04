@@ -48,5 +48,9 @@ coverage/
 # Claude Code
 .claude/
 
+# Private SEO briefs and keyword research (this repo is public)
+SEO and AEO
+docs/
+
 # npm lockfile (pnpm only)
 package-lock.json

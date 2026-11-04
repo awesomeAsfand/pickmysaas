@@ -34,30 +34,30 @@ describe('getPostTranslations', () => {
   it('resolves a uid-matched translation that lives at a different slug', async () => {
     const result = await getPostTranslations('en/hello', 'en', 'greeting');
     expect(result).toEqual([
-      { locale: 'en', url: '/blog/hello' },
-      { locale: 'nl', url: '/nl/blog/hallo' },
+      { locale: 'en', url: '/blog/hello/' },
+      { locale: 'nl', url: '/nl/blog/hallo/' },
     ]);
   });
 
   it('is symmetric from the secondary locale', async () => {
     const result = await getPostTranslations('nl/hallo', 'nl', 'greeting');
     expect(result).toEqual([
-      { locale: 'en', url: '/blog/hello' },
-      { locale: 'nl', url: '/nl/blog/hallo' },
+      { locale: 'en', url: '/blog/hello/' },
+      { locale: 'nl', url: '/nl/blog/hallo/' },
     ]);
   });
 
   it('falls back to an identically-slugged translation when there is no uid', async () => {
     const result = await getPostTranslations('en/about-us', 'en');
     expect(result).toEqual([
-      { locale: 'en', url: '/blog/about-us' },
-      { locale: 'nl', url: '/nl/blog/about-us' },
+      { locale: 'en', url: '/blog/about-us/' },
+      { locale: 'nl', url: '/nl/blog/about-us/' },
     ]);
   });
 
   it('returns only the post itself when no translation exists', async () => {
     const result = await getPostTranslations('en/solo', 'en');
-    expect(result).toEqual([{ locale: 'en', url: '/blog/solo' }]);
+    expect(result).toEqual([{ locale: 'en', url: '/blog/solo/' }]);
   });
 
   it('never points at a draft translation', async () => {

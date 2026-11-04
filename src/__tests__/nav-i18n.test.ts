@@ -19,32 +19,32 @@ import { getNavItems, getLogoHref, resolveNavItem, type NavItem } from '@/config
 describe('nav config — locale resolution (en default, ar secondary)', () => {
   it('keeps default-locale hrefs at the site root', () => {
     const items = getNavItems('en');
-    expect(items.find((i) => i.label === 'Blog')?.href).toBe('/blog');
-    expect(items.find((i) => i.label === 'About')?.href).toBe('/about');
+    expect(items.find((i) => i.label === 'Blog')?.href).toBe('/blog/');
+    expect(items.find((i) => i.label === 'About')?.href).toBe('/about/');
   });
 
   it('prefixes secondary-locale hrefs with the locale', () => {
     const items = getNavItems('ar');
     expect(items.map((i) => i.href)).toEqual([
-      '/ar',
-      '/ar/services',
-      '/ar/projects',
-      '/ar/blog',
-      '/ar/about',
-      '/ar/contact',
+      '/ar/',
+      '/ar/services/',
+      '/ar/projects/',
+      '/ar/blog/',
+      '/ar/about/',
+      '/ar/contact/',
     ]);
   });
 
   it('translates labels via the dictionary (labelKey)', () => {
     const ar = getNavItems('ar');
     // ar.json: nav.items.about = "من نحن", nav.items.services = "الخدمات"
-    expect(ar.find((i) => i.href === '/ar/about')?.label).toBe('من نحن');
-    expect(ar.find((i) => i.href === '/ar/services')?.label).toBe('الخدمات');
+    expect(ar.find((i) => i.href === '/ar/about/')?.label).toBe('من نحن');
+    expect(ar.find((i) => i.href === '/ar/services/')?.label).toBe('الخدمات');
   });
 
   it('points the logo at the locale home', () => {
     expect(getLogoHref('en')).toBe('/');
-    expect(getLogoHref('ar')).toBe('/ar');
+    expect(getLogoHref('ar')).toBe('/ar/');
   });
 
   it('never locale-prefixes external, mailto/tel, or anchor hrefs', () => {
@@ -69,13 +69,13 @@ describe('nav config — locale resolution (en default, ar secondary)', () => {
     };
     expect(resolveNavItem(item, 'ar')).toEqual({
       label: 'تواصل معنا',
-      href: '/ar/tawasal',
+      href: '/ar/tawasal/',
       external: undefined,
     });
     // The default locale is unaffected by an ar-only override.
     expect(resolveNavItem(item, 'en')).toEqual({
       label: 'Contact',
-      href: '/contact',
+      href: '/contact/',
       external: undefined,
     });
   });

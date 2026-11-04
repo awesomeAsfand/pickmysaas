@@ -24,28 +24,20 @@ export function createWebsiteSchema(): WithContext<WebSite> {
 }
 
 /**
- * Create Person schema for Astro Rocket
+ * Create Person schema for the founder
  */
 export function createPersonSchema(): WithContext<Person> {
   return {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    name: 'Astro Rocket',
-    jobTitle: 'Web Designer & Developer',
-    url: siteConfig.url,
-    email: siteConfig.email,
-    ...(siteConfig.authorImage ? { image: `${siteConfig.url}${siteConfig.authorImage}` } : {}),
-    ...(siteConfig.address?.city
-      ? {
-          address: {
-            '@type': 'PostalAddress',
-            addressLocality: siteConfig.address.city,
-            addressRegion: 'Noord-Brabant',
-            addressCountry: 'NL',
-          },
-        }
-      : {}),
-    sameAs: siteConfig.socialLinks,
+    name: 'Asfand Yar Khan',
+    jobTitle: 'Founder',
+    url: `${siteConfig.url}/about/`,
+    worksFor: {
+      '@type': 'Organization',
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
   };
 }
 
@@ -65,9 +57,11 @@ export function createProfessionalServiceSchema(): WithContext<LocalBusiness> {
       ? {
           address: {
             '@type': 'PostalAddress',
+            streetAddress: siteConfig.address.street,
             addressLocality: siteConfig.address.city,
-            addressRegion: 'Noord-Brabant',
-            addressCountry: 'NL',
+            addressRegion: siteConfig.address.state,
+            postalCode: siteConfig.address.zip,
+            addressCountry: siteConfig.address.country,
           },
         }
       : {}),
@@ -78,7 +72,6 @@ export function createProfessionalServiceSchema(): WithContext<LocalBusiness> {
       { '@type': 'Country', name: 'Kuwait' },
       { '@type': 'Country', name: 'Bahrain' },
       { '@type': 'Country', name: 'Oman' },
-      { '@type': 'Country', name: 'Worldwide' },
     ],
     sameAs: siteConfig.socialLinks,
   };

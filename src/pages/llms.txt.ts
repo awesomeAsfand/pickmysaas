@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import siteConfig from '@/config/site.config';
 import { defaultLocale } from '@/i18n';
-import { getPublishedPosts, getPostUrl, getRssUrl } from '@/lib/blog';
+import { BLOG_VISIBLE, getBlogBaseUrl, getPublishedPosts, getPostUrl, getRssUrl } from '@/lib/blog';
 import { getVisibleProjects, getProjectUrl } from '@/lib/projects';
 import { getNavItems } from '@/config/nav.config';
 
@@ -66,8 +66,9 @@ export const GET: APIRoute = async ({ site }) => {
     )
     .join('\n');
 
+  // A hidden blog is left out, along with its RSS feed below.
   const pageLines = getNavItems(defaultLocale)
-    .filter((item) => !item.external)
+    .filter((item) => !item.external && (BLOG_VISIBLE || item.href !== getBlogBaseUrl(defaultLocale)))
     .map((item) => line(item.label, `${base}${item.href}`));
 
   if (hasComponentsPage) {
@@ -103,7 +104,7 @@ export const GET: APIRoute = async ({ site }) => {
     `## More`,
     ``,
     line('Sitemap', `${base}/sitemap-index.xml`),
-    line('RSS feed', `${base}${getRssUrl(defaultLocale)}`),
+    ...(BLOG_VISIBLE ? [line('RSS feed', `${base}${getRssUrl(defaultLocale)}`)] : []),
     ``,
     `---`,
     ``,

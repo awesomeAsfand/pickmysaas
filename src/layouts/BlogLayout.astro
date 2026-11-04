@@ -15,7 +15,7 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import { createBlogPostSchema, createFAQSchema } from '@/lib/schema';
 import { getBlogOgPath, getDefaultOgPath, isShareableImage } from '@/lib/og/svg';
 import { t, getLocaleFromPath, localizedPath, getLocales } from '@/i18n';
-import { getPostSlug, getBlogBaseUrl } from '@/lib/blog';
+import { BLOG_VISIBLE, getPostSlug, getBlogBaseUrl } from '@/lib/blog';
 import { getPostTranslations } from '@/lib/post-links';
 import BlogCta from '@/components/blog/BlogCta.astro';
 
@@ -145,6 +145,7 @@ const languageAlternates = Object.fromEntries(
   description={description}
   image={ogImage}
   imageAlt={ogImageAlt}
+  noindex={!BLOG_VISIBLE}
   article={{
     publishedTime: publishedAt,
     modifiedTime: updatedAt,

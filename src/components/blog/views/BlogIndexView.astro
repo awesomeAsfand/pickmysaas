@@ -19,6 +19,7 @@ import BlogCta from '@/components/blog/BlogCta.astro';
 import {
   BLOG_POSTS_PER_PAGE,
   BLOG_TAG_CLOUD_LIMIT,
+  BLOG_VISIBLE,
   collectTopTags,
   getBlogPageUrl,
   getPostUrl,
@@ -50,7 +51,7 @@ const regularPosts = regularPostsAll.slice(0, BLOG_POSTS_PER_PAGE);
 const topTags = collectTopTags(posts, BLOG_TAG_CLOUD_LIMIT);
 ---
 
-<PageLayout title={t('blog.metaTitle', locale)} description={t('blog.metaDescription', locale)} showScrollProgress eagerReveal footerBackground={featuredPosts.length > 0 ? 'default' : 'secondary'}>
+<PageLayout title={t('blog.metaTitle', locale)} description={t('blog.metaDescription', locale)} noindex={!BLOG_VISIBLE} showScrollProgress eagerReveal footerBackground={featuredPosts.length > 0 ? 'default' : 'secondary'}>
   <Hero layout="centered" size="sm" class="isolate" showHeroHalo>
     <Badge slot="badge" variant="brand" pill>
       <Icon name="book" size="sm" />

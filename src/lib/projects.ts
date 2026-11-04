@@ -137,6 +137,33 @@ export async function getProjectTranslations(
   return results;
 }
 
+/**
+ * Language switcher links for a project tag page. Tag names are translated, so
+ * the same tag has a different slug in each locale. A translated project lists
+ * its tags in the same order as the original, which is how one is matched to
+ * the other. A locale with no match gets its projects index, so switching
+ * language never 404s.
+ */
+export async function getProjectTagAlternates(
+  tag: string,
+  currentLocale: string = defaultLocale,
+): Promise<Record<string, string>> {
+  const all = await getCollection('projects', ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true;
+  });
+  const source = all.find((p) => p.data.locale === currentLocale && p.data.tags.includes(tag));
+  const slug = source && getProjectSlug(source.id, currentLocale);
+  const position = source ? source.data.tags.indexOf(tag) : -1;
+
+  return Object.fromEntries(
+    getLocales().map((locale) => {
+      const translation = all.find((p) => p.data.locale === locale && getProjectSlug(p.id, locale) === slug);
+      const translatedTag = translation?.data.tags[position];
+      return [locale, translatedTag ? getProjectTagUrl(translatedTag, locale) : getProjectsBaseUrl(locale)];
+    }),
+  );
+}
+
 /** All unique tags across the given projects, alphabetically sorted. */
 export function collectProjectTags(projects: CollectionEntry<'projects'>[]): string[] {
   return [...new Set(projects.flatMap((p) => p.data.tags))].sort();
