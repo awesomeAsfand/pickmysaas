@@ -505,6 +505,7 @@
             "name": "Starter",
             "for": "For small businesses that need a professional site, fast.",
             "price": "$300",
+            "priceLocal": ["≈ SAR 1,125", "≈ AED 1,100", "≈ OMR 115"],
             "pricePrefix": "",
             "bonus": "Free domain + Google Business setup",
             "features": [
@@ -524,6 +525,7 @@
             "name": "Business",
             "for": "For businesses that need more pages, a custom design or an online store.",
             "price": "$500",
+            "priceLocal": ["≈ SAR 1,875", "≈ AED 1,835", "≈ OMR 192"],
             "pricePrefix": "",
             "bonus": "Free domain + Google Business setup",
             "features": [
@@ -543,6 +545,7 @@
             "name": "Premium",
             "for": "For larger sites, bigger online stores and a fully custom design.",
             "price": "$700",
+            "priceLocal": ["≈ SAR 2,625", "≈ AED 2,570", "≈ OMR 269"],
             "pricePrefix": "from",
             "bonus": "Free domain + Google Business setup",
             "features": [
@@ -559,7 +562,7 @@
             "cta": "Book a call"
           }
         ],
-        "note": "Hosting and SSL are set up in every package. Extra pages and work beyond your package are quoted separately. Timelines count business days (Sunday to Thursday) from when we have your content. The domain renews yearly at cost."
+        "note": "Hosting and SSL are set up in every package. Extra pages and work beyond your package are quoted separately. Timelines count business days (Sunday to Thursday) from when we have your content. The domain renews yearly at cost. SAR, AED and OMR prices are approximate conversions from USD. Online stores can take bank transfer, cash on delivery, Stripe, PayPal or another provider that works in your country."
       },
       "saas": {
         "badge": "SaaS",
@@ -579,7 +582,7 @@
           },
           {
             "lead": "Local payments",
-            "text": "connected to the payment methods your customers already use."
+            "text": "Stripe, PayPal or whichever payment provider works in your country."
           },
           {
             "lead": "Data where it needs to be",
@@ -662,6 +665,14 @@
                 "answer": "Every product is different, so SaaS platforms and MVPs get one fixed price in your proposal, agreed before we start. No hourly billing, no surprises."
               },
               {
+                "question": "How do I pay?",
+                "answer": "We send you an invoice and you pay by direct bank transfer: 50% upfront and 50% once the job is done."
+              },
+              {
+                "question": "How do my customers pay on an online store?",
+                "answer": "Stores can take bank transfer and cash on delivery, and we can connect Stripe, PayPal or another payment provider that works in your country."
+              },
+              {
                 "question": "How long does it take to build a website or SaaS product?",
                 "answer": "Websites go live in about a week. SaaS platforms and AI MVPs typically take 4 to 8 weeks. Your proposal names the exact timeline."
               },
@@ -671,7 +682,7 @@
               },
               {
                 "question": "What happens to my current website?",
-                "answer": "It stays online until the new one is ready. Your content, your domain and your Google rankings come with you."
+                "answer": "It stays online until the new one is ready. Your content and domain come with you, and we redirect your old pages to protect your Google rankings."
               },
               {
                 "question": "Do you work with clients in Saudi Arabia, the UAE and across the GCC without a local office?",
@@ -757,7 +768,7 @@
         "learnMore": "Learn more",
         "cards": [
           { "icon": "layout", "title": "Web Design & Development", "description": "Bilingual Arabic–English websites that load fast, rank well and turn visitors into enquiries. Right-to-left layouts done properly, not as an afterthought." },
-          { "icon": "layers", "title": "SaaS Products", "description": "Multi-tenant platforms with subscriptions, dashboards and user roles. Connected to the local payment methods your customers already use, and hosted in the GCC when your sector requires it." },
+          { "icon": "layers", "title": "SaaS Products", "description": "Multi-tenant platforms with subscriptions, dashboards and user roles. Connected to Stripe, PayPal or the payment provider that works in your country, and hosted in the GCC when your sector requires it." },
           { "icon": "sparkles", "title": "AI-first MVPs", "description": "A working product with AI at its core: Arabic chatbots, document processing, smart automation. Shipped in weeks, so you can test with real users before you raise or scale." }
         ]
       },
