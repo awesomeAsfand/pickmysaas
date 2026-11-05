@@ -6,6 +6,7 @@
  * Shows a banner with Accept/Decline + Customize settings panel using Dialog.
  * Only renders when PUBLIC_CONSENT_ENABLED is true.
  */
+import { localizedPath, getLocaleFromPath } from '@/i18n';
 import { PUBLIC_CONSENT_ENABLED, PUBLIC_PRIVACY_POLICY_URL } from 'astro:env/client';
 import consentConfig from '@/config/consent.config';
 import Dialog from '@/components/ui/overlay/Dialog';
@@ -31,7 +32,8 @@ const {
 } = Astro.props;
 
 const consentEnabled = PUBLIC_CONSENT_ENABLED;
-const privacyPolicyUrl = PUBLIC_PRIVACY_POLICY_URL;
+// The address is written once in the env file; each language links to its own page.
+const privacyPolicyUrl = PUBLIC_PRIVACY_POLICY_URL && localizedPath(PUBLIC_PRIVACY_POLICY_URL, getLocaleFromPath(Astro.url.pathname));
 
 // Merge UI text: props override config defaults
 const ui = { ...consentConfig.ui, ...uiOverrides };

@@ -1,0 +1,55 @@
+---
+/**
+ * PrivacyView — the Privacy Policy, shared by `/privacy` and the locale-prefixed
+ * route. All copy is in `pages.privacy`. It describes what this site actually
+ * does, so update it whenever a form, analytics tool or outside service changes.
+ */
+import PageLayout from '@/layouts/PageLayout.astro';
+import { t, tData, defaultLocale } from '@/i18n';
+import siteConfig from '@/config/site.config';
+
+interface Props {
+  /** Locale whose copy this page renders. Defaults to the site default. */
+  locale?: string;
+}
+
+const { locale = defaultLocale } = Astro.props;
+
+const page = tData<{
+  heading: string;
+  updated: string;
+  intro: string;
+  sections: { heading: string; paragraphs?: string[]; items?: { lead: string; text: string }[]; closing?: string }[];
+}>('pages.privacy', locale)!;
+---
+<PageLayout
+  title={t('pages.privacy.meta.title', locale)}
+  description={t('pages.privacy.meta.description', locale)}
+  footerBackground="secondary"
+>
+  <article class="mx-auto max-w-3xl px-6 py-[var(--space-section-sm)]">
+    <header class="mb-10">
+      <h1 class="font-display text-4xl md:text-5xl font-bold text-foreground text-balance mb-4">{page.heading}</h1>
+      <p class="text-sm text-foreground-muted">{page.updated}</p>
+    </header>
+
+    <div class="prose prose-lg max-w-none">
+      <p>{page.intro}</p>
+      {page.sections.map((section) => (
+        <section>
+          <h2>{section.heading}</h2>
+          {section.paragraphs?.map((paragraph) => <p>{paragraph}</p>)}
+          {section.items && (
+            <ul>
+              {section.items.map((item) => (
+                <li><strong>{item.lead}</strong> {item.text}</li>
+              ))}
+            </ul>
+          )}
+          {section.closing && <p>{section.closing}</p>}
+        </section>
+      ))}
+      <p><a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a></p>
+    </div>
+  </article>
+</PageLayout>

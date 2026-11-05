@@ -20,7 +20,7 @@
       },
       "analytics": {
         "label": "Analytics",
-        "description": "Google Analytics: anonymous statistics about which pages are visited, so we can improve the site."
+        "description": "Google Analytics: statistics about which pages are visited, so we can improve the site."
       },
       "marketing": {
         "label": "Marketing",
@@ -219,6 +219,7 @@
     "email": "Email",
     "subject": "What do you want to build?",
     "message": "Tell us about your project",
+    "privacyNote": "We use these details to reply to you.",
     "send": "Send message",
     "sending": "Sending…",
     "success": "Thanks! We'll reply within 24 hours.",
@@ -1270,6 +1271,134 @@
         "primary": "Book a free call",
         "secondary": "Chat on WhatsApp"
       }
+    },
+    "privacy": {
+      "meta": {
+        "title": "Privacy Policy",
+        "description": "What pickmysaas.com collects when you use the site, contact us or book a call, why we use it, who else handles it, and how to control it."
+      },
+      "heading": "Privacy Policy",
+      "updated": "Last updated: 5 November 2026",
+      "intro": "This policy explains what information pickmysaas.com collects, why we use it, who else handles it and what choices you have. It covers this website only. If you become a client, we’ll agree separately how your project’s data is handled.",
+      "sections": [
+        {
+          "heading": "Who we are",
+          "paragraphs": [
+            "This website belongs to PickMySaaS, which is responsible for the information collected here. PickMySaaS is a founder-led studio run by Asfand Yar Khan. We work remotely with clients worldwide, with a focus on the Gulf. For anything about your information, email us at the address at the end of this page."
+          ]
+        },
+        {
+          "heading": "What we collect",
+          "items": [
+            {
+              "lead": "When you use the contact form:",
+              "text": "your name, email address, subject and message. The form sends these to us as an email. The website doesn’t save them in a database."
+            },
+            {
+              "lead": "When you book a call:",
+              "text": "the booking runs on Cal.com, so the details you enter there go to Cal.com and to us."
+            },
+            {
+              "lead": "When you message us on WhatsApp or by email:",
+              "text": "your phone number or email address, and whatever you send us."
+            },
+            {
+              "lead": "When you visit the site:",
+              "text": "our hosting provider, Cloudflare, processes technical details such as your IP address in order to deliver pages and protect the site, and we can see technical logs of how the site is running."
+            },
+            {
+              "lead": "If you accept analytics cookies:",
+              "text": "Google Analytics records things like the pages you visit, your device type and your approximate location."
+            }
+          ]
+        },
+        {
+          "heading": "Cookies and browser storage",
+          "paragraphs": [
+            "A banner asks for your choice the first time you visit. Google Analytics loads on our pages either way. Until you accept analytics, it’s told not to use cookies, though Google may still receive basic signals without cookies, such as a page having been viewed. We don’t run ads on this site.",
+            "Your browser also stores a few small settings, such as your cookie choice and your colour theme. These stay on your device. You can change your cookie choice at any time with the cookie settings button on the page."
+          ]
+        },
+        {
+          "heading": "Why we use your information",
+          "items": [
+            {
+              "lead": "To answer you:",
+              "text": "replying to your enquiry, arranging calls and sending proposals."
+            },
+            {
+              "lead": "To improve the site:",
+              "text": "understanding which pages are useful, if you’ve accepted analytics."
+            },
+            {
+              "lead": "To keep the site working:",
+              "text": "delivering pages, fixing faults and protecting against abuse."
+            },
+            {
+              "lead": "To meet legal duties:",
+              "text": "where a law requires us to keep or share something."
+            }
+          ]
+        },
+        {
+          "heading": "Who else handles it",
+          "paragraphs": [
+            "We don’t sell your information. These services handle some of it for us, under their own privacy policies:"
+          ],
+          "items": [
+            {
+              "lead": "Cloudflare:",
+              "text": "hosts the site and delivers contact form messages."
+            },
+            {
+              "lead": "Google:",
+              "text": "provides Google Analytics."
+            },
+            {
+              "lead": "Cal.com:",
+              "text": "runs call bookings."
+            },
+            {
+              "lead": "WhatsApp, part of Meta:",
+              "text": "carries WhatsApp messages."
+            },
+            {
+              "lead": "Our email provider:",
+              "text": "holds the messages we receive."
+            }
+          ]
+        },
+        {
+          "heading": "Where it’s handled",
+          "paragraphs": [
+            "We work remotely, and these services operate internationally, so your information may be handled outside the country you live in."
+          ]
+        },
+        {
+          "heading": "How long we keep it",
+          "paragraphs": [
+            "We keep enquiries for up to 6 months after our last contact with you, then delete them. If your enquiry becomes a project, we keep what we need for that project and for our legal and accounting records. You can ask us to delete your messages sooner, and we will, unless we have to keep something by law. Services such as Cal.com and WhatsApp keep their own copies under their own policies."
+          ]
+        },
+        {
+          "heading": "Your choices",
+          "paragraphs": [
+            "You can ask us for a copy of the information we hold about you, or ask us to correct or delete it. You can also withdraw your cookie consent at any time. Data protection laws in Saudi Arabia, the UAE, Oman and elsewhere may give you further rights depending on where you live."
+          ]
+        },
+        {
+          "heading": "Security and children",
+          "paragraphs": [
+            "The site uses HTTPS, and we limit who can see your messages, but no system is completely secure. This site is for businesses and isn’t aimed at children."
+          ]
+        },
+        {
+          "heading": "Changes and contact",
+          "paragraphs": [
+            "If this policy changes, we’ll update it here and change the date at the top. To ask about your information, email us:"
+          ]
+        }
+      ]
     },
     "contact": {
       "meta": {

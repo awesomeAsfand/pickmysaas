@@ -101,7 +101,9 @@ export const footerNavItems: NavItem[] = [
   { label: 'Contact', href: '/contact', order: 5, labelKey: 'nav.items.contact' },
 ];
 
-export const legalLinks: LegalLink[] = [];
+export const legalLinks: LegalLink[] = [
+  { label: 'Privacy policy', href: '/privacy', labelKey: 'consent.ui.privacyPolicyLabel' },
+];
 
 /**
  * Extra columns for the footer's `columns` layout.

@@ -4,7 +4,7 @@ import Textarea from '@/components/ui/form/Textarea/Textarea.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import { cn } from '@/lib/cn';
-import { t, getLocaleFromPath } from '@/i18n';
+import { t, getLocaleFromPath, localizedPath } from '@/i18n';
 import { contactConfigured } from '@/lib/email';
 
 interface Props {
@@ -106,6 +106,10 @@ const {
       <Icon name="arrow-right" size="sm" />
     </Button>
   </div>
+  <p class="text-sm text-foreground-muted">
+    {t('contact.privacyNote', locale)}
+    <a href={localizedPath('/privacy', locale)} class="underline underline-offset-2">{t('consent.ui.privacyPolicyLabel', locale)}</a>
+  </p>
 </form>
 
 <script>
