@@ -16,7 +16,6 @@ import ProofTile from '@/components/ui/data-display/ProofTile/ProofTile.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import { Hero } from '@/components/hero';
 import CtaBand from '@/components/patterns/CtaBand.astro';
-import PackagesSection from '@/components/services/PackagesSection.astro';
 import FaqList from '@/components/services/FaqList.astro';
 import { t, tData, defaultLocale, localizedPath } from '@/i18n';
 import { bookingLinkAttrs, whatsAppUrl } from '@/lib/booking';
@@ -80,7 +79,7 @@ const saasUrl = localizedPath('/services/saas', locale);
 <PageLayout
   title={t('pages.services.meta.title', locale)}
   description={t('pages.services.meta.description', locale)}
-  footerBackground="default"
+  footerBackground="secondary"
 >
   <Hero layout="centered" size="sm" class="isolate services-hero pb-[calc(var(--space-section-sm)_+_var(--space-stack-lg))]" showHeroHalo>
     <Badge slot="badge" variant="brand" pill>
@@ -162,10 +161,8 @@ const saasUrl = localizedPath('/services/saas', locale);
     </div>
   </section>
 
-  <PackagesSection locale={locale} />
-
   <!-- SaaS products -->
-  <section id="saas" class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+  <section id="saas" class="py-[var(--space-section-md)] bg-background border-t border-border">
     <div class="mx-auto max-w-6xl px-6">
       <div class="grid gap-10 glitch:grid-cols-2 glitch:gap-12 glitch:items-start">
         <!-- Text -->
@@ -215,7 +212,7 @@ const saasUrl = localizedPath('/services/saas', locale);
   </section>
 
   <!-- AI-first MVPs -->
-  <section id="ai-mvps" class="py-[var(--space-section-md)] bg-background border-t border-border">
+  <section id="ai-mvps" class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
     <div class="mx-auto max-w-6xl px-6">
       <div class="grid gap-10 glitch:grid-cols-2 glitch:gap-12 glitch:items-start">
         <!-- Text -->
@@ -261,7 +258,7 @@ const saasUrl = localizedPath('/services/saas', locale);
   </section>
 
   <!-- Process -->
-  <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+  <section class="py-[var(--space-section-md)] bg-background border-t border-border">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
       <div class="flex flex-col items-center gap-4 text-center" data-reveal>
         <div class="flex flex-col items-center gap-6">
@@ -289,7 +286,7 @@ const saasUrl = localizedPath('/services/saas', locale);
   </section>
 
   <!-- Questions & answers -->
-  <section id="faq" class="py-[var(--space-section-md)] bg-background border-t border-border">
+  <section id="faq" class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
       <div class="flex flex-col items-center gap-4 text-center" data-reveal>
         <div class="flex flex-col items-center gap-6">
@@ -323,7 +320,7 @@ const saasUrl = localizedPath('/services/saas', locale);
   </section>
 
   <!-- CTA -->
-  <section class="relative z-10 py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+  <section class="relative z-10 py-[var(--space-section-md)] bg-background border-t border-border">
     <CtaBand>
       <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">
         {cta.heading}

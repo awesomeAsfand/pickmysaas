@@ -1,0 +1,305 @@
+---
+/**
+ * How much a website costs in the UAE: an English-only buying guide.
+ *
+ * It answers cost questions ("website design cost in uae") so the Websites page
+ * can stay about hiring us. It deliberately doesn't repeat the package cards, or
+ * the questions on that page, so the two don't compete in search.
+ *
+ * The owner chose not to name agencies or a personal author here. The agency
+ * sources are listed privately in `docs/seo/uae-guide-sources.md`. Recheck them
+ * and update `PRICES_CHECKED` when this page is edited.
+ */
+import PageLayout from '@/layouts/PageLayout.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Breadcrumbs from '@/components/seo/Breadcrumbs.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import DataTable from '@/components/services/DataTable.astro';
+import FaqList from '@/components/services/FaqList.astro';
+import { createBlogPostSchema, createFAQSchema } from '@/lib/schema';
+import { bookingLinkAttrs } from '@/lib/booking';
+import siteConfig from '@/config/site.config';
+
+const TITLE = 'How Much Does a Website Cost in the UAE in 2026?';
+const DESCRIPTION =
+  'Published prices from UAE agencies compared, from AED 999 to AED 275,000+. See what drives the cost, what you pay every year, and how to compare quotes.';
+const PATH = '/guides/website-cost-uae/';
+const PUBLISHED = new Date('2026-11-05');
+const PRICES_CHECKED = '5 November 2026';
+
+const SOURCES = {
+  aeserver: 'https://aeserver.com/',
+  stripe: 'https://stripe.com/en-ae/pricing',
+  vat: 'https://www.middleeastbriefing.com/news/vat-in-the-uae-registration-rates-and-compliance',
+  dataLaw: 'https://www.clydeco.com/en/insights/2021/11/uae-issues-landmark-personal-data-protection-law',
+};
+
+const faq = [
+  {
+    question: 'How much does a 5-page website cost in the UAE?',
+    answer:
+      'The published prices we checked start at AED 999 for a simple site of up to five pages, and small business websites run up to AED 30,000 in the highest published range. The gap comes from custom design, who writes the content and how much support is included.',
+  },
+  {
+    question: 'How much does an online store cost in the UAE?',
+    answer:
+      'Published prices start at AED 2,800 to AED 3,999 for a small store. Agency guides put larger stores at AED 20,000 to AED 120,000 or more. Check how many products are included, and remember that payment fees continue for as long as you sell.',
+  },
+  {
+    question: 'How much extra does an Arabic version cost?',
+    answer:
+      'None of the guides we checked publish a price for adding Arabic. They say it adds to the cost, but not by how much, and the one bilingual figure we found, AED 50,000 and above, is for large design projects. Ask for Arabic as its own line on the quote, and ask who writes and checks it.',
+  },
+  {
+    question: 'Is a website cheaper in Abu Dhabi or Sharjah than in Dubai?',
+    answer:
+      'We can’t say. None of the price lists we checked charge differently by emirate, and five sources are too few to measure a difference. Compare what each quote includes instead.',
+  },
+  {
+    question: 'Do UAE website prices include VAT?',
+    answer:
+      'Not always, so ask. The UAE’s standard VAT rate is 5%. If VAT applies and isn’t in the price, a quote of AED 2,500 becomes AED 2,625.',
+  },
+  {
+    question: 'How much should I spend on a website for a new business?',
+    answer:
+      'Start with what the site has to do. If customers only need to find you and contact you, a small site is usually enough, and you can spend more once you know what customers ask for. Set aside a budget for yearly costs as well as the build.',
+  },
+];
+
+const articleSchema = createBlogPostSchema({
+  title: TITLE,
+  description: DESCRIPTION,
+  url: new URL(PATH, siteConfig.url).toString(),
+  image: new URL(siteConfig.ogImage, siteConfig.url).toString(),
+  datePublished: PUBLISHED,
+  author: { type: 'Organization', name: siteConfig.name, url: new URL('/about/', siteConfig.url).toString() },
+});
+---
+<PageLayout
+  title={TITLE}
+  description={DESCRIPTION}
+  footerBackground="secondary"
+  localeAlternates={[{ locale: 'en', url: PATH }]}
+  languageAlternates={{ en: PATH, ar: '/ar/services/websites/' }}
+>
+  <JsonLd schema={articleSchema} />
+  <JsonLd schema={createFAQSchema(faq)} />
+
+  <article class="mx-auto max-w-3xl px-6 py-[var(--space-section-sm)]">
+    <Breadcrumbs
+      items={[
+        { label: 'Home', href: '/' },
+        { label: 'Website design', href: '/services/websites/' },
+        { label: 'Website cost in the UAE' },
+      ]}
+      class="mb-8"
+    />
+
+    <header class="mb-10">
+      <h1 class="font-display text-4xl md:text-5xl font-bold text-foreground text-balance mb-4">
+        How much does a website cost in the UAE?
+      </h1>
+      <p class="text-sm text-foreground-muted">
+        By PickMySaaS. Prices checked on {PRICES_CHECKED}.
+      </p>
+    </header>
+
+    <Card variant="elevated" padding="lg" class="mb-10">
+      <h2 class="font-display text-lg font-bold text-foreground mb-2">The short answer</h2>
+      <p class="text-foreground-muted leading-relaxed">
+        UAE businesses can expect published prices of about <strong class="text-foreground">AED 1,000 to AED 3,000</strong> for a small, simple site,
+        <strong class="text-foreground">AED 8,000 to AED 30,000</strong> for a small business site from a larger agency, and
+        <strong class="text-foreground">AED 2,800 to AED 120,000 or more</strong> for an online store. The build isn’t the whole bill: over three years, running costs can be
+        far higher than the price of the site.
+      </p>
+    </Card>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        Most guides on this topic give wide ranges with few real prices behind them. So we went to the agencies’ own pages and collected what they publish.
+        It’s a small sample of five sources, not a market survey, and one of the businesses selling websites in this market wrote it: us. Our own prices are near the
+        end, so you can judge them against everyone else’s.
+      </p>
+
+      <h2>What UAE agencies actually publish</h2>
+      <p>
+        Two kinds of number appear below. Price lists are what the agency will charge you. Guide ranges are what an agency says the market charges, written by a
+        business that also sells these services.
+      </p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable
+        headers={['What it covers', 'Published price', 'Where the figure comes from']}
+        rows={[
+          ['Simple site, up to 5 pages, no editing dashboard or checkout', 'AED 999', 'Agency price list'],
+          ['Standard site, up to 6 pages', 'AED 2,500', 'Agency price list'],
+          ['Company website, as a monthly offer', 'AED 1,600', 'Agency price list'],
+          ['Online store with up to 10 products', 'From AED 3,999', 'Agency price list'],
+          ['E-commerce website, as a monthly offer', 'AED 2,800', 'Agency price list'],
+          ['Basic site or landing page', 'AED 3,000 to 7,000', 'Agency guide'],
+          ['Small business site', 'AED 8,000 to 15,000', 'Agency guide'],
+          ['Small business website', 'AED 10,000 to 30,000', 'A second agency guide'],
+          ['Corporate site', 'AED 15,000 to 45,000', 'Agency guide'],
+          ['E-commerce site', 'AED 20,000 to 80,000+', 'Agency guide'],
+          ['E-commerce website', 'AED 30,000 to 120,000+', 'A second agency guide'],
+          ['Most complex custom platforms', 'AED 275,000+', 'A third agency guide'],
+        ]}
+      />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        That’s a wide gap. A “company website” is published at AED 1,600 by one agency, while another agency’s guide puts a small business website at up to
+        AED 30,000. Both can be honest, because the same words describe very different jobs.
+      </p>
+
+      <h2>Why quotes for the same website differ so much</h2>
+
+      <h3>Who writes the words</h3>
+      <p>
+        This is often the biggest hidden difference. Low prices usually assume you supply all the text and photos. If your quote includes someone writing your pages in
+        English and Arabic, you’re paying for skilled work that a cheaper quote has simply left to you.
+      </p>
+
+      <h3>Template or custom design</h3>
+      <p>
+        A site adapted from an existing layout takes hours. One designed around your brand takes days, plus rounds of changes. Neither is wrong: a template can be
+        perfectly good for a small business that just needs to be found.
+      </p>
+
+      <h3>Whether Arabic is really included</h3>
+      <p>
+        We looked for a published price for adding Arabic to a site and didn’t find one. Agencies say it adds cost, without saying how much. In the UAE this matters less for
+        attracting search traffic than you might expect: our keyword research found 26 English website search terms reaching 100+ searches a month, against 3 in Arabic.
+        But if your customers do read Arabic, a real version means right-to-left layouts and text that has been checked, not a translated copy. Ask for it as a separate line.
+      </p>
+
+      <h3>What the site has to do</h3>
+      <p>
+        Pages that only show information are the cheapest kind of website. Costs rise with anything the site has to do: bookings, checkouts, customer logins, or
+        connections to delivery, CRM or accounting systems. One agency guide puts sites with e-commerce, integrations and dashboards at AED 40,000 to 120,000.
+      </p>
+
+      <h3>How much support comes after launch</h3>
+      <p>
+        One round of revisions and a short support period keep a price low. A larger agency’s quote may include months of support and a team to provide it. Compare the
+        two only after you’ve written down what each one includes.
+      </p>
+
+      <h2>The costs that continue after launch</h2>
+      <p>
+        This is where budgets go wrong. These are real published figures for what you keep paying. Hosting is missing because prices vary too much to quote fairly, so get
+        that number in writing.
+      </p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable
+        headers={['Cost', 'Published figure', 'What it adds up to']}
+        rows={[
+          [{ text: '.ae domain', href: SOURCES.aeserver }, 'AED 125 in the first year, then AED 145 a year', 'AED 415 over three years'],
+          ['Care plan', 'AED 299 a month at one agency, with backups, updates and small edits', 'AED 3,588 a year'],
+          [{ text: 'Card payments', href: SOURCES.stripe }, '2.9% + AED 1 per sale on Stripe, plus 1% for international cards', 'AED 6.80 on an AED 200 order'],
+          [{ text: 'VAT', href: SOURCES.vat }, '5% standard rate, where the supplier charges it', 'AED 125 on an AED 2,500 quote'],
+        ]}
+      />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <h3>A worked example over three years</h3>
+      <p>
+        Take a simple AED 999 website with a <code>.ae</code> domain and a care plan at AED 299 a month. Over three years that’s AED 999 for the build, AED 415 for the
+        domain and AED 10,764 for the plan: <strong>AED 12,178 in total</strong>. The build is less than a tenth of what you pay.
+      </p>
+      <p>
+        That doesn’t make care plans a bad deal. Backups, security updates and someone to make edits have real value, and you may not want to handle them yourself. It
+        means you should compare total cost over a few years, not just the first invoice. Ask each supplier what happens if you stop paying, and whether you keep the site.
+      </p>
+      <p>
+        The same thinking applies to an online store. At AED 200 an order, 100 orders a month costs about AED 680 a month in Stripe fees. Over a year, that can pass the
+        cost of a small store, so it belongs in your plan. Cash on delivery and bank transfer avoid card fees, but they bring their own work.
+      </p>
+
+      <h2>What each budget can realistically buy</h2>
+      <p>These bands are our reading of the prices above, not a published standard.</p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable
+        headers={['Budget', 'What to expect', 'Good for']}
+        rows={[
+          ['Under AED 2,000', 'A few pages, often with little custom design. You usually supply the content.', 'A new or small business that needs to be found and contacted'],
+          ['AED 2,000 to 8,000', 'More pages, more design input, possibly a small store or booking', 'A service business, clinic or restaurant with a settled offer'],
+          ['AED 8,000 to 30,000', 'Agency process, custom design, more support and often content help', 'An established company with several services and decision-makers'],
+          ['AED 30,000 and above', 'Larger stores, integrations and custom features', 'A business where the website is the product or a main sales channel'],
+        ]}
+      />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <h2>How to get quotes you can actually compare</h2>
+      <p>
+        Vague requests get quotes you can’t compare. Send every supplier the same short brief, and ask them to reply in the same format. Your brief should say:
+      </p>
+      <ul>
+        <li>How many pages you expect, and whether you’ll write the text</li>
+        <li>Whether you need Arabic, English or both</li>
+        <li>What visitors must be able to do, such as call, book or buy</li>
+        <li>How many products you’ll sell, and how customers will pay</li>
+        <li>Your deadline, and a site you like</li>
+      </ul>
+      <p>Then ask each one to confirm these in writing:</p>
+      <ul>
+        <li>The total price, and whether it includes VAT</li>
+        <li>What you’ll pay every year after launch, line by line</li>
+        <li>What counts as extra work, and how it’s charged</li>
+        <li>When payment is due at each stage</li>
+      </ul>
+      <p>
+        If your site collects names, phone numbers or messages, also ask how that information is stored. The UAE’s data protection law,
+        <a href={SOURCES.dataLaw} target="_blank" rel="noopener">Federal Decree-Law No. 45 of 2021</a>, generally requires consent to process personal data. This isn’t
+        legal advice, but it’s worth raising before launch and not after.
+      </p>
+
+      <h2>What we charge, for comparison</h2>
+      <p>
+        PickMySaaS sells fixed website packages at $300, $500 and from $700, which is about AED 1,100, AED 1,835 and from AED 2,570. That puts us at the lower end of the
+        figures above. We work remotely and have no office in the UAE, which won’t suit everyone. If meeting in person matters to you, a local agency is the better choice.
+      </p>
+    </div>
+
+    <div class="not-prose my-8 flex flex-col sm:flex-row gap-4">
+      <Button href="/services/websites/" variant="outline">
+        See what our packages include
+        <Icon name="arrow-right" size="sm" />
+      </Button>
+      <Button {...bookingLinkAttrs('/contact/')}>
+        Ask us for a quote
+        <Icon name="arrow-right" size="sm" />
+      </Button>
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <h2>Common questions about website prices</h2>
+    </div>
+    <div class="not-prose my-6">
+      <Card variant="elevated" padding="lg">
+        <FaqList items={faq} name="uae-cost-faq" />
+      </Card>
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <h2>How we put this together</h2>
+      <p>
+        We read each agency’s own page on {PRICES_CHECKED} and recorded only figures shown there. We’ve left the agencies’ names out, because the aim is to show the market, not to single out any business. We left out a price we’d seen quoted elsewhere that we couldn’t find
+        on the agency’s own site. Monthly offers can change, and agency guides are written to sell, so treat every figure as a starting point and get your own quote.
+        Conversions use the official rate of AED 3.6725 to the US dollar. The search figures come from our study of Google Ads Keyword Planner data for the six GCC countries
+        in November 2026, which shows ranges, not exact counts.
+      </p>
+    </div>
+  </article>
+</PageLayout>

@@ -123,6 +123,11 @@ const breadcrumbs = [
         {page.answer.paragraphs.map((paragraph) => (
           <p class="text-lg text-foreground-muted leading-relaxed">{paragraph}</p>
         ))}
+        {locale === defaultLocale && (
+          <p class="text-foreground-muted">
+            Still comparing prices? See <a href="/guides/website-cost-uae/" class="underline underline-offset-2">what a website costs in the UAE</a>.
+          </p>
+        )}
       </div>
     </div>
   </section>

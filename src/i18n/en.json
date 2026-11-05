@@ -450,14 +450,14 @@
     },
     "services": {
       "meta": {
-        "title": "Website Design from $300, SaaS & MVP Development",
-        "description": "Website design packages at $300, $500 and from $700. SaaS and MVP development at one fixed price per proposal. Built in Arabic and English for GCC businesses."
+        "title": "Services: Websites, SaaS Platforms and AI-First MVPs",
+        "description": "One founder-led team for your website, SaaS platform or AI-first MVP. Compare what each service includes, how a project runs and how to get started."
       },
       "includedLabel": "What you get",
       "hero": {
         "badge": "Services",
-        "titleLead": "Website design, SaaS platforms",
-        "titleHighlight": "and MVP development",
+        "titleLead": "Websites, SaaS platforms",
+        "titleHighlight": "and AI-first MVPs",
         "description": "Three ways to launch, one team: from a sharper website to a full software product, designed and built for the Gulf.",
         "jumpLabels": [
           "Websites",
@@ -468,7 +468,7 @@
       "web": {
         "badge": "Websites",
         "heading": "Web design & development",
-        "more": "More about website design",
+        "more": "See website packages and prices",
         "paragraphs": [
           "Your website is often the first conversation a customer has with you. It needs to look credible, load fast and make the next step obvious.",
           "We design and build bilingual websites in Arabic and English around your business and your customers. They go live within a week, with right-to-left layouts done properly and every page built to rank in Google and be understood by AI assistants. The domain and website are in your name: you own it."
@@ -659,11 +659,11 @@
             "title": "Before we start",
             "items": [
               {
-                "question": "How much does a website cost?",
+                "question": "What do your website packages cost?",
                 "answer": "Websites have fixed package prices: Starter $300, Business $500, and Premium from $700. No hourly billing, no surprises."
               },
               {
-                "question": "How much does SaaS or MVP development cost?",
+                "question": "How are SaaS and MVP projects priced?",
                 "answer": "Every product is different, so SaaS platforms and MVPs get one fixed price in your proposal, agreed before we start. No hourly billing, no surprises."
               },
               {
@@ -1235,7 +1235,7 @@
         "lead": "What businesses ask before they start.",
         "items": [
           {
-            "question": "How much does a website cost?",
+            "question": "What do your website packages cost?",
             "answer": "Starter is $300 (about SAR 1,125 or AED 1,100), Business is $500 (about SAR 1,875 or AED 1,835) and Premium starts from $700 (about SAR 2,625 or AED 2,570)."
           },
           {

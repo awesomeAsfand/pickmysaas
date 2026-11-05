@@ -111,7 +111,7 @@ export function createBlogPostSchema(post: {
   image: string;
   datePublished: Date;
   dateModified?: Date;
-  author: { name: string; url?: string };
+  author: { type?: 'Person' | 'Organization'; name: string; url?: string };
 }): WithContext<BlogPosting> {
   return {
     '@context': 'https://schema.org',
@@ -123,7 +123,7 @@ export function createBlogPostSchema(post: {
     datePublished: post.datePublished.toISOString(),
     dateModified: post.dateModified?.toISOString() || post.datePublished.toISOString(),
     author: {
-      '@type': 'Person',
+      '@type': post.author.type ?? 'Person',
       name: post.author.name,
       url: post.author.url,
     },
