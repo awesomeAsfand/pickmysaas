@@ -1,0 +1,455 @@
+---
+/**
+ * Websites for Oman: an English-only page for "web development company oman"
+ * and its close variants (one 100–1K group in the 2026-11-04 research).
+ *
+ * It must stay different from the Websites page (hiring, all markets) and the
+ * UAE cost guide (prices). Only Oman-specific content belongs here: OMR prices,
+ * how Oman searches, payments, the data protection law and `.om` domains.
+ * No agency is named, at the owner's request. Sources are linked where they
+ * aren't competitors; recheck them and update `FACTS_CHECKED` when editing.
+ */
+import PageLayout from '@/layouts/PageLayout.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Breadcrumbs from '@/components/seo/Breadcrumbs.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import DataTable from '@/components/services/DataTable.astro';
+import FaqList from '@/components/services/FaqList.astro';
+import ServiceCta from '@/components/services/ServiceCta.astro';
+import { createFAQSchema } from '@/lib/schema';
+import { tData, defaultLocale } from '@/i18n';
+import { bookingLinkAttrs } from '@/lib/booking';
+
+const TITLE = 'Web Development Company for Oman, from OMR 115';
+const DESCRIPTION =
+  'Bilingual Arabic and English websites for businesses in Oman, at published prices from OMR 115. Built for OmanNet payments and Oman’s data protection law.';
+const PATH = '/services/websites/oman/';
+const FACTS_CHECKED = '6 November 2026';
+
+const SOURCES = {
+  pdpl: 'https://cms.law/en/omn/legal-updates/oman-personal-data-protection-law-entering-the-enforcement-phase',
+  omannet: 'https://www.omanobserver.om/article/1137628/business/amazon-payment-services-launched-in-oman-via-omannet',
+  stripe: 'https://stripe.com/global',
+  domains: 'https://www.agip.com/News/en/news/23510',
+  vat: 'https://www.pinsentmasons.com/out-law/analysis/oman-confirms-vat-implementation-april-2021',
+  population: 'https://gulfmigration.grc.net/?p=11729',
+  digital: 'https://datareportal.com/reports/digital-2026-oman',
+  ecommerceRules: 'https://www.omanobserver.om/article/1142617/business/oman-unveils-new-e-commerce-regulatory-framework',
+  ecommerceLicence: 'https://www.omanobserver.om/article/1149248/business/oman-begins-implementation-of-e-commerce-regulations',
+  maroof: 'https://www.omanobserver.om/article/1179463/business/markets/how-to-begin-your-e-commerce-store-in-oman',
+  invoices: 'https://www.omanobserver.om/article/1181451/oman/community/cpa-highlights-mandatory-invoice-and-contract-requirements',
+  prices: 'https://timesofoman.com/article/173264-how-omans-consumer-protection-law-regulates-price-display',
+};
+
+// Worked examples. They show how a package fits a typical Oman business; they aren't client projects.
+const examples = [
+  {
+    icon: 'heart',
+    business: 'A clinic in Muscat',
+    pkg: 'Starter',
+    points: [
+      'Arabic and English pages for services, doctors and opening hours',
+      'A call button, a WhatsApp button and a map pin, for patients searching on a phone',
+      'An appointment request form that asks for consent and links to an Arabic privacy notice',
+    ],
+  },
+  {
+    icon: 'map',
+    business: 'A tour operator in Nizwa or Musandam',
+    pkg: 'Business',
+    points: [
+      'English first for visitors, with an Arabic version for GCC travellers',
+      'A tour list with prices in OMR and a booking request form',
+      'Pages people can land on from Instagram and YouTube, where Oman’s ad reach is widest',
+    ],
+  },
+  {
+    icon: 'briefcase',
+    business: 'A contracting or trading company',
+    pkg: 'Business',
+    points: [
+      'A company profile in both languages for tenders and partners',
+      'Project and product pages that a procurement team can scan quickly',
+      'A profile you can link from LinkedIn, which reaches nearly a quarter of Oman’s population',
+    ],
+  },
+  {
+    icon: 'shopping-bag',
+    business: 'An Instagram shop moving to its own store',
+    pkg: 'Premium',
+    points: [
+      'A store that takes OmanNet cards, bank transfer or cash on delivery',
+      'Order confirmations in Arabic with your commercial registration number and VAT shown',
+      'Return, complaints and contact pages, which Oman’s e-commerce rules expect',
+    ],
+  },
+];
+
+// Package names, fit and prices come from the Services copy, so they can't drift.
+const packages = tData<{ items: { name: string; for: string; price: string; pricePrefix: string; priceLocal: string[] }[] }>(
+  'pages.services.packages',
+  defaultLocale
+)!.items;
+const omr = (pkg: (typeof packages)[number]) => pkg.priceLocal.find((p) => p.includes('OMR'))?.replace('≈ ', '') ?? '';
+
+const faq = [
+  {
+    question: 'Do you have an office in Oman?',
+    answer:
+      'No. We work fully remotely, by video, WhatsApp and email. Our working week, Sunday to Thursday, is the same as Oman’s, so you get answers during your business hours.',
+  },
+  {
+    question: 'How much does a website cost in Oman with you?',
+    answer:
+      'About OMR 115 for Starter, OMR 192 for Business and from OMR 269 for Premium. These are conversions from our fixed USD prices of $300, $500 and from $700. You pay by invoice and bank transfer: 50% upfront and 50% once the job is done.',
+  },
+  {
+    question: 'Can my website take OmanNet card payments?',
+    answer:
+      'Yes, through a payment provider that accepts OmanNet cards. Stripe doesn’t list Oman as a supported country, so we connect a provider that works there, alongside bank transfer or cash on delivery if you want them.',
+  },
+  {
+    question: 'Do I need a .om domain?',
+    answer:
+      'No, a .com works anywhere. A .om tells visitors you serve Oman, and since December 2025 foreign companies can register one without an Oman trademark. Compare the yearly price with a .com before you decide.',
+  },
+  {
+    question: 'Does Oman’s data protection law apply to my website?',
+    answer:
+      'If your site collects personal data such as names, phone numbers or messages, it’s likely to. The law has been fully enforceable since 5 February 2026. We build forms that ask for consent and link to a privacy notice, but take legal advice on your own obligations.',
+  },
+  {
+    question: 'Do I need a licence to sell online in Oman?',
+    answer:
+      'Yes. Under Ministerial Decision 499/2023, online sellers need an e-commerce licence from the Ministry of Commerce, Industry and Investment Promotion, applied for on the Oman Business Platform. Companies must be in the commercial register first. We build the store; you hold the licence.',
+  },
+  {
+    question: 'Will my store’s invoices be in Arabic?',
+    answer:
+      'They can be, and in Oman they should be. The Consumer Protection Authority says invoices must be issued in Arabic, with other languages optional, and must show your commercial registration number, the price and any taxes. We set up order confirmations that way. Your accountant should confirm what else your invoices need.',
+  },
+  {
+    question: 'Can you build my website in Arabic and English?',
+    answer: 'Yes. Bilingual Arabic and English is our default, with full right-to-left layouts.',
+  },
+];
+
+// Questions any Oman business can put to any developer, with our own answers.
+const checklist = [
+  {
+    ask: 'Will the checkout accept OmanNet cards?',
+    why: 'In 2023, 95% of cards in Oman were OmanNet debit cards, and Stripe doesn’t list Oman as a supported country.',
+    ours: 'Yes, through a provider that accepts them, confirmed with you before we build.',
+  },
+  {
+    ask: 'Whose name is the domain registered in?',
+    why: 'If it’s in the developer’s name, moving away later can mean losing your address.',
+    ours: 'Yours. Every package includes a free domain, registered to your business.',
+  },
+  {
+    ask: 'Who writes the Arabic?',
+    why: 'Machine-translated Arabic reads badly to Omani customers and undercuts trust.',
+    ours: 'Arabic and English are built in from the start. Premium includes copy written for you in both.',
+  },
+  {
+    ask: 'Where will the site and the form messages be stored?',
+    why: 'Oman’s data protection law sets conditions for sending personal data abroad.',
+    ours: 'We tell you where each part is hosted, so you can include it in your privacy notice.',
+  },
+  {
+    ask: 'Is the price fixed, and what’s included?',
+    why: 'A quote without a scope tends to grow once the work starts.',
+    ours: 'Fixed prices published on this page, with extra work quoted separately before we start.',
+  },
+  {
+    ask: 'What happens after launch?',
+    why: 'Most sites need small changes in the first months.',
+    ours: 'Support is included: 2 weeks on Starter, 1 month on Business, 2 months on Premium.',
+  },
+];
+---
+<PageLayout
+  title={TITLE}
+  description={DESCRIPTION}
+  footerBackground="default"
+  localeAlternates={[{ locale: 'en', url: PATH }]}
+  languageAlternates={{ en: PATH, ar: '/ar/services/websites/' }}
+>
+  <JsonLd schema={createFAQSchema(faq)} />
+
+  <!-- Opening: the direct answer, then prices -->
+  <section class="border-b border-border bg-background">
+    <div class="mx-auto max-w-5xl px-6 pt-[var(--space-section-sm)] pb-[var(--space-section-md)]">
+      <Breadcrumbs
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Website design', href: '/services/websites/' },
+          { label: 'Oman' },
+        ]}
+        class="mb-8"
+      />
+      <div class="grid gap-10 lg:grid-cols-5 lg:items-start">
+        <div class="lg:col-span-3">
+          <p class="text-sm font-semibold uppercase tracking-wide text-brand-600 dark:text-brand-400 mb-3">For businesses in Oman</p>
+          <h1 class="font-display text-4xl md:text-5xl font-bold text-foreground text-balance mb-6">
+            Website design and development for Oman
+          </h1>
+          <div class="flex flex-col gap-4 text-lg text-foreground-muted leading-relaxed">
+            <p>
+              Looking for a web development company that serves Oman? PickMySaaS designs and builds websites in Arabic and English, with prices you can see before
+              you call: from about OMR 115.
+            </p>
+            <p>
+              We work remotely and have no office in Muscat. If meeting in person matters to you, a local agency is the better choice. If you want a bilingual site at
+              a published price, read on.
+            </p>
+          </div>
+          <div class="mt-8 flex flex-col sm:flex-row gap-4">
+            <Button size="lg" {...bookingLinkAttrs('/contact/')}>
+              Book a free call
+              <Icon name="arrow-right" size="sm" />
+            </Button>
+            <Button size="lg" variant="outline" href="#payments">
+              Payments in Oman
+              <Icon name="arrow-down" size="sm" />
+            </Button>
+          </div>
+        </div>
+        <Card variant="elevated" padding="lg" class="lg:col-span-2">
+          <h2 class="font-display text-lg font-bold text-foreground mb-4">Prices in Omani rials</h2>
+          <ul class="flex flex-col divide-y divide-border">
+            {packages.map((pkg) => (
+              <li class="py-3 first:pt-0 last:pb-0">
+                <div class="flex items-baseline justify-between gap-4">
+                  <span class="font-semibold text-foreground">{pkg.name}</span>
+                  <span class="font-display text-xl font-bold text-foreground whitespace-nowrap">
+                    {pkg.pricePrefix && <span class="text-sm font-normal text-foreground-muted">{pkg.pricePrefix} </span>}
+                    {omr(pkg)}
+                  </span>
+                </div>
+                <p class="text-sm text-foreground-muted leading-relaxed">{pkg.for}</p>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-4 text-xs text-foreground-muted">
+            Approximate, converted from $300, $500 and from $700 at the official rate of OMR 0.3845 to the dollar.
+            <a href="/services/websites/#packages" class="underline underline-offset-2">See what each package includes</a>.
+          </p>
+        </Card>
+      </div>
+    </div>
+  </section>
+
+  <article class="mx-auto max-w-3xl px-6 py-[var(--space-section-md)]">
+    <div class="prose prose-lg max-w-none">
+      <h2>What we found about the Oman market</h2>
+      <p>
+        Before building this page, we studied Google Ads Keyword Planner data and reviewed the Google results for website searches in Oman in November 2026.
+        Three findings shaped how we build for Oman.
+      </p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable
+        headers={['Finding', 'What it means for your site']}
+        rows={[
+          [
+            'Hiring searches are in English. The only Oman website searches above 100 a month were English phrases such as “web development company oman”.',
+            'Your English pages need to be strong, because that’s where buyers start.',
+          ],
+          [
+            'Arabic searches are many but small. Across all our services, 86 of the 129 Oman searches we could measure were in Arabic, each at 10 to 100 a month.',
+            'An Arabic version reaches customers your competitors miss, even if each search is small.',
+          ],
+          [
+            'Local competition is thin. The Muscat agency site we reviewed in detail was English only and asked visitors to call for prices. Directories and blog lists filled much of the rest.',
+            'A bilingual site with clear prices stands out in Oman.',
+          ],
+        ]}
+      />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        One more pattern matters for your own customers. Two of the three English searches we checked showed a map box of local businesses above the regular results.
+        Your business has an Omani address, so a Google Business Profile can get you into that box, which a remote agency can’t join. Every package includes setting one up.
+      </p>
+
+      <h2>Who your website is for in Oman</h2>
+      <p>
+        Oman is a small, connected market with two audiences in almost every city: Omani customers, who often prefer Arabic, and a large expatriate population, many of whom
+        browse in English. That is why we build every Oman site in both languages rather than treating Arabic as an extra.
+      </p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable
+        headers={['Figure', 'What it means for your site', 'Source']}
+        rows={[
+          ['5.36 million people lived in Oman at the end of 2025: 56.7% Omani and 43.3% expatriates', 'Almost half your potential customers may read English first, and the rest Arabic', { text: 'NCSI, via GLMM', href: SOURCES.population }],
+          ['95.3% of the population used the internet at the end of 2025', 'Customers expect to find you online before they call or visit', { text: 'DataReportal', href: SOURCES.digital }],
+          ['6.93 million mobile connections, more than the population', 'Design for the phone first, with call and WhatsApp buttons in easy reach', { text: 'DataReportal', href: SOURCES.digital }],
+          ['Ad reach equal to 62.1% of the population on YouTube, 50.5% on Instagram, 42.3% on Snapchat and 23.5% on LinkedIn', 'Visitors often arrive from social apps, so the page they land on has to load fast and make the next step obvious', { text: 'DataReportal', href: SOURCES.digital }],
+        ]}
+      />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        Ad reach is what the platforms report to advertisers, not a count of active users, so treat those last figures as a guide to where people spend time, not exact
+        numbers. For a business-to-business firm, LinkedIn matters more than its share suggests; for a café or a shop, Instagram and Snapchat usually matter most.
+      </p>
+
+      <h2 id="payments">Taking payments in Oman</h2>
+      <p>
+        This is where an Oman website differs most from one built for the UAE. Most card payment guides assume Stripe, but Stripe’s list of supported countries
+        doesn’t include Oman.
+      </p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable
+        headers={['Fact', 'Why it matters', 'Source']}
+        rows={[
+          ['OmanNet debit cards made up 95% of all cards in Oman, according to a 2023 announcement', 'Your checkout has to accept OmanNet cards, not just Visa and Mastercard', { text: 'Oman Observer', href: SOURCES.omannet }],
+          ['Amazon Payment Services accepts OmanNet cards online, including through payment links', 'There are proven ways to take OmanNet payments on a website', { text: 'Oman Observer', href: SOURCES.omannet }],
+          ['Stripe doesn’t list Oman as a supported country', 'A store built around Stripe won’t work for an Omani business', { text: 'Stripe', href: SOURCES.stripe }],
+          ['Oman’s VAT is 5%, in force since 16 April 2021', 'Check whether prices on your store and in quotes include it', { text: 'Pinsent Masons', href: SOURCES.vat }],
+        ]}
+      />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        For a store, we connect a provider that accepts OmanNet cards, and we can add bank transfer or cash on delivery too. We confirm the right provider with you
+        before we build, because availability and fees change.
+      </p>
+
+      <h2 id="selling-online">Selling online in Oman: licence, invoices and returns</h2>
+      <p>
+        If your website takes orders, Oman’s rules go beyond payments. Since early 2024, online selling has been a licensed activity, and the consumer protection rules that
+        apply to shops also shape what your store shows and sends. Here is what that means in practice.
+      </p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable
+        headers={['Rule', 'What we build for it', 'Source']}
+        rows={[
+          ['Online sellers need an e-commerce licence, applied for on the Oman Business Platform. Companies must be in the commercial register first.', 'Nothing on our side, but plan for it: the licence names the store it covers, so have your domain ready when you apply', { text: 'Oman Observer', href: SOURCES.ecommerceLicence }],
+          ['Stores must give contact details, a way to handle complaints and an exchange and return policy, and keep customer data confidential', 'Contact, complaints and returns pages in Arabic and English, linked from every page footer', { text: 'Oman Observer', href: SOURCES.ecommerceRules }],
+          ['Invoices must be issued in Arabic and show your commercial registration number, the price, the quantity and any taxes', 'Order confirmations in Arabic, with English alongside, showing your registration number and VAT', { text: 'Oman Observer', href: SOURCES.invoices }],
+          ['Prices must be shown clearly before a sale, Arabic is the required language, and you can’t charge more than the advertised price', 'Prices in OMR on every product, in both languages, with delivery fees shown before checkout', { text: 'Times of Oman', href: SOURCES.prices }],
+          ['Licensed stores can be verified on the national Maroof Oman platform', 'A spot in the footer for your verification badge once you have it', { text: 'Oman Observer', href: SOURCES.maroof }],
+        ]}
+      />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        These rules come from Ministerial Decision 499/2023 and the Consumer Protection Law (Royal Decree 66/2014), as reported in the sources above. A website can make
+        compliance easier, but it can’t replace your licence or your accountant’s advice.
+      </p>
+
+      <h2>Oman’s data protection law and your website</h2>
+      <p>
+        Oman’s Personal Data Protection Law, issued by Royal Decree 6/2022, became
+        <a href={SOURCES.pdpl} target="_blank" rel="noopener">fully enforceable on 5 February 2026</a>. Here’s what a law firm summary of it means for a typical
+        business website.
+      </p>
+      <ul>
+        <li><strong>Consent first.</strong> People should give clear consent before your contact or booking form collects their details.</li>
+        <li><strong>A privacy notice, with Arabic as the main version.</strong> It should say who you are, why you collect data and what rights people have.</li>
+        <li><strong>Care with data sent abroad.</strong> Moving personal data outside Oman needs consent and protection, so where your site and inbox are hosted matters.</li>
+        <li><strong>A plan for breaches.</strong> A breach that puts people at risk has to be reported to the regulator within 72 hours.</li>
+      </ul>
+      <p>
+        We build forms with a consent step and a link to your privacy notice, in Arabic and English. We aren’t lawyers, so take legal advice on what the law requires of
+        your business in particular.
+      </p>
+
+      <h2>A .om domain or a .com?</h2>
+      <p>
+        A <code>.om</code> address tells visitors straight away that you serve Oman. Since December 2025, foreign companies can
+        <a href={SOURCES.domains} target="_blank" rel="noopener">register .om, .com.om and .co.om names</a> without first holding an Oman trademark. A <code>.com</code>
+        works just as well for search, and usually costs less each year. If you already have a <code>.com</code>, there’s no need to switch. If you’re starting fresh and
+        sell only in Oman, compare the yearly prices first.
+      </p>
+
+      <h2>What each package looks like for an Oman business</h2>
+      <p>
+        These are examples, not client projects. They show which package usually fits four common kinds of business in Oman, and what we would build for each.
+      </p>
+    </div>
+
+    <div id="examples" class="not-prose my-8 grid gap-4 sm:grid-cols-2">
+      {examples.map((ex) => (
+        <Card variant="elevated" padding="lg">
+          <div class="flex items-start gap-3 mb-4">
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-500/10 text-brand-600 dark:text-brand-400">
+              <Icon name={ex.icon} size="md" />
+            </span>
+            <div>
+              <h3 class="font-display text-lg font-bold text-foreground leading-snug">{ex.business}</h3>
+              <p class="text-sm text-foreground-muted">
+                Usually {ex.pkg}, {packages.find((p) => p.name === ex.pkg)!.pricePrefix ? 'from about' : 'about'} <span class="whitespace-nowrap">{omr(packages.find((p) => p.name === ex.pkg)!)}</span>
+              </p>
+            </div>
+          </div>
+          <ul class="flex flex-col gap-2 text-sm text-foreground-muted leading-relaxed">
+            {ex.points.map((point) => (
+              <li class="flex gap-2">
+                <Icon name="check" size="sm" class="mt-0.5 shrink-0 text-brand-600 dark:text-brand-400" />
+                <span>{point}</span>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      ))}
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+
+      <h2>How a project with us works from Oman</h2>
+      <p>
+        You book a free 30-minute call or message us on WhatsApp. You get one proposal with a fixed price and a timeline. Starter and Business sites go live in 1 week,
+        counted in business days from when we have your content. Calls happen during Oman’s working week, and you see your site take shape before it launches.
+      </p>
+
+      <h2>Six questions to ask any web developer in Oman</h2>
+      <p>
+        Whoever you hire, local or remote, these questions show quickly whether they understand building for Oman. Our answers are alongside, so you can compare.
+      </p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable
+        headers={['Ask', 'Why it matters in Oman', 'Our answer']}
+        rows={checklist.map((c) => [c.ask, c.why, c.ours])}
+      />
+    </div>
+
+    <h2 class="font-display text-3xl font-bold text-foreground mt-12 mb-6">Questions from Oman businesses</h2>
+    <Card variant="elevated" padding="lg">
+      <FaqList items={faq} name="oman-faq" />
+    </Card>
+
+    <p class="mt-8 text-sm text-foreground-muted">
+      Facts on this page were checked on {FACTS_CHECKED}. Search figures come from our study of Google Ads Keyword Planner data in November 2026, which shows ranges, not
+      exact counts.
+    </p>
+  </article>
+
+  <ServiceCta
+    locale={defaultLocale}
+    cta={{
+      heading: 'Building a website for your Oman business?',
+      description: 'Tell us what you sell and who your customers are. We’ll recommend a package, in OMR, and tell you which payment options fit.',
+      primary: 'Book a free call',
+      secondary: 'Chat on WhatsApp',
+    }}
+    class="bg-background-secondary"
+  />
+</PageLayout>
