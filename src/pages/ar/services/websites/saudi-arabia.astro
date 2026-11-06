@@ -1,0 +1,378 @@
+---
+/**
+ * Websites for Saudi Arabia: an Arabic-only page for "شركة تصميم مواقع في الرياض"
+ * and its close variants (100–1K for the Riyadh phrase in the 2026-11-04 research).
+ *
+ * It must stay different from /ar/services/websites/, which already covers the
+ * search language in each GCC country, Arabic quality, Google Maps, six questions
+ * for any designer and what to prepare. Only Saudi-specific content belongs here:
+ * SAR prices, the Saudi audience, payments, the e-commerce law, the data law,
+ * e-invoicing and .sa domains. Cost questions belong to the Arabic pricing article.
+ * No agency is named, at the owner's request. Arabic copy needs a native Gulf review.
+ * Recheck the sources and update `FACTS_CHECKED` when editing.
+ */
+import PageLayout from '@/layouts/PageLayout.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Breadcrumbs from '@/components/seo/Breadcrumbs.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import DataTable from '@/components/services/DataTable.astro';
+import FaqList from '@/components/services/FaqList.astro';
+import ServiceCta from '@/components/services/ServiceCta.astro';
+import { createFAQSchema } from '@/lib/schema';
+import { tData } from '@/i18n';
+import { bookingLinkAttrs } from '@/lib/booking';
+
+const LOCALE = 'ar';
+const TITLE = 'شركة تصميم مواقع في الرياض وجدة | من 1,125 ريال';
+const DESCRIPTION =
+  'مواقع بالعربية والإنجليزية للشركات في السعودية بأسعار معلنة تبدأ من نحو 1,125 ريالًا، مع خيارات دفع تناسب السوق السعودي ونماذج تراعي نظام حماية البيانات.';
+const PATH = '/ar/services/websites/saudi-arabia/';
+const GUIDE = '/ar/guides/website-cost/';
+const FACTS_CHECKED = '6 نوفمبر 2026';
+
+const SOURCES = {
+  census: 'https://www.arabnews.pk/node/2313691',
+  digital: 'https://datareportal.com/reports/digital-2026-saudi-arabia',
+  epayments: 'https://www.arabnews.pk/node/2639739/business-economy',
+  mada: 'https://www.arabnews.pk/node/2616539',
+  stripe: 'https://stripe.com/global',
+  vat: 'https://www.deloitte.com/middle-east/en/services/tax/perspectives/ksa-vat-rate-increase-15percent-1-july-2020.html',
+  ecommerceLaw: 'https://saudipedia.com/en/article/2910/government-and-politics/systems/e-commerce-law-in-saudi-arabia',
+  businessPlatform: 'https://zawya.com/en/business/retail-and-consumer/commerce-ministry-business-is-the-only-platform-to-document-saudi-e-stores-nxwp10e4',
+  zatca: 'https://zatca.gov.sa/en/E-Invoicing/Introduction/Pages/What-is-e-invoicing.aspx',
+  pdpl: 'https://www.clydeco.com/en/insights/2024/09/saudi-arabia-s-personal-data-protection-law-become',
+  domains: 'https://nic.sa/en/help/regulation',
+};
+
+// Package names, fit and prices come from the Services copy, so they can't drift.
+const packages = tData<{ items: { name: string; for: string; pricePrefix: string; priceLocal: string[] }[] }>('pages.services.packages', LOCALE)!.items;
+const sar = (pkg: (typeof packages)[number]) => pkg.priceLocal.find((p) => p.includes('ريال سعودي'))?.replace('≈ ', '').replace(' سعودي', '') ?? '';
+const pkgByIndex = (i: number) => packages[i];
+
+// Worked examples. They show how a package fits a typical Saudi business; they aren't client projects.
+const examples = [
+  {
+    icon: 'utensils',
+    business: 'مطعم أو مقهى في الرياض',
+    pkg: 0,
+    points: [
+      'قائمة طعام بالعربية والإنجليزية مع الأسعار، يسهل تحديثها',
+      'أزرار اتصال وواتساب وموقع على الخريطة في أعلى الصفحة',
+      'صفحة تصلح لروابط Snapchat وInstagram، حيث يقضي جمهورك وقته',
+    ],
+  },
+  {
+    icon: 'sparkles',
+    business: 'صالون أو مركز تجميل في جدة',
+    pkg: 1,
+    points: [
+      'صفحات للخدمات والأسعار وفريق العمل',
+      'نموذج طلب حجز يطلب الموافقة ويربط بسياسة الخصوصية',
+      'معرض صور للأعمال، مضغوط ليفتح بسرعة على الجوال',
+    ],
+  },
+  {
+    icon: 'hard-hat',
+    business: 'شركة مقاولات في الدمام',
+    pkg: 1,
+    points: [
+      'ملف تعريفي للشركة بلغتين للمناقصات والشركاء',
+      'صفحات للمشاريع المنفّذة والتصنيفات والشهادات التي تملكها الشركة',
+      'صفحة تُربط من LinkedIn، الذي يصل إلى نحو ثلث سكان المملكة',
+    ],
+  },
+  {
+    icon: 'shopping-bag',
+    business: 'متجر عطور أو عبايات ينتقل من Instagram إلى متجره الخاص',
+    pkg: 2,
+    points: [
+      'متجر يقبل التحويل البنكي والدفع عند الاستلام، ومزوّد دفع إلكتروني يعمل في السعودية',
+      'السعر الإجمالي شاملًا التوصيل والضريبة قبل إتمام الطلب، كما يشترط نظام التجارة الإلكترونية',
+      'صفحات الاسترجاع والتواصل وبيانات المتجر، ومكان لشهادة توثيق المتجر',
+    ],
+  },
+];
+
+const faq = [
+  {
+    question: 'هل لديكم مكتب في الرياض أو جدة؟',
+    answer:
+      'لا. نعمل عن بُعد بالكامل عبر الفيديو وواتساب والبريد الإلكتروني. أسبوع عملنا من الأحد إلى الخميس، مثل أسبوع العمل في السعودية، فتصلك الردود في أوقات عملك.',
+  },
+  {
+    question: 'كم سعر تصميم موقع لديكم بالريال السعودي؟',
+    answer:
+      'نحو 1,125 ريالًا للباقة الأساسية، و1,875 ريالًا لباقة الأعمال، ونحو 2,625 ريالًا فأكثر للباقة المميّزة. هذه تحويلات من أسعارنا الثابتة بالدولار. تدفع بفاتورة وتحويل بنكي: 50% مقدمًا و50% عند التسليم. ولمقارنة الأسعار في السوق السعودي، اقرأ دليل تكلفة تصميم موقع.',
+  },
+  {
+    question: 'هل يقبل متجري بطاقات مدى؟',
+    answer:
+      'نربط متجرك بمزوّد دفع يعمل في السعودية ويقبل البطاقات التي يستخدمها عملاؤك، ونتأكد من ذلك معك قبل البدء. لا يدرج Stripe السعودية ضمن الدول المدعومة، لذلك لا نبني المتاجر السعودية عليه.',
+  },
+  {
+    question: 'هل أحتاج إلى توثيق متجري الإلكتروني؟',
+    answer:
+      'منصة «الأعمال» التابعة للمركز السعودي للأعمال هي المنصة الوحيدة المعتمدة من وزارة التجارة لتوثيق المتاجر الإلكترونية، ويلزمها سجل تجاري أو وثيقة عمل حر سارية وحساب بنكي تجاري. نحن نبني المتجر، والتوثيق يكون باسمك.',
+  },
+  {
+    question: 'هل تصدرون فواتير إلكترونية متوافقة مع هيئة الزكاة والضريبة والجمارك؟',
+    answer:
+      'الفوترة الإلكترونية مطلوبة من المنشآت في السعودية منذ 4 ديسمبر 2021، وتُصدر عادةً من نظامك المحاسبي أو مزوّد معتمد. أخبرنا في المكالمة الأولى بما تستخدمه، وسنوضح لك ما يمكن ربطه بموقعك.',
+  },
+  {
+    question: 'هل أحتاج إلى نطاق .sa؟',
+    answer:
+      'ليس بالضرورة. يعمل نطاق .com في أي مكان. أما .com.sa فيتطلب سجلًا تجاريًا سعوديًا ساريًا، و.sa متاح للجهات الموجودة في السعودية أو المرخّصة فيها أو صاحبة علامة تجارية مسجلة فيها.',
+  },
+];
+---
+<PageLayout
+  title={TITLE}
+  description={DESCRIPTION}
+  footerBackground="default"
+  localeAlternates={[{ locale: 'ar', url: PATH }]}
+  languageAlternates={{ en: '/services/websites/', ar: PATH }}
+>
+  <JsonLd schema={createFAQSchema(faq)} />
+
+  <!-- Opening: the direct answer, then prices -->
+  <section class="border-b border-border bg-background">
+    <div class="mx-auto max-w-5xl px-6 pt-[var(--space-section-sm)] pb-[var(--space-section-md)]">
+      <Breadcrumbs
+        items={[
+          { label: 'الرئيسية', href: '/ar/' },
+          { label: 'تصميم المواقع', href: '/ar/services/websites/' },
+          { label: 'السعودية' },
+        ]}
+        class="mb-8"
+      />
+      <div class="grid gap-10 lg:grid-cols-5 lg:items-start">
+        <div class="lg:col-span-3">
+          <p class="text-sm font-semibold text-brand-600 dark:text-brand-400 mb-3">للشركات والأعمال في السعودية</p>
+          <h1 class="font-display text-4xl md:text-5xl font-bold text-foreground text-balance mb-6 leading-tight">
+            تصميم مواقع للشركات في الرياض وجدة والدمام
+          </h1>
+          <div class="flex flex-col gap-4 text-lg text-foreground-muted leading-relaxed">
+            <p>
+              تبحث عن شركة تصميم مواقع في الرياض أو في أي مدينة سعودية؟ يصمّم PickMySaaS مواقع بالعربية والإنجليزية ويطوّرها، بأسعار تعرفها قبل أن تتصل بنا: تبدأ من
+              نحو 1,125 ريالًا.
+            </p>
+            <p>
+              نعمل عن بُعد وليس لدينا مكتب في السعودية. إن كان اللقاء وجهًا لوجه مهمًا لك، فالشركة المحلية خيار أنسب. وإن أردت موقعًا ثنائي اللغة بسعر معلن، فتابع
+              القراءة.
+            </p>
+          </div>
+          <div class="mt-8 flex flex-col sm:flex-row gap-4">
+            <Button size="lg" {...bookingLinkAttrs('/ar/contact/')}>
+              احجز مكالمة مجانية
+              <Icon name="arrow-right" size="sm" />
+            </Button>
+            <Button size="lg" variant="outline" href="#store-rules">
+              قواعد المتاجر في السعودية
+              <Icon name="arrow-down" size="sm" />
+            </Button>
+          </div>
+        </div>
+        <Card variant="elevated" padding="lg" class="lg:col-span-2">
+          <h2 class="font-display text-lg font-bold text-foreground mb-4">الأسعار بالريال السعودي</h2>
+          <ul class="flex flex-col divide-y divide-border">
+            {packages.map((pkg) => (
+              <li class="py-3 first:pt-0 last:pb-0">
+                <div class="flex items-baseline justify-between gap-4">
+                  <span class="font-semibold text-foreground">{pkg.name}</span>
+                  <span class="font-display text-xl font-bold text-foreground whitespace-nowrap">
+                    {pkg.pricePrefix && <span class="text-sm font-normal text-foreground-muted">{pkg.pricePrefix} </span>}
+                    {sar(pkg)}
+                  </span>
+                </div>
+                <p class="text-sm text-foreground-muted leading-relaxed">{pkg.for}</p>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-4 text-xs text-foreground-muted leading-relaxed">
+            أسعار تقريبية محوّلة من 300 و500 دولار وتبدأ من 700 دولار، بسعر الصرف الرسمي 3.75 ريال للدولار.
+            <a href="/ar/services/websites/#packages" class="underline underline-offset-2">اطّلع على ما تشمله كل باقة</a>.
+          </p>
+        </Card>
+      </div>
+    </div>
+  </section>
+
+  <article class="mx-auto max-w-3xl px-6 py-[var(--space-section-md)]">
+    <div class="prose prose-lg max-w-none">
+      <h2>ما وجدناه في نتائج البحث السعودية</h2>
+      <p>
+        قبل بناء هذه الصفحة راجعنا نتائج Google في السعودية لعمليات البحث عن تصميم المواقع في نوفمبر 2026. ثلاث ملاحظات تهمّك إن كنت تختار من يبني موقعك.
+      </p>
+      <ul>
+        <li>
+          <strong>العملاء السعوديون يتعاملون مع شركات من خارج المملكة.</strong> أول نتيجة عادية للبحث عن «شركة تصميم مواقع في الرياض» كانت لشركة تعمل من خارج دول
+          الخليج، وبالقرب منها شركات من خارج المملكة أيضًا. العمل عن بُعد أصبح أمرًا مألوفًا.
+        </li>
+        <li>
+          <strong>قليل من الشركات ينشر أسعاره.</strong> كثير من النتائج يطلب منك التواصل لمعرفة السعر، والباقات المنشورة التي وجدناها لدى شركات سعودية تبدأ من نحو
+          4,900 ريال. فصّلنا الأسعار في <a href={GUIDE}>دليل تكلفة تصميم موقع في السعودية</a>.
+        </li>
+        <li>
+          <strong>مربع الخريطة يتصدّر البحث المحلي.</strong> لهذا تشمل كل باقة إعداد ملف Google التجاري لنشاطك. عنوانك في السعودية ميزة لا تملكها شركة تعمل عن
+          بُعد.
+        </li>
+      </ul>
+
+      <h2>جمهورك في السعودية</h2>
+      <p>
+        السعودية سوق كبير وشاب ومتصل بالإنترنت بالكامل تقريبًا. هذه الأرقام تحدد كيف نبني موقعك، وأين يجب أن يظهر.
+      </p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable
+        headers={['الرقم', 'ما يعنيه لموقعك', 'المصدر']}
+        rows={[
+          ['32.2 مليون نسمة في تعداد 2022: 58.4% سعوديون و41.6% غير سعوديين، ومتوسط العمر 29 عامًا', 'جمهور شاب يقرأ بالعربية أولًا، وشريحة كبيرة تفضّل الإنجليزية، فاللغتان ضروريتان', { text: 'الهيئة العامة للإحصاء، عبر Arab News', href: SOURCES.census }],
+          ['99% من السكان يستخدمون الإنترنت حتى أكتوبر 2025', 'عميلك يبحث عنك على الإنترنت قبل أن يتصل أو يزور', { text: 'DataReportal', href: SOURCES.digital }],
+          ['وصول إعلاني يعادل 79.2% من السكان على YouTube، و72.9% على Snapchat، و52.4% على Instagram، و43.1% على X', 'كثير من الزوار يصلون من تطبيقات التواصل، فالصفحة يجب أن تفتح بسرعة على الجوال وتوضح الخطوة التالية', { text: 'DataReportal', href: SOURCES.digital }],
+          ['المدفوعات الإلكترونية 85% من معاملات الأفراد في قطاع التجزئة عام 2025، مقابل 79% في 2024', 'عملاؤك يتوقعون الدفع بالبطاقة أو الجوال، لا نقدًا فقط', { text: 'البنك المركزي السعودي، عبر Arab News', href: SOURCES.epayments }],
+        ]}
+      />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        الوصول الإعلاني رقم تعلنه المنصات للمعلنين، وليس عدد المستخدمين النشطين، فاعتبره دليلًا على أين يقضي الناس وقتهم لا رقمًا دقيقًا. لاحظ مكانة Snapchat في
+        السعودية: إن كان عملاؤك يأتون منه، فالصفحة التي يصلون إليها أهم من الصفحة الرئيسية.
+      </p>
+
+      <h2 id="payments">الدفع الإلكتروني في السعودية</h2>
+      <p>
+        هنا يختلف الموقع السعودي عن غيره. أغلب أدلة الدفع الإلكتروني تفترض استخدام Stripe، لكن قائمة الدول التي يدعمها Stripe لا تشمل السعودية.
+      </p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable
+        headers={['الحقيقة', 'لماذا تهمّك', 'المصدر']}
+        rows={[
+          ['بلغ إنفاق التجارة الإلكترونية ببطاقات مدى 29.86 مليار ريال في يوليو 2025، بزيادة 79% عن العام السابق', 'بطاقات مدى أساسية في متجرك، لا Visa وMastercard فقط', { text: 'البنك المركزي السعودي، عبر Arab News', href: SOURCES.mada }],
+          ['لا يدرج Stripe السعودية ضمن الدول المدعومة', 'المتجر المبني على Stripe لا يناسب منشأة سعودية', { text: 'Stripe', href: SOURCES.stripe }],
+          ['ضريبة القيمة المضافة 15% منذ 1 يوليو 2020', 'وضّح في متجرك وعروض أسعارك إن كانت الأسعار شاملة للضريبة', { text: 'Deloitte', href: SOURCES.vat }],
+        ]}
+      />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        في المتاجر نربط مزوّد دفع يعمل في السعودية ويقبل البطاقات التي يستخدمها عملاؤك، ويمكن إضافة التحويل البنكي أو الدفع عند الاستلام. نحدد المزوّد المناسب معك قبل
+        البدء، لأن الخيارات والرسوم تتغير.
+      </p>
+
+      <h2 id="store-rules">قواعد المتاجر الإلكترونية في السعودية</h2>
+      <p>
+        إن كان موقعك يستقبل طلبات، فهناك نظام كامل ينظّم ذلك: نظام التجارة الإلكترونية الصادر في 2019، وتوثيق المتاجر، والفوترة الإلكترونية. هذا ما يعنيه عمليًا.
+      </p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable
+        headers={['القاعدة', 'ما نبنيه لها', 'المصدر']}
+        rows={[
+          ['يعرض المتجر اسمه وعنوانه ووسائل التواصل، ورقم السجل التجاري', 'صفحة «من نحن» وتذييل في كل صفحة يحملان بيانات المتجر بلغتين', { text: 'Saudipedia', href: SOURCES.ecommerceLaw }],
+          ['يُعرض السعر الإجمالي شاملًا رسوم التوصيل والضرائب قبل إتمام العقد', 'صفحة إتمام طلب تُظهر الإجمالي النهائي قبل الدفع، دون مفاجآت', { text: 'Saudipedia', href: SOURCES.ecommerceLaw }],
+          ['يحق للمستهلك إرجاع المنتج خلال سبعة أيام من التعاقد إن لم يستخدمه، مع استثناءات مثل المنتجات المصنوعة حسب الطلب', 'صفحة سياسة استرجاع واضحة، تذكر الاستثناءات التي تنطبق على منتجاتك', { text: 'Saudipedia', href: SOURCES.ecommerceLaw }],
+          ['منصة «الأعمال» هي المنصة الوحيدة المعتمدة لتوثيق المتاجر، ويلزمها سجل تجاري أو وثيقة عمل حر وحساب بنكي تجاري', 'لا شيء من جهتنا، لكن جهّز التوثيق مبكرًا، ونضع شهادته في المتجر عند صدورها', { text: 'Zawya', href: SOURCES.businessPlatform }],
+          ['الفوترة الإلكترونية مطلوبة منذ 4 ديسمبر 2021، والمرحلة الثانية تربط أنظمة الفوترة بالهيئة على موجات منذ 1 يناير 2023', 'نوضح لك ما يمكن ربطه بين موقعك ونظام الفوترة الذي تستخدمه', { text: 'هيئة الزكاة والضريبة والجمارك', href: SOURCES.zatca }],
+        ]}
+      />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        يساعدك الموقع على الالتزام بهذه القواعد، لكنه لا يغني عن السجل التجاري والتوثيق ونصيحة محاسبك. وقد تصل عقوبات مخالفة نظام التجارة الإلكترونية إلى غرامة لا
+        تتجاوز مليون ريال وحجب المتجر، بحسب <a href={SOURCES.ecommerceLaw} target="_blank" rel="noopener">ملخص النظام</a>.
+      </p>
+
+      <h2>نظام حماية البيانات الشخصية وموقعك</h2>
+      <p>
+        أصبح نظام حماية البيانات الشخصية في السعودية
+        <a href={SOURCES.pdpl} target="_blank" rel="noopener">قابلًا للتطبيق الكامل في 14 سبتمبر 2024</a>، بعد مهلة سنة من نفاذه. وهذا ما يعنيه لموقع شركة عادي
+        بحسب ملخص قانوني له:
+      </p>
+      <ul>
+        <li><strong>سياسة خصوصية واضحة.</strong> تذكر أنواع البيانات التي تجمعها، والغرض من جمعها، والأساس النظامي لمعالجتها.</li>
+        <li><strong>الموافقة من أسسه.</strong> نماذج التواصل والحجز تطلب موافقة صريحة وتربط بسياسة الخصوصية.</li>
+        <li><strong>الحذر عند نقل البيانات خارج المملكة.</strong> يتطلب النقل ضمانات مناسبة، فمكان استضافة موقعك وبريدك مهم.</li>
+      </ul>
+      <p>
+        نبني النماذج بخطوة موافقة ورابط لسياسة الخصوصية بالعربية والإنجليزية. لسنا محامين، فاستشر مختصًا فيما يطلبه النظام من نشاطك تحديدًا.
+      </p>
+
+      <h2>نطاق .sa أم .com؟</h2>
+      <p>
+        يخبر نطاق <code>.sa</code> زوارك فورًا أنك سعودي. وبحسب
+        <a href={SOURCES.domains} target="_blank" rel="noopener">لائحة تسجيل أسماء النطاقات السعودية</a>، يتطلب <code>.com.sa</code> سجلًا تجاريًا سعوديًا ساريًا،
+        ويتاح <code>.sa</code> للجهات الموجودة في السعودية أو المرخّصة فيها أو صاحبة علامة تجارية مسجلة فيها، ويمكن تسجيل النطاق العربي <code>.السعودية</code> أيضًا.
+        أما <code>.com</code> فيعمل بالكفاءة نفسها في محركات البحث. إن كان لديك <code>.com</code> فلا حاجة للتغيير.
+      </p>
+
+      <h2>كيف تبدو كل باقة لنشاط سعودي</h2>
+      <p>هذه أمثلة توضيحية، لا مشاريع لعملاء. تبيّن الباقة التي تناسب عادةً أربعة أنواع شائعة من الأنشطة في السعودية، وما نبنيه لكل منها.</p>
+    </div>
+
+    <div id="examples" class="not-prose my-8 grid gap-4 sm:grid-cols-2">
+      {examples.map((ex) => (
+        <Card variant="elevated" padding="lg">
+          <div class="flex items-start gap-3 mb-4">
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-500/10 text-brand-600 dark:text-brand-400">
+              <Icon name={ex.icon} size="md" />
+            </span>
+            <div>
+              <h3 class="font-display text-lg font-bold text-foreground leading-snug">{ex.business}</h3>
+              <p class="text-sm text-foreground-muted">
+                غالبًا {pkgByIndex(ex.pkg).name}، {pkgByIndex(ex.pkg).pricePrefix ? 'من نحو' : 'نحو'} <span class="whitespace-nowrap">{sar(pkgByIndex(ex.pkg))}</span>
+              </p>
+            </div>
+          </div>
+          <ul class="flex flex-col gap-2 text-sm text-foreground-muted leading-relaxed">
+            {ex.points.map((point) => (
+              <li class="flex gap-2">
+                <Icon name="check" size="sm" class="mt-0.5 shrink-0 text-brand-600 dark:text-brand-400" />
+                <span>{point}</span>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      ))}
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <h2>كيف نعمل مع العملاء في السعودية</h2>
+      <p>
+        تحجز مكالمة مجانية مدتها 30 دقيقة أو تراسلنا على واتساب. يصلك عرض واحد بسعر ثابت وجدول زمني. تنطلق مواقع الباقة الأساسية وباقة الأعمال خلال أسبوع، بأيام
+        العمل من الأحد إلى الخميس، منذ استلام المحتوى. المكالمات خلال أسبوع العمل السعودي، وترى موقعك يتشكّل قبل إطلاقه. ولمعرفة ما تجهّزه والأسئلة التي تطرحها على أي
+        مصمم، راجع <a href="/ar/services/websites/">صفحة تصميم المواقع</a>.
+      </p>
+    </div>
+
+    <h2 class="font-display text-3xl font-bold text-foreground mt-12 mb-6">أسئلة من الشركات في السعودية</h2>
+    <Card variant="elevated" padding="lg">
+      <FaqList items={faq} name="saudi-faq" />
+    </Card>
+
+    <p class="mt-8 text-sm text-foreground-muted">
+      راجعنا المعلومات في هذه الصفحة بتاريخ {FACTS_CHECKED}. ملاحظات نتائج البحث من مراجعتنا لنتائج Google في السعودية في نوفمبر 2026.
+    </p>
+  </article>
+
+  <ServiceCta
+    locale={LOCALE}
+    cta={{
+      heading: 'تبني موقعًا لنشاطك في السعودية؟',
+      description: 'أخبرنا بما تبيعه ومن هم عملاؤك. سنقترح الباقة المناسبة بالريال، ونوضح خيارات الدفع التي تناسبك.',
+      primary: 'احجز مكالمة مجانية',
+      secondary: 'تحدث معنا على واتساب',
+    }}
+    class="bg-background-secondary"
+  />
+</PageLayout>

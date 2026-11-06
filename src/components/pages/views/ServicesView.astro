@@ -231,6 +231,13 @@ const saasUrl = localizedPath('/services/saas', locale);
               {paragraph}
             </p>
           ))}
+          {/* The MVP page is English only, so the Arabic Services page has no link to it yet. */}
+          {locale === defaultLocale && ai.more && (
+            <Button variant="outline" href="/services/mvp/" class="self-start sm:self-center glitch:self-start">
+              {ai.more}
+              <Icon name="arrow-right" size="sm" />
+            </Button>
+          )}
         </div>
         <!-- Card -->
         <div class="sm:max-w-xl sm:mx-auto glitch:max-w-none glitch:mx-0" data-reveal data-reveal-delay="1" data-reveal-ease="smooth">

@@ -600,6 +600,7 @@
       "ai": {
         "badge": "AI",
         "heading": "AI-first MVPs",
+        "more": "More about MVP development",
         "paragraphs": [
           "An MVP (minimum viable product) is the smallest version of your idea that real users can try. It’s the fastest, cheapest way to find out if it works.",
           "We build MVPs with AI at their core, in Python, the language modern AI is built in: assistants that answer customers in Arabic and English, tools that read and process documents, and automation that saves hours of manual work. You get a working product in 4 to 8 weeks, ready to show users and investors."

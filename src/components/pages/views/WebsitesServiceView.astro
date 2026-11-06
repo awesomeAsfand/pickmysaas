@@ -128,6 +128,12 @@ const breadcrumbs = [
             Still comparing prices? See <a href="/guides/website-cost-uae/" class="underline underline-offset-2">what a website costs in the UAE</a>. Based in Oman? See <a href="/services/websites/oman/" class="underline underline-offset-2">websites for Oman businesses</a>.
           </p>
         )}
+        {/* The Saudi page and the pricing article exist in Arabic only. */}
+        {locale === 'ar' && (
+          <p class="text-foreground-muted">
+            ما زلت تقارن الأسعار؟ اقرأ <a href="/ar/guides/website-cost/" class="underline underline-offset-2">كم تكلفة تصميم موقع في السعودية</a>. نشاطك في السعودية؟ اطّلع على <a href="/ar/services/websites/saudi-arabia/" class="underline underline-offset-2">تصميم المواقع للشركات في السعودية</a>.
+          </p>
+        )}
       </div>
     </div>
   </section>

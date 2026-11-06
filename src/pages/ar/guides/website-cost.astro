@@ -1,0 +1,274 @@
+---
+/**
+ * How much a website costs in Saudi Arabia: an Arabic-only buying guide for
+ * "تكلفة تصميم موقع" and "أسعار تصميم المواقع" (10–100 each in Saudi Arabia in the
+ * 2026-11-04 research; the Saudi results were agency articles, with no map box).
+ *
+ * It isn't a translation of the English UAE guide: it uses Saudi sources, SAR,
+ * and Saudi-only costs (15% VAT, store documentation, e-invoicing). It answers
+ * cost questions so the Saudi page can stay about hiring us, and links to it.
+ *
+ * The owner chose not to name agencies or a personal author. The agency sources
+ * are listed privately in `docs/seo/arabic-guide-sources.md`. Recheck them and
+ * update `PRICES_CHECKED` when editing. Arabic copy needs a native Gulf review.
+ */
+import PageLayout from '@/layouts/PageLayout.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Breadcrumbs from '@/components/seo/Breadcrumbs.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import DataTable from '@/components/services/DataTable.astro';
+import FaqList from '@/components/services/FaqList.astro';
+import { createBlogPostSchema, createFAQSchema } from '@/lib/schema';
+import { tData } from '@/i18n';
+import { bookingLinkAttrs } from '@/lib/booking';
+import siteConfig from '@/config/site.config';
+
+const LOCALE = 'ar';
+const TITLE = 'تكلفة تصميم موقع في السعودية: أسعار 2026';
+const DESCRIPTION =
+  'قارنّا الأسعار التي تنشرها شركات تصميم سعودية: من نحو 2,000 ريال لموقع تعريفي إلى أكثر من 50,000 ريال لمتجر. اعرف ما يرفع التكلفة وما تدفعه كل سنة.';
+const PATH = '/ar/guides/website-cost/';
+const PUBLISHED = new Date('2026-11-06');
+const PRICES_CHECKED = '6 نوفمبر 2026';
+
+const SOURCES = {
+  vat: 'https://www.deloitte.com/middle-east/en/services/tax/perspectives/ksa-vat-rate-increase-15percent-1-july-2020.html',
+  zatca: 'https://zatca.gov.sa/en/E-Invoicing/Introduction/Pages/What-is-e-invoicing.aspx',
+  ecommerceLaw: 'https://saudipedia.com/en/article/2910/government-and-politics/systems/e-commerce-law-in-saudi-arabia',
+  businessPlatform: 'https://zawya.com/en/business/retail-and-consumer/commerce-ministry-business-is-the-only-platform-to-document-saudi-e-stores-nxwp10e4',
+  stripe: 'https://stripe.com/global',
+  domains: 'https://nic.sa/en/help/regulation',
+};
+
+// Our packages in SAR, from the Services copy, so they can't drift.
+const packages = tData<{ items: { name: string; for: string; pricePrefix: string; priceLocal: string[] }[] }>('pages.services.packages', LOCALE)!.items;
+const sar = (pkg: (typeof packages)[number]) => pkg.priceLocal.find((p) => p.includes('ريال سعودي'))?.replace('≈ ', '').replace(' سعودي', '') ?? '';
+
+const faq = [
+  {
+    question: 'كم تكلفة موقع تعريفي لشركة صغيرة في السعودية؟',
+    answer:
+      'تضع أدلة الأسعار التي راجعناها الموقع التعريفي بين نحو 2,000 و8,000 ريال، وصفحة الهبوط الواحدة بين 1,500 و4,000 ريال. والباقات الأساسية المنشورة لدى شركات سعودية تبدأ من نحو 4,900 إلى 5,000 ريال.',
+  },
+  {
+    question: 'كم تكلفة تصميم متجر إلكتروني في السعودية؟',
+    answer:
+      'تبدأ الأدلة الثلاثة التي راجعناها المتجر الإلكتروني من 12,000 ريال، وتصل به إلى 35,000 أو 50,000 ريال وأكثر. أضف إلى ذلك رسوم بوابة الدفع على كل عملية بيع، وتوثيق المتجر، والفوترة الإلكترونية إن كانت تنطبق عليك.',
+  },
+  {
+    question: 'هل يرفع تصميم الموقع بالعربية والإنجليزية السعر؟',
+    answer:
+      'غالبًا نعم. يضع أحد الأدلة موقع الشركة متعدد اللغات بين 10,000 و20,000 ريال، مقابل 5,000 إلى 15,000 ريال لموقع الشركة الاحترافي عمومًا. اطلب أن تظهر اللغة الثانية بندًا مستقلًا في عرض السعر، واسأل من يكتبها ويراجعها.',
+  },
+  {
+    question: 'هل أسعار تصميم المواقع شاملة لضريبة القيمة المضافة؟',
+    answer:
+      'ليس دائمًا، فلم تذكر أي من قوائم الأسعار التي راجعناها ذلك صراحة. الضريبة في السعودية 15%، فإن لم تكن مشمولة يصبح عرض 7,500 ريال نحو 8,625 ريالًا.',
+  },
+  {
+    question: 'لماذا يطلب المصمم المستقل أقل من الشركة؟',
+    answer:
+      'يقدّر أحد الأدلة سعر ساعة البرمجة من 150 ريالًا لدى المستقل إلى أكثر من 400 ريال لدى الشركات المتخصصة. الفرق يشمل عادةً عدد الأشخاص في المشروع والدعم بعد الإطلاق ومن يتحمل المسؤولية إن تعطل شيء. قارن ما يشمله العرض، لا السعر وحده.',
+  },
+  {
+    question: 'كم أخصص لموقع نشاط جديد؟',
+    answer:
+      'ابدأ بما يجب أن يفعله الموقع. إن كان عملاؤك يحتاجون فقط إلى معرفتك والتواصل معك، فموقع صغير يكفي عادةً، ويمكنك التوسع بعد أن تعرف ما يسأل عنه العملاء. وخصص جزءًا من الميزانية للتكاليف السنوية، لا للبناء فقط.',
+  },
+];
+
+const articleSchema = createBlogPostSchema({
+  title: TITLE,
+  description: DESCRIPTION,
+  url: new URL(PATH, siteConfig.url).toString(),
+  image: new URL(siteConfig.ogImage, siteConfig.url).toString(),
+  datePublished: PUBLISHED,
+  author: { type: 'Organization', name: siteConfig.name, url: new URL('/ar/about/', siteConfig.url).toString() },
+});
+---
+<PageLayout
+  title={TITLE}
+  description={DESCRIPTION}
+  footerBackground="secondary"
+  localeAlternates={[{ locale: 'ar', url: PATH }]}
+  languageAlternates={{ en: '/guides/website-cost-uae/', ar: PATH }}
+>
+  <JsonLd schema={articleSchema} />
+  <JsonLd schema={createFAQSchema(faq)} />
+
+  <article class="mx-auto max-w-3xl px-6 py-[var(--space-section-sm)]">
+    <Breadcrumbs
+      items={[
+        { label: 'الرئيسية', href: '/ar/' },
+        { label: 'تصميم المواقع', href: '/ar/services/websites/' },
+        { label: 'تكلفة تصميم موقع' },
+      ]}
+      class="mb-8"
+    />
+
+    <header class="mb-10">
+      <h1 class="font-display text-4xl md:text-5xl font-bold text-foreground text-balance mb-4 leading-tight">كم تكلفة تصميم موقع إلكتروني في السعودية؟</h1>
+      <p class="text-sm text-foreground-muted">بقلم PickMySaaS. راجعنا الأسعار بتاريخ {PRICES_CHECKED}.</p>
+    </header>
+
+    <Card variant="elevated" padding="lg" class="mb-10">
+      <h2 class="font-display text-lg font-bold text-foreground mb-2">الجواب المختصر</h2>
+      <p class="text-foreground-muted leading-relaxed">
+        بحسب ما تنشره شركات تصميم سعودية، يكلّف الموقع التعريفي البسيط نحو <strong class="text-foreground">2,000 إلى 8,000 ريال</strong>، وموقع الشركة الاحترافي
+        <strong class="text-foreground">5,000 إلى 25,000 ريال</strong>، والمتجر الإلكتروني <strong class="text-foreground">من 12,000 إلى أكثر من 50,000 ريال</strong>.
+        أضف ضريبة القيمة المضافة 15% إن لم تكن مشمولة، ثم التكاليف التي تدفعها كل سنة.
+      </p>
+    </Card>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        أغلب المقالات عن هذا الموضوع تعطي نطاقات واسعة دون مصدر. لذلك ذهبنا إلى صفحات شركات التصميم السعودية نفسها وجمعنا ما تنشره. العيّنة صغيرة، خمسة مصادر،
+        وليست مسحًا للسوق. وكاتب هذا الدليل جهة تبيع المواقع أيضًا: نحن. أسعارنا في آخر الدليل، لتحكم عليها مقارنةً بغيرها.
+      </p>
+
+      <h2>الأسعار حسب نوع الموقع</h2>
+      <p>
+        راجعنا ثلاثة أدلة أسعار نشرتها شركات تصميم سعودية في 2026. يجمع الجدول أدنى رقم وأعلاه لكل نوع موقع في الأدلة الثلاثة.
+      </p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable
+        headers={['نوع الموقع', 'النطاق في الأدلة', 'ما يرفع السعر']}
+        rows={[
+          ['صفحة هبوط واحدة', '1,500 – 4,000 ريال', 'تصميم مخصص بدل قالب، ونماذج مربوطة بأدوات أخرى'],
+          ['موقع تعريفي بسيط', '2,000 – 8,000 ريال', 'عدد الصفحات، ومن يكتب المحتوى'],
+          ['موقع شركة احترافي', '5,000 – 25,000 ريال', 'التصميم المخصص، واللغة الثانية، وتحسين محركات البحث'],
+          ['موقع حجز', '10,000 – 30,000 ريال (دليل واحد)', 'الدفع المسبق، وتعدد الفروع أو مقدمي الخدمة'],
+          ['متجر إلكتروني', '12,000 – 50,000+ ريال', 'عدد المنتجات، وبوابات الدفع، وربط شركات الشحن'],
+          ['منصة أو برمجة خاصة', '25,000 – 120,000+ ريال', 'الحسابات والصلاحيات، والتكامل مع أنظمة أخرى'],
+        ]}
+      />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        لاحظ أن الأدلة الثلاثة كلها تبدأ المتجر الإلكتروني من 12,000 ريال، بينما تختلف كثيرًا في الحد الأعلى. الحد الأدنى هو الرقم الأكثر اتفاقًا، والحد الأعلى يعتمد
+        على حجم المشروع أكثر من الشركة.
+      </p>
+
+      <h2>ما تنشره الشركات فعلًا من باقات</h2>
+      <p>
+        الأدلة تصف السوق، أما قائمة الأسعار فهي ما ستدفعه فعلًا. وجدنا شركتين سعوديتين تنشران باقات بأسعار:
+      </p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable
+        headers={['', 'الباقة الأولى', 'الباقة الثانية', 'الباقة الأعلى']}
+        rows={[
+          ['شركة في الرياض', '5,000 ريال: قالب جاهز وتعديلات محدودة', '7,500 ريال: واجهة احترافية ونماذج مخصصة', '22,000 ريال: برمجة خاصة وبوابة دفع وعضويات'],
+          ['شركة ثانية في الرياض', '4,900 – 7,900 ريال: صفحات أساسية ونموذج تواصل', '8,900 – 14,900 ريال: صفحات خدمات وربط واتساب', 'من 15,000 ريال: تطوير مخصص وتكاملات'],
+        ]}
+      />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        لم تذكر أي من الشركتين إن كانت الأسعار تشمل ضريبة القيمة المضافة أو الاستضافة. إذا كانت الضريبة غير مشمولة، فباقة 7,500 ريال تصبح نحو 8,625 ريالًا.
+      </p>
+
+      <h2>ثلاثة قرارات تحدد معظم السعر</h2>
+      <h3>1. طريقة البناء</h3>
+      <p>
+        القالب الجاهز أرخص لأن التصميم موجود مسبقًا، وتدفع مقابل تعديله وإدخال محتواك. التصميم المخصص يُرسم لنشاطك من البداية. والبرمجة الخاصة تبني وظائف لا توجد
+        في القوالب، مثل حسابات العملاء أو لوحة إدارة لطلباتك. يضع أحد الأدلة المواقع الجاهزة بين 2,000 و6,000 ريال، والبرمجة الخاصة من 25,000 ريال فأكثر.
+      </p>
+      <h3>2. ما يجب أن يفعله الموقع</h3>
+      <p>
+        موقع يعرض خدماتك يختلف عن موقع يستقبل حجوزات، ويختلف كلاهما عن متجر يبيع ويشحن. كل وظيفة تضيف صفحات واختبارات وربطًا بخدمات أخرى. حدّد ما يجب أن يفعله الموقع
+        في سنته الأولى، وأجّل الباقي.
+      </p>
+      <h3>3. عدد اللغات</h3>
+      <p>
+        الموقع ثنائي اللغة ليس ترجمة فقط: الصفحات العربية تنعكس من اليمين إلى اليسار، وتحتاج عناوين وكلمات بحث خاصة بها. يضع أحد الأدلة موقع الشركة متعدد اللغات بين
+        10,000 و20,000 ريال. اسأل إن كانت اللغة الثانية مكتوبة أم مترجمة آليًا.
+      </p>
+
+      <h2>تكاليف خاصة بالسعودية يغفلها كثيرون</h2>
+      <p>هذه البنود لا تظهر غالبًا في عرض السعر الأول، لكنها جزء من التكلفة الحقيقية لموقع أو متجر سعودي.</p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable
+        headers={['البند', 'ما يعنيه لميزانيتك', 'المصدر']}
+        rows={[
+          ['ضريبة القيمة المضافة 15% منذ 1 يوليو 2020', 'تضيف 15% إلى أي عرض غير شامل للضريبة', { text: 'Deloitte', href: SOURCES.vat }],
+          ['رسوم بوابة الدفع', 'يقدّر أحد الأدلة رسوم الإعداد بين 500 و2,000 ريال، ونحو 2 إلى 3% من كل عملية بيع', { text: 'دليل أسعار سعودي', href: '#how' }],
+          ['Stripe لا يدرج السعودية ضمن الدول المدعومة', 'تحتاج مزوّد دفع يعمل في السعودية، وقد تختلف رسومه', { text: 'Stripe', href: SOURCES.stripe }],
+          ['توثيق المتجر على منصة «الأعمال»', 'يلزمه سجل تجاري أو وثيقة عمل حر وحساب بنكي تجاري، فخطّط له قبل الإطلاق', { text: 'Zawya', href: SOURCES.businessPlatform }],
+          ['الفوترة الإلكترونية منذ 4 ديسمبر 2021', 'قد تحتاج نظام فوترة متوافقًا، وهذه تكلفة منفصلة عن الموقع', { text: 'هيئة الزكاة والضريبة والجمارك', href: SOURCES.zatca }],
+          ['صفحات يشترطها نظام التجارة الإلكترونية', 'بيانات المتجر والسعر الإجمالي قبل الشراء وسياسة استرجاع خلال سبعة أيام، فتأكد أنها ضمن العرض', { text: 'Saudipedia', href: SOURCES.ecommerceLaw }],
+          ['نطاق .com.sa', 'يتطلب سجلًا تجاريًا سعوديًا ساريًا، ويُجدَّد سنويًا', { text: 'SaudiNIC', href: SOURCES.domains }],
+        ]}
+      />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <h2>ميزانية السنة الأولى: ما الذي تحسبه</h2>
+      <p>قبل أن توقّع على أي عرض، اكتب كل بند من هذه البنود ومن يدفعه، حتى لا تفاجئك فاتورة بعد الإطلاق.</p>
+      <ul>
+        <li><strong>سعر البناء</strong>، مع الضريبة إن لم تكن مشمولة.</li>
+        <li><strong>النطاق</strong>: تجديد سنوي، ويختلف سعره حسب الامتداد.</li>
+        <li><strong>الاستضافة والبريد</strong>: سنوية أو شهرية، حسب حجم الزيارات.</li>
+        <li><strong>الصيانة والتحديثات</strong>: هل هي مشمولة، ولكم شهر؟ يقدّرها أحد الأدلة بين 1,000 و5,000 ريال سنويًا لمواقع أنظمة إدارة المحتوى الشائعة.</li>
+        <li><strong>الإضافات المدفوعة</strong>: بعض المواقع تعتمد على إضافات باشتراك سنوي، يقدّرها الدليل نفسه بين 500 و3,000 ريال.</li>
+        <li><strong>رسوم الدفع</strong>: نسبة من كل عملية بيع، تكبر مع مبيعاتك.</li>
+        <li><strong>المحتوى</strong>: الصور والنصوص والترجمة، إن لم تكن ضمن العرض.</li>
+      </ul>
+
+      <h2>أسعارنا للمقارنة</h2>
+      <p>
+        نحن استوديو يقوده مؤسسه ويعمل عن بُعد، لذلك أسعارنا أقل من أغلب ما سبق. هذه باقاتنا بالريال، محوّلة من أسعارنا الثابتة بالدولار:
+      </p>
+    </div>
+
+    <div class="not-prose my-8 grid gap-4 sm:grid-cols-3">
+      {packages.map((pkg) => (
+        <Card variant="elevated" padding="md">
+          <p class="font-semibold text-foreground">{pkg.name}</p>
+          <p class="font-display text-2xl font-bold text-foreground whitespace-nowrap my-1">
+            {pkg.pricePrefix && <span class="text-sm font-normal text-foreground-muted">{pkg.pricePrefix} </span>}
+            {sar(pkg)}
+          </p>
+          <p class="text-sm text-foreground-muted leading-relaxed">{pkg.for}</p>
+        </Card>
+      ))}
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        ما لا يشمله السعر: لا لقاءات في مكتب، والصفحات والأعمال الإضافية تُسعَّر بشكل منفصل، ويُجدَّد النطاق سنويًا بسعر التكلفة. تدفع بفاتورة وتحويل بنكي: 50% مقدمًا
+        و50% عند التسليم. إن كنت في السعودية، فاقرأ <a href="/ar/services/websites/saudi-arabia/">ما نبنيه للشركات في السعودية</a>، أو
+        <a href="/ar/services/websites/#packages">ما تشمله كل باقة</a>.
+      </p>
+    </div>
+
+    <div class="not-prose my-10 flex flex-col sm:flex-row gap-4">
+      <Button size="lg" {...bookingLinkAttrs('/ar/contact/')}>
+        احصل على سعر لموقعك
+        <Icon name="arrow-right" size="sm" />
+      </Button>
+    </div>
+
+    <h2 class="font-display text-3xl font-bold text-foreground mt-12 mb-6">أسئلة شائعة عن أسعار المواقع</h2>
+    <Card variant="elevated" padding="lg">
+      <FaqList items={faq} name="cost-faq-ar" />
+    </Card>
+
+    <div class="prose prose-lg max-w-none mt-12">
+      <h2 id="how">كيف جمعنا هذه الأرقام</h2>
+      <p>
+        في {PRICES_CHECKED} راجعنا صفحات خمس شركات تصميم سعودية: قائمتي أسعار منشورتين وثلاثة أدلة أسعار. اخترنا صفحات تعرض أرقامًا بالريال، ولم نذكر أسماء الشركات.
+        الأدلة تكتبها شركات تبيع المواقع، مثلنا، فاعتبر أرقامها تقديرات لا أسعارًا نهائية. وتتغير الأسعار، فاطلب دائمًا عرضًا مكتوبًا.
+      </p>
+    </div>
+  </article>
+</PageLayout>

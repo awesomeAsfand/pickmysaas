@@ -1,0 +1,327 @@
+---
+/**
+ * MVP development: an English-only page for "mvp development company" and close
+ * variants (10–100 a month in Saudi Arabia, the UAE, Qatar and Kuwait in the
+ * 2026-11-04 research; no Arabic MVP wording returned data, so there's no Arabic
+ * version yet).
+ *
+ * It must stay different from the SaaS page, which is for products people
+ * already want. This page is about testing an idea: what to cut, where AI helps,
+ * the weeks of the build and what to measure afterwards. The SaaS page links here.
+ * Recheck the Stripe fact and update `FACTS_CHECKED` when editing.
+ */
+import PageLayout from '@/layouts/PageLayout.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Breadcrumbs from '@/components/seo/Breadcrumbs.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import DataTable from '@/components/services/DataTable.astro';
+import FaqList from '@/components/services/FaqList.astro';
+import ServiceCta from '@/components/services/ServiceCta.astro';
+import { createFAQSchema } from '@/lib/schema';
+import { defaultLocale } from '@/i18n';
+import { bookingLinkAttrs } from '@/lib/booking';
+
+const TITLE = 'MVP Development Company for Gulf Startups';
+const DESCRIPTION =
+  'We build AI-first MVPs for founders in Saudi Arabia, the UAE and the GCC: a working product in 4 to 8 weeks, at one fixed price, in Arabic and English.';
+const PATH = '/services/mvp/';
+const FACTS_CHECKED = '6 November 2026';
+
+const SOURCES = {
+  stripe: 'https://stripe.com/global',
+};
+
+const facts = [
+  { icon: 'clock', label: 'Timeline', value: '4 to 8 weeks for most MVPs' },
+  { icon: 'file-text', label: 'Price', value: 'One fixed price in your proposal' },
+  { icon: 'credit-card', label: 'Payment', value: '50% upfront, 50% when it’s done, by bank transfer' },
+  { icon: 'languages', label: 'Languages', value: 'Arabic and English from day one' },
+  { icon: 'code', label: 'Built with', value: 'Python and Django, ready to grow' },
+];
+
+// A worked example of cutting an idea down. It's illustrative, not a client project.
+const cut = {
+  idea: 'A marketplace where parents in Riyadh find and book home tutors',
+  inFirst: [
+    'Tutor profiles that you add yourself, with subjects, areas and prices',
+    'A search by subject and neighbourhood, in Arabic and English',
+    'A booking request that reaches the tutor on WhatsApp',
+    'A simple admin page to see requests and follow up',
+  ],
+  later: [
+    'Tutors signing up and managing their own profiles',
+    'Online payments, refunds and payouts to tutors',
+    'Reviews and ratings',
+    'A mobile app',
+  ],
+  test: 'Will parents send booking requests, and will tutors answer them? If they do, the rest is worth building.',
+};
+
+const weeks = [
+  ['Week 1', 'We agree the one problem, the first user and the core action. You get screen designs for the main flow.', 'A signed-off scope, so the fixed price can’t drift'],
+  ['Weeks 2 to 4', 'We build the core flow first, then the screens around it. You see a working demo every week.', 'Feedback while changes are still cheap'],
+  ['Week 5', 'We add the AI part, test it with real examples from your business, and set up analytics.', 'Proof the AI works on your data, not just in a demo'],
+  ['Week 6', 'A small group of real users tries it. We fix what confuses them, then launch.', 'A live product and the first numbers'],
+];
+
+const measures = [
+  ['Activation', 'How many people who sign up complete the core action once', 'Your first screens are too hard or the promise is unclear'],
+  ['Repeat use', 'How many come back in the second and fourth week', 'The problem may not hurt enough to change habits'],
+  ['Willingness to pay', 'How many accept a price, pre-order or ask for a paid plan', 'You have users, but not yet a business'],
+  ['Time to value', 'How long it takes a new user to get the result you promise', 'Cut steps before you add features'],
+];
+
+const faq = [
+  {
+    question: 'How much does MVP development cost?',
+    answer:
+      'Every MVP gets one fixed price in your proposal, agreed before we start, with no hourly billing. What moves the price is how many user types there are, which payments and integrations it needs, and what the AI has to do. You pay 50% upfront and 50% once it’s done, by invoice and bank transfer.',
+  },
+  {
+    question: 'How long does it take to build an MVP?',
+    answer: 'Most take 4 to 8 weeks. Your proposal names the exact timeline, and you see a working demo every week along the way.',
+  },
+  {
+    question: 'Will the MVP have to be rebuilt later?',
+    answer:
+      'It shouldn’t. We build MVPs in Python and Django, the same stack we use for full SaaS platforms, so a product that proves itself grows from the same code instead of starting over.',
+  },
+  {
+    question: 'Do I need a technical co-founder first?',
+    answer:
+      'No. Many founders test the idea with an MVP before they hire a team. You need to know your users and their problem well; we handle the product and the technical decisions, and explain them in plain language.',
+  },
+  {
+    question: 'Can an MVP help me raise investment?',
+    answer:
+      'It gives you something real to demo and numbers to show, which is stronger than slides. We can’t promise funding: investors back traction and teams, and the MVP is how you start to show both.',
+  },
+  {
+    question: 'Can the MVP work in Arabic?',
+    answer:
+      'Yes. Screens are bilingual Arabic and English with full right-to-left layouts, and AI features are tested on real Arabic messages from your customers, including Gulf dialect.',
+  },
+];
+---
+<PageLayout
+  title={TITLE}
+  description={DESCRIPTION}
+  footerBackground="default"
+  localeAlternates={[{ locale: 'en', url: PATH }]}
+  languageAlternates={{ en: PATH, ar: '/ar/services/' }}
+>
+  <JsonLd schema={createFAQSchema(faq)} />
+
+  <!-- Opening: the direct answer and the facts -->
+  <section class="border-b border-border bg-background">
+    <div class="mx-auto max-w-5xl px-6 pt-[var(--space-section-sm)] pb-[var(--space-section-md)]">
+      <Breadcrumbs
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Services', href: '/services/' },
+          { label: 'MVP development' },
+        ]}
+        class="mb-8"
+      />
+      <div class="grid gap-10 lg:grid-cols-5 lg:items-start">
+        <div class="lg:col-span-3">
+          <p class="text-sm font-semibold uppercase tracking-wide text-brand-600 dark:text-brand-400 mb-3">For founders with an idea to test</p>
+          <h1 class="font-display text-4xl md:text-5xl font-bold text-foreground text-balance mb-6">MVP development for Gulf founders</h1>
+          <div class="flex flex-col gap-4 text-lg text-foreground-muted leading-relaxed">
+            <p>
+              Looking for an MVP development company? PickMySaaS builds the smallest version of your product that real users can try, with AI at its core where it
+              earns its place. You get a working product in 4 to 8 weeks, at one fixed price.
+            </p>
+            <p>
+              The point of an MVP isn’t to launch everything. It’s to find out, quickly and cheaply, whether people want what you plan to build. That shapes every
+              decision on this page.
+            </p>
+          </div>
+          <div class="mt-8 flex flex-col sm:flex-row gap-4">
+            <Button size="lg" {...bookingLinkAttrs('/contact/')}>
+              Book a free call
+              <Icon name="arrow-right" size="sm" />
+            </Button>
+            <Button size="lg" variant="outline" href="#cut">
+              See how we cut an idea down
+              <Icon name="arrow-down" size="sm" />
+            </Button>
+          </div>
+        </div>
+        <Card variant="elevated" padding="lg" class="lg:col-span-2">
+          <h2 class="font-display text-lg font-bold text-foreground mb-4">At a glance</h2>
+          <dl class="flex flex-col divide-y divide-border">
+            {facts.map((f) => (
+              <div class="flex gap-3 py-3 first:pt-0 last:pb-0">
+                <Icon name={f.icon} size="md" class="mt-0.5 shrink-0 text-brand-600 dark:text-brand-400" />
+                <div>
+                  <dt class="text-sm text-foreground-muted">{f.label}</dt>
+                  <dd class="font-semibold text-foreground">{f.value}</dd>
+                </div>
+              </div>
+            ))}
+          </dl>
+        </Card>
+      </div>
+    </div>
+  </section>
+
+  <article class="mx-auto max-w-3xl px-6 py-[var(--space-section-md)]">
+    <div class="prose prose-lg max-w-none">
+      <h2>What an MVP is, and what it isn’t</h2>
+      <p>
+        MVP stands for minimum viable product. Founders often mean three different things by it, and mixing them up is how budgets double. This is how we tell them
+        apart on a first call.
+      </p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable
+        headers={['', 'Who uses it', 'What it proves']}
+        rows={[
+          ['Clickable prototype', 'You, investors and a few test users, guided by you', 'That people understand the idea and the screens make sense'],
+          ['MVP', 'Real users, on their own, with real data', 'That people use it, come back and might pay'],
+          ['Full product', 'Paying customers at scale', 'That the business works and can grow'],
+        ]}
+      />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        We build the middle one. A prototype can’t tell you whether people will come back, and a full product spends months answering questions an MVP could answer in
+        weeks. If people already pay for what you offer, by hand or in spreadsheets, you may be past the MVP stage: see
+        <a href="/services/saas/">SaaS development</a> instead.
+      </p>
+
+      <h2 id="cut">How we cut an idea down to an MVP</h2>
+      <p>
+        Most ideas arrive with twenty features. We look for one type of user, one problem and one action that proves the idea works, and move everything else to
+        “later”. Here is a worked example. It’s an illustration, not a client project.
+      </p>
+    </div>
+
+    <Card variant="elevated" padding="lg" class="my-8">
+      <p class="text-sm font-semibold uppercase tracking-wide text-brand-600 dark:text-brand-400 mb-2">The idea</p>
+      <p class="font-display text-xl font-bold text-foreground mb-6">{cut.idea}</p>
+      <div class="grid gap-6 sm:grid-cols-2">
+        <div>
+          <h3 class="font-semibold text-foreground mb-3">In the MVP</h3>
+          <ul class="flex flex-col gap-2 text-sm text-foreground-muted leading-relaxed">
+            {cut.inFirst.map((item) => (
+              <li class="flex gap-2">
+                <Icon name="check" size="sm" class="mt-0.5 shrink-0 text-brand-600 dark:text-brand-400" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold text-foreground mb-3">Later, if it works</h3>
+          <ul class="flex flex-col gap-2 text-sm text-foreground-muted leading-relaxed">
+            {cut.later.map((item) => (
+              <li class="flex gap-2">
+                <Icon name="clock" size="sm" class="mt-0.5 shrink-0 text-foreground-muted" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <p class="mt-6 border-t border-border pt-4 text-sm text-foreground-muted leading-relaxed">
+        <span class="font-semibold text-foreground">What it tests:</span>
+        {cut.test}
+      </p>
+    </Card>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        Notice what the first version leaves out: payments. Booking requests over WhatsApp are how many Gulf customers already prefer to arrange services, and taking
+        money online can wait until you know people want the service at all.
+      </p>
+
+      <h2>AI in an MVP: where it helps and where it doesn’t</h2>
+      <p>
+        “AI-first” means the AI is part of the core idea from the first design, not bolted on later. It doesn’t mean every product needs it. These are the jobs where it
+        usually earns its place in a first version, and the ones where we’d hold back.
+      </p>
+      <h3>Good first jobs for AI</h3>
+      <ul>
+        <li><strong>Reading documents.</strong> Pulling the details out of invoices, CVs, contracts or forms so nobody types them in by hand.</li>
+        <li><strong>Answering repeat questions.</strong> An assistant that answers customers in Arabic and English from your own information, and hands over to a person when it isn’t sure.</li>
+        <li><strong>Sorting and routing.</strong> Reading incoming messages or requests and sending each one to the right place.</li>
+        <li><strong>Drafting.</strong> First drafts of replies, descriptions or reports that a person checks before they go out.</li>
+      </ul>
+      <h3>Where we’d hold back</h3>
+      <ul>
+        <li><strong>Decisions that must always be right,</strong> such as prices, eligibility or anything medical or legal, unless a person reviews them.</li>
+        <li><strong>AI as the whole product,</strong> when a simple form or search would solve the problem just as well.</li>
+      </ul>
+      <p>
+        Two things are easy to miss. First, Arabic: customers in the Gulf often write in dialect, and an assistant that handles formal Arabic well can still stumble on a
+        Khaleeji WhatsApp message, so we test with real messages from your business. Second, cost: AI models are usually billed for each use, so a successful product has a
+        running cost that grows with your users. We estimate it with you before launch.
+      </p>
+
+      <h2>A typical 6-week MVP, week by week</h2>
+      <p>Smaller MVPs take 4 weeks and larger ones 8. This is how a typical one in the middle runs.</p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable headers={['When', 'What happens', 'What you get from it']} rows={weeks} />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <h2>What to measure once it’s live</h2>
+      <p>
+        An MVP is only useful if you decide something with it. Before launch, we agree which numbers would tell you to keep going, change direction or stop, and set up
+        the analytics to track them.
+      </p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable headers={['Measure', 'What it counts', 'If it’s low']} rows={measures} />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        No number here is good or bad on its own; it depends on your market. What matters is agreeing the bar before you see the results, so the numbers make the decision
+        and not hope.
+      </p>
+
+      <h2>Building an MVP for Gulf users</h2>
+      <p>A few things change when your first users are in Saudi Arabia, the UAE or elsewhere in the GCC.</p>
+      <ul>
+        <li><strong>Arabic from the start.</strong> Adding right-to-left layouts later means redoing screens, so we build both languages in from day one.</li>
+        <li><strong>WhatsApp as the next step.</strong> For many services, a tap to WhatsApp is an easier first step for users than a long sign-up form, and it’s simpler to build.</li>
+        <li>
+          <strong>Payments vary by country.</strong> Of the six GCC countries, Stripe’s
+          <a href={SOURCES.stripe} target="_blank" rel="noopener">list of supported countries</a> includes only the UAE. If your MVP takes payments, we pick a provider
+          that works where your company is registered.
+        </li>
+        <li><strong>Data protection laws apply.</strong> Saudi Arabia, the UAE and other GCC countries have their own personal data laws, so sign-up forms ask for consent and link to a privacy notice. Take legal advice on what your product needs.</li>
+      </ul>
+    </div>
+
+    <h2 class="font-display text-3xl font-bold text-foreground mt-12 mb-6">MVP questions</h2>
+    <Card variant="elevated" padding="lg">
+      <FaqList items={faq} name="mvp-faq" />
+    </Card>
+
+    <p class="mt-8 text-sm text-foreground-muted">
+      Facts on this page were checked on {FACTS_CHECKED}. Need a website rather than a product? See <a href="/services/websites/" class="underline underline-offset-2">website design</a>.
+    </p>
+  </article>
+
+  <ServiceCta
+    locale={defaultLocale}
+    cta={{
+      heading: 'Have an idea you want to test?',
+      description: 'Tell us who it’s for and what problem it solves. On a free 30-minute call, we’ll help you find the smallest version worth building.',
+      primary: 'Book a free call',
+      secondary: 'Chat on WhatsApp',
+    }}
+    class="bg-background-secondary"
+  />
+</PageLayout>
