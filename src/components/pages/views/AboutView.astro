@@ -21,6 +21,8 @@ import { Hero } from '@/components/hero';
 import TypingEffect from '@/components/ui/TypingEffect.astro';
 import TechStack from '@/components/landing/TechStack.astro';
 import CtaBand from '@/components/patterns/CtaBand.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import { createFAQSchema, createPersonSchema } from '@/lib/schema';
 import { t, tData, defaultLocale, localizedPath } from '@/i18n';
 import { bookingLinkAttrs } from '@/lib/booking';
 
@@ -85,6 +87,11 @@ const cta = tData<{ badge: string; heading: string; description: string; button:
   description={t('pages.about.meta.description', locale)}
   footerBackground="secondary"
 >
+  {/* Who runs the studio, and the questions this page answers, for search
+      engines and AI assistants. */}
+  <JsonLd schema={createPersonSchema()} />
+  <JsonLd schema={createFAQSchema(faq.cards.flatMap((card) => card.items))} />
+
   <Hero layout="centered" size="sm" class="isolate" showHeroHalo>
     <Badge slot="badge" variant="brand" pill>
       <Icon name="users" size="sm" />

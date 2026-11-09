@@ -2,6 +2,8 @@
 import '@/styles/global.css';
 import outfitFont from '@fontsource-variable/outfit/files/outfit-latin-wght-normal.woff2?url';
 import manropeFont from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
+import notoSansArabicFont from '@fontsource-variable/noto-sans-arabic/files/noto-sans-arabic-arabic-wght-normal.woff2?url';
+import notoKufiArabicFont from '@fontsource-variable/noto-kufi-arabic/files/noto-kufi-arabic-arabic-wght-normal.woff2?url';
 import SEO from '@/components/seo/SEO.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import Analytics from '@/components/layout/Analytics.astro';
@@ -98,15 +100,28 @@ if (commentsConfig?.enabled) {
 ---
 
 <!doctype html>
-<html lang={locale} dir={getLocaleDirection(locale)} class="scroll-smooth dark" data-theme="blue" data-theme-mode="system">
+<html lang={locale} dir={getLocaleDirection(locale)} class="scroll-smooth" data-theme="blue" data-theme-mode="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- Preload display + body fonts so they're ready for first paint -->
-    <link rel="preload" as="font" type="font/woff2" href={manropeFont} crossorigin="anonymous" />
-    <link rel="preload" as="font" type="font/woff2" href={outfitFont} crossorigin="anonymous" />
+    <!-- Preload display + body fonts so they're ready for first paint. Right-to-left
+         pages are set in the Arabic fonts, which the browser otherwise only finds
+         after reading the stylesheet, so those pages preload them instead. -->
+    {getLocaleDirection(locale) === 'rtl' ? (
+      <>
+        <link rel="preload" as="font" type="font/woff2" href={notoSansArabicFont} crossorigin="anonymous" />
+        <link rel="preload" as="font" type="font/woff2" href={notoKufiArabicFont} crossorigin="anonymous" />
+      </>
+    ) : (
+      <>
+        <link rel="preload" as="font" type="font/woff2" href={manropeFont} crossorigin="anonymous" />
+        <link rel="preload" as="font" type="font/woff2" href={outfitFont} crossorigin="anonymous" />
+      </>
+    )}
+    <!-- Page-specific head tags, such as preloading a font only that page uses. -->
+    <slot name="head" />
 
     {commentsPreconnectHref && <link rel="preconnect" href={commentsPreconnectHref} crossorigin />}
 

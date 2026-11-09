@@ -33,6 +33,7 @@ export function createPersonSchema(): WithContext<Person> {
     name: 'Asfand Yar Khan',
     jobTitle: 'Founder',
     url: `${siteConfig.url}/about/`,
+    knowsAbout: ['Website design', 'SaaS development', 'MVP development', 'Python', 'Django'],
     worksFor: {
       '@type': 'Organization',
       name: siteConfig.name,
@@ -73,6 +74,35 @@ export function createProfessionalServiceSchema(): WithContext<LocalBusiness> {
       { '@type': 'Country', name: 'Bahrain' },
       { '@type': 'Country', name: 'Oman' },
     ],
+    // What an AI assistant or search engine needs to describe the studio: what
+    // it is, who runs it, what it offers (with each service's page) and in
+    // which languages. Facts only from the site's own pages.
+    description: siteConfig.description,
+    logo: `${siteConfig.url}/apple-touch-icon.png`,
+    founder: { '@type': 'Person', name: 'Asfand Yar Khan', url: `${siteConfig.url}/about/` },
+    knowsLanguage: ['en', 'ar'],
+    knowsAbout: [
+      'Website design',
+      'Ecommerce website development',
+      'SaaS development',
+      'MVP development',
+      'Arabic and English bilingual websites',
+      'Python',
+      'Django',
+    ],
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Services',
+      itemListElement: [
+        ['Website design', '/services/websites/'],
+        ['Ecommerce website development', '/services/ecommerce/'],
+        ['SaaS development', '/services/saas/'],
+        ['MVP development', '/services/mvp/'],
+      ].map(([name, path]) => ({
+        '@type': 'Offer',
+        itemOffered: { '@type': 'Service', name, url: `${siteConfig.url}${path}` },
+      })),
+    },
     sameAs: siteConfig.socialLinks,
   };
 }

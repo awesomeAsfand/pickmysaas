@@ -9,6 +9,9 @@
    Logical properties (inline-start/end) keep the layout right in Arabic.
    ───────────────────────────────────────────────────────────────────────────── */
 
+/* The palette is set on <html> for any page that contains the homepage design,
+   so the site header and footer, which sit outside .hp, can use it as well. */
+:root:has(.hp),
 .hp {
   --hp-bg: #07090d;
   --hp-bg-alt: #0a0d13;
@@ -43,7 +46,8 @@
   --hp-sans: 'Geist Variable', 'Noto Sans Arabic Variable', system-ui, sans-serif;
   --hp-serif: 'Instrument Serif', 'Noto Kufi Arabic Variable', Georgia, serif;
   --hp-mono: 'Geist Mono Variable', 'Noto Sans Arabic Variable', ui-monospace, monospace;
-
+}
+.hp {
   background: var(--hp-bg);
   color: var(--hp-text);
   font-family: var(--hp-sans);
@@ -52,6 +56,7 @@
 }
 /* Light mode. The blues are darker than the design's so text and the primary
    button keep AA contrast on white; the phone bezels stay dark, like phones. */
+html:not(.dark):has(.hp),
 html:not(.dark) .hp {
   --hp-bg: #ffffff;
   --hp-bg-alt: #f5f8fc;
@@ -89,6 +94,59 @@ html:not(.dark) .hp {
 html:not(.dark) .hp :is(.hp-work, .hp-timeline, .hp-included) {
   box-shadow: 0 24px 60px -36px rgba(15, 23, 42, 0.28);
 }
+/* ── Site header and footer on the homepage ─────────────────────────────────── */
+/* They are shared with every page and built from the theme variables, so on
+   the homepage those variables are pointed at this palette and font. Other
+   pages keep the site theme. */
+html:has(.hp) :is(header[data-header-shape], footer) {
+  --color-background: var(--hp-bg);
+  --color-background-secondary: var(--hp-bg-alt);
+  --color-background-tertiary: var(--hp-card);
+  --color-foreground: var(--hp-text);
+  --color-foreground-secondary: var(--hp-soft);
+  --color-foreground-muted: var(--hp-muted);
+  --color-foreground-subtle: var(--hp-dim);
+  --color-border: var(--hp-line-2);
+  --color-secondary: var(--hp-glass);
+  --color-secondary-hover: var(--hp-line-2);
+  /* The logo's "P" square and wordmark use the brand shades; on the homepage
+     they take the page's blue (#0070dc light, #0083fe dark). */
+  --color-brand-600: var(--hp-blue);
+  --color-brand-700: var(--hp-blue);
+  --font-sans: var(--hp-sans);
+  --font-display: var(--hp-sans);
+  font-family: var(--hp-sans);
+  -webkit-font-smoothing: antialiased;
+}
+/* Dark mode: a neutral hairline instead of the theme's blue border, and the
+   page's own near-black glass. */
+html.dark:has(.hp) header[data-header-shape='floating'] {
+  border-color: var(--hp-line-3);
+  background: rgba(7, 9, 13, 0.72);
+}
+html.dark:has(.hp) header[data-header-shape='floating'][data-scrolled] {
+  background: rgba(7, 9, 13, 0.88);
+  box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.7);
+}
+/* Footer: the page background, a hairline above, and the section labels in the
+   same small mono capitals as the homepage's section labels. */
+html:has(.hp) footer {
+  background: var(--hp-bg);
+  border-top: 1px solid var(--hp-line);
+}
+html:has(.hp) footer h3 {
+  font-family: var(--hp-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--hp-blue-light);
+}
+html[dir='rtl']:has(.hp) footer h3 {
+  font-family: var(--hp-sans);
+  letter-spacing: 0;
+}
+
 .hp ::selection {
   background: var(--hp-blue);
   color: #fff;

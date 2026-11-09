@@ -16,6 +16,8 @@ import '@fontsource/instrument-serif/latin-400.css';
 import '@fontsource/instrument-serif/latin-400-italic.css';
 import '@fontsource-variable/geist';
 import '@fontsource-variable/geist-mono';
+import geistFont from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
+import serifItalicFont from '@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2?url';
 import '@/styles/home-premium.css';
 import LandingLayout from '@/layouts/LandingLayout.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
@@ -270,6 +272,15 @@ const homeAlternates = getLocales().map((loc) => ({ locale: loc, url: localizedP
   includeProfessionalServiceSchema={true}
   localeAlternates={homeAlternates}
 >
+  {/* The hero heading's two fonts. Without these, the heading re-wraps when the
+      fonts arrive and pushes the hero screenshot down (a layout shift). The
+      Arabic homepage uses the site's Noto fonts, which aren't needed here. */}
+  {locale === defaultLocale && (
+    <Fragment slot="head">
+      <link rel="preload" as="font" type="font/woff2" href={geistFont} crossorigin="anonymous" />
+      <link rel="preload" as="font" type="font/woff2" href={serifItalicFont} crossorigin="anonymous" />
+    </Fragment>
+  )}
   <div class="hp">
     <!-- Hero.
          data-header-flip-anchor: the floating header keeps its over-the-hero
@@ -346,6 +357,53 @@ const homeAlternates = getLocales().map((loc) => ({ locale: loc, url: localizedP
       </div>
 
       <div class="hp-hero-foot" aria-hidden="true"></div>
+    </section>
+
+    <!-- Services -->
+    <section class="hp-section hp-bg-alt">
+      <div class="hp-container hp-stack-xl">
+        <div class="hp-split-head" data-reveal>
+          <div class="hp-section-head">
+            <p class="hp-eyebrow">{nextNo()} — {services.label}</p>
+            <h2 class="hp-h2">{services.headingMain} <span class="hp-accent">{services.headingAccent}</span></h2>
+          </div>
+          <p class="hp-lead">{services.lead}</p>
+        </div>
+
+        <div class="hp-services">
+          {serviceCards.map((card, i) => {
+            const href = serviceUrls[card.key];
+            const Tag = href ? 'a' : 'div';
+            return (
+              <Tag class="hp-service" href={href} data-reveal data-reveal-delay={i || undefined}>
+                <div class="hp-service-top">
+                  <span class="hp-mono hp-muted">{pad(i + 1)}</span>
+                  <span class="hp-mono hp-blue">{card.price}</span>
+                </div>
+                {showSlot(`svc-${card.key}`, locale) && (
+                  <div class="hp-service-img">
+                    <HomeSlot
+                      id={`svc-${card.key}`}
+                      locale={locale}
+                      hint={`${card.title} screenshot`}
+                      alt={fill(services.imageAlt, { title: card.title })}
+                      sizes="(min-width: 1280px) 300px, (min-width: 640px) 50vw, 100vw"
+                    />
+                  </div>
+                )}
+                <h3 class="hp-h3 hp-h3-sm">{card.title}</h3>
+                <p class="hp-body hp-body-sm">{card.description}</p>
+                {href && (
+                  <span class="hp-more">
+                    {services.learnMore}
+                    <Icon name="arrow-right" size="sm" class="rtl:-scale-x-100" />
+                  </span>
+                )}
+              </Tag>
+            );
+          })}
+        </div>
+      </div>
     </section>
 
     <!-- Selected work -->
@@ -470,55 +528,8 @@ const homeAlternates = getLocales().map((loc) => ({ locale: loc, url: localizedP
       </div>
     </section>
 
-    <!-- Services -->
-    <section class="hp-section hp-bg-alt">
-      <div class="hp-container hp-stack-xl">
-        <div class="hp-split-head" data-reveal>
-          <div class="hp-section-head">
-            <p class="hp-eyebrow">{nextNo()} — {services.label}</p>
-            <h2 class="hp-h2">{services.headingMain} <span class="hp-accent">{services.headingAccent}</span></h2>
-          </div>
-          <p class="hp-lead">{services.lead}</p>
-        </div>
-
-        <div class="hp-services">
-          {serviceCards.map((card, i) => {
-            const href = serviceUrls[card.key];
-            const Tag = href ? 'a' : 'div';
-            return (
-              <Tag class="hp-service" href={href} data-reveal data-reveal-delay={i || undefined}>
-                <div class="hp-service-top">
-                  <span class="hp-mono hp-muted">{pad(i + 1)}</span>
-                  <span class="hp-mono hp-blue">{card.price}</span>
-                </div>
-                {showSlot(`svc-${card.key}`, locale) && (
-                  <div class="hp-service-img">
-                    <HomeSlot
-                      id={`svc-${card.key}`}
-                      locale={locale}
-                      hint={`${card.title} screenshot`}
-                      alt={fill(services.imageAlt, { title: card.title })}
-                      sizes="(min-width: 1280px) 300px, (min-width: 640px) 50vw, 100vw"
-                    />
-                  </div>
-                )}
-                <h3 class="hp-h3 hp-h3-sm">{card.title}</h3>
-                <p class="hp-body hp-body-sm">{card.description}</p>
-                {href && (
-                  <span class="hp-more">
-                    {services.learnMore}
-                    <Icon name="arrow-right" size="sm" class="rtl:-scale-x-100" />
-                  </span>
-                )}
-              </Tag>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-
     <!-- Included in every build -->
-    <section class="hp-section hp-bg-base">
+    <section class="hp-section hp-bg-alt">
       <div class="hp-container hp-stack-xl">
         <div class="hp-split-head" data-reveal>
           <div class="hp-section-head">
@@ -554,7 +565,7 @@ const homeAlternates = getLocales().map((loc) => ({ locale: loc, url: localizedP
     </section>
 
     <!-- Process -->
-    <section class="hp-section hp-bg-alt">
+    <section class="hp-section hp-bg-base">
       <div class="hp-container hp-stack-xl">
         <div class="hp-section-head" data-reveal>
           <p class="hp-eyebrow">{nextNo()} — {processSection.label}</p>
@@ -626,7 +637,7 @@ const homeAlternates = getLocales().map((loc) => ({ locale: loc, url: localizedP
     </section>
 
     {/* The stack. Client stories were removed until there are real quotes. */}
-    <section class="hp-section hp-bg-base">
+    <section class="hp-section hp-bg-alt">
       <div class="hp-container hp-stack-xl">
         <div class="hp-built" data-reveal>
           <p class="hp-mono hp-muted">{stackCopy.label}</p>
@@ -645,7 +656,7 @@ const homeAlternates = getLocales().map((loc) => ({ locale: loc, url: localizedP
     </section>
 
     {BLOG_VISIBLE && posts.length > 0 && (
-      <section class="hp-section hp-bg-alt">
+      <section class="hp-section hp-bg-base">
         <div class="hp-container hp-stack-xl">
           <div class="hp-section-head" data-reveal>
             <p class="hp-eyebrow">{nextNo()} — {blogSection.badge}</p>

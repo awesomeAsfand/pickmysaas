@@ -291,7 +291,7 @@ const siteConfig: SiteConfig = {
   // import this file, uses the same values. Change them there.
   name: SITE_NAME,
   description:
-    'PickMySaaS designs and builds bilingual websites, SaaS platforms and AI-first MVPs for startups and businesses in the UAE, Saudi Arabia, Qatar and across the GCC.',
+    'PickMySaaS designs and builds bilingual websites, online stores, SaaS platforms and AI-first MVPs for startups and businesses in the UAE, Saudi Arabia, Qatar and across the GCC.',
   tagline: 'Websites, SaaS & AI MVPs for the Gulf',
   footerNote: 'Working worldwide · Focused on the GCC',
   url: SITE_URL || SITE_URL_FALLBACK,
