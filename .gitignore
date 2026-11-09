@@ -54,3 +54,6 @@ docs/
 
 # npm lockfile (pnpm only)
 package-lock.json
+
+# Design source files (not part of the site)
+design/
