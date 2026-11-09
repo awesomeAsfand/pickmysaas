@@ -1,0 +1,13 @@
+---
+import EcommerceServiceView from '@/components/pages/views/EcommerceServiceView.astro';
+import { getSecondaryLocales } from '@/i18n';
+
+// Locale-prefixed online-store page (`/<locale>/services/ecommerce`).
+export function getStaticPaths() {
+  return getSecondaryLocales().map((locale) => ({ params: { locale } }));
+}
+
+const { locale } = Astro.params;
+---
+
+<EcommerceServiceView locale={locale} />

@@ -1,0 +1,9 @@
+---
+import EcommerceServiceView from '@/components/pages/views/EcommerceServiceView.astro';
+import { defaultLocale } from '@/i18n';
+
+// The online-store page for the default locale. Additional locales are served
+// by `src/pages/[locale]/services/ecommerce.astro`, which renders the same view.
+---
+
+<EcommerceServiceView locale={defaultLocale} />

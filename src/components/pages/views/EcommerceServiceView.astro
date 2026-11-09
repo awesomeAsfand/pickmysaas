@@ -1,0 +1,430 @@
+---
+/**
+ * EcommerceServiceView — the online-store page, shared by `/services/ecommerce`
+ * and the locale-prefixed route. Written for a store owner: what a store
+ * includes, how Gulf shoppers pay, which package fits, custom versus a store
+ * builder, and the Saudi and UAE rules a store has to meet. All copy is in
+ * `pages.serviceEcommerce`; prices come from the website packages in
+ * `pages.services.packages`, so the two can't drift apart.
+ *
+ * The showcase uses the Noble Muse concept store screenshots from
+ * `src/assets/home/` (the same files as the homepage card). It is labelled as
+ * the studio's own build, not a client project.
+ */
+import { Image } from 'astro:assets';
+import PageLayout from '@/layouts/PageLayout.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import ProofTile from '@/components/ui/data-display/ProofTile/ProofTile.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import { Hero } from '@/components/hero';
+import Breadcrumbs from '@/components/seo/Breadcrumbs.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import SectionHeading from '@/components/services/SectionHeading.astro';
+import DataTable from '@/components/services/DataTable.astro';
+import FaqList from '@/components/services/FaqList.astro';
+import ServiceCta from '@/components/services/ServiceCta.astro';
+import { createFAQSchema } from '@/lib/schema';
+import { homeImage } from '@/lib/home-media';
+import { t, tData, defaultLocale, localizedPath } from '@/i18n';
+import { bookingLinkAttrs } from '@/lib/booking';
+
+interface Props {
+  /** Locale whose copy this page renders. Defaults to the site default. */
+  locale?: string;
+}
+
+interface IconItem {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+const { locale = defaultLocale } = Astro.props;
+
+const page = tData<{
+  breadcrumb: string;
+  hero: { badge: string; titleLead: string; titleHighlight: string; description: string; secondary: string };
+  answer: { heading: string; paragraphs: string[]; glanceTitle: string; glance: { label: string; value: string }[] };
+  showcase: { badge: string; heading: string; lead: string; desktopAlt: string; mobileAlt: string; thumbs: string[]; thumbAlt: string };
+  features: { badge: string; heading: string; lead: string; items: IconItem[] };
+  payments: { badge: string; heading: string; lead: string; methods: { icon: string; title: string; text: string }[]; note: string };
+  packages: {
+    badge: string;
+    heading: string;
+    lead: string;
+    cards: { name: string; for: string; features: string[] }[];
+    customPrice: string;
+    customLink: string;
+    detailsLink: string;
+    guideLink: string;
+    note: string;
+  };
+  compare: { badge: string; heading: string; lead: string; labels: string[]; rows: string[][] };
+  rules: {
+    badge: string;
+    heading: string;
+    lead: string;
+    markets: { title: string; points: string[]; sourceLabel: string; sourceUrl: string }[];
+    note: string;
+  };
+  prepare: { badge: string; heading: string; lead: string; items: string[] };
+  faq: { badge: string; heading: string; lead: string; items: { question: string; answer: string }[] };
+  cta: { heading: string; description: string; primary: string; secondary: string };
+}>('pages.serviceEcommerce', locale)!;
+
+// Business and Premium prices, straight from the website packages.
+const packageItems = tData<{ price: string; pricePrefix: string; priceLocal: string[] }[]>(
+  'pages.services.packages.items',
+  locale
+)!;
+const priceFor = [packageItems[1], packageItems[2]];
+const fromLabel = (prefix: string) => (prefix ? `${prefix} ` : '');
+
+// The Noble Muse concept store screenshots (shared with the homepage card).
+const shot = {
+  desktop: homeImage('work-shop-desktop', locale),
+  mobile: homeImage('work-shop-mobile', locale),
+  thumbs: page.showcase.thumbs
+    .map((caption, i) => ({ caption, image: homeImage(`work-shop-${i + 1}`, locale) }))
+    .filter((th) => th.image),
+};
+
+const contactUrl = localizedPath('/contact', locale);
+const packagesUrl = `${localizedPath('/services/websites', locale)}#packages`;
+const saasUrl = localizedPath('/services/saas', locale);
+// The price guide for this language: the UAE guide in English, the Saudi one in Arabic.
+const guideUrl = locale === defaultLocale ? '/guides/website-cost-uae/' : localizedPath('/guides/website-cost', locale);
+const breadcrumbs = [
+  { label: t('common.home', locale), href: localizedPath('/', locale) },
+  { label: t('nav.items.services', locale), href: localizedPath('/services', locale) },
+  { label: page.breadcrumb },
+];
+---
+<PageLayout
+  title={t('pages.serviceEcommerce.meta.title', locale)}
+  description={t('pages.serviceEcommerce.meta.description', locale)}
+  footerBackground="secondary"
+>
+  <JsonLd schema={createFAQSchema(page.faq.items)} />
+
+  <Hero layout="centered" size="sm" class="isolate" showHeroHalo>
+    <Badge slot="badge" variant="brand" pill>
+      <Icon name="shopping-cart" size="sm" />
+      {page.hero.badge}
+    </Badge>
+    <h1 slot="title" class="!text-4xl md:!text-5xl lg:!text-6xl">
+      <span class="text-foreground">{page.hero.titleLead}</span><br />
+      <span class="text-brand-500">{page.hero.titleHighlight}</span>
+    </h1>
+    <p slot="description">{page.hero.description}</p>
+    <Fragment slot="actions">
+      <Button size="lg" {...bookingLinkAttrs(contactUrl)}>
+        {page.cta.primary}
+        <Icon name="arrow-right" size="sm" class="rtl:-scale-x-100" />
+      </Button>
+      <Button size="lg" href="#prices" variant="outline" class="hero-btn-opaque">
+        {page.hero.secondary}
+        <Icon name="arrow-down" size="sm" />
+      </Button>
+    </Fragment>
+  </Hero>
+
+  <!-- The direct answer, with the facts at a glance -->
+  <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+    <div class="mx-auto max-w-6xl px-6">
+      <Breadcrumbs items={breadcrumbs} class="mb-8" />
+      <div class="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:items-start">
+        <div>
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground text-balance mb-6">{page.answer.heading}</h2>
+          <div class="flex flex-col gap-4">
+            {page.answer.paragraphs.map((paragraph) => (
+              <p class="text-lg text-foreground-muted leading-relaxed">{paragraph}</p>
+            ))}
+          </div>
+        </div>
+        <Card variant="elevated" padding="lg" data-reveal>
+          <h3 class="font-display text-lg font-bold text-foreground mb-4">{page.answer.glanceTitle}</h3>
+          <dl class="flex flex-col divide-y divide-border">
+            {page.answer.glance.map((fact) => (
+              <div class="flex flex-col gap-1 py-3 first:pt-0 last:pb-0">
+                <dt class="text-xs font-semibold uppercase tracking-wide text-brand-700 dark:text-brand-400 rtl:normal-case rtl:tracking-normal">{fact.label}</dt>
+                <dd class="text-sm text-foreground leading-relaxed">{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </Card>
+      </div>
+    </div>
+  </section>
+
+  <!-- Concept store showcase -->
+  {shot.desktop && (
+    <section class="py-[var(--space-section-md)] bg-background border-t border-border overflow-hidden">
+      <div class="mx-auto max-w-6xl px-6 flex flex-col gap-10">
+        <SectionHeading icon="store" badge={page.showcase.badge} heading={page.showcase.heading} lead={page.showcase.lead} />
+        <div class="ec-stage" data-reveal>
+          <div class="ec-browser">
+            <div class="ec-browser-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+            <Image
+              src={shot.desktop}
+              alt={page.showcase.desktopAlt}
+              widths={[640, 960, 1340]}
+              sizes="(min-width: 1152px) 880px, 90vw"
+              class="ec-browser-img"
+            />
+          </div>
+          {shot.mobile && (
+            <div class="ec-phone">
+              <Image src={shot.mobile} alt={page.showcase.mobileAlt} widths={[200, 310]} sizes="170px" class="ec-phone-img" />
+            </div>
+          )}
+        </div>
+        {shot.thumbs.length > 0 && (
+          <div class="grid gap-6 sm:grid-cols-3">
+            {shot.thumbs.map((th, i) => (
+              <figure class="flex flex-col gap-3" data-reveal data-reveal-delay={i || undefined}>
+                <div class="overflow-hidden rounded-xl border border-border shadow-sm aspect-[4/3]">
+                  <Image
+                    src={th.image!}
+                    alt={page.showcase.thumbAlt.replace('{caption}', th.caption)}
+                    widths={[400, 720]}
+                    sizes="(min-width: 640px) 33vw, 100vw"
+                    class="w-full h-full object-cover object-top"
+                  />
+                </div>
+                <figcaption class="text-sm font-medium text-foreground-muted">{th.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  )}
+
+  <!-- What every store includes -->
+  <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="shopping-bag" badge={page.features.badge} heading={page.features.heading} lead={page.features.lead} />
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {page.features.items.map((item, i) => (
+          <ProofTile icon={item.icon} title={item.title} data-reveal data-reveal-delay={i % 4 || undefined}>
+            {item.description}
+          </ProofTile>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- How Gulf shoppers pay -->
+  <section class="py-[var(--space-section-md)] bg-background border-t border-border">
+    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="credit-card" badge={page.payments.badge} heading={page.payments.heading} lead={page.payments.lead} />
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {page.payments.methods.map((method, i) => (
+          <Card variant="elevated" padding="lg" class="flex flex-col gap-4 h-full" data-reveal data-reveal-delay={i || undefined}>
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500">
+              <Icon name={method.icon} size="md" />
+            </div>
+            <h3 class="font-display text-lg font-bold text-foreground">{method.title}</h3>
+            <p class="text-sm text-foreground-muted leading-relaxed">{method.text}</p>
+          </Card>
+        ))}
+      </div>
+      <p class="text-sm text-foreground-muted text-center max-w-2xl mx-auto text-balance" data-reveal>{page.payments.note}</p>
+    </div>
+  </section>
+
+  <!-- Which package fits -->
+  <section id="prices" class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="tag" badge={page.packages.badge} heading={page.packages.heading} lead={page.packages.lead} />
+      <div class="grid gap-6 lg:grid-cols-3 lg:items-stretch">
+        {page.packages.cards.map((card, i) => {
+          const price = priceFor[i];
+          return (
+            <Card
+              variant="elevated"
+              padding="lg"
+              class:list={['flex flex-col gap-5 h-full', i === 0 && 'ring-2 ring-brand-500']}
+              data-reveal
+              data-reveal-delay={i || undefined}
+            >
+              <div class="flex flex-col gap-2">
+                <h3 class="font-display text-xl font-bold text-foreground">{card.name}</h3>
+                <p class="text-sm text-foreground-muted leading-relaxed">{card.for}</p>
+              </div>
+              {price ? (
+                <div class="flex flex-col gap-1">
+                  <p class="font-display text-4xl font-bold text-foreground">
+                    <span class="text-base font-medium text-foreground-muted">{fromLabel(price.pricePrefix)}</span>{price.price}
+                  </p>
+                  <p class="text-xs text-foreground-muted">{price.priceLocal.join(' · ')}</p>
+                </div>
+              ) : (
+                <p class="font-display text-2xl font-bold text-foreground">{page.packages.customPrice}</p>
+              )}
+              <ul class="flex flex-col gap-2.5 flex-1">
+                {card.features.map((feature) => (
+                  <li class="flex items-start gap-3">
+                    <Icon name="check" size="sm" class="text-brand-500 shrink-0 mt-0.5" />
+                    <span class="text-sm text-foreground-muted leading-relaxed">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              {price ? (
+                <Button variant={i === 0 ? 'primary' : 'outline'} {...bookingLinkAttrs(contactUrl)} class="w-full justify-center">
+                  {page.cta.primary}
+                </Button>
+              ) : (
+                <a href={saasUrl} class="inline-flex items-center gap-2 text-sm font-semibold text-brand-700 dark:text-brand-400">
+                  {page.packages.customLink}
+                  <Icon name="arrow-right" size="sm" class="rtl:-scale-x-100" />
+                </a>
+              )}
+            </Card>
+          );
+        })}
+      </div>
+      <div class="flex flex-col items-center gap-3 text-center" data-reveal>
+        <p class="text-sm text-foreground-muted max-w-2xl text-balance">{page.packages.note}</p>
+        <div class="flex flex-wrap justify-center gap-x-6 gap-y-2">
+          <a href={packagesUrl} class="inline-flex items-center gap-2 text-sm font-semibold text-brand-700 dark:text-brand-400">
+            {page.packages.detailsLink}
+            <Icon name="arrow-right" size="sm" class="rtl:-scale-x-100" />
+          </a>
+          <a href={guideUrl} class="inline-flex items-center gap-2 text-sm font-semibold text-brand-700 dark:text-brand-400">
+            {page.packages.guideLink}
+            <Icon name="arrow-right" size="sm" class="rtl:-scale-x-100" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Custom store or store builder -->
+  <section class="py-[var(--space-section-md)] bg-background border-t border-border">
+    <div class="mx-auto max-w-5xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="git-compare" badge={page.compare.badge} heading={page.compare.heading} lead={page.compare.lead} />
+      <DataTable headers={page.compare.labels} rows={page.compare.rows} />
+    </div>
+  </section>
+
+  <!-- Rules by country -->
+  <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="scale" badge={page.rules.badge} heading={page.rules.heading} lead={page.rules.lead} />
+      <div class="grid gap-6 md:grid-cols-2">
+        {page.rules.markets.map((market, i) => (
+          <Card variant="elevated" padding="lg" class="flex flex-col gap-4" data-reveal data-reveal-delay={i || undefined}>
+            <h3 class="font-display text-xl font-bold text-foreground pb-4 border-b border-border">{market.title}</h3>
+            <ul class="flex flex-col gap-3 flex-1">
+              {market.points.map((point) => (
+                <li class="flex items-start gap-3">
+                  <Icon name="check" size="sm" class="text-brand-500 shrink-0 mt-1" />
+                  <p class="text-sm text-foreground-muted leading-relaxed">{point}</p>
+                </li>
+              ))}
+            </ul>
+            <a
+              href={market.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1.5 self-start text-sm font-medium text-brand-700 dark:text-brand-400 underline underline-offset-4 hover:no-underline"
+            >
+              {market.sourceLabel}
+              <Icon name="external-link" size="sm" />
+            </a>
+          </Card>
+        ))}
+      </div>
+      <p class="text-sm text-foreground-muted text-center max-w-2xl mx-auto text-balance" data-reveal>{page.rules.note}</p>
+    </div>
+  </section>
+
+  <!-- What to have ready -->
+  <section class="py-[var(--space-section-md)] bg-background border-t border-border">
+    <div class="mx-auto max-w-4xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="clipboard-list" badge={page.prepare.badge} heading={page.prepare.heading} lead={page.prepare.lead} />
+      <Card variant="elevated" padding="lg" data-reveal>
+        <ol class="grid gap-4 sm:grid-cols-2">
+          {page.prepare.items.map((item, i) => (
+            <li class="flex items-start gap-3">
+              <span class="flex items-center justify-center w-7 h-7 rounded-full bg-brand-500/10 text-brand-700 dark:text-brand-400 text-sm font-bold shrink-0">{i + 1}</span>
+              <span class="text-sm text-foreground-muted leading-relaxed pt-1">{item}</span>
+            </li>
+          ))}
+        </ol>
+      </Card>
+    </div>
+  </section>
+
+  <!-- Questions -->
+  <section id="faq" class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+    <div class="mx-auto max-w-3xl px-6 flex flex-col gap-8">
+      <SectionHeading icon="info" badge={page.faq.badge} heading={page.faq.heading} lead={page.faq.lead} />
+      <Card variant="elevated" padding="lg" data-reveal>
+        <FaqList items={page.faq.items} name="ecommerce-faq" />
+      </Card>
+    </div>
+  </section>
+
+  <ServiceCta locale={locale} cta={page.cta} class="bg-background" />
+</PageLayout>
+
+<style>
+  /* Concept store: a browser frame with the phone overlapping its corner. */
+  .ec-stage {
+    position: relative;
+    max-width: 960px;
+    margin-inline: auto;
+    padding-bottom: 2.5rem;
+  }
+  .ec-browser {
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid var(--color-border);
+    background: var(--color-background);
+    box-shadow: 0 40px 80px -40px rgb(15 23 42 / 0.35);
+    margin-inline-end: 8%;
+  }
+  .ec-browser-bar {
+    display: flex;
+    gap: 6px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-background-secondary);
+  }
+  .ec-browser-bar span {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--color-border);
+  }
+  .ec-browser-img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .ec-phone {
+    position: absolute;
+    inset-inline-end: 0;
+    bottom: 0;
+    width: min(22%, 190px);
+    padding: 5px;
+    border-radius: 26px;
+    background: linear-gradient(160deg, #3a4250, #12161d);
+    box-shadow: 0 30px 60px -20px rgb(15 23 42 / 0.5);
+  }
+  .ec-phone-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 21px;
+  }
+  @media (max-width: 639px) {
+    .ec-browser { margin-inline-end: 0; }
+    .ec-phone { width: 30%; bottom: -0.5rem; }
+  }
+</style>

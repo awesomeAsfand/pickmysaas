@@ -364,97 +364,6 @@ html:lang(ar) :is(h1, h2, h3, h4, h5, h6) {
     );
   }
 
-  /* Hero gradient — dark mode */
-  .dark .hero-dark-gradient {
-    background: linear-gradient(to bottom, var(--color-brand-500) 0%, var(--bar-color) 100%);
-  }
-
-  /* The end stop is named because it is also the colour Safari needs under the
-     toolbar it floats over the foot of the screen. One source of truth: change
-     it here and the browser chrome follows. See `paintBody` in BaseLayout, and
-     `data-bar-color` on the hero in HomeView. */
-  .hero-dark-gradient {
-    position: relative;
-    isolation: isolate;
-    --bar-color: #000;
-    background: linear-gradient(to bottom, var(--color-brand-500) 0%, var(--bar-color) 100%);
-  }
-  /* The hero panel stays dark in light mode, so its text needs the same
-     hierarchy the panel has in dark mode: a near-white heading (91%
-     lightness), secondary text at 83%, and a clearly muted description at
-     68% — tinted with the active theme's brand hue. The on-invert tokens
-     are the fallback for browsers without relative color syntax; they are
-     hue-correct but lighter, so text stays readable there too. */
-  html:not(.dark) .hero-dark-gradient {
-    --color-foreground:           var(--on-invert);
-    --color-foreground-secondary: var(--on-invert-secondary);
-    --color-foreground-muted:     var(--on-invert-muted);
-    --color-background:           var(--surface-invert);
-    --color-secondary:            var(--surface-invert-secondary);
-    --color-secondary-hover:      var(--surface-invert-tertiary);
-    --color-ring:                 var(--on-invert);
-  }
-  @supports (color: oklch(from red 50% 0.1 h)) {
-    html:not(.dark) .hero-dark-gradient {
-      --color-foreground:           oklch(from var(--color-brand-500) 91% 0.010 h);
-      --color-foreground-secondary: oklch(from var(--color-brand-500) 83% 0.015 h);
-      --color-foreground-muted:     oklch(from var(--color-brand-500) 68% 0.012 h);
-      --color-ring:                 oklch(from var(--color-brand-500) 91% 0.010 h);
-    }
-  }
-
-  /* H1 spans: one colour for every span, matching dark mode's uniform
-     treatment. */
-  html:not(.dark) .hero-dark-gradient h1 > span {
-    color: var(--color-foreground);
-    -webkit-text-fill-color: currentColor;
-  }
-
-  /* Primary CTA — near-white gradient pill. Targets .btn-primary, which is
-     the homepage primary CTA marker (added by the primary button variant). */
-  /* !important throughout: the Button component's own light-mode styles
-     (brand-700 fill, brand-800 hover) otherwise win the cascade for
-     background-color, so hovering or tapping the near-white hero pill
-     flashed it dark blue. */
-  html:not(.dark) .hero-dark-gradient .btn-primary {
-    background-color: var(--color-foreground) !important;
-    background-image: linear-gradient(
-      180deg,
-      var(--color-foreground) 0%,
-      color-mix(in oklch, var(--color-foreground) 55%, var(--color-foreground-secondary)) 100%
-    ) !important;
-    border: 1px solid var(--color-foreground-secondary) !important;
-    color: var(--color-background) !important;
-  }
-  html:not(.dark) .hero-dark-gradient .btn-primary:hover {
-    background-image: none !important;
-    background-color: color-mix(in oklch, var(--color-foreground) 90%, transparent) !important;
-  }
-
-  html:not(.dark) .hero-dark-gradient .border-foreground\/25 {
-    border-color: color-mix(in oklch, var(--color-foreground) 25%, transparent);
-  }
-  html:not(.dark) .hero-dark-gradient .border-foreground\/25:hover {
-    border-color: color-mix(in oklch, var(--color-foreground) 40%, transparent);
-  }
-
-  /* Brand badge in the hero — applied in BOTH light and dark mode.
-     Glass pill with a brand-400 pulse core and brand-300 soft halo. */
-  .hero-dark-gradient .bg-brand-500\/10 {
-    background-color: color-mix(in oklch, var(--color-brand-500) 18%, transparent);
-    border-color:     color-mix(in oklch, var(--color-brand-400) 55%, transparent);
-    color:            var(--color-brand-100);
-    backdrop-filter:         blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    box-shadow: 0 0 24px -4px color-mix(in oklch, var(--color-brand-500) 35%, transparent);
-  }
-  .hero-dark-gradient .bg-brand-500\/10 .bg-brand-500 {
-    background-color: var(--color-brand-400);
-  }
-  .hero-dark-gradient .bg-brand-500\/10 .bg-brand-500:not(.animate-ping) {
-    box-shadow: 0 0 14px 0 color-mix(in oklch, var(--color-brand-300) 40%, transparent);
-  }
-
   /* Gradient border */
   .border-gradient {
     position: relative;
@@ -1410,7 +1319,7 @@ html:lang(ar) :is(h1, h2, h3, h4, h5, h6) {
 /* Primary button inside an inverted section.
    The primary variant is `bg-foreground text-background`, but the Button's own
    light-mode style wins the cascade for background-color and fills with
-   brand-700 (see the note on .hero-dark-gradient .btn-primary above). The
+   brand-700. The
    label kept following `text-background`, which .invert-section redefines all
    the way down to the near-black inverted surface — so the button rendered as
    near-black on brand blue, 3.9:1. White is what a brand-700 fill was built

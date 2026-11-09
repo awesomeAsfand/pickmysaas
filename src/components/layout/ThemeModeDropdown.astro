@@ -220,7 +220,7 @@ const triggerLabel = t('theme.modeTrigger', locale, { mode: modeNames.system.toL
       const v = localStorage.getItem(STORAGE_KEY);
       if (v === 'system' || v === 'light' || v === 'dark') return v;
     } catch { /* private mode */ }
-    return 'system';
+    return 'light';
   }
 
   function osIsDark(): boolean {

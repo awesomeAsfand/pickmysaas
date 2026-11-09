@@ -13,9 +13,10 @@
  *      the body while the hero covers the bottom edge of the screen. Read with
  *      getAttribute rather than out of the cascade, which is not reliable for a
  *      custom property on iOS Safari.
- *   2. `--bar-color` in the stylesheet, which ends the hero's gradient. This is
- *      the one the other is meant to match: the toolbar is right when it
- *      carries the colour the hero actually finishes on.
+ *   2. `--bar-color` in the homepage stylesheet, which is the hero's base
+ *      colour under its glows. This is the one the other is meant to match:
+ *      the toolbar is right when it carries the colour the hero actually
+ *      finishes on.
  *
  * `theme-color` is not one of them — that tag does not reach this surface.
  *
@@ -29,32 +30,31 @@ const read = (p: string) => readFileSync(join(process.cwd(), p), 'utf8');
 
 const HOME = 'src/components/pages/views/HomeView.astro';
 const LAYOUT = 'src/layouts/BaseLayout.astro';
-const GLOBAL_CSS = 'src/styles/global.css';
+const HOME_CSS = 'src/styles/home-premium.css';
 
-/** The gradient's end stop, which the attribute is a copy of. */
+/** The hero's `.hp-hero { … }` rule. */
+function heroRule(): string {
+  const block = read(HOME_CSS).match(/\.hp-hero\s*\{([^}]*)\}/);
+  expect(block, `${HOME_CSS} declares .hp-hero`).not.toBeNull();
+  return block![1];
+}
+
+/** The hero's base colour, which the attribute is a copy of. */
 function stylesheetValue(): string {
-  const css = read(GLOBAL_CSS);
-  const block = css.match(/(?<!\.dark )\.hero-dark-gradient\s*\{([^}]*)\}/);
-  expect(block, `${GLOBAL_CSS} declares .hero-dark-gradient`).not.toBeNull();
-
-  const found = block![1].match(/--bar-color\s*:\s*([^;]+);/);
-  expect(found, '.hero-dark-gradient declares --bar-color').not.toBeNull();
-
+  const found = heroRule().match(/--bar-color\s*:\s*([^;]+);/);
+  expect(found, '.hp-hero declares --bar-color').not.toBeNull();
   return found![1].trim();
 }
 
 describe('home page toolbar colour', () => {
-  it('both hero gradients end on the named stop', () => {
+  it('the hero finishes on the named colour', () => {
     // Guards the premise rather than the copies: if the hero stopped ending on
     // this colour, the two values would agree with each other and disagree
-    // with the page. Both rules matter — one is the dark-mode override.
-    const css = read(GLOBAL_CSS);
-    const rules = css.match(/\.hero-dark-gradient\s*\{[^}]*background:\s*linear-gradient\([^;]*;/g);
-    expect(rules, 'the hero declares a gradient background').not.toBeNull();
-    expect(rules!.length).toBe(2);
-    for (const rule of rules!) {
-      expect(rule).toMatch(/var\(--bar-color\)\s*100%/);
-    }
+    // with the page. The last background layer is the solid base under the
+    // glows, and it must be the named colour all the way down.
+    const background = heroRule().match(/background:\s*([^;]+);/);
+    expect(background, 'the hero declares a background').not.toBeNull();
+    expect(background![1].trim()).toMatch(/var\(--bar-color\)\s*100%\)$/);
   });
 
   it('the hero attribute carries the same value', () => {
@@ -72,8 +72,24 @@ describe('home page toolbar colour', () => {
 
   it('the script reads the attribute rather than the cascade', () => {
     const layout = read(LAYOUT);
-    expect(layout).toMatch(/getAttribute\('data-bar-color'\)/);
+    expect(layout).toMatch(/'data-bar-color-light' : 'data-bar-color'/);
+    expect(layout).toMatch(/getAttribute\(attr\)/);
     expect(layout).not.toMatch(/getPropertyValue\('--bar-color'\)/);
+  });
+
+  it('in light mode the hero ends on white and nothing is painted', () => {
+    // The hero is light in light mode, the same white as the body, so the
+    // light attribute is empty: painting the dark value there would draw a
+    // dark strip under a white page.
+    const light = read(HOME_CSS).match(/html:not\(\.dark\) \.hp-hero\s*\{([^}]*)\}/);
+    expect(light, 'home-premium.css has a light-mode hero rule').not.toBeNull();
+    expect(light![1]).toMatch(/--bar-color\s*:\s*#ffffff\s*;/);
+    expect(read(HOME)).toMatch(/data-bar-color-light=""/);
+  });
+
+  it('switching colour mode repaints', () => {
+    const layout = read(LAYOUT);
+    expect(layout).toMatch(/new MutationObserver\(onScroll\)/);
   });
 
   it('the paint is cleared as well as applied', () => {

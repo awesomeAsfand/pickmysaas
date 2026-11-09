@@ -17,6 +17,8 @@ import Button from '@/components/ui/form/Button/Button.astro';
 import { Hero } from '@/components/hero';
 import CtaBand from '@/components/patterns/CtaBand.astro';
 import FaqList from '@/components/services/FaqList.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import { createFAQSchema } from '@/lib/schema';
 import { t, tData, defaultLocale, localizedPath } from '@/i18n';
 import { bookingLinkAttrs, whatsAppUrl } from '@/lib/booking';
 
@@ -59,6 +61,7 @@ const hero = tData<{ badge: string; titleLead: string; titleHighlight: string; d
   locale
 )!;
 const web = tData<Service>('pages.services.web', locale)!;
+const ecommerce = tData<Service>('pages.services.ecommerce', locale)!;
 const saas = tData<Service>('pages.services.saas', locale)!;
 const ai = tData<Service>('pages.services.ai', locale)!;
 const processSection = tData<{ badge: string; heading: string; lead: string; steps: ProcessStep[] }>(
@@ -75,12 +78,16 @@ const contactUrl = localizedPath('/contact', locale);
 const whatsAppHref = whatsAppUrl(t('common.whatsappMessage', locale));
 const websitesUrl = localizedPath('/services/websites', locale);
 const saasUrl = localizedPath('/services/saas', locale);
+const ecommerceUrl = localizedPath('/services/ecommerce', locale);
+/** Hero jump buttons, in the order of jumpLabels. */
+const jumpTargets = ['#websites', '#ecommerce', '#saas', '#ai-mvps'];
 ---
 <PageLayout
   title={t('pages.services.meta.title', locale)}
   description={t('pages.services.meta.description', locale)}
-  footerBackground="secondary"
+  footerBackground="default"
 >
+  <JsonLd schema={createFAQSchema(faq.cards.flatMap((card) => card.items))} />
   <Hero layout="centered" size="sm" class="isolate services-hero pb-[calc(var(--space-section-sm)_+_var(--space-stack-lg))]" showHeroHalo>
     <Badge slot="badge" variant="brand" pill>
       <Icon name="sparkles" size="sm" />
@@ -96,18 +103,12 @@ const saasUrl = localizedPath('/services/saas', locale);
     </p>
 
     <Fragment slot="actions">
-      <Button size="lg" href="#websites" variant="outline" class="hero-btn-opaque">
-        {hero.jumpLabels[0]}
-        <Icon name="arrow-down" size="sm" class="hero-jump-arrow" />
-      </Button>
-      <Button size="lg" href="#saas" variant="outline" class="hero-btn-opaque">
-        {hero.jumpLabels[1]}
-        <Icon name="arrow-down" size="sm" class="hero-jump-arrow" />
-      </Button>
-      <Button size="lg" href="#ai-mvps" variant="outline" class="hero-btn-opaque">
-        {hero.jumpLabels[2]}
-        <Icon name="arrow-down" size="sm" class="hero-jump-arrow" />
-      </Button>
+      {hero.jumpLabels.map((label, i) => (
+        <Button size="lg" href={jumpTargets[i]} variant="outline" class="hero-btn-opaque">
+          {label}
+          <Icon name="arrow-down" size="sm" class="hero-jump-arrow" />
+        </Button>
+      ))}
     </Fragment>
   </Hero>
 
@@ -161,12 +162,64 @@ const saasUrl = localizedPath('/services/saas', locale);
     </div>
   </section>
 
-  <!-- SaaS products -->
-  <section id="saas" class="py-[var(--space-section-md)] bg-background border-t border-border">
+  <!-- Online stores: a summary under Web design & development (small stores
+       come with the Business and Premium website packages). The full page is
+       /services/ecommerce/. -->
+  <section id="ecommerce" class="py-[var(--space-section-md)] bg-background border-t border-border">
     <div class="mx-auto max-w-6xl px-6">
       <div class="grid gap-10 glitch:grid-cols-2 glitch:gap-12 glitch:items-start">
         <!-- Text -->
-        <div class="flex flex-col gap-4 sm:items-center sm:text-center glitch:order-2 glitch:items-start glitch:text-left" data-reveal data-reveal-delay="1" data-reveal-ease="smooth">
+        <div class="flex flex-col gap-4 sm:items-center sm:text-center glitch:order-2 glitch:items-start glitch:text-start" data-reveal data-reveal-delay="1" data-reveal-ease="smooth">
+          <div class="flex flex-col gap-6 sm:items-center glitch:items-start">
+            <Badge variant="brand" pill class="self-start sm:self-center glitch:self-start">
+              <Icon name="shopping-cart" size="sm" />
+              {ecommerce.badge}
+            </Badge>
+            <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
+              {ecommerce.heading}
+            </h2>
+          </div>
+          {ecommerce.paragraphs.map((paragraph) => (
+            <p class="text-lg text-foreground-muted leading-relaxed sm:max-w-xl sm:mx-auto glitch:max-w-none glitch:mx-0">
+              {paragraph}
+            </p>
+          ))}
+          <Button variant="outline" href={ecommerceUrl} class="self-start sm:self-center glitch:self-start">
+            {ecommerce.more}
+            <Icon name="arrow-right" size="sm" class="rtl:-scale-x-100" />
+          </Button>
+        </div>
+        <!-- Card -->
+        <div class="sm:max-w-xl sm:mx-auto glitch:order-1 glitch:max-w-none glitch:mx-0" data-reveal data-reveal-ease="smooth">
+          <Card variant="elevated" padding="lg" class="h-full flex flex-col justify-center">
+            <div class="flex items-center gap-3 pb-4 mb-4 border-b border-border sm:justify-center glitch:justify-start">
+              <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
+                <Icon name="shopping-cart" size="md" />
+              </div>
+              <h3 class="font-display text-base font-semibold text-foreground">{includedLabel}</h3>
+            </div>
+            <ul class="flex flex-col gap-3">
+              {ecommerce.included.map((item) => (
+                <li class="flex items-start gap-3">
+                  <Icon name="check" size="sm" class="text-brand-500 shrink-0 mt-1" />
+                  <p class="text-sm text-foreground-muted leading-relaxed">
+                    <span class="font-semibold text-foreground">{item.lead}</span> — {item.text}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SaaS products -->
+  <section id="saas" class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+    <div class="mx-auto max-w-6xl px-6">
+      <div class="grid gap-10 glitch:grid-cols-2 glitch:gap-12 glitch:items-start">
+        <!-- Text -->
+        <div class="flex flex-col gap-4 sm:items-center sm:text-center glitch:items-start glitch:text-left" data-reveal data-reveal-ease="smooth">
           <div class="flex flex-col gap-6 sm:items-center glitch:items-start">
             <Badge variant="brand" pill class="self-start sm:self-center glitch:self-start">
               <Icon name="layers" size="sm" />
@@ -187,7 +240,7 @@ const saasUrl = localizedPath('/services/saas', locale);
           </Button>
         </div>
         <!-- Card -->
-        <div class="sm:max-w-xl sm:mx-auto glitch:order-1 glitch:max-w-none glitch:mx-0" data-reveal data-reveal-ease="smooth">
+        <div class="sm:max-w-xl sm:mx-auto glitch:max-w-none glitch:mx-0" data-reveal data-reveal-delay="1" data-reveal-ease="smooth">
           <Card variant="elevated" padding="lg" class="h-full flex flex-col justify-center">
             <div class="flex items-center gap-3 pb-4 mb-4 border-b border-border sm:justify-center glitch:justify-start">
               <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
@@ -212,11 +265,11 @@ const saasUrl = localizedPath('/services/saas', locale);
   </section>
 
   <!-- AI-first MVPs -->
-  <section id="ai-mvps" class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+  <section id="ai-mvps" class="py-[var(--space-section-md)] bg-background border-t border-border">
     <div class="mx-auto max-w-6xl px-6">
       <div class="grid gap-10 glitch:grid-cols-2 glitch:gap-12 glitch:items-start">
         <!-- Text -->
-        <div class="flex flex-col gap-4 sm:items-center sm:text-center glitch:items-start glitch:text-left" data-reveal data-reveal-ease="smooth">
+        <div class="flex flex-col gap-4 sm:items-center sm:text-center glitch:order-2 glitch:items-start glitch:text-left" data-reveal data-reveal-delay="1" data-reveal-ease="smooth">
           <div class="flex flex-col gap-6 sm:items-center glitch:items-start">
             <Badge variant="brand" pill class="self-start sm:self-center glitch:self-start">
               <Icon name="sparkles" size="sm" />
@@ -240,7 +293,7 @@ const saasUrl = localizedPath('/services/saas', locale);
           )}
         </div>
         <!-- Card -->
-        <div class="sm:max-w-xl sm:mx-auto glitch:max-w-none glitch:mx-0" data-reveal data-reveal-delay="1" data-reveal-ease="smooth">
+        <div class="sm:max-w-xl sm:mx-auto glitch:order-1 glitch:max-w-none glitch:mx-0" data-reveal data-reveal-ease="smooth">
           <Card variant="elevated" padding="lg" class="h-full flex flex-col justify-center">
             <div class="flex items-center gap-3 pb-4 mb-4 border-b border-border sm:justify-center glitch:justify-start">
               <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
@@ -265,7 +318,7 @@ const saasUrl = localizedPath('/services/saas', locale);
   </section>
 
   <!-- Process -->
-  <section class="py-[var(--space-section-md)] bg-background border-t border-border">
+  <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
       <div class="flex flex-col items-center gap-4 text-center" data-reveal>
         <div class="flex flex-col items-center gap-6">
@@ -293,7 +346,7 @@ const saasUrl = localizedPath('/services/saas', locale);
   </section>
 
   <!-- Questions & answers -->
-  <section id="faq" class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+  <section id="faq" class="py-[var(--space-section-md)] bg-background border-t border-border">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
       <div class="flex flex-col items-center gap-4 text-center" data-reveal>
         <div class="flex flex-col items-center gap-6">
@@ -327,7 +380,7 @@ const saasUrl = localizedPath('/services/saas', locale);
   </section>
 
   <!-- CTA -->
-  <section class="relative z-10 py-[var(--space-section-md)] bg-background border-t border-border">
+  <section class="relative z-10 py-[var(--space-section-md)] bg-background-secondary border-t border-border">
     <CtaBand>
       <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">
         {cta.heading}

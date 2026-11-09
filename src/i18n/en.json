@@ -451,17 +451,18 @@
     },
     "services": {
       "meta": {
-        "title": "Services: Websites, SaaS Platforms and AI-First MVPs",
-        "description": "One founder-led team for your website, SaaS platform or AI-first MVP. Compare what each service includes, how a project runs and how to get started."
+        "title": "Services: Websites, Online Stores, SaaS and AI MVPs",
+        "description": "One founder-led team for your website, online store, SaaS platform or AI-first MVP in the GCC. Compare what each service includes, how a project runs and how to get started."
       },
       "includedLabel": "What you get",
       "hero": {
         "badge": "Services",
-        "titleLead": "Websites, SaaS platforms",
-        "titleHighlight": "and AI-first MVPs",
-        "description": "Three ways to launch, one team: from a sharper website to a full software product, designed and built for the Gulf.",
+        "titleLead": "Websites, online stores,",
+        "titleHighlight": "SaaS and AI-first MVPs",
+        "description": "Four ways to launch, one team: from a sharper website or an online store to a full software product, designed and built for the Gulf.",
         "jumpLabels": [
           "Websites",
+          "Online stores",
           "SaaS products",
           "AI-first MVPs"
         ]
@@ -497,6 +498,41 @@
           }
         ]
       },
+      "ecommerce": {
+        "badge": "Online stores",
+        "heading": "Online stores",
+        "more": "More about ecommerce development",
+        "paragraphs": [
+          "Custom online stores in Arabic and English for businesses in the UAE, Saudi Arabia and across the GCC, built in Python and Django and owned by you: no store-builder subscription and no platform commission on your sales.",
+          "Stores take Visa, Mastercard and PayPal, plus bank transfer and cash on delivery. A small store starts at $500 with the Business package and goes live in about a week once we have your products."
+        ],
+        "included": [
+          {
+            "lead": "Catalogue and search",
+            "text": "products, categories and photos your customers can browse and search on any phone."
+          },
+          {
+            "lead": "Checkout in Arabic and English",
+            "text": "a short checkout that reads right to left, with prices shown including VAT."
+          },
+          {
+            "lead": "Payments Gulf shoppers use",
+            "text": "Visa, Mastercard and PayPal, plus bank transfer and cash on delivery."
+          },
+          {
+            "lead": "Orders you can act on",
+            "text": "order alerts by email and an admin to update orders, products and prices."
+          },
+          {
+            "lead": "Found by Google and AI",
+            "text": "product and category pages built to rank and to be read by AI assistants."
+          },
+          {
+            "lead": "Yours to keep",
+            "text": "the code, domain and customer data are in your name. No lock-in."
+          }
+        ]
+      },
       "packages": {
         "badge": "Website packages",
         "heading": "Simple, fixed prices",
@@ -507,7 +543,11 @@
             "name": "Starter",
             "for": "For small businesses that need a professional site, fast.",
             "price": "$300",
-            "priceLocal": ["≈ SAR 1,125", "≈ AED 1,100", "≈ OMR 115"],
+            "priceLocal": [
+              "≈ SAR 1,125",
+              "≈ AED 1,100",
+              "≈ OMR 115"
+            ],
             "pricePrefix": "",
             "bonus": "Free domain + Google Business setup",
             "features": [
@@ -527,7 +567,11 @@
             "name": "Business",
             "for": "For businesses that need more pages, a custom design or an online store.",
             "price": "$500",
-            "priceLocal": ["≈ SAR 1,875", "≈ AED 1,835", "≈ OMR 192"],
+            "priceLocal": [
+              "≈ SAR 1,875",
+              "≈ AED 1,835",
+              "≈ OMR 192"
+            ],
             "pricePrefix": "",
             "bonus": "Free domain + Google Business setup",
             "features": [
@@ -547,7 +591,11 @@
             "name": "Premium",
             "for": "For larger sites, bigger online stores and a fully custom design.",
             "price": "$700",
-            "priceLocal": ["≈ SAR 2,625", "≈ AED 2,570", "≈ OMR 269"],
+            "priceLocal": [
+              "≈ SAR 2,625",
+              "≈ AED 2,570",
+              "≈ OMR 269"
+            ],
             "pricePrefix": "from",
             "bonus": "Free domain + Google Business setup",
             "features": [
@@ -1273,6 +1321,312 @@
         "secondary": "Chat on WhatsApp"
       }
     },
+    "serviceEcommerce": {
+      "meta": {
+        "title": "Ecommerce Website Development in the UAE & Saudi Arabia",
+        "description": "Custom online stores in Arabic and English for UAE, Saudi and GCC businesses, from $500. Cards, PayPal, bank transfer and cash on delivery. You own the code."
+      },
+      "breadcrumb": "Online stores",
+      "hero": {
+        "badge": "Online stores",
+        "titleLead": "Ecommerce website development",
+        "titleHighlight": "for Gulf businesses",
+        "description": "Custom online stores in Arabic and English that your customers browse, pay for and come back to on their phones. Built in Python and Django, and owned by you.",
+        "secondary": "See store prices"
+      },
+      "answer": {
+        "heading": "Looking for an ecommerce development company?",
+        "paragraphs": [
+          "PickMySaaS is a founder-led studio that builds custom online stores for businesses in the UAE, Saudi Arabia and across the GCC. A small store starts at $500 with the Business package and goes live in about a week once we have your products. Larger stores start from $700.",
+          "Every store is in Arabic and English, works first on phones, and takes Visa, Mastercard and PayPal, plus bank transfer and cash on delivery. The code, the domain and your customer data are in your name, and there is no store-builder subscription or platform commission on your sales."
+        ],
+        "glanceTitle": "At a glance",
+        "glance": [
+          {
+            "label": "Price",
+            "value": "From $500 (about AED 1,835, SAR 1,875 or OMR 192)"
+          },
+          {
+            "label": "Time to launch",
+            "value": "About 1 week for a Business-package store, from when we have your products"
+          },
+          {
+            "label": "Payments",
+            "value": "Visa, Mastercard, PayPal, bank transfer, cash on delivery"
+          },
+          {
+            "label": "Languages",
+            "value": "Arabic and English, right to left done properly"
+          },
+          {
+            "label": "You own",
+            "value": "The code, the domain and your customer data"
+          }
+        ]
+      },
+      "showcase": {
+        "badge": "Concept store",
+        "heading": "What a store from us looks like",
+        "lead": "Noble Muse is a concept fashion store we built to show the whole shopping journey: browsing the catalogue, a product page, the cart and checkout, on desktop and on a phone. It is our own build, not a client project.",
+        "desktopAlt": "The Noble Muse concept store homepage on a desktop screen, showing a filtered dress catalogue.",
+        "mobileAlt": "The Noble Muse concept store on a phone.",
+        "thumbs": [
+          "Catalogue",
+          "Product page and cart",
+          "Collection page"
+        ],
+        "thumbAlt": "Noble Muse concept store: {caption}."
+      },
+      "features": {
+        "badge": "What’s included",
+        "heading": "Everything a store needs to sell",
+        "lead": "The parts every store gets, so you can take your first order the day it goes live.",
+        "items": [
+          {
+            "icon": "layout-grid",
+            "title": "Catalogue and search",
+            "description": "Products, categories and photos laid out for browsing on a phone, with search so customers find things fast."
+          },
+          {
+            "icon": "package",
+            "title": "Product pages that sell",
+            "description": "Clear photos, prices shown with VAT, and options such as size or colour, written to rank in Google."
+          },
+          {
+            "icon": "shopping-cart",
+            "title": "Cart and a short checkout",
+            "description": "A checkout in Arabic and English that reads right to left, with as few steps as possible."
+          },
+          {
+            "icon": "credit-card",
+            "title": "Payments",
+            "description": "Visa, Mastercard and PayPal, plus bank transfer and cash on delivery."
+          },
+          {
+            "icon": "bell",
+            "title": "Order alerts",
+            "description": "An email for every new order, so no customer is left waiting."
+          },
+          {
+            "icon": "settings",
+            "title": "A store admin",
+            "description": "Update products, prices and orders yourself, or send changes to us under the care plan."
+          },
+          {
+            "icon": "truck",
+            "title": "Delivery and CRM connections",
+            "description": "On the Premium package we connect your delivery company, CRM or booking tools."
+          },
+          {
+            "icon": "search",
+            "title": "Found by Google and AI",
+            "description": "Product and category pages structured so search engines and AI assistants can read them."
+          }
+        ]
+      },
+      "payments": {
+        "badge": "Payments",
+        "heading": "How Gulf shoppers pay",
+        "lead": "Offer the ways your customers already pay. One store can take all of these.",
+        "methods": [
+          {
+            "icon": "credit-card",
+            "title": "Visa and Mastercard",
+            "text": "Card payments through Stripe or the payment provider that works in your country."
+          },
+          {
+            "icon": "wallet",
+            "title": "PayPal",
+            "text": "For shoppers who would rather not type in their card details."
+          },
+          {
+            "icon": "landmark",
+            "title": "Bank transfer",
+            "text": "The customer transfers to your account, and you confirm the order when the money arrives."
+          },
+          {
+            "icon": "banknote",
+            "title": "Cash on delivery",
+            "text": "The customer pays the courier when the order arrives, and you mark it as paid."
+          }
+        ],
+        "note": "Stripe and PayPal are not open to businesses in every country. On the first call we check which payment provider works where your business is registered."
+      },
+      "packages": {
+        "badge": "Prices",
+        "heading": "Which package fits your store",
+        "lead": "Stores come with our website packages. Choose by the size of your catalogue and what your store needs to connect to.",
+        "cards": [
+          {
+            "name": "Business",
+            "for": "A small store that needs to start selling quickly.",
+            "features": [
+              "Online store with catalogue, cart and checkout",
+              "Order alerts by email",
+              "Arabic and English",
+              "Full SEO and AI-search setup",
+              "Live in about 1 week",
+              "1 month of support"
+            ]
+          },
+          {
+            "name": "Premium",
+            "for": "A bigger catalogue, or a store that connects to other tools.",
+            "features": [
+              "Advanced store with delivery, CRM or booking connections",
+              "Fully custom premium design",
+              "Arabic and English copy written for you",
+              "Analytics and conversion tracking",
+              "Timeline based on your project",
+              "2 months of priority support"
+            ]
+          },
+          {
+            "name": "Marketplace or custom platform",
+            "for": "Several sellers, subscriptions, or a store inside a larger product.",
+            "features": [
+              "Built as a SaaS platform",
+              "Seller accounts and payouts planned with you",
+              "One fixed price in your proposal"
+            ]
+          }
+        ],
+        "customPrice": "Per proposal",
+        "customLink": "About SaaS platforms",
+        "detailsLink": "Full package details",
+        "guideLink": "Compare with typical UAE website prices",
+        "note": "Prices are in USD; AED, SAR and OMR are approximate conversions. Hosting and SSL are set up in every package, and the domain renews yearly at cost."
+      },
+      "compare": {
+        "badge": "Custom or builder",
+        "heading": "A custom store or a store builder?",
+        "lead": "A store builder is a good way to start some shops. Here is how the two differ, so you can choose.",
+        "labels": [
+          "",
+          "Store builder",
+          "Custom store with us"
+        ],
+        "rows": [
+          [
+            "Who sets it up",
+            "You, from a template",
+            "We design and build it with you"
+          ],
+          [
+            "Monthly cost",
+            "A subscription, often plus paid apps and transaction fees",
+            "Hosting and the yearly domain renewal"
+          ],
+          [
+            "Design",
+            "Limited to the template and its settings",
+            "Designed around your brand"
+          ],
+          [
+            "Arabic",
+            "Depends on the template",
+            "Right to left from the first sketch"
+          ],
+          [
+            "Features",
+            "What the platform and its apps offer",
+            "Built around how you sell"
+          ],
+          [
+            "Ownership",
+            "Your store lives on the platform",
+            "Code, domain and customer data in your name"
+          ],
+          [
+            "Best for",
+            "Testing an idea yourself on a small budget",
+            "A brand that wants its own store and room to grow"
+          ]
+        ]
+      },
+      "rules": {
+        "badge": "Rules by country",
+        "heading": "Selling online in Saudi Arabia and the UAE",
+        "lead": "Each market has rules a store has to meet. We set your store up with the pages and price display they call for: your business details, delivery and returns, and prices shown with VAT. The licence and tax registration stay with you.",
+        "markets": [
+          {
+            "title": "Saudi Arabia",
+            "points": [
+              "The E-Commerce Law (Royal Decree M/126, 2019) requires your store to show who you are and how to reach you, and to show the total price including taxes and fees.",
+              "Shoppers can return unused goods within 7 days of receipt, and can cancel if delivery is more than 15 days late. Your returns and delivery pages should say so.",
+              "VAT is 15%."
+            ],
+            "sourceLabel": "E-Commerce Law, Bureau of Experts",
+            "sourceUrl": "https://laws.boe.gov.sa/BoeLaws/Laws/LawDetails/360de590-0286-4fa5-a243-aa9100c31979/1"
+          },
+          {
+            "title": "United Arab Emirates",
+            "points": [
+              "Online trade is governed by Federal Decree-Law No. 14 of 2023 on Modern Technology-Based Trade.",
+              "You need a commercial licence that includes e-commerce, from your emirate’s Department of Economic Development or your free zone.",
+              "Sellers must give accurate product information and a clear digital invoice for every transaction. Standard VAT is 5%."
+            ],
+            "sourceLabel": "eCommerce rules, u.ae",
+            "sourceUrl": "https://u.ae/en/information-and-services/business/Managing-and-growing-your-business/ecommerce"
+          }
+        ],
+        "note": "A plain-language summary to help you plan, not legal advice. Check your licence and tax position with the authority in your country before you launch."
+      },
+      "prepare": {
+        "badge": "Before we start",
+        "heading": "What to have ready",
+        "lead": "The store goes live faster when these are ready. Missing something? We work through it with you on the first call.",
+        "items": [
+          "Your product list: names, prices and options such as size or colour",
+          "Product photos, ideally on a plain background",
+          "Where you deliver, your delivery fees and how long delivery takes",
+          "Your returns and exchange policy",
+          "Your trade licence or commercial registration, and your VAT number if you are registered",
+          "An account with a payment provider, or we help you choose one"
+        ]
+      },
+      "faq": {
+        "badge": "Questions",
+        "heading": "Online store questions",
+        "lead": "What store owners ask before we start.",
+        "items": [
+          {
+            "question": "How much does an ecommerce website cost?",
+            "answer": "A small store comes with the Business package at $500 (about AED 1,835 or SAR 1,875). Larger catalogues and connections to delivery, a CRM or booking tools are in the Premium package, from $700. Marketplaces and stores inside a larger platform get one fixed price in your proposal."
+          },
+          {
+            "question": "How long does it take to build an online store?",
+            "answer": "A Business-package store goes live in about a week from when we have your products, photos and prices. Larger stores with connections to other tools get their timeline in your proposal."
+          },
+          {
+            "question": "Can my store take cash on delivery and bank transfer?",
+            "answer": "Yes. Stores can take cash on delivery and bank transfer alongside Visa, Mastercard and PayPal, through Stripe, PayPal or whichever payment provider works in your country."
+          },
+          {
+            "question": "Will my store be in Arabic and English?",
+            "answer": "Yes. Every store is built in both languages from the start, with right-to-left layouts in Arabic, and customers switch language with one tap."
+          },
+          {
+            "question": "Can I add products and change prices myself?",
+            "answer": "Yes. You update products, prices and orders from the store admin. If you would rather not, send the changes to us under the monthly care plan."
+          },
+          {
+            "question": "Do you build stores on a store-builder platform?",
+            "answer": "No. Every store is custom-built in Python and Django, so there is no platform subscription or commission, and the code and your customer data are yours to keep or move."
+          },
+          {
+            "question": "Do I need a licence to sell online in the UAE or Saudi Arabia?",
+            "answer": "In the UAE, yes: a commercial licence that includes e-commerce, from your emirate’s Department of Economic Development or a free zone. In Saudi Arabia, the E-Commerce Law covers both businesses with a commercial registration and individuals selling online, and requires your store to show your details and contact information. Check the current requirements with the authority before you launch."
+          }
+        ]
+      },
+      "cta": {
+        "heading": "Ready to open your online store?",
+        "description": "Tell us what you sell and where you deliver. The first call is free, and you get one clear proposal with a fixed price.",
+        "primary": "Book a free call",
+        "secondary": "Chat on WhatsApp"
+      }
+    },
     "privacy": {
       "meta": {
         "title": "Privacy Policy",
@@ -1429,71 +1783,249 @@
         "description": "Website design from $300, plus SaaS and AI MVP development for businesses in the UAE, Saudi Arabia and across the GCC. Arabic and English. Book a free call."
       },
       "hero": {
+        "badgeTag": "Open",
         "badge": "Now taking projects across the GCC",
-        "titleLine1": "Website design, SaaS",
-        "titleLine2": "and MVP development for Gulf businesses",
-        "description": "We design and build fast websites, SaaS platforms and AI-first MVPs for founders and businesses across the UAE, Saudi Arabia and the wider GCC. Bilingual in Arabic and English, and ready for local payments from day one.",
+        "titleMain": "Website design, SaaS and MVP development",
+        "titleAccent": "for Gulf businesses.",
+        "description": "A founder-led studio designing bilingual websites, SaaS platforms and AI-first MVPs for the UAE, Saudi Arabia and the GCC. Arabic and English, local payments, launched in weeks.",
         "descriptionMobile": "Websites, SaaS and AI-first MVPs for UAE, Saudi and GCC businesses. Bilingual and ready to launch.",
-        "primaryCta": "Book a free call"
+        "primaryCta": "Book a free 30-min call",
+        "secondaryCta": "View selected work",
+        "desktopAlt": "The homepage of a website we built, on a desktop screen.",
+        "phoneEnAlt": "The same website on a phone, in English.",
+        "phoneArAlt": "The same website on a phone, in Arabic.",
+        "mockupUrl": ""
+      },
+      "work": {
+        "label": "Selected work",
+        "headingMain": "Products we've",
+        "headingAccent": "shipped.",
+        "caseStudy": "Read case study",
+        "viewAll": "View all projects",
+        "concept": "Concept",
+        "mobileAlt": "{name} on a phone.",
+        "thumbAlt": "{name}: {caption}.",
+        "items": [
+          {
+            "slug": "gulfnurseries",
+            "label": "Directory platform",
+            "location": "Client project · 6 GCC countries",
+            "headline": "One directory for every nursery across the Gulf",
+            "results": [
+              {
+                "value": "3,000+",
+                "label": "Nurseries listed"
+              },
+              {
+                "value": "6",
+                "label": "GCC countries"
+              }
+            ],
+            "thumbs": [
+              "Map search",
+              "Nursery page",
+              "Owner plans"
+            ]
+          },
+          {
+            "slug": "healing-with-attia",
+            "label": "Service website",
+            "location": "Client project · Pakistan, UK, UAE, KSA",
+            "headline": "A calm, trust-first website that makes the first step easy",
+            "results": [
+              {
+                "value": "4",
+                "label": "Countries served"
+              },
+              {
+                "value": "5",
+                "label": "Therapy services explained"
+              }
+            ],
+            "thumbs": [
+              "Services",
+              "WhatsApp booking",
+              "Blog"
+            ]
+          },
+          {
+            "slug": "snippet-tester",
+            "label": "Web tool",
+            "location": "In-house product",
+            "headline": "A free checker that shows how AI assistants read a page",
+            "results": [
+              {
+                "value": "8",
+                "label": "Signals checked"
+              },
+              {
+                "value": "0–100",
+                "label": "Page score"
+              }
+            ],
+            "thumbs": [
+              "Page score",
+              "Signal breakdown",
+              "Evidence page"
+            ]
+          }
+        ],
+        "conceptItem": {
+          "label": "E-commerce",
+          "location": "Noble Muse · London, UK",
+          "headline": "A storefront with checkout built for Gulf shoppers",
+          "description": "Catalogue, cart and checkout with Visa, Mastercard and PayPal, designed mobile-first.",
+          "results": [
+            {
+              "value": "3–4 wks",
+              "label": "Time to launch"
+            },
+            {
+              "value": "3",
+              "label": "Payment methods"
+            }
+          ],
+          "stack": [
+            "Django",
+            "Visa",
+            "Mastercard",
+            "PayPal"
+          ],
+          "thumbs": [
+            "Catalogue",
+            "Product page & cart",
+            "Collection page"
+          ]
+        }
       },
       "services": {
-        "badge": "What we build",
-        "heading": "Three ways to launch",
-        "lead": "Whether you need a sharper website, a full SaaS platform, or a working AI product to show investors, we take it from first sketch to live.",
+        "label": "Services",
+        "headingMain": "What we",
+        "headingAccent": "build.",
+        "lead": "Fixed scope, fixed price, weekly demos. From a sharper website to a working AI product you can put in front of investors.",
         "learnMore": "Learn more",
+        "imageAlt": "Example of our {title} work.",
         "cards": [
-          { "icon": "layout", "title": "Web Design & Development", "description": "Bilingual Arabic–English websites that load fast, rank well and turn visitors into enquiries. Right-to-left layouts done properly, not as an afterthought." },
-          { "icon": "layers", "title": "SaaS Products", "description": "Multi-tenant platforms with subscriptions, dashboards and user roles. Connected to Stripe, PayPal or the payment provider that works in your country, and hosted in the GCC when your sector requires it." },
-          { "icon": "sparkles", "title": "AI-first MVPs", "description": "A working product with AI at its core: Arabic chatbots, document processing, smart automation. Shipped in weeks, so you can test with real users before you raise or scale." }
+          {
+            "key": "web",
+            "title": "Web design",
+            "price": "From $300",
+            "description": "Bilingual websites that load fast, rank well and turn visitors into enquiries."
+          },
+          {
+            "key": "shop",
+            "title": "E-commerce",
+            "price": "From $500",
+            "description": "Stores with Visa, Mastercard and PayPal payments, designed for mobile-first Gulf shoppers."
+          },
+          {
+            "key": "saas",
+            "title": "SaaS platforms",
+            "price": "Per proposal",
+            "description": "Subscriptions, dashboards and user roles, hosted in the GCC when your sector requires it."
+          },
+          {
+            "key": "mvp",
+            "title": "AI-first MVPs",
+            "price": "Fixed price",
+            "description": "Arabic chatbots, document processing and automation, shipped in weeks."
+          }
         ]
       },
-      "whyUs": {
-        "badge": "Why PickMySaaS",
-        "heading": "Built for how the Gulf does business",
-        "lead": "What you get on every project.",
-        "cards": [
-          { "icon": "languages", "title": "Arabic & English, natively", "description": "Full RTL layouts, Arabic type that reads properly, and content planned in both languages from the first wireframe." },
-          { "icon": "zap", "title": "Weeks, not quarters", "description": "Fixed-scope sprints and an early working demo, so you see progress every week instead of one big reveal at the end." },
-          { "icon": "shield-check", "title": "Compliant by design", "description": "Built with UAE and Saudi data-protection law (PDPL) in mind, with GCC hosting options for when your clients ask where their data sits." },
-          { "icon": "search", "title": "Found by Google and AI", "description": "We built Snippet Tester to measure exactly this. Every page we ship is structured so Google, ChatGPT and other AI assistants read it cleanly, in both languages." }
+      "included": {
+        "label": "What's included",
+        "headingMain": "Included in",
+        "headingAccent": "every build.",
+        "lead": "The things you'd otherwise have to ask for, or pay extra for later.",
+        "items": [
+          {
+            "icon": "languages",
+            "title": "Arabic & English, natively",
+            "description": "Right-to-left layouts and content planned in both languages from the first wireframe."
+          },
+          {
+            "icon": "key-round",
+            "title": "Yours to keep",
+            "description": "The domain and website are in your name, and the code is handed over at launch. No lock-in."
+          },
+          {
+            "icon": "zap",
+            "title": "Fast on any phone",
+            "description": "Pages that open instantly, even on mobile data."
+          },
+          {
+            "icon": "search",
+            "title": "Found by Google and AI",
+            "description": "SEO and AI-search readiness built in, measured with our own Snippet Tester."
+          },
+          {
+            "icon": "message-circle",
+            "title": "WhatsApp-first contact",
+            "description": "WhatsApp, call and enquiry buttons placed where your customers actually use them."
+          },
+          {
+            "icon": "shield-check",
+            "title": "Hosting & SSL set up",
+            "description": "Secure and live from day one, with nothing for you to configure."
+          },
+          {
+            "icon": "life-buoy",
+            "title": "Support after launch",
+            "description": "Included with every package, then an optional monthly care plan."
+          },
+          {
+            "icon": "receipt",
+            "title": "Fixed price, no surprises",
+            "description": "Agreed before we start. Anything beyond the scope is quoted up front."
+          }
         ],
-        "cta": "See how we work"
-      },
-      "portfolio": {
-        "badge": "Selected work",
-        "heading": "Products we've shipped",
-        "lead": "From a GCC-wide directory platform to our own AI-search tool.",
-        "viewAll": "View all projects"
+        "note": "Website packages also include a free domain and Google Business setup.",
+        "cta": "See website packages"
       },
       "process": {
-        "badge": "How we work",
-        "heading": "From idea to launch in four steps",
-        "lead": "No surprises, from the first call to launch day.",
+        "label": "Process",
+        "headingMain": "From first call to",
+        "headingAccent": "launch day.",
+        "timeline": {
+          "scaleLabel": "Weeks",
+          "rows": [
+            {
+              "label": "Website",
+              "sub": "Starter & Business",
+              "value": "About 1 week"
+            },
+            {
+              "label": "E-commerce, SaaS & MVPs",
+              "sub": "Built in weekly sprints",
+              "value": "4–8 weeks"
+            }
+          ],
+          "demoLegend": "A demo you can click through",
+          "rangeLegend": "Depends on scope",
+          "launch": "Launch",
+          "footnote": "Timelines count business days, Sunday to Thursday, from when we have your content."
+        },
         "steps": [
-          { "title": "Discover", "description": "A free call to understand the problem, the users and the deadline." },
-          { "title": "Scope", "description": "A clear proposal with fixed deliverables and price. No surprises." },
-          { "title": "Build", "description": "Weekly demos you can click through, not status reports." },
-          { "title": "Launch & grow", "description": "Go live, measure, and keep improving with an optional care plan." }
+          {
+            "title": "Discover",
+            "description": "A free call to understand the problem, the users and the deadline."
+          },
+          {
+            "title": "Scope",
+            "description": "A clear proposal with fixed deliverables and price."
+          },
+          {
+            "title": "Build",
+            "description": "Weekly demos you can click through, not status reports."
+          },
+          {
+            "title": "Launch & grow",
+            "description": "Go live, measure, and keep improving with an optional care plan."
+          }
         ]
       },
-      "testimonials": {
-        "badge": "Client stories",
-        "heading": "What founders say",
-        "lead": "Real words from finished projects.",
-        "items": []
-      },
-      "aboutTeaser": {
-        "badge": "About us",
-        "headingLine1": "Product builders,",
-        "headingLine2": "focused on the Gulf.",
-        "para1": "For five years we've been building websites and digital products for clients worldwide. Today we partner with founders, SMEs and enterprise teams across the GCC to turn ideas into products people actually use. We pair modern engineering with AI tooling to move fast without cutting corners.",
-        "para2": "On the blog, we share what we learn building for the region, from Arabic UX to launching SaaS in Saudi Arabia.",
-        "moreAboutMe": "About PickMySaaS",
-        "statsIntro": "At a glance",
-        "stat1": "5 Years Experience",
-        "stat2": "AI-first by default",
-        "stat3": "Working worldwide",
-        "stat4": "Focused on the GCC"
+      "stack": {
+        "label": "Built with"
       },
       "blog": {
         "badge": "Insights",
@@ -1501,11 +2033,14 @@
         "viewAll": "Read all insights"
       },
       "cta": {
-        "badge": "Let's talk",
-        "heading": "Have an idea? Let's pick the right build.",
-        "description": "Book a free 30-minute call. We'll scope your project, suggest the fastest path to launch, and give you a clear estimate. No obligation.",
-        "primary": "Book a free call",
-        "whatsapp": "Chat on WhatsApp"
+        "headingMain": "Let's pick",
+        "headingAccent": "the right build.",
+        "description": "A free 30-minute call. You leave with a scope, the fastest path to launch and a clear estimate, with no obligation.",
+        "contactName": "Talk to Asfand directly",
+        "contactNote": "Replies within a few hours",
+        "primary": "Book a call",
+        "whatsapp": "WhatsApp",
+        "initials": "AY"
       }
     }
   }

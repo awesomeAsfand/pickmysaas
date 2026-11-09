@@ -1,0 +1,62 @@
+---
+/**
+ * One image slot on the homepage. Fills its parent (which sets the size and
+ * aspect ratio) with the slot's image from `src/assets/home/`, or with
+ * `fallback` when there's no file yet. With neither, it shows a labelled
+ * placeholder in `astro dev` and nothing in production. The parent decides
+ * whether to render its frame at all with `showSlot()` from `@/lib/home-media`.
+ */
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import { homeImage, SHOW_PLACEHOLDERS } from '@/lib/home-media';
+
+interface Props {
+  /** Slot id, which is also the file name in src/assets/home/ (without extension). */
+  id: string;
+  locale?: string;
+  /** Dev-only label describing what belongs in the slot. Never shipped. */
+  hint?: string;
+  /** Alt text for the image. Empty for decorative images. */
+  alt?: string;
+  /** Image used until the slot has its own file. */
+  fallback?: ImageMetadata;
+  fit?: 'cover' | 'contain';
+  /** Top-aligned crops suit page screenshots; centred suits photos. */
+  position?: 'top' | 'center';
+  sizes?: string;
+  eager?: boolean;
+  class?: string;
+}
+
+const {
+  id,
+  locale,
+  hint,
+  alt = '',
+  fallback,
+  fit = 'cover',
+  position = 'top',
+  sizes = '(min-width: 1024px) 50vw, 100vw',
+  eager = false,
+  class: className,
+} = Astro.props;
+
+const image = homeImage(id, locale) ?? fallback;
+---
+
+{image ? (
+  <Image
+    src={image}
+    alt={alt}
+    sizes={sizes}
+    widths={[480, 800, 1200, 1600, image.width].filter((w) => w <= image.width)}
+    loading={eager ? 'eager' : 'lazy'}
+    fetchpriority={eager ? 'high' : undefined}
+    class:list={['hp-slot-img', `hp-fit-${fit}`, `hp-pos-${position}`, className]}
+  />
+) : SHOW_PLACEHOLDERS ? (
+  <div class:list={['hp-slot-empty', className]} data-slot-id={id} aria-hidden="true">
+    <span class="hp-slot-hint">{hint}</span>
+    <span class="hp-slot-id">src/assets/home/{id}.png</span>
+  </div>
+) : null}

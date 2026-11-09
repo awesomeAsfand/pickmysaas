@@ -154,7 +154,7 @@ if (commentsConfig?.enabled) {
 
     <!-- Theme bootstrap (runs before body paint; no flash of wrong theme).
          Implements a 3-state colour-mode contract:
-           localStorage.theme ∈ {'system','light','dark'}  (default 'system')
+           localStorage.theme ∈ {'system','light','dark'}  (default 'light')
            <html data-theme-mode="…">                      (mirrors saved mode)
            <html class="dark">                              (resolved appearance)
          When mode === 'system', <html>.dark tracks prefers-color-scheme live. -->
@@ -168,7 +168,7 @@ if (commentsConfig?.enabled) {
             const stored = localStorage.getItem('theme');
             if (VALID_MODES.indexOf(stored) !== -1) return stored;
           } catch { /* private mode / disabled storage */ }
-          return 'system';
+          return 'light';
         }
 
         function applyMode(el) {
@@ -232,6 +232,11 @@ if (commentsConfig?.enabled) {
          * Only while the bottom edge of the screen is inside the section.
          * Scroll it up past that edge and what sits under the toolbar is
          * whatever follows, so the body goes back to its own colour.
+         *
+         * A section whose colour changes with the colour mode also carries
+         * `data-bar-color-light`, used when the page is in light mode. The
+         * home hero is light in light mode, the same white as the body, so
+         * its light value is empty and nothing is painted.
          */
         function sectionColor() {
           const el = document.querySelector('[data-bar-color]');
@@ -241,7 +246,9 @@ if (commentsConfig?.enabled) {
           const edge = viewportBottom();
           if (!(rect.height > 0 && rect.top <= edge && rect.bottom >= edge)) return null;
 
-          return (el.getAttribute('data-bar-color') || '').trim() || null;
+          const light = !document.documentElement.classList.contains('dark');
+          const attr = light && el.hasAttribute('data-bar-color-light') ? 'data-bar-color-light' : 'data-bar-color';
+          return (el.getAttribute(attr) || '').trim() || null;
         }
 
         /**
@@ -317,6 +324,12 @@ if (commentsConfig?.enabled) {
           }
           window.addEventListener('scroll', onScroll, { passive: true });
           window.addEventListener('resize', onScroll, { passive: true });
+          // Switching between light and dark changes which colour applies
+          // (see data-bar-color-light), so repaint when the mode class flips.
+          new MutationObserver(onScroll).observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class'],
+          });
           window.addEventListener('orientationchange', onScroll, { passive: true });
           if (window.visualViewport) {
             window.visualViewport.addEventListener('resize', onScroll);
