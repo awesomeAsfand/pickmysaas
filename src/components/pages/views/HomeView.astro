@@ -100,7 +100,7 @@ const services = tData<{
   lead: string;
   learnMore: string;
   imageAlt: string;
-  cards: { key: string; title: string; price: string; description: string }[];
+  cards: { key: string; title: string; price: string; description: string; imageAlt?: string }[];
 }>('pages.home.services', locale)!;
 const included = tData<{
   label: string;
@@ -386,7 +386,7 @@ const homeAlternates = getLocales().map((loc) => ({ locale: loc, url: localizedP
                       id={`svc-${card.key}`}
                       locale={locale}
                       hint={`${card.title} screenshot`}
-                      alt={fill(services.imageAlt, { title: card.title })}
+                      alt={card.imageAlt ?? fill(services.imageAlt, { title: card.title })}
                       sizes="(min-width: 1280px) 300px, (min-width: 640px) 50vw, 100vw"
                     />
                   </div>

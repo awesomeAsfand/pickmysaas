@@ -1883,24 +1883,28 @@
         "cards": [
           {
             "key": "web",
+            "imageAlt": "A dark orange landing page for an AI agents company, with a large headline, two booking buttons and three result figures.",
             "title": "Web design",
             "price": "From $300",
             "description": "Bilingual websites that load fast, rank well and turn visitors into enquiries."
           },
           {
             "key": "shop",
+            "imageAlt": "An online store's product grid: a T-shirt, a hoodie on sale, a cap and desk items, each with its price.",
             "title": "E-commerce",
             "price": "From $500",
             "description": "Stores with Visa, Mastercard and PayPal payments, designed for mobile-first Gulf shoppers."
           },
           {
             "key": "saas",
+            "imageAlt": "A dark SaaS landing page with a 'Start free trial' button and figures for users, uptime and rating.",
             "title": "SaaS platforms",
             "price": "Per proposal",
             "description": "Subscriptions, dashboards and user roles, hosted in the GCC when your sector requires it."
           },
           {
             "key": "mvp",
+            "imageAlt": "A landing page for an AI assistant product, with its headline over a painted desert scene and a 'Start free trial' button.",
             "title": "AI-first MVPs",
             "price": "Fixed price",
             "description": "Arabic chatbots, document processing and automation, shipped in weeks."
