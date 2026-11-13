@@ -309,7 +309,17 @@ const siteConfig: SiteConfig = {
   // structured data.
   // Add PickMySaaS profiles here (LinkedIn, X, Instagram…). They feed the
   // footer and contact-page icons and the structured data's sameAs.
-  socialLinks: [],
+  // Placeholders (P1-05): the owner is creating these profiles. Uncomment a
+  // line only once the profile is live, with its real address. A sameAs link
+  // to a page that doesn't exist hurts more than no link. Use the approved
+  // brand description (docs/seo/implementation/brand-description.md) as each
+  // profile's bio.
+  socialLinks: [
+    // 'https://www.linkedin.com/company/<your-page>/',
+    // 'https://github.com/<your-account>',
+    // 'https://x.com/<your-handle>',
+    // 'https://www.instagram.com/<your-handle>/',
+  ],
   whatsapp: '923495533955',
   contactForm: {
     // Cloudflare Email Routing sends to the verified Gmail behind info@. The
