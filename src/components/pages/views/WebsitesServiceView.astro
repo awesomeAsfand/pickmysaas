@@ -8,6 +8,7 @@
 import { Image } from 'astro:assets';
 import PageLayout from '@/layouts/PageLayout.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import ServiceAudience, { type ServiceAudienceCopy } from '@/components/services/ServiceAudience.astro';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
 import Card from '@/components/ui/data-display/Card/Card.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
@@ -35,6 +36,7 @@ const page = tData<{
   breadcrumb: string;
   hero: { badge: string; titleLead: string; titleHighlight: string; description: string };
   answer: { heading: string; paragraphs: string[] };
+  audience: ServiceAudienceCopy;
   guide: {
     badge: string;
     heading: string;
@@ -135,6 +137,7 @@ const breadcrumbs = [
           </p>
         )}
       </div>
+      <ServiceAudience copy={page.audience} class="mt-10" />
     </div>
   </section>
 

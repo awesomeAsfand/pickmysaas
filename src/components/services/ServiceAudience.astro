@@ -1,0 +1,53 @@
+---
+/**
+ * "Who this is for, and who it isn't" (SEO plan P2-05): two short lists that
+ * sit under a service page's opening answer.
+ *
+ * Only list what PickMySaaS doesn't do once the owner has confirmed it. As of
+ * 14 Nov 2026 that is: Shopify, WooCommerce, Salla, Zid or WordPress builds;
+ * native mobile apps; hourly or staff-augmentation work.
+ */
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+
+export interface ServiceAudienceCopy {
+  heading: string;
+  goodTitle: string;
+  good: string[];
+  notTitle: string;
+  not: string[];
+}
+
+interface Props {
+  copy: ServiceAudienceCopy;
+  class?: string;
+}
+
+const { copy, class: className } = Astro.props;
+---
+<div class:list={['rounded-xl border border-border bg-background p-6 md:p-8', className]} data-reveal>
+  <h3 class="font-display text-xl md:text-2xl font-bold text-foreground text-balance mb-6">{copy.heading}</h3>
+  <div class="grid gap-8 md:grid-cols-2">
+    <div>
+      <p class="font-semibold text-foreground mb-3">{copy.goodTitle}</p>
+      <ul class="flex flex-col gap-3">
+        {copy.good.map((item) => (
+          <li class="flex gap-3 text-foreground-muted leading-relaxed">
+            <Icon name="check" size="sm" class="mt-1 shrink-0 text-brand-600 dark:text-brand-400" />
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <p class="font-semibold text-foreground mb-3">{copy.notTitle}</p>
+      <ul class="flex flex-col gap-3">
+        {copy.not.map((item) => (
+          <li class="flex gap-3 text-foreground-muted leading-relaxed">
+            <Icon name="x" size="sm" class="mt-1 shrink-0 text-foreground-muted" />
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</div>

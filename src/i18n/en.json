@@ -786,6 +786,20 @@
         "titleHighlight": "for Gulf startups and businesses",
         "description": "We take your idea from a first call to a working platform in 4 to 8 weeks, at one fixed price agreed before we start."
       },
+      "audience": {
+        "heading": "Is PickMySaaS right for your platform?",
+        "goodTitle": "A good fit if you…",
+        "good": [
+          "run a business in the Gulf and need a platform in Arabic and English",
+          "want one fixed price agreed before work starts, not hourly billing",
+          "can look at a working demo every week and tell us what to change"
+        ],
+        "notTitle": "Not the right fit if you…",
+        "not": [
+          "need a native mobile app in the App Store or Google Play. We build web platforms, not native apps.",
+          "want developers by the hour, or a developer added to your own team"
+        ]
+      },
       "answer": {
         "heading": "Looking for a SaaS development company?",
         "paragraphs": [
@@ -1073,6 +1087,20 @@
         "titleHighlight": "for Gulf businesses",
         "description": "Bilingual websites in Arabic and English, at published fixed prices."
       },
+      "audience": {
+        "heading": "Is a PickMySaaS website right for you?",
+        "goodTitle": "A good fit if you…",
+        "good": [
+          "run a small or growing business in the Gulf and need a site in Arabic and English",
+          "want a fixed price you can see before you call: $300, $500, or from $700",
+          "want a Starter or Business site live in about a week once your content is ready"
+        ],
+        "notTitle": "Not the right fit if you…",
+        "not": [
+          "want a WordPress, Wix or Shopify site to edit yourself inside that platform. Every site we make is custom-built.",
+          "want to pay a developer by the hour. Every package has one fixed price."
+        ]
+      },
       "answer": {
         "heading": "Looking for a web design company?",
         "paragraphs": [
@@ -1329,6 +1357,21 @@
         "titleHighlight": "for Gulf businesses",
         "description": "Custom online stores in Arabic and English that your customers browse, pay for and come back to on their phones. Built in Python and Django, and owned by you.",
         "secondary": "See store prices"
+      },
+      "audience": {
+        "heading": "Is a custom store right for you?",
+        "goodTitle": "A good fit if you…",
+        "good": [
+          "sell to Gulf shoppers, mostly on their phones, in Arabic and English",
+          "want a custom store, starting at $500",
+          "take bank transfer, cash on delivery, or cards through a provider that works in your country",
+          "can give it 4 to 8 weeks from when your products are ready"
+        ],
+        "notTitle": "Not the right fit if you…",
+        "not": [
+          "want a Salla, Zid, Shopify or WooCommerce store. We don't build on those platforms; they suit you better if you'd rather launch on your own and run everything yourself.",
+          "need a shopping app in the App Store or Google Play. We build stores that run in the browser, on phones and computers."
+        ]
       },
       "answer": {
         "heading": "Looking for an ecommerce development company?",

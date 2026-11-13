@@ -19,6 +19,7 @@ import JsonLd from '@/components/seo/JsonLd.astro';
 import DataTable from '@/components/services/DataTable.astro';
 import FaqList from '@/components/services/FaqList.astro';
 import ServiceCta from '@/components/services/ServiceCta.astro';
+import ServiceAudience, { type ServiceAudienceCopy } from '@/components/services/ServiceAudience.astro';
 import { createFAQSchema } from '@/lib/schema';
 import { defaultLocale } from '@/i18n';
 import { bookingLinkAttrs } from '@/lib/booking';
@@ -29,6 +30,22 @@ const DESCRIPTION =
 const PATH = '/services/mvp/';
 const AR_PATH = '/ar/services/mvp/';
 const FACTS_CHECKED = '13 November 2026';
+
+// Who it's for (P2-05). The "isn't for" items were confirmed by the owner on 14 Nov 2026.
+const AUDIENCE: ServiceAudienceCopy = {
+  heading: 'Is an MVP right for you?',
+  goodTitle: 'A good fit if you…',
+  good: [
+    'are a founder with an idea to test, and want real users trying it in 4 to 8 weeks',
+    'want one fixed price, not an open-ended build',
+    'would rather cut features than wait months',
+  ],
+  notTitle: 'Not the right fit if you…',
+  not: [
+    'need a native mobile app in the App Store or Google Play as your first version. We build web products, not native apps.',
+    'want to pay developers by the hour',
+  ],
+};
 
 const SOURCES = {
   stripe: 'https://stripe.com/global',
@@ -173,6 +190,8 @@ const faq = [
   </section>
 
   <article class="mx-auto max-w-3xl px-6 py-[var(--space-section-md)]">
+    <ServiceAudience copy={AUDIENCE} class="mb-12" />
+
     <div class="prose prose-lg max-w-none">
       <h2>What an MVP is, and what it isn’t</h2>
       <p>

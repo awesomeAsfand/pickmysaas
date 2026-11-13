@@ -22,6 +22,7 @@ import JsonLd from '@/components/seo/JsonLd.astro';
 import DataTable from '@/components/services/DataTable.astro';
 import FaqList from '@/components/services/FaqList.astro';
 import ServiceCta from '@/components/services/ServiceCta.astro';
+import ServiceAudience, { type ServiceAudienceCopy } from '@/components/services/ServiceAudience.astro';
 import { createFAQSchema } from '@/lib/schema';
 import { bookingLinkAttrs } from '@/lib/booking';
 
@@ -32,6 +33,22 @@ const DESCRIPTION =
 const PATH = '/ar/services/mvp/';
 const EN_PATH = '/services/mvp/';
 const FACTS_CHECKED = '13 نوفمبر 2026';
+
+// Who it's for (P2-05). The "isn't for" items were confirmed by the owner on 14 Nov 2026.
+const AUDIENCE: ServiceAudienceCopy = {
+  heading: 'هل الـMVP مناسب لك؟',
+  goodTitle: 'مناسب لك إذا كنت…',
+  good: [
+    'مؤسسًا لديك فكرة تريد اختبارها، وتريد مستخدمين حقيقيين يجرّبونها خلال 4 إلى 8 أسابيع',
+    'تريد سعرًا ثابتًا واحدًا، لا مشروعًا مفتوح المدة والتكلفة',
+    'تفضّل تقليص الميزات على الانتظار شهورًا',
+  ],
+  notTitle: 'غير مناسب لك إذا كنت…',
+  not: [
+    'تحتاج تطبيقًا أصليًا للجوال على App Store أو Google Play ليكون نسختك الأولى. نبني منتجات ويب، لا تطبيقات أصلية.',
+    'تريد الدفع للمطوّرين بالساعة',
+  ],
+};
 
 const SOURCES = {
   stripe: 'https://stripe.com/global',
@@ -181,6 +198,8 @@ const faq = [
   </section>
 
   <article class="mx-auto max-w-3xl px-6 py-[var(--space-section-md)]">
+    <ServiceAudience copy={AUDIENCE} class="mb-12" />
+
     <div class="prose prose-lg max-w-none">
       <h2>ما هو الـMVP، وما ليس هو</h2>
       <p>
