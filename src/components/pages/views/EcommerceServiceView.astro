@@ -63,7 +63,7 @@ const page = tData<{
     guideLink: string;
     note: string;
   };
-  compare: { badge: string; heading: string; lead: string; labels: string[]; rows: string[][] };
+  compare: { badge: string; heading: string; lead: string; labels: string[]; rows: string[][]; guideLink: string };
   rules: {
     badge: string;
     heading: string;
@@ -98,6 +98,8 @@ const packagesUrl = `${localizedPath('/services/websites', locale)}#packages`;
 const saasUrl = localizedPath('/services/saas', locale);
 // The price guide for this language: the UAE guide in English, the Saudi one in Arabic.
 const guideUrl = locale === defaultLocale ? '/guides/website-cost-uae/' : localizedPath('/guides/website-cost', locale);
+// The Salla vs Shopify vs custom guide exists in both languages (P2-06).
+const compareGuideUrl = localizedPath('/guides/salla-vs-shopify-vs-custom-store', locale);
 const breadcrumbs = [
   { label: t('common.home', locale), href: localizedPath('/', locale) },
   { label: t('nav.items.services', locale), href: localizedPath('/services', locale) },
@@ -311,6 +313,10 @@ const breadcrumbs = [
     <div class="mx-auto max-w-5xl px-6 flex flex-col gap-8">
       <SectionHeading icon="git-compare" badge={page.compare.badge} heading={page.compare.heading} lead={page.compare.lead} />
       <DataTable headers={page.compare.labels} rows={page.compare.rows} />
+      <a href={compareGuideUrl} class="self-center inline-flex items-center gap-2 text-sm font-semibold text-brand-700 dark:text-brand-400">
+        {page.compare.guideLink}
+        <Icon name="arrow-right" size="sm" class="rtl:-scale-x-100" />
+      </a>
     </div>
   </section>
 

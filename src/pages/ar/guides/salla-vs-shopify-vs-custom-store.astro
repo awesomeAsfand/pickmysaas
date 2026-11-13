@@ -1,0 +1,248 @@
+---
+/**
+ * Salla vs Shopify vs a custom store: an honest comparison (SEO plan P2-06),
+ * Arabic first because Saudi store searches are in Arabic and led by Salla
+ * (تصميم متجر سلة is 100–1K a month in Saudi Arabia in the 2026-11-04 research).
+ * English twin: /guides/salla-vs-shopify-vs-custom-store/. Slugs confirmed by
+ * the owner on 14 Nov 2026.
+ *
+ * Rules for this page:
+ * - Platform prices and fees come only from each platform's own pages, linked
+ *   and dated. PickMySaaS doesn't build on Salla or Shopify (owner, 4 Nov), so
+ *   this page never offers to.
+ * - VERIFY before publishing: Salla blocks automated access (captcha), so its
+ *   plan prices below were read from the search engine's copy of
+ *   salla.com/plans, not the live page. The owner checks them in a browser.
+ * - Shopify's prices change with the visitor's country. The figures are from
+ *   the US version of shopify.com/pricing on 14 Nov 2026.
+ * - Custom store upkeep ($100–300 a year) and "the client pays card fees to
+ *   the provider" are the owner's answers of 14 Nov 2026.
+ * - The "where a custom store loses" section needs the owner's approval.
+ */
+import PageLayout from '@/layouts/PageLayout.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Breadcrumbs from '@/components/seo/Breadcrumbs.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import DataTable from '@/components/services/DataTable.astro';
+import FaqList from '@/components/services/FaqList.astro';
+import { createBlogPostSchema, createFAQSchema } from '@/lib/schema';
+import { bookingLinkAttrs } from '@/lib/booking';
+import siteConfig from '@/config/site.config';
+
+const TITLE = 'سلة أم Shopify أم متجر خاص؟ مقارنة صادقة';
+const DESCRIPTION =
+  'مقارنة بين سلة وShopify ومتجر خاص في السعودية: رسوم كل منصة من صفحاتها الرسمية، والتكلفة على ثلاث سنوات، ومتى يكون المتجر الخاص خيارًا أسوأ.';
+const PATH = '/ar/guides/salla-vs-shopify-vs-custom-store/';
+const EN_PATH = '/guides/salla-vs-shopify-vs-custom-store/';
+const PUBLISHED = new Date('2026-11-14');
+const CHECKED = '14 نوفمبر 2026';
+
+const SOURCES = {
+  salla: 'https://salla.com/plans',
+  shopify: 'https://www.shopify.com/pricing',
+  shopifyPayments: 'https://help.shopify.com/en/manual/payments/shopify-payments/supported-countries',
+};
+
+const faq = [
+  {
+    question: 'أيهما أفضل في السعودية: سلة أم Shopify؟',
+    answer:
+      'لمتجر يبيع داخل السعودية، سلة أقرب إلى السوق: منصة سعودية تبدأ بباقة مجانية، وأسعارها بالريال. أما Shopify فلا تتوفر خدمة الدفع الخاصة به Shopify Payments في السعودية، فتحتاج مزوّد دفع آخر، وقد يضيف Shopify رسومًا على كل عملية بيع عند استخدامه.',
+  },
+  {
+    question: 'هل Shopify Payments متاح في السعودية؟',
+    answer: `لا. بين دول الخليج، تذكر قائمة Shopify للدول المدعومة الإمارات فقط (راجعناها بتاريخ ${CHECKED}). المتجر في السعودية يستخدم مزوّد دفع آخر.`,
+  },
+  {
+    question: 'كم يكلّف متجر خاص على ثلاث سنوات؟',
+    answer:
+      'لدينا: 500 دولار (نحو 1,875 ريالًا) لبناء متجر صغير ضمن باقة الأعمال، ثم نحو 100 إلى 300 دولار سنويًا للاستضافة وتجديد النطاق. المجموع على ثلاث سنوات نحو 800 إلى 1,400 دولار (3,000 إلى 5,250 ريالًا تقريبًا)، دون رسوم الدفع التي تدفعها لمزوّد الدفع مباشرة.',
+  },
+  {
+    question: 'هل تبنون متاجر على سلة أو Shopify؟',
+    answer:
+      'لا. نبني متاجر خاصة فقط. إن كانت سلة أو Shopify تناسبك أكثر، فهذا الدليل يساعدك على الاختيار، ويمكنك إطلاق متجرك عليها بنفسك.',
+  },
+  {
+    question: 'متى لا يكون المتجر الخاص فكرة جيدة؟',
+    answer:
+      'إذا أردت البيع هذا الأسبوع، أو لم تكن متأكدًا بعد أن منتجك سيُباع، أو أردت تغيير تصميم المتجر وإضافة مزايا بنفسك دون مطوّر. في هذه الحالات ابدأ بمنصة، وانتقل إلى متجر خاص حين تعرف ما تحتاجه.',
+  },
+];
+
+const articleSchema = createBlogPostSchema({
+  title: TITLE,
+  description: DESCRIPTION,
+  url: new URL(PATH, siteConfig.url).toString(),
+  image: new URL(siteConfig.ogImage, siteConfig.url).toString(),
+  datePublished: PUBLISHED,
+  author: { type: 'Organization', name: siteConfig.name, url: new URL('/ar/about/', siteConfig.url).toString() },
+});
+---
+<PageLayout
+  title={TITLE}
+  description={DESCRIPTION}
+  footerBackground="secondary"
+  localeAlternates={[
+    { locale: 'en', url: EN_PATH },
+    { locale: 'ar', url: PATH },
+  ]}
+  languageAlternates={{ en: EN_PATH, ar: PATH }}
+>
+  <JsonLd schema={articleSchema} />
+  <JsonLd schema={createFAQSchema(faq)} />
+
+  <article class="mx-auto max-w-3xl px-6 py-[var(--space-section-sm)]">
+    <Breadcrumbs
+      items={[
+        { label: 'الرئيسية', href: '/ar/' },
+        { label: 'المتاجر الإلكترونية', href: '/ar/services/ecommerce/' },
+        { label: 'سلة أم Shopify أم متجر خاص' },
+      ]}
+      class="mb-8"
+    />
+
+    <header class="mb-10">
+      <h1 class="font-display text-4xl md:text-5xl font-bold text-foreground text-balance mb-4 leading-tight">سلة أم Shopify أم متجر خاص: أيها يناسبك؟</h1>
+      <p class="text-sm text-foreground-muted">بقلم PickMySaaS. راجعنا رسوم المنصات بتاريخ {CHECKED}.</p>
+    </header>
+
+    <Card variant="elevated" padding="lg" class="mb-10">
+      <h2 class="font-display text-lg font-bold text-foreground mb-2">الجواب المختصر</h2>
+      <p class="text-foreground-muted leading-relaxed">
+        <strong class="text-foreground">سلة</strong> لمن يريد البيع في السعودية بسرعة وبنفسه وبميزانية صغيرة. <strong class="text-foreground">Shopify</strong> لمن يبيع
+        خارج السعودية أو في الإمارات ويريد متجر إضافات عالميًا. <strong class="text-foreground">المتجر الخاص</strong> لعلامة تعرف كيف تبيع، وتريد متجرًا تملكه دون اشتراك
+        شهري للمنصة، ويمكنها الانتظار 4 إلى 8 أسابيع.
+      </p>
+    </Card>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        كاتب هذا الدليل يبيع المتاجر الخاصة: نحن. لذلك أخذنا رسوم سلة وShopify من صفحاتهما الرسمية فقط، ووضعنا رابط كل رقم، وخصصنا قسمًا كاملًا للحالات التي يكون فيها
+        المتجر الخاص خيارًا أسوأ. نحن لا نبني على سلة ولا على Shopify، فلا مصلحة لنا في ترجيح إحداهما على الأخرى.
+      </p>
+
+      <h2>المقارنة في جدول واحد</h2>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable
+        headers={['', 'سلة', 'Shopify', 'متجر خاص معنا']}
+        rows={[
+          ['ما هو', 'منصة متاجر سعودية، تنشئ متجرك عليها بنفسك', 'منصة متاجر عالمية، تنشئ متجرك عليها بنفسك', 'متجر نصمّمه ونبرمجه لك، ويُسلَّم باسمك'],
+          ['البداية', 'باقة أساسية مجانية', 'تجربة 3 أيام، ثم دولار واحد شهريًا لثلاثة أشهر', '500 دولار (نحو 1,875 ريالًا) ضمن باقة الأعمال'],
+          ['الاشتراك بعد ذلك', 'Plus بـ 990 ريالًا سنويًا، وPro بـ 2,990 ريالًا سنويًا', 'Basic من 19 دولارًا شهريًا بالدفع السنوي، وGrow من 49 دولارًا', 'لا اشتراك منصة. استضافة وتجديد نطاق بنحو 100 إلى 300 دولار سنويًا'],
+          ['الدفع في السعودية', 'عبر خيارات الدفع التي تتيحها سلة', 'Shopify Payments غير متاح. تحتاج مزوّدًا آخر، وقد يضيف Shopify رسومًا على كل عملية', 'مزوّد دفع يعمل في بلدك، تدفع رسومه له مباشرة. لا نأخذ نسبة من مبيعاتك'],
+          ['وقت الإطلاق', 'أيام، بقدر سرعتك', 'أيام، بقدر سرعتك', '4 إلى 8 أسابيع من تجهيز منتجاتك'],
+          ['الإضافات الجاهزة', 'متجر تطبيقات سلة', 'متجر تطبيقات Shopify العالمي', 'لا يوجد. كل ربط يُبنى ويُسعَّر في عرضك'],
+          ['من يعدّل المتجر', 'أنت، من لوحة التحكم والقوالب', 'أنت، من لوحة التحكم والقوالب', 'أنت للمنتجات والأسعار والطلبات. التصميم والمزايا الجديدة عبرنا أو أي مطوّر'],
+          ['الملكية', 'متجرك يعمل على منصة سلة', 'متجرك يعمل على منصة Shopify', 'الكود والنطاق وبيانات العملاء باسمك'],
+        ]}
+      />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        أسعار سلة من <a href={SOURCES.salla} rel="noopener">صفحة باقات سلة</a>، وأسعار Shopify من <a href={SOURCES.shopify} rel="noopener">صفحة أسعار Shopify</a> بنسختها
+        الأمريكية وبالدولار، وقد يعرض Shopify سعرًا مختلفًا في بلدك. تأكد أيضًا هل الأسعار شاملة لضريبة القيمة المضافة 15%.
+      </p>
+
+      <h2>التكلفة على ثلاث سنوات</h2>
+      <p>
+        الاشتراك الشهري يبدو صغيرًا، لكنه يتراكم. هذا ما تدفعه للمنصة أو للمتجر وحده خلال ثلاث سنوات، قبل رسوم الدفع والإضافات المدفوعة والضريبة. حوّلنا الدولار إلى
+        الريال بسعر الصرف الثابت 3.75.
+      </p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable
+        headers={['الخيار', 'ثلاث سنوات', 'ما لا يشمله الرقم']}
+        rows={[
+          ['سلة، الباقة الأساسية', '0 ريال', 'رسوم الدفع، ومزايا الباقات المدفوعة'],
+          ['سلة Plus', '2,970 ريالًا (990 × 3)', 'رسوم الدفع والتطبيقات المدفوعة'],
+          ['سلة Pro', '8,970 ريالًا (2,990 × 3)', 'رسوم الدفع والتطبيقات المدفوعة'],
+          ['Shopify Basic بالدفع السنوي', 'نحو 2,565 ريالًا (684 دولارًا)', 'رسوم Shopify على كل عملية مع مزوّد دفع آخر، ورسوم المزوّد، والتطبيقات المدفوعة'],
+          ['Shopify Grow بالدفع السنوي', 'نحو 6,615 ريالًا (1,764 دولارًا)', 'الرسوم نفسها'],
+          ['متجر خاص معنا', 'نحو 3,000 إلى 5,250 ريالًا (800 إلى 1,400 دولار)', 'رسوم مزوّد الدفع، وخطة الدعم الشهرية إن اخترتها، وأي ميزة جديدة بعد الإطلاق'],
+        ]}
+      />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        الخلاصة: على ثلاث سنوات، المتجر الخاص لا يكلّف أكثر من باقة مدفوعة على منصة، لكنك تدفع معظم تكلفته في البداية. وأرخص خيار على الإطلاق هو باقة سلة الأساسية، إن
+        كفتك مزاياها.
+      </p>
+
+      <h2>متى يكون المتجر الخاص خيارًا أسوأ</h2>
+      <p>هذه الحالات حقيقية، ونقولها في المكالمة الأولى أيضًا:</p>
+      <ul>
+        <li>
+          <strong>تريد البيع هذا الأسبوع.</strong> على سلة أو Shopify يمكنك فتح متجر في أيام. المتجر الخاص يحتاج 4 إلى 8 أسابيع من تجهيز منتجاتك وصورها وأسعارها.
+        </li>
+        <li>
+          <strong>لم تختبر منتجك بعد.</strong> إن لم تكن متأكدًا أن الناس سيشترون، فابدأ بباقة سلة المجانية. الـ500 دولار أنفع بعد أن تعرف ما يُباع.
+        </li>
+        <li>
+          <strong>تحتاج إضافات جاهزة كثيرة.</strong> متاجر التطبيقات في سلة وShopify تضيف الشحن والتقييمات والتسويق بضغطة. في المتجر الخاص يُبنى كل ربط، ويُسعَّر في
+          عرضك.
+        </li>
+        <li>
+          <strong>تريد تغيير التصميم وإضافة مزايا بنفسك.</strong> في المتجر الخاص تعدّل المنتجات والأسعار والطلبات بنفسك، أما تغيير التصميم أو إضافة ميزة جديدة فيمر
+          بنا أو بأي مطوّر. الكود ملكك، فلست مرتبطًا بنا.
+        </li>
+        <li>
+          <strong>لا تريد التفكير في الاستضافة والتحديثات.</strong> المنصة تتولاها ضمن الاشتراك. في المتجر الخاص تتولاها خطة الدعم الشهرية، أو تديرها أنت.
+        </li>
+      </ul>
+
+      <h2>متى يكون المتجر الخاص خيارًا أفضل</h2>
+      <ul>
+        <li><strong>لا تريد اشتراكًا شهريًا للمنصة</strong>، بل استضافة وتجديد نطاق بنحو 100 إلى 300 دولار سنويًا.</li>
+        <li>
+          <strong>تبيع في السعودية وتفكر في Shopify:</strong> بما أن Shopify Payments غير متاح فيها، قد يضيف Shopify رسومه على كل عملية فوق رسوم مزوّد الدفع، وتحدد باقتك نسبتها. في المتجر الخاص
+          تدفع رسوم المزوّد وحدها.
+        </li>
+        <li><strong>طريقة بيعك لا تناسب القوالب</strong>، كخيارات طلب خاصة أو خطوات شراء مختلفة.</li>
+        <li><strong>تريد أن تملك متجرك</strong>: الكود والنطاق وبيانات العملاء باسمك، وتنقلها حيث تشاء.</li>
+      </ul>
+
+      <h2>كيف تختار في خمس دقائق</h2>
+      <ol>
+        <li>هل منتجك مُختبَر ويُباع فعلًا؟ إن لم يكن، ابدأ بسلة.</li>
+        <li>هل تبيع أساسًا خارج السعودية، أو في الإمارات؟ قارن Shopify.</li>
+        <li>هل تحتاج إضافات جاهزة كثيرة وتعدّل كل شيء بنفسك؟ ابقَ على منصة.</li>
+        <li>هل تريد متجرًا تملكه، دون اشتراك منصة، ويمكنك الانتظار شهرًا أو شهرين؟ المتجر الخاص يناسبك.</li>
+      </ol>
+      <p>
+        إن اخترت المتجر الخاص، فاقرأ <a href="/ar/services/ecommerce/">كيف نبني المتاجر الإلكترونية</a>. وللمقارنة بأسعار شركات التصميم في السعودية، راجع
+        <a href="/ar/guides/website-cost/">دليل تكلفة تصميم المواقع</a>.
+      </p>
+    </div>
+
+    <div class="not-prose my-10 flex flex-col sm:flex-row gap-4">
+      <Button size="lg" {...bookingLinkAttrs('/ar/contact/')}>
+        اسألنا أي خيار يناسب متجرك
+        <Icon name="arrow-right" size="sm" />
+      </Button>
+    </div>
+
+    <h2 class="font-display text-3xl font-bold text-foreground mt-12 mb-6">أسئلة شائعة</h2>
+    <Card variant="elevated" padding="lg">
+      <FaqList items={faq} name="store-compare-faq-ar" />
+    </Card>
+
+    <div class="prose prose-lg max-w-none mt-12">
+      <h2>المصادر</h2>
+      <p>راجعنا كل صفحة بتاريخ {CHECKED}. الأسعار تتغير، فتأكد منها قبل أن تقرر.</p>
+      <ul>
+        <li><a href={SOURCES.salla} rel="noopener">باقات سلة</a>: الباقة الأساسية وPlus وPro.</li>
+        <li><a href={SOURCES.shopify} rel="noopener">أسعار Shopify</a> (النسخة الأمريكية): الباقات والتجربة المجانية، ورسوم مزوّدي الدفع الآخرين.</li>
+        <li><a href={SOURCES.shopifyPayments} rel="noopener">الدول المدعومة في Shopify Payments</a>: الإمارات وحدها بين دول الخليج.</li>
+        <li>أسعارنا من <a href="/ar/services/ecommerce/#prices">صفحة المتاجر الإلكترونية</a>.</li>
+      </ul>
+    </div>
+  </article>
+</PageLayout>
