@@ -291,7 +291,10 @@ const siteConfig: SiteConfig = {
   // import this file, uses the same values. Change them there.
   name: SITE_NAME,
   description:
-    'PickMySaaS designs and builds bilingual websites, online stores, SaaS platforms and AI-first MVPs for startups and businesses in the UAE, Saudi Arabia, Qatar and across the GCC.',
+    // The owner-approved one-line brand description (P3-01, approved 14 Nov
+    // 2026). It feeds the Organization and WebSite markup and llms.txt; if it
+    // changes, change it in directory profiles and social bios too.
+    'PickMySaaS is a founder-led studio building bilingual websites, online stores, SaaS platforms and MVPs for Gulf businesses, at fixed prices.',
   tagline: 'Websites, SaaS & AI MVPs for the Gulf',
   footerNote: 'Working worldwide · Focused on the GCC',
   url: SITE_URL || SITE_URL_FALLBACK,
