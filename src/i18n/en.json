@@ -151,10 +151,10 @@
     "galleryClose": "Close lightbox",
     "galleryNextImage": "Next image",
     "galleryPreviousImage": "Previous image",
-    "metaTitle": "Projects: Websites and Platforms We've Built",
-    "metaDescription": "Websites and platforms built by PickMySaaS: a directory of 3,000+ Gulf nurseries, a therapist site with WhatsApp booking, and a free AI search readiness tool.",
+    "metaTitle": "Projects: Websites and Platforms for Gulf Markets",
+    "metaDescription": "Built by PickMySaaS: a directory platform listing 3,000+ nurseries across the six GCC countries, and a therapist website with WhatsApp booking.",
     "heroBadge": "Selected work",
-    "heroDescription": "Websites, platforms and tools we've designed and built.",
+    "heroDescription": "Websites and platforms we've designed and built.",
     "allProjects": "All projects",
     "pageMetaTitle": "Projects — Page {page}",
     "pageMetaDescription": "Page {page} of {total}: websites, platforms and tools designed and built by PickMySaaS.",
@@ -447,8 +447,8 @@
     },
     "services": {
       "meta": {
-        "title": "Services: Websites, Online Stores, SaaS and AI MVPs",
-        "description": "One founder-led team for your website, online store, SaaS platform or AI-first MVP in the GCC. Compare what each service includes, how a project runs and how to get started."
+        "title": "Website Design, SaaS & MVP Development from $300",
+        "description": "Fixed-price website design from $300 and online stores from $500. SaaS platforms and MVPs get one fixed price in a written proposal. Founder-led, for the GCC."
       },
       "includedLabel": "What you get",
       "hero": {
