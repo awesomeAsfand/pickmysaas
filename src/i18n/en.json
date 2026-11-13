@@ -500,7 +500,7 @@
         "more": "More about ecommerce development",
         "paragraphs": [
           "Custom online stores in Arabic and English for businesses in the UAE, Saudi Arabia and across the GCC, built in Python and Django and owned by you: no store-builder subscription and no platform commission on your sales.",
-          "Stores take Visa, Mastercard and PayPal, plus bank transfer and cash on delivery. A small store starts at $500 with the Business package and goes live in about a week once we have your products."
+          "Stores take Visa, Mastercard and PayPal, plus bank transfer and cash on delivery. A small store starts at $500 with the Business package and goes live in 4 to 8 weeks once we have your products."
         ],
         "included": [
           {
@@ -577,7 +577,7 @@
               "Order alerts by email",
               "Full SEO and AI-search setup",
               "Hosting and SSL setup",
-              "Live in 1 week",
+              "Live in 1 week (a store: 4 to 8 weeks)",
               "2 rounds of revisions",
               "1 month of support"
             ],
@@ -722,7 +722,7 @@
               },
               {
                 "question": "How long does it take to build a website or SaaS product?",
-                "answer": "Websites go live in about a week. SaaS platforms and AI MVPs typically take 4 to 8 weeks. Your proposal names the exact timeline."
+                "answer": "Websites go live in about a week. Online stores, SaaS platforms and AI MVPs typically take 4 to 8 weeks. Your proposal names the exact timeline."
               },
               {
                 "question": "Can you build my website in Arabic and English?",
@@ -1333,7 +1333,7 @@
       "answer": {
         "heading": "Looking for an ecommerce development company?",
         "paragraphs": [
-          "PickMySaaS is a founder-led studio that builds custom online stores for businesses in the UAE, Saudi Arabia and across the GCC. A small store starts at $500 with the Business package and goes live in about a week once we have your products. Larger stores start from $700.",
+          "PickMySaaS is a founder-led studio that builds custom online stores for businesses in the UAE, Saudi Arabia and across the GCC. A small store starts at $500 with the Business package and goes live in 4 to 8 weeks once we have your products. Larger stores start from $700.",
           "Every store is in Arabic and English, works first on phones, and takes Visa, Mastercard and PayPal, plus bank transfer and cash on delivery. The code, the domain and your customer data are in your name, and there is no store-builder subscription or platform commission on your sales."
         ],
         "glanceTitle": "At a glance",
@@ -1344,7 +1344,7 @@
           },
           {
             "label": "Time to launch",
-            "value": "About 1 week for a Business-package store, from when we have your products"
+            "value": "4 to 8 weeks, from when we have your products"
           },
           {
             "label": "Payments",
@@ -1461,7 +1461,7 @@
               "Order alerts by email",
               "Arabic and English",
               "Full SEO and AI-search setup",
-              "Live in about 1 week",
+              "Live in 4 to 8 weeks",
               "1 month of support"
             ]
           },
@@ -1592,7 +1592,7 @@
           },
           {
             "question": "How long does it take to build an online store?",
-            "answer": "A Business-package store goes live in about a week from when we have your products, photos and prices. Larger stores with connections to other tools get their timeline in your proposal."
+            "answer": "Most stores go live in 4 to 8 weeks from when we have your products, photos and prices. Your proposal names the exact timeline."
           },
           {
             "question": "Can my store take cash on delivery and bank transfer?",
@@ -1852,8 +1852,8 @@
           "description": "Catalogue, cart and checkout with Visa, Mastercard and PayPal, designed mobile-first.",
           "results": [
             {
-              "value": "3–4 wks",
-              "label": "Time to launch"
+              "value": "4–8 wks",
+              "label": "Typical store launch"
             },
             {
               "value": "3",
