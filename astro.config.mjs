@@ -363,6 +363,13 @@ export default defineConfig({
   // rendering — significant whitespace between inline tags is preserved.
   compressHTML: true,
 
+  // Retired projects send visitors and search engines to the projects list
+  // instead of a 404. Snippet Tester was taken out of production in Nov 2026.
+  redirects: {
+    '/projects/snippet-tester/': '/projects/',
+    '/ar/projects/snippet-tester/': '/ar/projects/',
+  },
+
   build: {
     inlineStylesheets: 'auto',
   },

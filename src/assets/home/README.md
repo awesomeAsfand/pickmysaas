@@ -20,7 +20,6 @@ project screenshots fall back to the existing project images).
 | `work-gulfnurseries-mobile` | GulfNurseries card, phone | 9:19.5 |
 | `work-gulfnurseries-1` … `-3` | GulfNurseries thumbnails: map search, nursery page, owner plans | 4:3 |
 | `work-healing-with-attia-desktop` / `-mobile` / `-1` … `-3` | Healing with Attia card: services, WhatsApp booking, blog | as above |
-| `work-snippet-tester-desktop` / `-mobile` / `-1` … `-3` | Snippet Tester card: page score, signal breakdown, evidence page | as above |
 | `work-shop-desktop` / `-mobile` / `-1` … `-3` | E-commerce concept card: catalogue, product page & cart, collection page (dev only until its copy is filled in). | as above |
 | `svc-web`, `svc-shop`, `svc-saas`, `svc-mvp` | Service cards | 5:4 |
 | `cta-founder` | Final call to action, small round photo | Square |

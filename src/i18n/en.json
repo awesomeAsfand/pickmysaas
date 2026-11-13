@@ -321,7 +321,7 @@
           {
             "icon": "search",
             "title": "Built to be found",
-            "description": "SEO and AI-search readiness built in. We even made our own tool, Snippet Tester, to measure it."
+            "description": "SEO and AI-search readiness built in from the start."
           },
           {
             "icon": "sparkles",
@@ -435,10 +435,6 @@
           {
             "title": "Healing with Attia",
             "text": "A trust-first website for an online therapy practice serving clients in four countries."
-          },
-          {
-            "title": "Snippet Tester",
-            "text": "Our own tool that scores how well Google and AI assistants can read any web page."
           }
         ]
       },
@@ -490,7 +486,7 @@
           },
           {
             "lead": "Found by Google and AI",
-            "text": "SEO and AI-search readiness built in, measured with our own Snippet Tester."
+            "text": "SEO and AI-search readiness built in."
           },
           {
             "lead": "Built to convert",
@@ -1847,27 +1843,6 @@
               "WhatsApp booking",
               "Blog"
             ]
-          },
-          {
-            "slug": "snippet-tester",
-            "label": "Web tool",
-            "location": "In-house product",
-            "headline": "A free checker that shows how AI assistants read a page",
-            "results": [
-              {
-                "value": "8",
-                "label": "Signals checked"
-              },
-              {
-                "value": "0–100",
-                "label": "Page score"
-              }
-            ],
-            "thumbs": [
-              "Page score",
-              "Signal breakdown",
-              "Evidence page"
-            ]
           }
         ],
         "conceptItem": {
@@ -1956,7 +1931,7 @@
           {
             "icon": "search",
             "title": "Found by Google and AI",
-            "description": "SEO and AI-search readiness built in, measured with our own Snippet Tester."
+            "description": "SEO and AI-search readiness built in."
           },
           {
             "icon": "message-circle",
