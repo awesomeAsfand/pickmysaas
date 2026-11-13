@@ -42,6 +42,8 @@ interface Props {
   headings?: MarkdownHeading[];
   /** Per-project override: hide table of contents on this project */
   toc?: boolean;
+  /** Named client quote; nothing renders without one. */
+  quote?: { text: string; name: string; city?: string };
 }
 
 const {
@@ -60,6 +62,7 @@ const {
   related = [],
   headings = [],
   toc: tocOverride,
+  quote,
 } = Astro.props;
 
 const locale = getLocaleFromPath(Astro.url.pathname);
@@ -194,6 +197,18 @@ const languageAlternates = Object.fromEntries(
               <slot />
             </div>
           </div>
+
+          {quote && (
+            <figure class="mt-10 rounded-xl border border-border bg-card p-6 sm:p-8" data-reveal>
+              <blockquote class="font-display text-xl leading-relaxed text-foreground">
+                <p>“{quote.text}”</p>
+              </blockquote>
+              <figcaption class="mt-4 text-sm text-foreground-muted">
+                <span class="font-semibold text-foreground">{quote.name}</span>
+                {quote.city && <span>, {quote.city}</span>}
+              </figcaption>
+            </figure>
+          )}
 
           <footer class="border-border mt-12 border-t pt-8 flex justify-center" data-reveal>
             <Button href={projectsHref} variant="brand-outline" size="sm">

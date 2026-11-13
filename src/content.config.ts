@@ -158,6 +158,20 @@ const projects = defineCollection({
       services: z.array(z.string()).default([]),
       /** Optional editorial tagline — short facts rendered as a single line under the hero description with brand-coloured dot separators. */
       meta: z.array(z.string()).default([]),
+      /**
+       * A named client quote, shown after the case study as name and city (the
+       * owner's choice: no role or company). Add one only with the
+       * client's written permission to be quoted by name, and use their exact
+       * words (a translation in the other locale is fine if they approve it).
+       * Nothing renders while it's unset.
+       */
+      quote: z
+        .object({
+          text: z.string().min(1),
+          name: z.string().min(1),
+          city: z.string().optional(),
+        })
+        .optional(),
       draft: z.boolean().default(false),
       placeholder: z.boolean().default(false),
       /** Per-project override: hide table of contents on this project */
