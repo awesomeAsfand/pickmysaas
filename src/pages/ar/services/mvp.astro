@@ -1,0 +1,337 @@
+---
+/**
+ * MVP development in Arabic: the twin of /services/mvp/ (task P2-04 of the SEO
+ * plan). It mirrors the English page's structure and facts; nothing here may say
+ * more than the English page does.
+ *
+ * Arabic MVP wording returned no search data in the 2026-11-04 research, so
+ * "MVP" and "SaaS" stay in Latin script with a short Arabic explanation
+ * (06_arabic_terminology.csv). The page exists so Arabic readers of the home and
+ * Services pages have somewhere to go, and to pair hreflang with the English page.
+ *
+ * needs native review: all Arabic copy on this page is a first draft for a
+ * native Gulf Arabic reviewer (docs/seo/implementation/arabic-review-pack.md).
+ * Recheck the Stripe fact and update `FACTS_CHECKED` when editing.
+ */
+import PageLayout from '@/layouts/PageLayout.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Breadcrumbs from '@/components/seo/Breadcrumbs.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import DataTable from '@/components/services/DataTable.astro';
+import FaqList from '@/components/services/FaqList.astro';
+import ServiceCta from '@/components/services/ServiceCta.astro';
+import { createFAQSchema } from '@/lib/schema';
+import { bookingLinkAttrs } from '@/lib/booking';
+
+const LOCALE = 'ar';
+const TITLE = 'تطوير MVP للشركات الناشئة في الخليج';
+const DESCRIPTION =
+  'نبني نماذج MVP بالذكاء الاصطناعي للمؤسسين في السعودية والإمارات ودول الخليج: منتج يعمل خلال 4 إلى 8 أسابيع، بسعر ثابت واحد، بالعربية والإنجليزية.';
+const PATH = '/ar/services/mvp/';
+const EN_PATH = '/services/mvp/';
+const FACTS_CHECKED = '13 نوفمبر 2026';
+
+const SOURCES = {
+  stripe: 'https://stripe.com/global',
+};
+
+// needs native review
+const facts = [
+  { icon: 'clock', label: 'المدة', value: 'من 4 إلى 8 أسابيع لمعظم نماذج MVP' },
+  { icon: 'file-text', label: 'السعر', value: 'سعر ثابت واحد في عرضك' },
+  { icon: 'credit-card', label: 'الدفع', value: '50% مقدمًا و50% عند التسليم، بالتحويل البنكي' },
+  { icon: 'languages', label: 'اللغات', value: 'العربية والإنجليزية من اليوم الأول' },
+  { icon: 'code', label: 'التقنية', value: 'Python وDjango، وجاهزة للنمو' },
+];
+
+// A worked example of cutting an idea down. It's illustrative, not a client project.
+// needs native review
+const cut = {
+  idea: 'سوق إلكتروني يجد فيه أولياء الأمور في الرياض مدرّسين خصوصيين ويحجزونهم',
+  inFirst: [
+    'ملفات للمدرّسين تضيفها بنفسك، مع المواد والأحياء والأسعار',
+    'بحث حسب المادة والحي، بالعربية والإنجليزية',
+    'طلب حجز يصل إلى المدرّس عبر واتساب',
+    'صفحة إدارة بسيطة لمتابعة الطلبات',
+  ],
+  later: [
+    'تسجيل المدرّسين وإدارتهم لملفاتهم بأنفسهم',
+    'الدفع الإلكتروني والاسترداد وتحويل المستحقات إلى المدرّسين',
+    'التقييمات والمراجعات',
+    'تطبيق للجوال',
+  ],
+  test: 'هل سيرسل أولياء الأمور طلبات حجز، وهل سيردّ عليها المدرّسون؟ إن حدث ذلك، فبقية المزايا تستحق البناء.',
+};
+
+// needs native review
+const weeks = [
+  ['الأسبوع 1', 'نتفق على المشكلة الواحدة والمستخدم الأول والإجراء الأساسي. تحصل على تصاميم شاشات المسار الرئيسي.', 'نطاق عمل معتمد، فلا يتغيّر السعر الثابت'],
+  ['الأسابيع 2 إلى 4', 'نبني المسار الأساسي أولًا، ثم الشاشات حوله. ترى نسخة تعمل كل أسبوع.', 'ملاحظاتك في وقت تكون فيه التعديلات قليلة التكلفة'],
+  ['الأسبوع 5', 'نضيف جزء الذكاء الاصطناعي، ونختبره بأمثلة حقيقية من نشاطك، ونجهّز أدوات التحليلات.', 'دليل على أن الذكاء الاصطناعي يعمل على بياناتك، لا في عرض تجريبي فقط'],
+  ['الأسبوع 6', 'تجرّبه مجموعة صغيرة من المستخدمين الحقيقيين. نصلح ما يربكهم، ثم نطلقه.', 'منتج منشور وأول الأرقام'],
+];
+
+// needs native review
+const measures = [
+  ['التفعيل', 'كم ممّن يسجّلون يُتمّون الإجراء الأساسي مرة واحدة', 'الشاشات الأولى صعبة أو الوعد غير واضح'],
+  ['تكرار الاستخدام', 'كم منهم يعود في الأسبوعين الثاني والرابع', 'ربما لا تؤلم المشكلة بما يكفي لتغيير العادات'],
+  ['الاستعداد للدفع', 'كم منهم يقبل سعرًا أو يحجز مسبقًا أو يطلب باقة مدفوعة', 'لديك مستخدمون، لكن ليس بعد نشاطًا تجاريًا'],
+  ['الوقت حتى تحقيق القيمة', 'كم يستغرق المستخدم الجديد ليحصل على النتيجة التي تعده بها', 'احذف خطوات قبل أن تضيف مزايا'],
+];
+
+// needs native review
+const faq = [
+  {
+    question: 'كم تكلفة تطوير MVP؟',
+    answer:
+      'يحصل كل MVP على سعر ثابت واحد في عرضك، نتفق عليه قبل البدء، دون فوترة بالساعة. ما يغيّر السعر هو عدد أنواع المستخدمين، وما يحتاجه من مدفوعات وتكاملات، وما المطلوب من الذكاء الاصطناعي. تدفع 50% مقدمًا و50% عند التسليم، بفاتورة وتحويل بنكي.',
+  },
+  {
+    question: 'كم يستغرق بناء MVP؟',
+    answer: 'معظمها يستغرق من 4 إلى 8 أسابيع. يحدّد عرضك المدة بدقة، وترى نسخة تعمل كل أسبوع خلال البناء.',
+  },
+  {
+    question: 'هل سأحتاج إلى إعادة بناء الـMVP لاحقًا؟',
+    answer:
+      'لا ينبغي ذلك. نبني نماذج MVP بلغة Python وإطار Django، وهي التقنية نفسها التي نستخدمها لمنصات SaaS الكاملة، فالمنتج الذي يثبت نجاحه ينمو من الكود نفسه بدل البدء من الصفر.',
+  },
+  {
+    question: 'هل أحتاج إلى شريك مؤسس تقني أولًا؟',
+    answer:
+      'لا. كثير من المؤسسين يختبرون الفكرة بـMVP قبل توظيف فريق. عليك أن تعرف مستخدميك ومشكلتهم جيدًا، ونتولّى نحن المنتج والقرارات التقنية ونشرحها بلغة واضحة.',
+  },
+  {
+    question: 'هل يساعدني الـMVP على جذب الاستثمار؟',
+    answer:
+      'يمنحك شيئًا حقيقيًا تعرضه وأرقامًا تقدّمها، وهذا أقوى من العروض التقديمية. لا نستطيع أن نعدك بتمويل: المستثمرون يدعمون النمو الفعلي والفرق، والـMVP هو بدايتك لإظهار الاثنين.',
+  },
+  {
+    question: 'هل يعمل الـMVP بالعربية؟',
+    answer:
+      'نعم. الشاشات ثنائية اللغة بالعربية والإنجليزية مع تصميم كامل من اليمين إلى اليسار، ونختبر مزايا الذكاء الاصطناعي على رسائل عربية حقيقية من عملائك، بما فيها اللهجة الخليجية.',
+  },
+];
+---
+<PageLayout
+  title={TITLE}
+  description={DESCRIPTION}
+  footerBackground="default"
+  localeAlternates={[
+    { locale: 'en', url: EN_PATH },
+    { locale: 'ar', url: PATH },
+  ]}
+  languageAlternates={{ en: EN_PATH, ar: PATH }}
+>
+  <JsonLd schema={createFAQSchema(faq)} />
+
+  {/* needs native review: all copy below */}
+  <!-- Opening: the direct answer and the facts -->
+  <section class="border-b border-border bg-background">
+    <div class="mx-auto max-w-5xl px-6 pt-[var(--space-section-sm)] pb-[var(--space-section-md)]">
+      <Breadcrumbs
+        items={[
+          { label: 'الرئيسية', href: '/ar/' },
+          { label: 'الخدمات', href: '/ar/services/' },
+          { label: 'تطوير MVP' },
+        ]}
+        class="mb-8"
+      />
+      <div class="grid gap-10 lg:grid-cols-5 lg:items-start">
+        <div class="lg:col-span-3">
+          <p class="text-sm font-semibold text-brand-600 dark:text-brand-400 mb-3">للمؤسسين الذين لديهم فكرة يريدون اختبارها</p>
+          <h1 class="font-display text-4xl md:text-5xl font-bold text-foreground text-balance mb-6 leading-tight">تطوير MVP لمؤسسي الشركات الناشئة في الخليج</h1>
+          <div class="flex flex-col gap-4 text-lg text-foreground-muted leading-relaxed">
+            <p>
+              تبحث عن شركة لتطوير MVP؟ يبني PickMySaaS أصغر نسخة من منتجك يستطيع مستخدمون حقيقيون تجربتها، مع الذكاء الاصطناعي في جوهرها حيث يستحق مكانه. تحصل على
+              منتج يعمل خلال 4 إلى 8 أسابيع، بسعر ثابت واحد.
+            </p>
+            <p>
+              الهدف من الـMVP ليس إطلاق كل شيء، بل أن تعرف بسرعة وبتكلفة قليلة هل يريد الناس ما تخطط لبنائه. هذا ما يوجّه كل قرار في هذه الصفحة.
+            </p>
+          </div>
+          <div class="mt-8 flex flex-col sm:flex-row gap-4">
+            <Button size="lg" {...bookingLinkAttrs('/ar/contact/')}>
+              احجز مكالمة مجانية
+              <Icon name="arrow-right" size="sm" class="rtl:-scale-x-100" />
+            </Button>
+            <Button size="lg" variant="outline" href="#cut">
+              كيف نختصر الفكرة
+              <Icon name="arrow-down" size="sm" />
+            </Button>
+          </div>
+        </div>
+        <Card variant="elevated" padding="lg" class="lg:col-span-2">
+          <h2 class="font-display text-lg font-bold text-foreground mb-4">نظرة سريعة</h2>
+          <dl class="flex flex-col divide-y divide-border">
+            {facts.map((f) => (
+              <div class="flex gap-3 py-3 first:pt-0 last:pb-0">
+                <Icon name={f.icon} size="md" class="mt-0.5 shrink-0 text-brand-600 dark:text-brand-400" />
+                <div>
+                  <dt class="text-sm text-foreground-muted">{f.label}</dt>
+                  <dd class="font-semibold text-foreground">{f.value}</dd>
+                </div>
+              </div>
+            ))}
+          </dl>
+        </Card>
+      </div>
+    </div>
+  </section>
+
+  <article class="mx-auto max-w-3xl px-6 py-[var(--space-section-md)]">
+    <div class="prose prose-lg max-w-none">
+      <h2>ما هو الـMVP، وما ليس هو</h2>
+      <p>
+        MVP اختصار لـ Minimum Viable Product، أي «الحد الأدنى من المنتج القابل للتطبيق». يقصد المؤسسون به غالبًا ثلاثة أشياء مختلفة، والخلط بينها هو ما يضاعف
+        الميزانيات. هكذا نفرّق بينها في المكالمة الأولى.
+      </p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable
+        headers={['', 'من يستخدمه', 'ماذا يثبت']}
+        rows={[
+          ['نموذج أولي قابل للنقر', 'أنت والمستثمرون وعدد قليل من المستخدمين للتجربة، بتوجيه منك', 'أن الناس يفهمون الفكرة وأن الشاشات واضحة'],
+          ['MVP', 'مستخدمون حقيقيون، بأنفسهم، وببيانات حقيقية', 'أن الناس يستخدمونه ويعودون إليه وقد يدفعون مقابله'],
+          ['منتج كامل', 'عملاء يدفعون، على نطاق واسع', 'أن النشاط التجاري ناجح وقابل للنمو'],
+        ]}
+      />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        نحن نبني الخيار الأوسط. النموذج الأولي لا يخبرك هل سيعود الناس، والمنتج الكامل يقضي شهورًا في الإجابة عن أسئلة يستطيع الـMVP الإجابة عنها في أسابيع. وإن كان
+        الناس يدفعون اليوم مقابل ما تقدّمه، يدويًا أو عبر جداول البيانات، فربما تجاوزت مرحلة الـMVP: اطّلع على
+        <a href="/ar/services/saas/">تطوير منصات SaaS</a> بدلًا منها.
+      </p>
+
+      <h2 id="cut">كيف نختصر الفكرة إلى MVP</h2>
+      <p>
+        تصل معظم الأفكار بعشرين ميزة. نبحث عن نوع واحد من المستخدمين، ومشكلة واحدة، وإجراء واحد يثبت أن الفكرة تعمل، وننقل كل ما عدا ذلك إلى «لاحقًا». إليك مثالًا
+        توضيحيًا، وهو ليس مشروعًا لعميل.
+      </p>
+    </div>
+
+    <Card variant="elevated" padding="lg" class="my-8">
+      <p class="text-sm font-semibold text-brand-600 dark:text-brand-400 mb-2">الفكرة</p>
+      <p class="font-display text-xl font-bold text-foreground mb-6">{cut.idea}</p>
+      <div class="grid gap-6 sm:grid-cols-2">
+        <div>
+          <h3 class="font-semibold text-foreground mb-3">في الـMVP</h3>
+          <ul class="flex flex-col gap-2 text-sm text-foreground-muted leading-relaxed">
+            {cut.inFirst.map((item) => (
+              <li class="flex gap-2">
+                <Icon name="check" size="sm" class="mt-0.5 shrink-0 text-brand-600 dark:text-brand-400" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold text-foreground mb-3">لاحقًا، إن نجحت الفكرة</h3>
+          <ul class="flex flex-col gap-2 text-sm text-foreground-muted leading-relaxed">
+            {cut.later.map((item) => (
+              <li class="flex gap-2">
+                <Icon name="clock" size="sm" class="mt-0.5 shrink-0 text-foreground-muted" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <p class="mt-6 border-t border-border pt-4 text-sm text-foreground-muted leading-relaxed">
+        <span class="font-semibold text-foreground">ماذا تختبر:</span>
+        {cut.test}
+      </p>
+    </Card>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        لاحظ ما تتركه النسخة الأولى: المدفوعات. طلبات الحجز عبر واتساب هي الطريقة التي يفضّلها كثير من العملاء في الخليج لترتيب الخدمات أصلًا، والدفع الإلكتروني يمكن
+        أن ينتظر حتى تعرف أن الناس يريدون الخدمة من الأساس.
+      </p>
+
+      <h2>الذكاء الاصطناعي في الـMVP: أين يفيد وأين لا يفيد</h2>
+      <p>
+        أن يكون المنتج «قائمًا على الذكاء الاصطناعي» يعني أن الذكاء الاصطناعي جزء من الفكرة الأساسية منذ التصميم الأول، لا إضافة لاحقة. ولا يعني أن كل منتج يحتاج إليه.
+        هذه هي المهام التي يستحق فيها مكانه عادةً في النسخة الأولى، والمهام التي نتريّث فيها.
+      </p>
+      <h3>مهام أولى مناسبة للذكاء الاصطناعي</h3>
+      <ul>
+        <li><strong>قراءة المستندات.</strong> استخراج البيانات من الفواتير والسير الذاتية والعقود والنماذج حتى لا يكتبها أحد يدويًا.</li>
+        <li><strong>الرد على الأسئلة المتكررة.</strong> مساعد يجيب العملاء بالعربية والإنجليزية من معلوماتك أنت، ويحوّل المحادثة إلى شخص حين لا يكون متأكدًا.</li>
+        <li><strong>الفرز والتوجيه.</strong> قراءة الرسائل أو الطلبات الواردة وإرسال كل منها إلى الجهة الصحيحة.</li>
+        <li><strong>الصياغة الأولى.</strong> مسودات أولى للردود أو الأوصاف أو التقارير يراجعها شخص قبل إرسالها.</li>
+      </ul>
+      <h3>أين نتريّث</h3>
+      <ul>
+        <li><strong>القرارات التي يجب أن تكون صحيحة دائمًا،</strong> مثل الأسعار أو الأهلية أو أي أمر طبي أو قانوني، ما لم يراجعها شخص.</li>
+        <li><strong>الذكاء الاصطناعي بوصفه المنتج كله،</strong> حين يحلّ نموذج بسيط أو بحث عادي المشكلة بالقدر نفسه.</li>
+      </ul>
+      <p>
+        أمران يسهل إغفالهما. الأول اللغة العربية: كثيرًا ما يكتب العملاء في الخليج باللهجة، والمساعد الذي يتعامل جيدًا مع الفصحى قد يتعثر أمام رسالة واتساب خليجية،
+        لذلك نختبر برسائل حقيقية من نشاطك. والثاني التكلفة: نماذج الذكاء الاصطناعي تُحتسب عادةً على كل استخدام، فالمنتج الناجح له تكلفة تشغيل تزيد مع عدد مستخدميك.
+        نقدّرها معك قبل الإطلاق.
+      </p>
+
+      <h2>MVP نموذجي في 6 أسابيع، أسبوعًا بأسبوع</h2>
+      <p>تستغرق نماذج MVP الأصغر 4 أسابيع والأكبر 8. هكذا يسير نموذج متوسط.</p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable headers={['متى', 'ماذا يحدث', 'ماذا تستفيد']} rows={weeks} />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <h2>ماذا تقيس بعد الإطلاق</h2>
+      <p>
+        لا يفيدك الـMVP إلا إذا اتخذت به قرارًا. قبل الإطلاق نتفق على الأرقام التي تخبرك أن تستمر أو تغيّر الاتجاه أو تتوقف، ونجهّز أدوات التحليلات لمتابعتها.
+      </p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable headers={['المقياس', 'ماذا يقيس', 'إن كان منخفضًا']} rows={measures} />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        لا يوجد رقم جيد أو سيئ بذاته، فالأمر يعتمد على سوقك. المهم أن تتفق على الحد المطلوب قبل أن ترى النتائج، حتى تتخذ الأرقام القرار لا الأمنيات.
+      </p>
+
+      <h2>بناء MVP لمستخدمين في الخليج</h2>
+      <p>تتغيّر بعض الأمور حين يكون مستخدموك الأوائل في السعودية أو الإمارات أو غيرها من دول الخليج.</p>
+      <ul>
+        <li><strong>العربية من البداية.</strong> إضافة التصميم من اليمين إلى اليسار لاحقًا تعني إعادة الشاشات، لذلك نبني اللغتين منذ اليوم الأول.</li>
+        <li><strong>واتساب خطوةً تالية.</strong> في كثير من الخدمات، النقر للتواصل عبر واتساب خطوة أولى أسهل على المستخدمين من نموذج تسجيل طويل، وأبسط في البناء.</li>
+        <li>
+          <strong>المدفوعات تختلف من دولة إلى أخرى.</strong> من بين دول الخليج الست، لا تضم
+          <a href={SOURCES.stripe} target="_blank" rel="noopener">قائمة الدول التي يدعمها Stripe</a> سوى الإمارات. إن كان الـMVP يستقبل مدفوعات، نختار مزوّدًا يعمل
+          في الدولة التي سُجّلت فيها شركتك.
+        </li>
+        <li><strong>قوانين حماية البيانات تنطبق.</strong> للسعودية والإمارات وغيرهما من دول الخليج قوانينها الخاصة بالبيانات الشخصية، لذلك تطلب نماذج التسجيل الموافقة وترتبط بإشعار خصوصية. استشر مختصًا قانونيًا فيما يحتاجه منتجك.</li>
+      </ul>
+    </div>
+
+    <h2 class="font-display text-3xl font-bold text-foreground mt-12 mb-6">أسئلة عن الـMVP</h2>
+    <Card variant="elevated" padding="lg">
+      <FaqList items={faq} name="mvp-faq" />
+    </Card>
+
+    <p class="mt-8 text-sm text-foreground-muted">
+      راجعنا المعلومات في هذه الصفحة بتاريخ {FACTS_CHECKED}. تحتاج إلى موقع لا إلى منتج؟ اطّلع على <a href="/ar/services/websites/" class="underline underline-offset-2">تصميم المواقع</a>.
+    </p>
+  </article>
+
+  <ServiceCta
+    locale={LOCALE}
+    cta={{
+      heading: 'لديك فكرة تريد اختبارها؟',
+      description: 'أخبرنا لمن هي وما المشكلة التي تحلّها. في مكالمة مجانية مدتها 30 دقيقة، نساعدك على تحديد أصغر نسخة تستحق البناء.',
+      primary: 'احجز مكالمة مجانية',
+      secondary: 'تحدث معنا على واتساب',
+    }}
+    class="bg-background-secondary"
+  />
+</PageLayout>

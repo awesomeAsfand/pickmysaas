@@ -79,8 +79,7 @@ const page = tData<{
 const contactUrl = localizedPath('/contact', locale);
 const fitLinks = {
   websites: localizedPath('/services/websites', locale),
-  // The MVP page is English only; Arabic readers go to the Services page section.
-  mvp: locale === defaultLocale ? '/services/mvp/' : `${localizedPath('/services', locale)}#ai-mvps`,
+  mvp: localizedPath('/services/mvp', locale),
   contact: contactUrl,
 };
 const example = (await getVisibleProjects(locale)).find((p) => p.id === `${locale}/gulfnurseries`);

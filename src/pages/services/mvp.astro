@@ -1,9 +1,9 @@
 ---
 /**
- * MVP development: an English-only page for "mvp development company" and close
- * variants (10–100 a month in Saudi Arabia, the UAE, Qatar and Kuwait in the
- * 2026-11-04 research; no Arabic MVP wording returned data, so there's no Arabic
- * version yet).
+ * MVP development: the page for "mvp development company" and close variants
+ * (10–100 a month in Saudi Arabia, the UAE, Qatar and Kuwait in the 2026-11-04
+ * research). Its Arabic twin is `src/pages/ar/services/mvp.astro`; keep the two
+ * pages' facts in step when editing either.
  *
  * It must stay different from the SaaS page, which is for products people
  * already want. This page is about testing an idea: what to cut, where AI helps,
@@ -27,7 +27,8 @@ const TITLE = 'MVP Development Company for Gulf Startups';
 const DESCRIPTION =
   'We build AI-first MVPs for founders in Saudi Arabia, the UAE and the GCC: a working product in 4 to 8 weeks, at one fixed price, in Arabic and English.';
 const PATH = '/services/mvp/';
-const FACTS_CHECKED = '6 November 2026';
+const AR_PATH = '/ar/services/mvp/';
+const FACTS_CHECKED = '13 November 2026';
 
 const SOURCES = {
   stripe: 'https://stripe.com/global',
@@ -109,8 +110,11 @@ const faq = [
   title={TITLE}
   description={DESCRIPTION}
   footerBackground="default"
-  localeAlternates={[{ locale: 'en', url: PATH }]}
-  languageAlternates={{ en: PATH, ar: '/ar/services/' }}
+  localeAlternates={[
+    { locale: 'en', url: PATH },
+    { locale: 'ar', url: AR_PATH },
+  ]}
+  languageAlternates={{ en: PATH, ar: AR_PATH }}
 >
   <JsonLd schema={createFAQSchema(faq)} />
 

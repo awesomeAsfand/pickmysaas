@@ -230,8 +230,7 @@ const serviceUrls: Record<string, string> = {
   // Online stores have their own page.
   shop: localizedPath('/services/ecommerce', locale),
   saas: localizedPath('/services/saas', locale),
-  // The MVP page is English-only for now; other locales go to the services index.
-  mvp: locale === defaultLocale ? localizedPath('/services/mvp', locale) : localizedPath('/services', locale),
+  mvp: localizedPath('/services/mvp', locale),
 };
 const serviceCards = services.cards.filter((c) => [c.title, c.price, c.description].every(showCopy));
 

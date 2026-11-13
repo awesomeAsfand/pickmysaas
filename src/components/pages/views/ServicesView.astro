@@ -284,9 +284,8 @@ const jumpTargets = ['#websites', '#ecommerce', '#saas', '#ai-mvps'];
               {paragraph}
             </p>
           ))}
-          {/* The MVP page is English only, so the Arabic Services page has no link to it yet. */}
-          {locale === defaultLocale && ai.more && (
-            <Button variant="outline" href="/services/mvp/" class="self-start sm:self-center glitch:self-start">
+          {ai.more && (
+            <Button variant="outline" href={localizedPath('/services/mvp', locale)} class="self-start sm:self-center glitch:self-start">
               {ai.more}
               <Icon name="arrow-right" size="sm" />
             </Button>
