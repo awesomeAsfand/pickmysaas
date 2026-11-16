@@ -234,8 +234,17 @@ function ogCards() {
         // Collect one entry per distinct card path; several pages can point at
         // the same card (the default one, most obviously).
         const wanted = new Map();
-        for (const file of await htmlFiles(out)) {
+        // The home page first, so the shared default card carries its title.
+        // Before this, 404.html sorted first and the default card read "Page
+        // not found" on every page that uses it.
+        const files = await htmlFiles(out);
+        const home = join(out, 'index.html');
+        files.sort((a, b) => Number(b === home) - Number(a === home));
+
+        for (const file of files) {
           const html = await readFile(file, 'utf8');
+          // A noindex page (the 404 page) never names a shared card.
+          if (/<meta name="robots" content="noindex/.test(html)) continue;
           const image = meta(html, 'og:image');
           if (!image) continue;
           let path;
