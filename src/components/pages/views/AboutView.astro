@@ -19,7 +19,6 @@ import ProofTile from '@/components/ui/data-display/ProofTile/ProofTile.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import { Hero } from '@/components/hero';
 import TypingEffect from '@/components/ui/TypingEffect.astro';
-import TechStack from '@/components/landing/TechStack.astro';
 import CtaBand from '@/components/patterns/CtaBand.astro';
 import JsonLd from '@/components/seo/JsonLd.astro';
 import { createFAQSchema, createPersonSchema } from '@/lib/schema';
@@ -71,7 +70,6 @@ const principles = tData<{ badge: string; heading: string; lead: string; items: 
   'pages.about.principles',
   locale
 )!;
-const stack = tData<{ badge: string; title: string; description: string }>('pages.about.stack', locale)!;
 const faq = tData<{ badge: string; heading: string; lead: string; cards: FaqCard[] }>('pages.about.faq', locale)!;
 const proof = tData<{
   badge: string;
@@ -171,13 +169,6 @@ const cta = tData<{ badge: string; heading: string; description: string; button:
   </section>
 
   <!-- Tech Stack -->
-  <TechStack
-    badge={stack.badge}
-    badgeIcon="wrench"
-    title={stack.title}
-    description={stack.description}
-    background="secondary"
-  />
 
   <!-- FAQ. The id is what the footer's "Got questions?" column links to;
        without it there was no way to point at this section. -->

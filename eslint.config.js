@@ -24,7 +24,7 @@ export default [
     },
   },
   {
-    ignores: ['dist/', 'node_modules/', '.astro/', '.vercel/', '.netlify/', 'public/pagefind/'],
+    ignores: ['dist/', 'node_modules/', '.astro/', '.vercel/', '.netlify/', 'design/', 'docs/'],
   },
   {
     rules: {

@@ -4,8 +4,6 @@ import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import ProjectCarousel from '@/components/projects/ProjectCarousel.astro';
 import ProjectTagList from '@/components/projects/ProjectTagList.astro';
-import HeroGrid from '@/components/effects/HeroGrid.astro';
-import HeroBeam from '@/components/effects/HeroBeam.astro';
 import type { GallerySlide } from '@/lib/gallery';
 import { t, getLocaleFromPath } from '@/i18n';
 
@@ -48,8 +46,6 @@ const locale = getLocaleFromPath(Astro.url.pathname);
 ---
 
 <header class="relative isolate overflow-hidden pt-[var(--space-page-top-sm)] pb-[var(--space-section-md)]">
-  <HeroGrid />
-  <HeroBeam />
 
   <div class="relative z-10 mx-auto max-w-7xl px-6">
     <div

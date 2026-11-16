@@ -2,8 +2,6 @@
 import type { HTMLAttributes } from 'astro/types';
 import { cn } from '@/lib/cn';
 import { heroSectionVariants } from './hero.variants';
-import HeroGrid from '@/components/effects/HeroGrid.astro';
-import HeroBeam from '@/components/effects/HeroBeam.astro';
 
 interface Props extends HTMLAttributes<'section'> {
   /** Layout mode: centered single column or split two-column */
@@ -98,8 +96,6 @@ const gridClasses = cn(
 ---
 
 <section class={sectionClasses} {...attrs}>
-  {showHeroHalo && <HeroGrid />}
-  {showHeroHalo && <HeroBeam />}
 
   {showGrid && (
     <div

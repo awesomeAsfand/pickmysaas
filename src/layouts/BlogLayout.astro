@@ -9,7 +9,6 @@ import ArticleHero from '@/components/blog/ArticleHero.astro';
 import ShareButtons from '@/components/blog/ShareButtons.astro';
 import RelatedPosts from '@/components/blog/RelatedPosts.astro';
 import TableOfContents from '@/components/blog/TableOfContents.astro';
-import Comments from '@/components/blog/Comments.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import { createBlogPostSchema, createFAQSchema } from '@/lib/schema';
@@ -43,8 +42,6 @@ interface Props {
   headings?: MarkdownHeading[];
   /** Per-post override: hide table of contents on this post */
   toc?: boolean;
-  /** Per-post override: hide comments on this post */
-  comments?: boolean;
   /** Raw post body, forwarded to ArticleHero for the reading-time estimate. */
   body?: string;
 }
@@ -64,17 +61,14 @@ const {
   faqs,
   headings = [],
   toc: tocOverride,
-  comments: commentsOverride,
   body,
 } = Astro.props;
 
 // Resolve opt-in features (site config + per-post overrides).
 // Per-post override only fires when explicitly set to `false`, so authors
-// can hide the TOC/comments on a single post without changing site config.
+// can hide the TOC on a single post without changing site config.
 const tocConfig = siteConfig.articleFeatures?.toc;
-const commentsConfig = siteConfig.articleFeatures?.comments;
 const showToc = !!tocConfig?.enabled && tocOverride !== false;
-const showComments = !!commentsConfig?.enabled && commentsOverride !== false;
 
 // TOC layout: 'inline' (top-of-article card), 'sidebar' (xl+ sticky aside,
 // hidden below xl), or 'auto' (sidebar on xl+; inline opt-in elsewhere).
@@ -155,19 +149,9 @@ const languageAlternates = Object.fromEntries(
   extraSchemas={schemas}
   localeAlternates={postTranslations}
 >
-  <Header
-    slot="header"
-    position="fixed"
-    shape="bar"
-    variant="solid"
-    size="lg"
-    showCta={false}
-    showScrollProgress
-    maxWidth="7xl"
-    languageAlternates={languageAlternates}
-  />
+  <Header slot="header" languageAlternates={languageAlternates} />
 
-  <div class="min-h-screen pt-16">
+  <div class="min-h-screen" style="padding-top: var(--header-offset)">
   <!-- Article Hero -->
   <ArticleHero
     title={title}
@@ -271,10 +255,6 @@ const languageAlternates = Object.fromEntries(
     </div>
   </article>
 
-  {showComments && (
-    <Comments />
-  )}
-
   <!-- Related Posts -->
   {tags.length > 0 && (
     <div class="mx-auto max-w-7xl px-6" data-reveal>
@@ -287,9 +267,8 @@ const languageAlternates = Object.fromEntries(
     locale={locale}
     sectionClass="relative z-10 py-[var(--space-section-md)] bg-background-secondary"
     maxWidth="7xl"
-    glitch={slug.endsWith('letter-glitch-astro-7')}
   />
   </div>
 
-  <Footer slot="footer" layout="columns" background="default" maxWidth="7xl" />
+  <Footer slot="footer" />
 </BaseLayout>

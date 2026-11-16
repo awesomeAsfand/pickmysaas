@@ -1,0 +1,910 @@
+/* =============================================================================
+   PickMySaaS design system (v2)
+   =============================================================================
+   Plain CSS classes, prefixed `ds-`, ported from the v2 design export. Every
+   rule uses logical properties (inline-start/end), so /ar/ pages mirror
+   without extra code. The live catalogue is the private /styleguide/ page.
+
+   Contents: layout · markers & type · buttons & links · cards · pills &
+   chips · form fields · FAQ · tables · stats · misc.
+   ============================================================================= */
+
+/* ---- Layout --------------------------------------------------------------- */
+.ds-wrap {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.ds-section {
+  padding-block-start: var(--section-y);
+}
+.ds-section--sm {
+  padding-block-start: var(--section-y-sm);
+}
+.ds-section--pad {
+  padding-block: var(--section-y-sm);
+}
+.ds-page-top {
+  padding-block-start: calc(var(--header-offset) + 24px);
+}
+.ds-dark {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+.ds-blue {
+  background: var(--blue);
+  color: var(--white);
+}
+.ds-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.ds-grid-auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--ds-min, 280px)), 1fr));
+  gap: var(--ds-gap, 32px);
+}
+
+/* ---- Markers & type ------------------------------------------------------- */
+/* "(01) Label": the section marker that opens every section. */
+.ds-marker {
+  display: inline-block;
+  font-family: var(--fb);
+  font-size: var(--text-label);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--ink-3);
+}
+.ds-dark .ds-marker,
+.ds-blue .ds-marker,
+.invert-section .ds-marker {
+  color: var(--on-ink-muted);
+}
+.ds-blue .ds-marker {
+  color: rgb(255 255 255 / 0.85);
+}
+
+/* Meta row above a hero: markers spread across the width. */
+.ds-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+  justify-content: space-between;
+  font-size: var(--text-label);
+  font-weight: 500;
+  color: var(--ink-3);
+  margin-block-end: clamp(20px, 3vw, 36px);
+}
+
+.ds-display {
+  margin: 0;
+  font-family: var(--fd);
+  font-weight: 850;
+  font-stretch: var(--fs);
+  text-transform: var(--tt);
+  line-height: var(--hlh);
+  letter-spacing: var(--hls);
+  text-wrap: balance;
+}
+.ds-display--hero {
+  font-size: var(--display-hero);
+}
+.ds-display--xl {
+  font-size: var(--display-xl);
+}
+.ds-display--1 {
+  font-size: var(--display-1);
+}
+.ds-display--2 {
+  font-size: var(--display-2);
+}
+.ds-display--3 {
+  font-size: var(--display-3);
+}
+.ds-display--4 {
+  font-size: var(--display-4);
+  line-height: var(--lh);
+  letter-spacing: var(--ls);
+}
+/* Arabic display text is set larger in Kufi's own leading, so it needs no
+   negative margins; the Latin wide caps sit tight. */
+.ds-accent {
+  color: var(--blue);
+}
+
+/* Smaller display: card titles, step titles, principle titles. */
+.ds-title {
+  margin: 0;
+  font-family: var(--fd);
+  font-weight: 800;
+  font-stretch: var(--fs);
+  text-transform: var(--tt);
+  line-height: var(--lh);
+  letter-spacing: var(--ls);
+  text-wrap: balance;
+}
+.ds-title--sm {
+  font-size: var(--display-5);
+  font-weight: 750;
+  text-transform: none;
+}
+.ds-title--md {
+  font-size: var(--display-4);
+}
+.ds-title--lg {
+  font-size: clamp(32px, 3.2vw, 48px);
+}
+
+.ds-lead {
+  margin: 0;
+  font-size: var(--text-lead);
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 46ch;
+}
+.ds-body {
+  margin: 0;
+  font-size: var(--text-body);
+  line-height: var(--body-lh);
+  color: var(--ink-2);
+}
+.ds-dark :is(.ds-lead, .ds-body),
+.invert-section :is(.ds-lead, .ds-body) {
+  color: var(--on-ink-2);
+}
+.ds-blue :is(.ds-lead, .ds-body) {
+  color: rgb(255 255 255 / 0.9);
+}
+.ds-small {
+  font-size: var(--text-small);
+  line-height: 1.5;
+  color: var(--ink-3);
+}
+.ds-label {
+  font-size: var(--text-label);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* Section head: marker + title on one side, a short lead on the other. */
+.ds-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-block-end: clamp(32px, 4vw, 48px);
+}
+.ds-head__title {
+  margin-block-start: 18px;
+  max-width: 1000px;
+}
+.ds-head__lead {
+  max-width: 380px;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  margin: 0;
+}
+.ds-dark .ds-head__lead {
+  color: var(--on-ink-2);
+}
+
+.ds-rule {
+  border: 0;
+  border-block-start: 1.5px solid currentColor;
+  margin: 0;
+}
+.ds-rule--thin {
+  border-block-start-width: 1px;
+  opacity: 0.16;
+}
+
+.ds-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--blue);
+  flex: none;
+}
+.ds-dot--live {
+  background: var(--green);
+  animation: pm-pulse 2s infinite;
+}
+
+/* ---- Buttons & links ------------------------------------------------------ */
+.ds-btn {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--white);
+  --btn-bd: var(--btn-bg);
+  --btn-bg-hover: var(--blue);
+  --btn-fg-hover: var(--white);
+  --btn-bd-hover: var(--btn-bg-hover);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 1.5px solid var(--btn-bd);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--fb);
+  font-size: var(--text-ui);
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-decoration: none;
+  transition:
+    background-color 0.25s,
+    color 0.25s,
+    border-color 0.25s,
+    transform 0.25s;
+}
+.ds-btn:hover {
+  background: var(--btn-bg-hover);
+  color: var(--btn-fg-hover);
+  border-color: var(--btn-bd-hover);
+}
+.ds-btn:active {
+  transform: scale(0.98);
+}
+.ds-btn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+.ds-btn[disabled],
+.ds-btn[aria-disabled='true'] {
+  --btn-bg: #dad6cd;
+  --btn-fg: #5e5b55;
+  --btn-bg-hover: #dad6cd;
+  --btn-fg-hover: #5e5b55;
+  cursor: not-allowed;
+}
+.ds-btn--blue {
+  --btn-bg: var(--blue);
+  --btn-bg-hover: var(--ink);
+}
+.ds-btn--outline {
+  --btn-bg: transparent;
+  --btn-fg: var(--ink);
+  --btn-bd: var(--ink);
+  --btn-bg-hover: var(--ink);
+  --btn-fg-hover: var(--white);
+  --btn-bd-hover: var(--ink);
+}
+/* On dark or blue grounds */
+.ds-btn--light {
+  --btn-bg: var(--paper);
+  --btn-fg: var(--ink);
+  --btn-bg-hover: var(--white);
+  --btn-fg-hover: var(--blue);
+}
+.ds-btn--ghost-light {
+  --btn-bg: transparent;
+  --btn-fg: var(--on-ink);
+  --btn-bd: rgb(238 235 227 / 0.4);
+  --btn-bg-hover: var(--on-ink);
+  --btn-fg-hover: var(--ink);
+  --btn-bd-hover: var(--on-ink);
+}
+.ds-btn--whatsapp {
+  --btn-bg: var(--whatsapp-fill);
+  --btn-bg-hover: var(--whatsapp-fill-hover);
+}
+.ds-btn--sm {
+  min-height: 40px;
+  padding: 9px 16px;
+  font-size: var(--text-small);
+}
+.ds-btn--lg {
+  min-height: 56px;
+  padding: 16px 24px;
+  font-size: 16px;
+}
+.ds-btn--block {
+  width: 100%;
+  justify-content: space-between;
+}
+
+/* Underlined text link, v2's "Ask about this →". */
+.ds-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: inherit;
+  border-block-end: 1.5px solid currentColor;
+  padding-block-end: 3px;
+  transition: opacity 0.2s, color 0.2s;
+}
+.ds-link:hover {
+  color: var(--blue);
+}
+.ds-dark .ds-link:hover,
+.ds-blue .ds-link:hover,
+.invert-section .ds-link:hover {
+  color: inherit;
+  opacity: 0.75;
+}
+
+/* ---- Cards ---------------------------------------------------------------- */
+.ds-card {
+  --card-bg: var(--card-paper);
+  --card-fg: var(--ink);
+  --card-bd: var(--line);
+  --card-line: var(--line);
+  --card-ghost: rgb(18 18 18 / 0.06);
+  --card-muted: var(--ink-2);
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--theme-radius-2xl);
+  background: var(--card-bg);
+  color: var(--card-fg);
+  border: 1.5px solid var(--card-bd);
+  padding: clamp(24px, 3.4vw, 52px);
+}
+.ds-card--blue {
+  --card-bg: var(--blue);
+  --card-fg: var(--white);
+  --card-bd: var(--blue);
+  --card-line: rgb(255 255 255 / 0.3);
+  --card-ghost: rgb(255 255 255 / 0.1);
+  --card-muted: rgb(255 255 255 / 0.9);
+}
+.ds-card--ink {
+  --card-bg: var(--ink);
+  --card-fg: var(--on-ink);
+  --card-bd: var(--ink);
+  --card-line: var(--line-on-ink);
+  --card-ghost: rgb(238 235 227 / 0.07);
+  --card-muted: var(--on-ink-2);
+}
+.ds-card--sand {
+  --card-bg: var(--sand);
+  --card-bd: var(--sand);
+  --card-line: rgb(18 18 18 / 0.2);
+  --card-ghost: rgb(18 18 18 / 0.07);
+}
+.ds-card--orange {
+  --card-bg: var(--orange);
+  --card-fg: var(--ink);
+  --card-bd: var(--orange);
+  --card-line: rgb(18 18 18 / 0.25);
+  --card-ghost: rgb(18 18 18 / 0.08);
+  --card-muted: var(--ink);
+}
+.ds-card--sm {
+  border-radius: var(--theme-radius-xl);
+  padding: clamp(20px, 2.4vw, 32px);
+}
+.ds-card :is(p, li) {
+  color: var(--card-muted);
+}
+.ds-card--hard-shadow {
+  border-color: var(--ink);
+  box-shadow: 12px 12px 0 var(--blue);
+}
+:root[dir='rtl'] .ds-card--hard-shadow {
+  box-shadow: -12px 12px 0 var(--blue);
+}
+
+/* Big ghost numeral behind a card's content. Decorative: aria-hidden. */
+.ds-ghost {
+  position: absolute;
+  inset-inline-end: 0.04em;
+  top: -0.16em;
+  font: 900 var(--ghost-num) / 1 var(--font-latin);
+  font-stretch: 125%;
+  letter-spacing: -0.05em;
+  color: var(--card-ghost, rgb(18 18 18 / 0.06));
+  pointer-events: none;
+  user-select: none;
+}
+.ds-ghost--bottom {
+  top: auto;
+  bottom: -0.2em;
+}
+.ds-card > :not(.ds-ghost) {
+  position: relative;
+}
+
+/* "01 / 05" counter at the top of a card */
+.ds-count {
+  font-size: var(--text-label);
+  font-weight: 700;
+}
+
+/* Deliverables list: rows divided by thin rules, a check at the end. */
+.ds-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.ds-list > li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-block: 13px;
+  border-block-start: 1px solid var(--card-line, var(--line));
+  font-size: var(--text-ui);
+  font-weight: 500;
+  color: inherit;
+}
+.ds-list > li::after {
+  content: '✓';
+  flex: none;
+}
+.ds-list--plain > li::after {
+  content: none;
+}
+.ds-list--x > li::after {
+  content: '×';
+  opacity: 0.7;
+}
+
+/* ---- Pills & chips -------------------------------------------------------- */
+.ds-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-label);
+  font-weight: 600;
+  line-height: 1.3;
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+}
+.ds-pill--ink {
+  background: var(--ink);
+  color: var(--white);
+}
+.ds-pill--blue {
+  background: var(--blue);
+  color: var(--white);
+}
+.ds-pill--outline {
+  background: transparent;
+  border: 1px solid var(--line-strong);
+}
+
+/* Selectable chip: a real checkbox or radio, so forms work without JS. */
+.ds-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-inline-size: 0;
+}
+.ds-chips > legend {
+  font-size: var(--text-label);
+  font-weight: 600;
+  margin-block-end: 10px;
+  padding: 0;
+}
+.ds-chip {
+  position: relative;
+  display: inline-flex;
+}
+.ds-chip input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.ds-chip span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 8px 15px;
+  border-radius: 999px;
+  font-size: var(--text-small);
+  font-weight: 500;
+  border: 1.5px solid rgb(18 18 18 / 0.18);
+  background: var(--white);
+  color: var(--ink);
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+}
+.ds-chip input:hover + span {
+  border-color: var(--ink);
+}
+.ds-chip input:checked + span {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--white);
+}
+.ds-chip input:focus-visible + span {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Segmented control (currency switch, demo controls) */
+.ds-segment {
+  display: inline-flex;
+  padding: 3px;
+  gap: 2px;
+  border-radius: 999px;
+  background: rgb(18 18 18 / 0.07);
+}
+.ds-segment > :is(a, button) {
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  padding: 7px 13px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  font-size: var(--text-label);
+  font-weight: 600;
+  transition:
+    background-color 0.25s,
+    color 0.25s;
+}
+.ds-segment > [aria-current='page'],
+.ds-segment > [aria-pressed='true'] {
+  background: var(--ink);
+  color: var(--white);
+}
+
+/* ---- Form fields ---------------------------------------------------------- */
+.ds-field {
+  display: grid;
+  gap: 8px;
+  font-size: var(--text-label);
+  font-weight: 600;
+  color: var(--ink);
+}
+.ds-field__hint {
+  font-weight: 400;
+  color: var(--ink-3);
+}
+.ds-input {
+  width: 100%;
+  border: 0;
+  border-block-end: 1.5px solid var(--field-line);
+  border-radius: 0;
+  padding: 10px 0;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.4;
+  background: transparent;
+  color: var(--ink);
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.ds-input::placeholder {
+  color: var(--ink-3);
+  opacity: 1;
+}
+.ds-input:focus-visible,
+.ds-input:focus {
+  border-block-end-color: var(--blue);
+  box-shadow: 0 1.5px 0 var(--blue);
+}
+.ds-input[aria-invalid='true'] {
+  border-block-end-color: var(--error-strong);
+}
+textarea.ds-input {
+  resize: vertical;
+  min-height: 96px;
+}
+select.ds-input {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position:
+    calc(100% - 12px) 55%,
+    calc(100% - 7px) 55%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  padding-inline-end: 28px;
+}
+:root[dir='rtl'] select.ds-input {
+  background-position:
+    12px 55%,
+    17px 55%;
+}
+.ds-field__error {
+  font-weight: 500;
+  color: var(--error-strong);
+}
+/* Phone numbers and emails stay left-to-right inside Arabic forms. */
+.ds-input[type='email'],
+.ds-input[type='tel'],
+.ds-input[type='url'] {
+  direction: ltr;
+  text-align: start;
+}
+:root[dir='rtl'] .ds-input[type='email'],
+:root[dir='rtl'] .ds-input[type='tel'],
+:root[dir='rtl'] .ds-input[type='url'] {
+  text-align: right;
+}
+
+.ds-form-status {
+  border-radius: var(--theme-radius-md);
+  padding: 14px 16px;
+  font-size: var(--text-small);
+  font-weight: 500;
+}
+.ds-form-status--ok {
+  background: var(--success-light);
+  color: var(--success-foreground);
+}
+.ds-form-status--error {
+  background: var(--error-light);
+  color: var(--error-foreground);
+}
+
+/* ---- FAQ ------------------------------------------------------------------ */
+.ds-faq {
+  border-block-end: 1.5px solid currentColor;
+}
+.ds-faq > details {
+  border-block-start: 1.5px solid currentColor;
+}
+.ds-faq summary {
+  list-style: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  padding-block: 22px;
+  font-family: var(--fd);
+  font-weight: 750;
+  font-stretch: var(--fs);
+  font-size: clamp(19px, 1.7vw, 24px);
+  line-height: var(--lh);
+  letter-spacing: var(--ls);
+}
+:root:lang(ar) .ds-faq summary {
+  line-height: 1.55;
+}
+.ds-faq summary::-webkit-details-marker {
+  display: none;
+}
+.ds-faq summary:hover {
+  color: var(--blue);
+}
+.ds-dark .ds-faq summary:hover {
+  color: inherit;
+  opacity: 0.8;
+}
+.ds-faq__icon {
+  flex: none;
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  margin-block-start: -2px;
+  transition: transform 0.3s, background-color 0.3s;
+}
+.ds-faq__icon::before,
+.ds-faq__icon::after {
+  content: '';
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 12px;
+  height: 1.5px;
+  background: currentColor;
+  translate: -50% -50%;
+}
+.ds-faq__icon::after {
+  rotate: 90deg;
+}
+.ds-faq details[open] .ds-faq__icon {
+  transform: rotate(45deg);
+  background: var(--blue);
+  border-color: var(--blue);
+  color: var(--white);
+}
+.ds-faq__answer {
+  padding-block-end: 26px;
+  max-width: 760px;
+  font-size: var(--text-body);
+  line-height: var(--body-lh);
+  color: var(--ink-2);
+}
+.ds-dark .ds-faq__answer {
+  color: var(--on-ink-2);
+}
+.ds-faq__answer :is(p + p, p + ul, ul + p) {
+  margin-block-start: 0.8em;
+}
+.ds-faq__answer a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--blue);
+  font-weight: 600;
+}
+
+/* ---- Tables --------------------------------------------------------------- */
+.ds-table-wrap {
+  border-radius: var(--theme-radius-xl);
+  background: var(--card-paper);
+  border: 1.5px solid var(--line);
+  overflow: hidden;
+}
+.ds-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-ui);
+}
+.ds-table th {
+  text-align: start;
+  font-size: var(--text-label);
+  font-weight: 700;
+  color: var(--ink);
+  padding: 16px 20px;
+  border-block-end: 1.5px solid var(--ink);
+  vertical-align: bottom;
+}
+.ds-table td {
+  padding: 15px 20px;
+  border-block-end: 1px solid var(--line);
+  vertical-align: top;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.ds-table tr:last-child td {
+  border-block-end: 0;
+}
+.ds-table td:first-child {
+  font-weight: 600;
+  color: var(--ink);
+}
+.ds-table a {
+  color: var(--ink);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--blue);
+}
+/* On a phone each row becomes a block with its column labels inline. */
+@media (max-width: 639.98px) {
+  .ds-table,
+  .ds-table tbody,
+  .ds-table tr,
+  .ds-table td {
+    display: block;
+  }
+  .ds-table thead {
+    display: none;
+  }
+  .ds-table tr {
+    padding: 14px 18px;
+    border-block-end: 1px solid var(--line);
+  }
+  .ds-table tr:last-child {
+    border-block-end: 0;
+  }
+  .ds-table td {
+    padding: 3px 0;
+    border: 0;
+  }
+  .ds-table td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-size: var(--text-label);
+    font-weight: 700;
+    color: var(--ink);
+    margin-block-start: 6px;
+  }
+}
+
+/* ---- Stats ---------------------------------------------------------------- */
+.ds-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+  gap: 24px;
+}
+.ds-stat {
+  border-block-start: 1.5px solid currentColor;
+  padding-block-start: 14px;
+}
+.ds-stat__value {
+  display: block;
+  font-family: var(--font-latin);
+  font-weight: 850;
+  font-stretch: 110%;
+  font-size: clamp(40px, 4.4vw, 68px);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+:root:lang(ar) .ds-stat__value {
+  letter-spacing: 0;
+}
+.ds-stat__label {
+  display: block;
+  margin-block-start: 8px;
+  font-size: var(--text-small);
+  font-weight: 500;
+  color: var(--card-muted, var(--ink-2));
+}
+
+/* ---- Misc ----------------------------------------------------------------- */
+/* Visible label for demo and concept work (fix 6). */
+.ds-demo-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--text-label);
+  font-weight: 700;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--ink);
+}
+.ds-demo-label::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--orange);
+}
+
+/* Browser-frame screenshot */
+.ds-frame {
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--white);
+  box-shadow:
+    0 40px 80px -40px rgb(0 0 0 / 0.45),
+    0 0 0 1px rgb(18 18 18 / 0.08);
+}
+.ds-frame__bar {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-inline: 12px;
+  background: rgb(0 0 0 / 0.05);
+  direction: ltr;
+}
+.ds-frame__bar i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #d9d5cc;
+}
+.ds-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Skip link */
+.ds-skip {
+  position: absolute;
+  inset-inline-start: 16px;
+  top: -100px;
+  z-index: 100;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--white);
+  font-weight: 600;
+}
+.ds-skip:focus {
+  top: 16px;
+}
+
+/* Keeps the bottom of a page clear of the floating WhatsApp button. */
+.ds-fab-safe {
+  padding-block-end: var(--fab-safe);
+}

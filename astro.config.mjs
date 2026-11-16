@@ -98,34 +98,6 @@ function siteUrlCheck() {
 }
 
 /**
- * Pagefind static search index, generated after every `astro build`.
- *
- * Runs in the `astro:build:done` hook so it indexes the *actual* output
- * directory — the Vercel adapter writes to `.vercel/output/static`, Netlify,
- * Cloudflare, and plain static builds to `dist/` — without the build command
- * needing to know which. The index is served from `/pagefind/` and loaded lazily by
- * `src/components/layout/SearchModal.astro`; `astro dev` has no index, and
- * the search modal explains that instead of erroring.
- */
-function pagefind() {
-  return {
-    name: 'pagefind',
-    hooks: {
-      'astro:build:done': async ({ dir, logger }) => {
-        const sitePath = fileURLToPath(dir);
-        const outputPath = join(sitePath, 'pagefind');
-        const { createIndex, close } = await import('pagefind');
-        const { index } = await createIndex();
-        const { page_count } = await index.addDirectory({ path: sitePath });
-        await index.writeFiles({ outputPath });
-        await close();
-        logger.info(`indexed ${page_count} pages into ${outputPath}`);
-      },
-    },
-  };
-}
-
-/**
  * Favicon PNG/ICO files, written after every `astro build`.
  *
  * These used to be prerendered endpoints under `src/pages/`. That worked on
@@ -161,8 +133,8 @@ function faviconAssets() {
     hooks: {
       'astro:build:done': async ({ dir, logger }) => {
         // Imported here rather than at the top of this file: a static import
-        // of the sharp-backed module makes pagefind's own dynamic import above
-        // fail with "Vite module runner has been closed" (#600).
+        // of the sharp-backed module breaks the other build hooks' dynamic
+        // imports with "Vite module runner has been closed" (#600).
         const { buildFaviconSvg } = await import('./src/lib/favicon/svg.ts');
         const { renderFaviconPng, renderFaviconIco } = await import('./src/lib/favicon/raster.ts');
         const out = fileURLToPath(dir);
@@ -234,8 +206,17 @@ function ogCards() {
         // Collect one entry per distinct card path; several pages can point at
         // the same card (the default one, most obviously).
         const wanted = new Map();
-        for (const file of await htmlFiles(out)) {
+        // The home page first, so the shared default card carries its title.
+        // Before this, 404.html sorted first and the default card read "Page
+        // not found" on every page that uses it.
+        const files = await htmlFiles(out);
+        const home = join(out, 'index.html');
+        files.sort((a, b) => Number(b === home) - Number(a === home));
+
+        for (const file of files) {
           const html = await readFile(file, 'utf8');
+          // A noindex page (404, styleguide) never names a shared card.
+          if (/<meta name="robots" content="noindex/.test(html)) continue;
           const image = meta(html, 'og:image');
           if (!image) continue;
           let path;
@@ -390,8 +371,6 @@ export default defineConfig({
       }),
       RESEND_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
       RESEND_FROM_EMAIL: envField.string({ context: 'server', access: 'secret', optional: true }),
-      RESEND_AUDIENCE_ID: envField.string({ context: 'server', access: 'secret', optional: true }),
-      NEWSLETTER_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
       GOOGLE_SITE_VERIFICATION: envField.string({ context: 'server', access: 'public', optional: true }),
       BING_SITE_VERIFICATION: envField.string({ context: 'server', access: 'public', optional: true }),
       PUBLIC_GOOGLE_MAPS_API_KEY: envField.string({ context: 'client', access: 'public', optional: true, default: '' }),
@@ -415,12 +394,13 @@ export default defineConfig({
       filter: (page) => {
         const { pathname } = new URL(page);
         if (/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?projects\/tag\//.test(pathname)) return false;
+        // The private design-system page is noindex and never listed.
+        if (/^\/(?:[a-z]{2}\/)?styleguide\//.test(pathname)) return false;
         return BLOG_VISIBLE || !/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?blog(\/|$)/.test(pathname);
       },
     }),
     icon(),
     siteUrlCheck(),
-    pagefind(),
     faviconAssets(),
     ogCards(),
     verifySiteUrl(),

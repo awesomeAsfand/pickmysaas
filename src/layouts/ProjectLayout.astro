@@ -121,19 +121,9 @@ const languageAlternates = Object.fromEntries(
   imageAlt={ogImageAlt}
   localeAlternates={projectTranslations}
 >
-  <Header
-    slot="header"
-    position="fixed"
-    shape="bar"
-    variant="solid"
-    size="lg"
-    showCta={false}
-    showScrollProgress
-    maxWidth="7xl"
-    languageAlternates={languageAlternates}
-  />
+  <Header slot="header" languageAlternates={languageAlternates} />
 
-  <div class="min-h-screen pt-16">
+  <div class="min-h-screen" style="padding-top: var(--header-offset)">
     <ProjectHero
       title={title}
       description={description}
@@ -270,10 +260,5 @@ const languageAlternates = Object.fromEntries(
     </section>
   </div>
 
-  <Footer
-    slot="footer"
-    layout="columns"
-    background="secondary"
-    maxWidth="7xl"
-  />
+  <Footer slot="footer" />
 </BaseLayout>

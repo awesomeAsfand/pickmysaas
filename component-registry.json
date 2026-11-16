@@ -328,8 +328,7 @@
       "name": "Footer",
       "category": "layout",
       "files": [
-        "src/components/layout/Footer.astro",
-        "src/components/layout/footer.variants.ts"
+        "src/components/layout/Footer.astro"
       ],
       "dependencies": {
         "utilities": [
@@ -378,7 +377,7 @@
       "category": "layout",
       "files": [
         "src/components/layout/Header.astro",
-        "src/components/layout/header.variants.ts"
+        "src/components/layout/LangSwitch.astro"
       ],
       "dependencies": {
         "utilities": [
@@ -455,23 +454,6 @@
           "cn"
         ],
         "components": []
-      },
-      "premium": false
-    },
-    "newsletter-form": {
-      "name": "NewsletterForm",
-      "category": "patterns",
-      "files": [
-        "src/components/patterns/NewsletterForm.astro"
-      ],
-      "dependencies": {
-        "utilities": [
-          "cn"
-        ],
-        "components": [
-          "input",
-          "button"
-        ]
       },
       "premium": false
     },

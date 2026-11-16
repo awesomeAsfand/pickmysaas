@@ -1,0 +1,464 @@
+---
+/**
+ * Private design-system catalogue (V1): every v2 component as it renders on
+ * the site, in the page's language. noindex, kept out of the sitemap, and not
+ * linked from any page. Rendered at /styleguide/ and /ar/styleguide/.
+ */
+import { Image } from 'astro:assets';
+import PageLayout from '@/layouts/PageLayout.astro';
+import SectionHead from '@/components/ds/SectionHead.astro';
+import Faq from '@/components/ds/Faq.astro';
+import DataTable from '@/components/services/DataTable.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import { t, tData, getLocaleDirection } from '@/i18n';
+import shot from '@/assets/home/work-gulfnurseries-desktop.webp';
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const rtl = getLocaleDirection(locale) === 'rtl';
+const arrow = rtl ? '←' : '→';
+const s = (key: string) => t(`styleguide.${key}`, locale);
+const d = <T,>(key: string) => tData<T>(`styleguide.${key}`, locale)!;
+
+const swatches = [
+  ['paper', '#EEEBE3', 'var(--ink)'],
+  ['card', '#F8F6F1', 'var(--ink)'],
+  ['sand', '#DCD6CA', 'var(--ink)'],
+  ['ink', '#121212', 'var(--on-ink)'],
+  ['ink3', '#5E5B55', 'var(--white)'],
+  ['blue', '#2D2DF5', 'var(--white)'],
+  ['orange', '#FF5A1F', 'var(--ink)'],
+  ['gold', '#C9A45C', 'var(--ink)'],
+  ['whatsapp', '#25D366', 'var(--ink)'],
+] as const;
+
+type CardItem = { title: string; answer: string; deliverables: string[]; price: string };
+const cards = d<CardItem[]>('cards.items');
+const tones = ['', 'ds-card--blue', 'ds-card--ink', 'ds-card--sand'];
+const cardLinks = ['/services/websites/', '/services/ecommerce/', '/services/', '/services/'].map((p) =>
+  locale === 'ar' ? `/ar${p}` : p
+);
+
+const stats = d<{ value: string; label: string }[]>('stats.items');
+const faq = d<{ question: string; answer: string }[]>('faq.items');
+const table = d<{ headers: string[]; rows: string[][] }>('table');
+const needs = d<string[]>('pills.needs');
+const pills = d<string[]>('pills.items');
+const heard = d<string[]>('forms.heardOptions');
+
+const alternates = { en: '/styleguide/', ar: '/ar/styleguide/' };
+---
+
+<PageLayout
+  title={s('meta.title')}
+  description={s('meta.description')}
+  noindex
+  nofollow
+  localeAlternates={[{ locale, url: alternates[locale as 'en' | 'ar'] }]}
+  languageAlternates={alternates}
+>
+  <section class="ds-wrap sg-hero">
+    <div class="ds-meta-row">
+      <span>(00) {s('m1')}</span>
+      <span>{s('m2')}</span>
+      <span class="sg-live"><span class="ds-dot ds-dot--live" aria-hidden="true"></span>v2</span>
+    </div>
+    <h1 class="ds-display ds-display--hero">{s('title')}<span class="ds-accent">.</span></h1>
+    <p class="ds-lead sg-intro">{s('lead')}</p>
+  </section>
+
+  <!-- 01 Colour -->
+  <section class="ds-wrap ds-section--sm">
+    <SectionHead n="01" label={s('colour.label')} title={s('colour.label')} size="2" lead={s('colour.note')} />
+    <ul class="sg-swatches">
+      {
+        swatches.map(([key, hex, fg]) => (
+          <li style={`background:${hex};color:${fg}`}>
+            <span class="ds-label">{s(`colour.names.${key}`)}</span>
+            <span class="sg-hex" dir="ltr">{hex}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- 02 Type -->
+  <section class="ds-wrap ds-section--sm">
+    <SectionHead n="02" label={s('type.label')} title={s('type.label')} size="2" lead={s('type.fonts')} />
+    <div class="sg-stack">
+      <p class="ds-display ds-display--hero">
+        <span class="sg-line">{s('type.l1')}</span>
+        <span class="sg-line sg-line--row">
+          <span class="sg-chip" aria-hidden="true"><span></span></span>{s('type.l2')}
+        </span>
+        <span class="sg-line">{s('type.l3a')} <span class="ds-accent">{s('type.l3b')}</span></span>
+      </p>
+      <p class="ds-display ds-display--1">{s('type.display1')}</p>
+      <p class="ds-display ds-display--2">{s('type.title')}</p>
+      <p class="ds-title ds-title--lg">{s('type.title')}</p>
+      <p class="ds-title ds-title--sm">{s('type.title')}</p>
+      <p class="ds-lead">{s('type.lead')}</p>
+      <p class="ds-body" style="max-width: 62ch">{s('type.body')}</p>
+      <p class="ds-small">{s('type.small')}</p>
+      <p class="ds-marker">{s('type.labelSample')}</p>
+    </div>
+  </section>
+
+  <!-- 03 Buttons -->
+  <section class="ds-wrap ds-section--sm">
+    <SectionHead n="03" label={s('buttons.label')} title={s('buttons.label')} size="2" />
+    <div class="sg-row">
+      <a class="ds-btn" href="#">{s('buttons.book')}<span aria-hidden="true">{arrow}</span></a>
+      <a class="ds-btn ds-btn--blue" href="#">{s('buttons.brief')}<span aria-hidden="true">{arrow}</span></a>
+      <a class="ds-btn ds-btn--outline" href="#">{s('buttons.outline')}</a>
+      <a class="ds-btn ds-btn--whatsapp" href="#"><Icon name="whatsapp" size="sm" />{s('buttons.whatsapp')}</a>
+      <button class="ds-btn" type="button" disabled>{s('buttons.disabled')}</button>
+      <a class="ds-link" href="#">{s('buttons.link')} <span aria-hidden="true">{arrow}</span></a>
+    </div>
+    <div class="sg-row">
+      <a class="ds-btn ds-btn--sm" href="#">{s('buttons.book')}</a>
+      <a class="ds-btn" href="#">{s('buttons.book')}</a>
+      <a class="ds-btn ds-btn--lg" href="#">{s('buttons.book')}</a>
+    </div>
+    <p class="ds-small sg-note">{s('buttons.component')}</p>
+    <div class="sg-row">
+      <Button href="#">{s('buttons.book')}<Icon name="arrow-right" size="sm" class="ds-arrow" /></Button>
+      <Button href="#" variant="secondary">{s('buttons.brief')}</Button>
+      <Button href="#" variant="outline">{s('buttons.outline')}</Button>
+      <Button href="#" variant="brand-outline">{s('buttons.outline')}</Button>
+      <Button href="#" variant="ghost">{s('buttons.outline')}</Button>
+      <Button href="#" variant="link">{s('buttons.link')}</Button>
+    </div>
+    <div class="ds-dark sg-panel">
+      <p class="ds-small sg-note" style="color: var(--on-ink-muted)">{s('buttons.onDark')}</p>
+      <div class="sg-row">
+        <a class="ds-btn ds-btn--light" href="#">{s('buttons.book')}<span aria-hidden="true">{arrow}</span></a>
+        <a class="ds-btn ds-btn--ghost-light" href="#">{s('buttons.outline')}</a>
+        <Button href="#">{s('buttons.brief')}</Button>
+        <a class="ds-link" href="#">{s('buttons.link')} <span aria-hidden="true">{arrow}</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 Section markers -->
+  <section class="ds-wrap ds-section--sm">
+    <SectionHead n="04" label={s('markers.label')} title={s('markers.label')} size="2" />
+    <div class="sg-frame">
+      <SectionHead n="03" label={s('markers.sampleLabel')} title={s('markers.sampleTitle')} lead={s('markers.sampleLead')} as="h3" />
+    </div>
+    <div class="ds-dark sg-panel">
+      <SectionHead n="04" label={s('markers.sampleLabel')} title={s('markers.sampleTitle')} lead={s('markers.sampleLead')} as="h3" size="2" />
+    </div>
+  </section>
+
+  <!-- 05 Cards -->
+  <section class="ds-wrap ds-section--sm">
+    <SectionHead n="05" label={s('cards.label')} title={s('cards.label')} size="2" />
+    <div class="sg-cards">
+      {
+        cards.map((card, i) => (
+          <article class:list={['ds-card', tones[i]]}>
+            <span class="ds-ghost" aria-hidden="true">0{i + 1}</span>
+            <div class="sg-card-grid">
+              <div class="sg-card-head">
+                <span class="ds-count">0{i + 1} / 05</span>
+                <h3 class="ds-display ds-display--2">{card.title}</h3>
+              </div>
+              <div class="sg-card-body">
+                <p class="ds-body">{card.answer}</p>
+                <ul class="ds-list">
+                  {card.deliverables.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+                <div class="sg-card-foot">
+                  <span class="sg-price">{card.price}</span>
+                  <a class="ds-link" href={cardLinks[i]}>
+                    {s('cards.details')} <span aria-hidden="true">{arrow}</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- 06 Pills, chips, switches -->
+  <section class="ds-wrap ds-section--sm">
+    <SectionHead n="06" label={s('pills.label')} title={s('pills.label')} size="2" />
+    <div class="sg-row">
+      {pills.map((item) => <span class="ds-pill">{item}</span>)}
+      <span class="ds-pill ds-pill--ink">{pills[0]}</span>
+      <span class="ds-pill ds-pill--blue">{pills[2]}</span>
+      <span class="ds-pill ds-pill--outline">{pills[1]}</span>
+      <span class="ds-demo-label">{s('media.demo')}</span>
+    </div>
+    <fieldset class="ds-chips sg-block">
+      <legend>{s('pills.legend')}</legend>
+      {
+        needs.map((need, i) => (
+          <label class="ds-chip">
+            <input type="checkbox" name="sg-needs" value={need} checked={i === 0} />
+            <span>{need}</span>
+          </label>
+        ))
+      }
+    </fieldset>
+    <div class="sg-block">
+      <p class="ds-label" id="sg-currency">{s('pills.currency')}</p>
+      <div class="ds-segment" role="group" aria-labelledby="sg-currency" dir="ltr">
+        <button type="button" aria-pressed="true">USD</button>
+        <button type="button" aria-pressed="false">SAR</button>
+        <button type="button" aria-pressed="false">AED</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 Forms -->
+  <section class="ds-wrap ds-section--sm">
+    <SectionHead n="07" label={s('forms.label')} title={s('forms.label')} size="2" lead={s('forms.demoNote')} />
+    <form class="ds-card ds-card--hard-shadow sg-form" action="#" novalidate>
+      <div class="sg-form-grid">
+        <label class="ds-field">
+          {s('forms.name')}
+          <input class="ds-input" name="name" autocomplete="name" required />
+        </label>
+        <label class="ds-field">
+          {s('forms.email')}
+          <input class="ds-input" type="email" name="email" autocomplete="email" required aria-invalid="true" aria-describedby="sg-email-error" />
+          <span class="ds-field__error" id="sg-email-error">{s('forms.errorSample')}</span>
+        </label>
+        <label class="ds-field">
+          {s('forms.whatsapp')}
+          <input class="ds-input" type="tel" name="whatsapp" autocomplete="tel" />
+        </label>
+        <label class="ds-field">
+          {s('forms.heard')}
+          <select class="ds-input" name="heard" required>
+            <option value="">{s('forms.choose')}</option>
+            {heard.map((option) => <option>{option}</option>)}
+          </select>
+        </label>
+      </div>
+      <label class="ds-field">
+        {s('forms.message')}
+        <textarea class="ds-input" name="message" rows="3" placeholder={s('forms.messagePlaceholder')}></textarea>
+      </label>
+      <p class="ds-form-status ds-form-status--ok" role="status">{s('forms.ok')}</p>
+      <p class="ds-form-status ds-form-status--error">{s('forms.error')}</p>
+      <button class="ds-btn ds-btn--lg ds-btn--block" type="button">
+        {s('forms.send')}<span aria-hidden="true">{arrow}</span>
+      </button>
+    </form>
+  </section>
+
+  <!-- 08 FAQ -->
+  <section class="ds-wrap ds-section--sm">
+    <SectionHead n="08" label={s('faq.label')} title={s('faq.label')} size="2" />
+    <Faq items={faq} name="sg-faq" headingLevel="h3" />
+  </section>
+
+  <!-- 09 Table -->
+  <section class="ds-wrap ds-section--sm">
+    <SectionHead n="09" label={s('table.label')} title={s('table.label')} size="2" />
+    <DataTable headers={table.headers} rows={table.rows} />
+  </section>
+
+  <!-- 10 Figures -->
+  <section class="ds-wrap ds-section--sm">
+    <SectionHead n="10" label={s('stats.label')} title={s('stats.label')} size="2" lead={s('stats.caption')} />
+    <div class="ds-stats">
+      {
+        stats.map((stat) => (
+          <div class="ds-stat">
+            <span class="ds-stat__value">{stat.value}</span>
+            <span class="ds-stat__label">{stat.label}</span>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- 11 Media -->
+  <section class="ds-wrap ds-section--sm">
+    <SectionHead n="11" label={s('media.label')} title={s('media.label')} size="2" lead={s('media.shotCaption')} />
+    <div class="ds-blue sg-media">
+      <div class="ds-frame">
+        <div class="ds-frame__bar" aria-hidden="true"><i></i><i></i><i></i></div>
+        <Image src={shot} alt={s('media.shotAlt')} widths={[480, 960, 1440]} sizes="(min-width: 1024px) 900px, 92vw" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 Chrome -->
+  <section class="ds-wrap ds-section--sm ds-fab-safe">
+    <SectionHead n="12" label={s('chrome.label')} title={s('chrome.label')} size="2" lead={s('chrome.note')} />
+  </section>
+</PageLayout>
+
+<style>
+  .sg-hero {
+    padding-block-start: 32px;
+  }
+  .sg-intro {
+    margin-block-start: 28px;
+    max-width: 640px;
+  }
+  .sg-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sg-swatches {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+  }
+  .sg-swatches li {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 4px;
+    min-height: 130px;
+    padding: 16px;
+    border-radius: var(--theme-radius-xl);
+    border: 1px solid var(--line);
+  }
+  .sg-hex {
+    font-size: var(--text-small);
+    font-family: var(--font-code);
+  }
+  .sg-stack {
+    display: grid;
+    gap: 28px;
+  }
+  .sg-line {
+    display: block;
+    padding-block: var(--hpad);
+  }
+  .sg-line--row {
+    display: flex;
+    align-items: center;
+    gap: 0.2em;
+  }
+  .sg-chip {
+    display: inline-grid;
+    place-items: center;
+    width: clamp(0.9em, 11vw, 1.45em);
+    height: 0.72em;
+    border-radius: 999px;
+    flex: none;
+    background: var(--blue);
+  }
+  .sg-chip span {
+    width: 0.38em;
+    height: 0.38em;
+    border-radius: 0.1em;
+    background: var(--paper);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .sg-chip {
+      animation: pm-cycle 6s ease-in-out infinite;
+    }
+    .sg-chip span {
+      animation: pm-spin 8s linear infinite;
+    }
+  }
+  .sg-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-block-end: 20px;
+  }
+  .sg-note {
+    margin: 8px 0 12px;
+  }
+  .sg-panel {
+    border-radius: var(--theme-radius-2xl);
+    padding: clamp(24px, 3.4vw, 52px);
+    margin-block-start: 24px;
+  }
+  .sg-frame {
+    border: 1px dashed var(--line-strong);
+    border-radius: var(--theme-radius-2xl);
+    padding: clamp(24px, 3.4vw, 52px);
+  }
+  .sg-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .sg-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: clamp(24px, 4vw, 64px);
+  }
+  .sg-card-head {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .sg-card-head h3 {
+    margin-block-start: auto;
+  }
+  .sg-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    justify-content: flex-end;
+  }
+  .sg-card-foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px 24px;
+  }
+  .sg-price {
+    font-family: var(--fd);
+    font-weight: 850;
+    font-stretch: var(--fs);
+    font-size: clamp(22px, 2vw, 30px);
+    letter-spacing: var(--ls);
+  }
+  .sg-block {
+    margin-block-start: 28px;
+  }
+  .sg-block .ds-label {
+    margin: 0 0 10px;
+  }
+  .sg-form {
+    display: grid;
+    gap: 24px;
+    max-width: 760px;
+  }
+  .sg-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 24px;
+  }
+  .sg-form p {
+    margin: 0;
+  }
+  .sg-media {
+    position: relative;
+    border-radius: 32px;
+    padding: clamp(16px, 4vw, 56px);
+    background-image: radial-gradient(rgb(255 255 255 / 0.16) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+  .sg-media .ds-frame {
+    max-width: 900px;
+    margin-inline: auto;
+  }
+</style>

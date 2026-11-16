@@ -1,0 +1,34 @@
+---
+/**
+ * FAQ accordion (v2). Native <details>/<summary>: works without JavaScript,
+ * keyboard-operable, and the answers are in the HTML for search engines and
+ * AI crawlers. Items sharing `name` close each other when one opens.
+ *
+ * Answers may contain trusted HTML from the locale files (links, emphasis).
+ * Pair with `createFAQSchema` on the page so the markup matches what shows.
+ */
+interface Props {
+  items: { question: string; answer: string }[];
+  name: string;
+  /** Heading level for each question, for the page outline. */
+  headingLevel?: 'h3' | 'h4' | null;
+  class?: string;
+}
+
+const { items, name, headingLevel = null, class: className } = Astro.props;
+const Q = headingLevel;
+---
+
+<div class:list={['ds-faq', className]}>
+  {
+    items.map((item) => (
+      <details name={name}>
+        <summary>
+          {Q ? <Q style="font: inherit; margin: 0">{item.question}</Q> : <span>{item.question}</span>}
+          <span class="ds-faq__icon" aria-hidden="true" />
+        </summary>
+        <div class="ds-faq__answer" set:html={item.answer} />
+      </details>
+    ))
+  }
+</div>

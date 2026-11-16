@@ -53,7 +53,8 @@
       "blog": "Blog",
       "about": "About",
       "contact": "Contact",
-      "faq": "FAQ"
+      "faq": "FAQ",
+      "pricing": "Pricing"
     }
   },
   "common": {
@@ -2061,6 +2062,253 @@
         "whatsapp": "WhatsApp",
         "initials": "AY"
       }
+    }
+  },
+  "ds": {
+    "header": {
+      "book": "Book a call",
+      "menu": "Menu",
+      "home": "PickMySaaS home page",
+      "language": "Language",
+      "otherHome": "Arabic home page (this page has no Arabic version)"
+    },
+    "footer": {
+      "tagline": "Web design studio for Gulf businesses",
+      "about": "Founded and run by Asfand Yar Khan. Custom websites and online stores in Arabic and English, built on Python and Django.",
+      "remote": "Works remotely with clients across the six Gulf countries.",
+      "servicesTitle": "Services",
+      "studioTitle": "Studio",
+      "contactTitle": "Contact",
+      "guidesTitle": "Guides",
+      "websites": "Website design",
+      "ecommerce": "E-commerce stores",
+      "allServices": "All services",
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "book": "Book a 30-minute call",
+      "costGuide": "Website cost in the UAE",
+      "comparison": "Salla vs Shopify vs a custom store"
+    },
+    "fab": {
+      "label": "WhatsApp"
+    }
+  },
+  "styleguide": {
+    "meta": {
+      "title": "Styleguide",
+      "description": "Private catalogue of the PickMySaaS design components, in English and Arabic. Not indexed."
+    },
+    "m1": "Design system v2",
+    "m2": "Private page, not indexed",
+    "title": "Styleguide",
+    "lead": "Every component of the v2 design, as it renders on the site, in English and Arabic. This page is for review only.",
+    "colour": {
+      "label": "Colour",
+      "note": "Text on paper is ink, ink-2 or ink-3, never lighter (ink-3 is 5.7:1). Orange always carries ink text: white on orange fails contrast.",
+      "names": {
+        "paper": "Paper",
+        "card": "Card",
+        "sand": "Sand",
+        "ink": "Ink",
+        "ink3": "Ink 3 (labels)",
+        "blue": "Blue",
+        "orange": "Orange",
+        "gold": "Gold",
+        "whatsapp": "WhatsApp green"
+      }
+    },
+    "type": {
+      "label": "Type",
+      "fonts": "Archivo for Latin text, Noto Kufi Arabic for Arabic headings, IBM Plex Sans Arabic for Arabic body text. Arabic is never uppercased or letter-spaced.",
+      "l1": "Websites",
+      "l2": "& stores",
+      "l3a": "that",
+      "l3b": "sell.",
+      "display1": "What we do",
+      "title": "Website design",
+      "lead": "Custom websites and online stores for Gulf businesses, in Arabic and English, built on Python and Django.",
+      "body": "Simple websites take about a week. Everything else takes four to eight weeks. You pay 50% upfront and 50% on completion, by invoice and bank transfer.",
+      "small": "Small text, 14px: meta lines and captions.",
+      "labelSample": "Label, 13px: the smallest text on the site"
+    },
+    "buttons": {
+      "label": "Buttons and links",
+      "book": "Book a call",
+      "brief": "Send a brief",
+      "outline": "See our work",
+      "whatsapp": "Message us on WhatsApp",
+      "disabled": "Not available",
+      "link": "Ask about this",
+      "component": "The shared Button component, restyled:",
+      "onDark": "On a dark section:"
+    },
+    "markers": {
+      "label": "Section markers",
+      "sampleLabel": "Services",
+      "sampleTitle": "What we do",
+      "sampleLead": "Five services, each with a fixed starting price."
+    },
+    "cards": {
+      "label": "Cards",
+      "details": "Details",
+      "items": [
+        {
+          "title": "Website design",
+          "answer": "Company websites and landing pages, designed and built for you.",
+          "deliverables": [
+            "Arabic and English",
+            "WhatsApp, call and map buttons",
+            "Contact form",
+            "Basic SEO"
+          ],
+          "price": "From $300"
+        },
+        {
+          "title": "E-commerce stores",
+          "answer": "A custom online store built on Django, at a fixed price.",
+          "deliverables": [
+            "Arabic and English",
+            "Order alerts by email",
+            "Bank transfer or cash on delivery",
+            "You own the code"
+          ],
+          "price": "Fixed price, from $700"
+        },
+        {
+          "title": "Arabic & RTL",
+          "answer": "A true right-to-left Arabic version of your site, not a mirror of the English.",
+          "deliverables": [
+            "Right-to-left layout",
+            "Arabic typography",
+            "Arabic and English pages paired for search"
+          ],
+          "price": "From $300"
+        },
+        {
+          "title": "Brand identity",
+          "answer": "Logo, type, colour system and guidelines.",
+          "deliverables": [
+            "Logo",
+            "Type",
+            "Colour system",
+            "Guidelines"
+          ],
+          "price": "From $500"
+        }
+      ]
+    },
+    "pills": {
+      "label": "Pills, chips and switches",
+      "items": [
+        "30 minutes",
+        "Video call",
+        "Arabic + English"
+      ],
+      "legend": "What do you need?",
+      "needs": [
+        "Website",
+        "Online store",
+        "Redesign",
+        "Brand identity",
+        "Arabic version"
+      ],
+      "currency": "Currency"
+    },
+    "forms": {
+      "label": "Form fields",
+      "name": "Name",
+      "email": "Email",
+      "whatsapp": "WhatsApp number (optional)",
+      "heard": "How did you hear about us?",
+      "choose": "Choose one",
+      "heardOptions": [
+        "Google search",
+        "An AI assistant (ChatGPT, Gemini…)",
+        "A referral",
+        "Social media",
+        "Other"
+      ],
+      "message": "Project details",
+      "messagePlaceholder": "A few lines about your business and goals",
+      "errorSample": "Enter an email address we can reply to.",
+      "ok": "Thanks, your brief has been sent.",
+      "error": "Something went wrong. Please try again or message us on WhatsApp.",
+      "send": "Send brief",
+      "demoNote": "Display only: this form sends nothing."
+    },
+    "faq": {
+      "label": "FAQ",
+      "items": [
+        {
+          "question": "How long does a website take?",
+          "answer": "About a week for a simple website, once we have your content. Everything else takes four to eight weeks."
+        },
+        {
+          "question": "How do I pay?",
+          "answer": "50% upfront and 50% on completion, by invoice and bank transfer. There is no hourly billing."
+        },
+        {
+          "question": "What is PickMySaaS?",
+          "answer": "A web design studio for Gulf businesses, founded by Asfand Yar Khan."
+        }
+      ]
+    },
+    "table": {
+      "label": "Table",
+      "headers": [
+        "Package",
+        "Price",
+        "Pages"
+      ],
+      "rows": [
+        [
+          "Starter",
+          "$300",
+          "Up to 3"
+        ],
+        [
+          "Business",
+          "$500",
+          "Up to 7"
+        ],
+        [
+          "Premium",
+          "From $700",
+          "Up to 15"
+        ]
+      ]
+    },
+    "stats": {
+      "label": "Figures",
+      "caption": "GulfNurseries, a directory website we built for a client",
+      "items": [
+        {
+          "value": "3 weeks",
+          "label": "from start to launch"
+        },
+        {
+          "value": "100",
+          "label": "nursery owners claimed a listing"
+        },
+        {
+          "value": "45",
+          "label": "of them pay for a plan"
+        },
+        {
+          "value": "$1,500",
+          "label": "build price"
+        }
+      ]
+    },
+    "media": {
+      "label": "Screenshots and demo labels",
+      "demo": "Live demo: a sample store",
+      "shotAlt": "The GulfNurseries home page",
+      "shotCaption": "Client work is shown with its real name and figures. Demo and concept work always carries a visible label."
+    },
+    "chrome": {
+      "label": "Header, footer and WhatsApp button",
+      "note": "The header, footer and WhatsApp button on this page are the live components. Make the window narrower than 1024px to see the phone menu. The WhatsApp button hides while the footer is in view."
     }
   }
 }

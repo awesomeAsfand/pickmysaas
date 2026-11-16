@@ -1,0 +1,89 @@
+---
+/**
+ * EN / عربي switch: two plain links, one per language.
+ *
+ * The other language is a link to this page's twin, never a toggle on the
+ * same URL, so each language keeps its own indexable address. The twin is
+ * `alternates[locale]` when the page passes one (blog posts, case studies, and
+ * pages that exist in one language only and point at the closest page in the
+ * other); otherwise it is the same path with the locale swapped, which is
+ * right for every page under src/pages/[locale].
+ *
+ * When `alternates` names a page that is not a translation (`notTwin`), the
+ * link says so to screen readers and carries no hreflang.
+ */
+import { getLocales, getLocaleFromPath, swapLocaleInPath, t } from '@/i18n';
+
+interface Props {
+  alternates?: Record<string, string>;
+  /** The page has no translation; `alternates` points to a related page. */
+  notTwin?: boolean;
+  class?: string;
+}
+
+const { alternates, notTwin = false, class: className } = Astro.props;
+const path = Astro.url.pathname;
+const current = getLocaleFromPath(path);
+const labels: Record<string, string> = { en: 'EN', ar: 'عربي' };
+const items = getLocales().map((locale) => ({
+  locale,
+  label: labels[locale] ?? locale.toUpperCase(),
+  href: locale === current ? path : (alternates?.[locale] ?? swapLocaleInPath(path, locale)),
+  current: locale === current,
+}));
+---
+
+<div class:list={['lang-switch', className]} role="group" aria-label={t('ds.header.language', current)}>
+  {
+    items.map((item) =>
+      item.current ? (
+        <a href={item.href} lang={item.locale} aria-current="true" data-locale={item.locale}>
+          {item.label}
+        </a>
+      ) : (
+        <a
+          href={item.href}
+          lang={item.locale}
+          hreflang={notTwin ? undefined : item.locale}
+          aria-label={notTwin ? t('ds.header.otherHome', current) : undefined}
+          data-locale={item.locale}
+        >
+          {item.label}
+        </a>
+      )
+    )
+  }
+</div>
+
+<style>
+  .lang-switch {
+    display: inline-flex;
+    flex: none;
+    padding: 3px;
+    gap: 2px;
+    border-radius: 999px;
+    background: rgb(18 18 18 / 0.06);
+  }
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    font: 600 12px/1 var(--font-latin);
+    color: var(--ink);
+    transition:
+      background-color 0.25s,
+      color 0.25s;
+  }
+  a[data-locale='ar'] {
+    font: 600 13px/1 var(--font-arabic-body);
+  }
+  a:hover {
+    color: var(--blue);
+  }
+  a[aria-current='true'] {
+    background: var(--ink);
+    color: var(--white);
+  }
+</style>

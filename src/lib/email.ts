@@ -1,4 +1,4 @@
-import { RESEND_API_KEY, RESEND_AUDIENCE_ID } from 'astro:env/server';
+import { RESEND_API_KEY } from 'astro:env/server';
 import siteConfig from '@/config/site.config';
 
 /**
@@ -27,5 +27,3 @@ import siteConfig from '@/config/site.config';
  */
 export const contactConfigured = siteConfig.contactForm?.sendVia === 'cloudflare' || Boolean(RESEND_API_KEY);
 
-/** The newsletter needs an audience to add the address to as well. */
-export const newsletterConfigured = Boolean(RESEND_API_KEY && RESEND_AUDIENCE_ID);

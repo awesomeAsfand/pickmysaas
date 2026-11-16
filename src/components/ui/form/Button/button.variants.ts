@@ -1,12 +1,18 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 
+/**
+ * v2 pill buttons. `primary` is the ink pill that turns blue on hover, as in
+ * the v2 header and forms. Inside a dark section Button.astro swaps it to a
+ * paper pill. The plain-CSS equivalents for new markup are `.ds-btn*` in
+ * src/styles/ds.css; both are shown on /styleguide/.
+ */
 export const buttonVariants = cva(
   [
     'group',
-    'inline-flex items-center justify-center gap-2',
-    'font-medium rounded-md',
-    'transition-all duration-150 ease-out',
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+    'inline-flex items-center justify-center gap-2.5',
+    'font-semibold rounded-full whitespace-nowrap border-[1.5px]',
+    'transition-[background-color,color,border-color,transform] duration-200 ease-out',
+    'focus-visible:outline-2 focus-visible:outline-offset-[3px] focus-visible:outline-ring',
     'disabled:pointer-events-none disabled:opacity-50',
     '[&_svg]:pointer-events-none [&_svg]:shrink-0',
   ],
@@ -14,40 +20,34 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          'btn-primary bg-foreground text-background hover:bg-foreground/90 active:scale-[0.98]',
+          'btn-primary bg-ink border-ink text-white hover:bg-blue hover:border-blue active:scale-[0.98]',
         secondary:
-          'bg-secondary text-secondary-foreground border border-border hover:bg-secondary-hover hover:border-border-strong active:scale-[0.98]',
+          'bg-paper-2 border-paper-2 text-ink hover:bg-sand hover:border-sand active:scale-[0.98]',
         outline:
-          'border border-foreground/25 bg-transparent text-foreground hover:bg-secondary hover:border-foreground/40 active:scale-[0.98]',
-        // The outline button in brand colour: transparent fill, brand border
-        // and text, soft brand wash on hover. Text shades chosen for WCAG AA /
-        // Lighthouse contrast (verified on the default blue theme: 6.2:1+
-        // light, 6.1:1+ dark at rest, above 4.5:1 on the hover wash —
-        // brand-600 would dip under on tinted fills).
+          'btn-outline bg-transparent border-ink text-ink hover:bg-ink hover:text-white active:scale-[0.98]',
         'brand-outline':
-          'bg-transparent text-brand-700 border border-brand-500/40 hover:bg-brand-500/10 hover:border-brand-500/80 active:scale-[0.98] dark:text-brand-400',
-        ghost:
-          'text-foreground-secondary hover:text-foreground hover:bg-secondary active:scale-[0.98]',
-        link: 'text-foreground-secondary hover:text-foreground underline-offset-4 hover:underline',
+          'bg-transparent border-blue text-blue hover:bg-blue hover:text-white active:scale-[0.98]',
+        ghost: 'border-transparent text-ink-2 hover:text-ink hover:bg-paper-2 active:scale-[0.98]',
+        link: 'border-transparent rounded-none px-0 text-ink underline decoration-[1.5px] underline-offset-4 hover:text-blue',
         destructive:
-          'btn-destructive bg-destructive text-destructive-foreground hover:bg-destructive/90 active:scale-[0.98]',
+          'bg-destructive border-destructive text-destructive-foreground hover:opacity-90 active:scale-[0.98]',
       },
       size: {
-        sm: 'h-8 px-3 text-xs [&_svg]:h-4 [&_svg]:w-4',
-        md: 'h-10 px-4 text-sm [&_svg]:h-5 [&_svg]:w-5',
-        lg: 'h-12 px-5 text-base [&_svg]:h-5 [&_svg]:w-5',
+        sm: 'min-h-10 px-4 py-2 text-sm [&_svg]:h-4 [&_svg]:w-4',
+        md: 'min-h-12 px-5 py-2.5 text-[15px] [&_svg]:h-[18px] [&_svg]:w-[18px]',
+        lg: 'min-h-14 px-6 py-3 text-base [&_svg]:h-5 [&_svg]:w-5',
       },
       fullWidth: {
         true: 'w-full',
       },
       icon: {
-        true: 'rounded-md',
+        true: 'rounded-full',
       },
     },
     compoundVariants: [
-      { icon: true, size: 'sm', class: 'h-8 w-8 px-0' },
-      { icon: true, size: 'md', class: 'h-10 w-10 px-0' },
-      { icon: true, size: 'lg', class: 'h-12 w-12 px-0' },
+      { icon: true, size: 'sm', class: 'h-10 w-10 px-0' },
+      { icon: true, size: 'md', class: 'h-12 w-12 px-0' },
+      { icon: true, size: 'lg', class: 'h-14 w-14 px-0' },
     ],
     defaultVariants: {
       variant: 'primary',
