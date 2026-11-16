@@ -4,6 +4,7 @@
  * one list, linking to the full /pricing/ page. Prices are plain HTML.
  */
 import SectionHead from '@/components/ds/SectionHead.astro';
+import { keepHyphenated } from '@/lib/text';
 import { t, tData, localizedPath, getLocaleDirection } from '@/i18n';
 
 interface Props {
@@ -23,7 +24,7 @@ const rows = tData<{ name: string; price: string; note: string }[]>('home.pricin
       {
         rows.map((row) => (
           <div class="price__row">
-            <dt class="price__name">{row.name}</dt>
+            <dt class="price__name" set:html={keepHyphenated(row.name)} />
             <dd class="price__note">{row.note}</dd>
             <dd class="price__amount" dir="auto">
               {row.price}

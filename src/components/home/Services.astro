@@ -9,6 +9,7 @@
  * follow each other, so no card's text can sit hidden under the next one.
  */
 import SectionHead from '@/components/ds/SectionHead.astro';
+import { keepHyphenated } from '@/lib/text';
 import { t, tData, localizedPath, getLocaleDirection } from '@/i18n';
 
 interface Props {
@@ -47,7 +48,7 @@ const total = String(items.length).padStart(2, '0');
               <span class="ds-count">
                 {n} / {total}
               </span>
-              <h3 class="ds-display ds-display--2">{item.title}</h3>
+              <h3 class="ds-display ds-display--2" set:html={keepHyphenated(item.title)} />
             </div>
             <div class="svc__body">
               <p class="svc__answer">{item.answer}</p>
@@ -92,8 +93,12 @@ const total = String(items.length).padStart(2, '0');
     flex-direction: column;
     gap: 40px;
   }
+  .svc__head {
+    container-type: inline-size;
+  }
   .svc__head h3 {
     margin-block-start: auto;
+    font-size: min(var(--display-2), 11cqi);
   }
   .svc__body {
     display: flex;

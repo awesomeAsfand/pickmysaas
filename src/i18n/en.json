@@ -2408,5 +2408,106 @@
         }
       }
     }
+  },
+  "pricing": {
+    "meta": {
+      "title": "Prices: Websites from $300, Online Stores from $700",
+      "description": "Fixed prices in US dollars: websites from $300, online stores from $700, Arabic & RTL $300, brand identity $500, growth & care $400 a month."
+    },
+    "m1": "Pricing",
+    "m2": "One fixed price before work begins",
+    "l1": "Clear",
+    "l2": "prices.",
+    "sub": "Every project starts from the prices below, in US dollars. Tap the services you need to build an estimate, then book a call to fix the final price.",
+    "currency": "Show prices in",
+    "from": "From",
+    "fixed": "Fixed price",
+    "fixedFrom": "Fixed price, from",
+    "perMonth": "a month",
+    "add": "Add to estimate",
+    "added": "In your estimate",
+    "items": [
+      {
+        "title": "Website design",
+        "desc": "Company websites and landing pages in Arabic and English. Three packages: Starter $300, Business $500 and Premium from $700.",
+        "deliverables": [
+          "Arabic and English",
+          "Custom design, built on Django",
+          "WhatsApp, call and map buttons",
+          "Basic SEO"
+        ],
+        "time": "About 1 week for a simple website; 4–8 weeks for larger sites"
+      },
+      {
+        "title": "E-commerce stores",
+        "desc": "A custom online store built on Django. You host it and you own the code.",
+        "deliverables": [
+          "Arabic and English",
+          "Order alerts by email",
+          "Bank transfer or cash on delivery",
+          "Stripe, PayPal or a provider that works in your country"
+        ],
+        "time": "4–8 weeks"
+      },
+      {
+        "title": "Arabic & RTL",
+        "desc": "A true right-to-left Arabic version of your site, with layout and type made for Arabic readers.",
+        "deliverables": [
+          "Right-to-left layout",
+          "Arabic typography",
+          "Arabic and English pages linked for Google"
+        ],
+        "time": "2–3 weeks"
+      },
+      {
+        "title": "Brand identity",
+        "desc": "Logo, type, colour system and guidelines.",
+        "deliverables": [
+          "Logo",
+          "Type",
+          "Colour system",
+          "Guidelines"
+        ],
+        "time": "2–3 weeks"
+      },
+      {
+        "title": "Growth & care",
+        "desc": "Speed, SEO, analytics and ongoing care after launch.",
+        "deliverables": [
+          "Speed",
+          "SEO",
+          "Analytics",
+          "Ongoing care"
+        ],
+        "time": "Monthly"
+      }
+    ],
+    "note": "Prices are in US dollars. SAR and AED figures are conversions at 3.75 and 3.6725, rounded. You get one fixed price before any work begins, and pay 50% upfront and 50% on completion, by invoice and bank transfer.",
+    "sum": "Your estimate",
+    "sumFrom": "from",
+    "sumEmpty": "Pick services to build an estimate",
+    "cta": "Get a fixed price",
+    "faq": {
+      "label": "Questions",
+      "title": "About the prices.",
+      "items": [
+        {
+          "question": "Are the prices fixed?",
+          "answer": "Yes. After a 30-minute call you get one fixed price in writing before any work begins. There is no hourly billing. Website and store prices are starting prices; Arabic & RTL ($300) and brand identity ($500) are fixed."
+        },
+        {
+          "question": "How do I pay?",
+          "answer": "50% upfront and 50% on completion, by invoice and bank transfer. Growth & care is billed monthly at $400."
+        },
+        {
+          "question": "Why are prices in US dollars?",
+          "answer": "PickMySaaS works with clients in all six Gulf countries, so prices are set in one currency. The SAR and AED figures on this page are conversions at the pegged rates, rounded."
+        },
+        {
+          "question": "Who hosts the website?",
+          "answer": "You do. We build the site and hand it over, and you own the code. Nothing is tied to a platform's monthly plan."
+        }
+      ]
+    }
   }
 }

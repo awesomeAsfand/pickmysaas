@@ -28,6 +28,7 @@ describe('nav config — locale resolution (en default, ar secondary)', () => {
     expect(items.map((i) => i.href)).toEqual([
       '/ar/',
       '/ar/services/',
+      '/ar/pricing/',
       '/ar/projects/',
       '/ar/blog/',
       '/ar/about/',
