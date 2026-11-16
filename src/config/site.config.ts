@@ -172,12 +172,13 @@ const siteConfig: SiteConfig = {
   // import this file, uses the same values. Change them there.
   name: SITE_NAME,
   description:
-    // The owner-approved one-line brand description (P3-01, approved 14 Nov
-    // 2026). It feeds the Organization and WebSite markup and llms.txt; if it
-    // changes, change it in directory profiles and social bios too.
-    'PickMySaaS is a founder-led studio building bilingual websites, online stores, SaaS platforms and MVPs for Gulf businesses, at fixed prices.',
-  tagline: 'Websites, SaaS & AI MVPs for the Gulf',
-  footerNote: 'Working worldwide · Focused on the GCC',
+    // The owner-approved one-line brand description (approved 16 Nov 2026,
+    // docs/seo/implementation/brand-description.md). It feeds the
+    // Organization and WebSite markup and llms.txt; if it changes, change it
+    // in directory profiles and social bios too.
+    'PickMySaaS is a founder-led web design studio for Gulf businesses: custom websites and online stores in Arabic and English, at fixed prices.',
+  tagline: 'Web design studio for Gulf businesses',
+  footerNote: 'Works remotely · Focused on the six Gulf countries',
   url: SITE_URL || SITE_URL_FALLBACK,
   // Generated at build time from `name`, `tagline` and the brand colour below.
   // Point this at a file in `public/` to use your own — it has to be a raster
