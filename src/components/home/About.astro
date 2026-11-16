@@ -1,0 +1,176 @@
+---
+/**
+ * "(07) About": v2's big statement with inline image pills, now naming the
+ * founder and filling the pills with real client screenshots (fix 8), then
+ * three principles. The rotating ring is decorative and stops for reduced
+ * motion.
+ */
+import { Image } from 'astro:assets';
+import { t, tData, localizedPath, getLocaleDirection } from '@/i18n';
+import gnMobile from '@/assets/home/work-gulfnurseries-mobile.webp';
+import attiaMobile from '@/assets/home/work-healing-with-attia-mobile.webp';
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const k = (key: string) => t(`home.about.${key}`, locale);
+const rtl = getLocaleDirection(locale) === 'rtl';
+const principles = tData<{ t: string; d: string }[]>('home.about.principles', locale)!;
+---
+
+<section id="about" class="ds-wrap ds-section about" data-reveal>
+  <div class="about__top">
+    <span class="ds-marker">(07) {k('label')}</span>
+    <div class="about__badge" aria-hidden="true">
+      <svg viewBox="0 0 200 200" class="about__ring">
+        <defs><path id="about-ring" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"></path></defs>
+        <text class:list={['about__ring-text', rtl && 'about__ring-text--ar']}><textPath href="#about-ring">{k('badge')}</textPath></text>
+      </svg>
+      <span class="about__star">✦</span>
+    </div>
+  </div>
+
+  <h2 class="about__statement">
+    {k('s1')}
+    <span class="about__pill about__pill--a"><Image src={gnMobile} alt="" widths={[160, 320]} sizes="160px" /></span>
+    {k('s2')}
+    <span class="about__pill about__pill--b"><Image src={attiaMobile} alt="" widths={[120, 240]} sizes="120px" /></span>
+    <span class="about__soft">{k('s3')}</span>
+  </h2>
+
+  <p class="about__facts">{k('facts')}</p>
+
+  <div class="about__principles">
+    {
+      principles.map((p, i) => (
+        <div class="about__principle">
+          <div class="about__n">{String(i + 1).padStart(2, '0')}</div>
+          <h3 class="ds-title ds-title--sm">{p.t}</h3>
+          <p>{p.d}</p>
+        </div>
+      ))
+    }
+  </div>
+
+  <a class="ds-link about__more" href={localizedPath('/about', locale)}>{k('more')} <span aria-hidden="true">{rtl ? '←' : '→'}</span></a>
+</section>
+
+<style>
+  .about__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .about__badge {
+    position: relative;
+    width: clamp(110px, 12vw, 170px);
+    aspect-ratio: 1;
+    flex: none;
+  }
+  .about__ring {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    direction: ltr;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .about__ring {
+      animation: pm-spin 22s linear infinite;
+    }
+  }
+  .about__ring-text {
+    fill: var(--ink);
+    font: 700 15px var(--font-latin);
+    letter-spacing: 0.12em;
+  }
+  .about__ring-text--ar {
+    font: 600 17px var(--font-arabic-body);
+    letter-spacing: 0;
+  }
+  .about__star {
+    position: absolute;
+    inset: 30%;
+    border-radius: 50%;
+    background: var(--blue);
+    color: var(--white);
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+  }
+  .about__statement {
+    margin: 8px 0 0;
+    font-family: var(--fd);
+    font-weight: 650;
+    font-stretch: var(--fs);
+    font-size: clamp(30px, 4.6vw, 76px);
+    line-height: calc(var(--lh) * 1.08);
+    letter-spacing: var(--ls);
+    text-wrap: pretty;
+    max-width: 1300px;
+  }
+  .about__pill {
+    display: inline-block;
+    position: relative;
+    height: 0.86em;
+    vertical-align: -0.1em;
+    border-radius: 999px;
+    overflow: hidden;
+    background: var(--sand);
+  }
+  .about__pill--a {
+    width: 2.2em;
+  }
+  .about__pill--b {
+    width: 1.6em;
+    background: var(--blue);
+  }
+  .about__pill :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+  .about__soft {
+    color: var(--ink-soft);
+  }
+  .about__facts {
+    margin: 28px 0 0;
+    max-width: 560px;
+    font-size: var(--text-body);
+    line-height: 1.6;
+    color: var(--ink-2);
+  }
+  .about__principles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 32px;
+    margin-block-start: clamp(48px, 6vw, 88px);
+  }
+  .about__principle {
+    border-block-start: 1.5px solid var(--ink);
+    padding-block-start: 20px;
+  }
+  .about__n {
+    font-size: var(--text-label);
+    font-weight: 700;
+    color: var(--blue);
+  }
+  .about__principle h3 {
+    margin: 14px 0 0;
+  }
+  .about__principle p {
+    margin: 10px 0 0;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+  .about__more {
+    margin-block-start: 40px;
+  }
+</style>

@@ -33,7 +33,7 @@
   --body-lh: 1.55;
 
   /* Display scale (fluid, from v2) */
-  --display-hero: clamp(50px, 10.6vw, 184px);
+  --display-hero: clamp(44px, 10.6vw, 184px);
   --display-xl: clamp(64px, 10vw, 176px); /* "Let's talk." */
   --display-1: clamp(42px, 6.8vw, 116px); /* section titles */
   --display-2: clamp(34px, 4.4vw, 68px); /* card titles */

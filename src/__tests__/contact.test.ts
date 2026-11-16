@@ -1,74 +1,78 @@
 import { describe, it, expect } from 'vitest';
-import { z } from 'zod';
+import { contactSchema, readContactForm } from '@/lib/contact-schema';
 
-// Schema mirroring src/pages/api/contact.ts
-const contactSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters').max(100),
-  email: z.email('Please enter a valid email address'),
-  subject: z.string().max(200).optional(),
-  message: z.string().min(10, 'Message must be at least 10 characters').max(5000),
-  honeypot: z.string().max(0),
-});
-
+/** The brief form's rules, as the API route applies them. */
 describe('Contact form validation', () => {
   const validData = {
     name: 'Jane Doe',
     email: 'jane@example.com',
-    subject: 'Hello',
+    whatsapp: '',
+    heard: 'Google search',
+    needs: ['Website'],
+    budget: '$500–1,000',
     message: 'This is a test message that is long enough.',
     honeypot: '',
+    page: '/',
   };
 
-  it('accepts valid form data', () => {
-    const result = contactSchema.safeParse(validData);
-    expect(result.success).toBe(true);
-  });
-
-  it('accepts data without optional subject', () => {
-    const { subject: _s, ...data } = validData;
+  const fieldOf = (data: unknown) => {
     const result = contactSchema.safeParse(data);
-    expect(result.success).toBe(true);
+    return result.success ? null : result.error.issues[0].path[0];
+  };
+
+  it('accepts a complete brief', () => {
+    expect(contactSchema.safeParse(validData).success).toBe(true);
   });
 
-  it('rejects name shorter than 2 characters', () => {
-    const result = contactSchema.safeParse({ ...validData, name: 'J' });
-    expect(result.success).toBe(false);
-    if (!result.success) {
-      expect(result.error.issues[0].message).toBe('Name must be at least 2 characters');
-    }
+  it('accepts a brief without WhatsApp, needs or budget', () => {
+    const { whatsapp: _w, needs: _n, budget: _b, ...data } = validData;
+    expect(contactSchema.safeParse(data).success).toBe(true);
   });
 
-  it('rejects invalid email address', () => {
-    const result = contactSchema.safeParse({ ...validData, email: 'not-an-email' });
-    expect(result.success).toBe(false);
-    if (!result.success) {
-      expect(result.error.issues[0].path[0]).toBe('email');
-    }
+  it('requires "How did you hear about us?"', () => {
+    expect(fieldOf({ ...validData, heard: '' })).toBe('heard');
+    expect(fieldOf({ ...validData, heard: '   ' })).toBe('heard');
   });
 
-  it('rejects message shorter than 10 characters', () => {
-    const result = contactSchema.safeParse({ ...validData, message: 'Too short' });
-    expect(result.success).toBe(false);
-    if (!result.success) {
-      expect(result.error.issues[0].message).toBe('Message must be at least 10 characters');
-    }
+  it('accepts a WhatsApp number with +, spaces and dashes', () => {
+    expect(contactSchema.safeParse({ ...validData, whatsapp: '+971 50-123 4567' }).success).toBe(true);
   });
 
-  it('rejects filled honeypot field (bot detection)', () => {
-    const result = contactSchema.safeParse({ ...validData, honeypot: 'bot-value' });
-    expect(result.success).toBe(false);
-    if (!result.success) {
-      expect(result.error.issues[0].path[0]).toBe('honeypot');
-    }
+  it('rejects a WhatsApp value that is not a phone number', () => {
+    expect(fieldOf({ ...validData, whatsapp: 'call me' })).toBe('whatsapp');
+    expect(fieldOf({ ...validData, whatsapp: '123' })).toBe('whatsapp');
   });
 
-  it('rejects subject longer than 200 characters', () => {
-    const result = contactSchema.safeParse({ ...validData, subject: 'a'.repeat(201) });
-    expect(result.success).toBe(false);
+  it('rejects a name shorter than 2 characters', () => {
+    expect(fieldOf({ ...validData, name: 'J' })).toBe('name');
   });
 
-  it('rejects message longer than 5000 characters', () => {
-    const result = contactSchema.safeParse({ ...validData, message: 'a'.repeat(5001) });
-    expect(result.success).toBe(false);
+  it('rejects an invalid email address', () => {
+    expect(fieldOf({ ...validData, email: 'not-an-email' })).toBe('email');
+  });
+
+  it('rejects a message shorter than 10 characters', () => {
+    expect(fieldOf({ ...validData, message: 'Too short' })).toBe('message');
+  });
+
+  it('rejects a filled honeypot (bot detection)', () => {
+    expect(fieldOf({ ...validData, honeypot: 'bot-value' })).toBe('honeypot');
+  });
+
+  it('rejects overlong fields', () => {
+    expect(fieldOf({ ...validData, message: 'a'.repeat(5001) })).toBe('message');
+    expect(fieldOf({ ...validData, subject: 'a'.repeat(201) })).toBe('subject');
+    expect(fieldOf({ ...validData, needs: Array(9).fill('Website') })).toBe('needs');
+  });
+
+  it('reads every checked need from the form', () => {
+    const form = new FormData();
+    form.append('needs', 'Website');
+    form.append('needs', 'Online store');
+    form.append('heard', 'A referral');
+    const data = readContactForm(form);
+    expect(data.needs).toEqual(['Website', 'Online store']);
+    expect(data.heard).toBe('A referral');
+    expect(data.whatsapp).toBe('');
   });
 });

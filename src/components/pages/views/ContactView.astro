@@ -4,7 +4,7 @@
  *
  * Shared by the default-locale route (`/contact`) and the locale-prefixed route
  * (`/<locale>/contact`). Page copy is read from `pages.contact.*`; the embedded
- * `ContactForm` localizes itself from the URL path, so the form fields follow
+ * The brief form (ds/BriefForm) takes the locale, so the form fields follow
  * the active locale automatically. Untranslated keys fall back to the default
  * locale.
  */
@@ -13,7 +13,7 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
 import Card from '@/components/ui/data-display/Card/Card.astro';
 import { Hero } from '@/components/hero';
-import ContactForm from '@/components/patterns/ContactForm.astro';
+import BriefForm from '@/components/ds/BriefForm.astro';
 import siteConfig from '@/config/site.config';
 import { resolveSocialLinks } from '@/lib/utils';
 import { t, tData, defaultLocale } from '@/i18n';
@@ -120,7 +120,7 @@ const channels: Channel[] = [
         <div class="glitch:col-span-3 h-full sm:max-w-xl sm:mx-auto glitch:max-w-none glitch:mx-0" data-reveal data-reveal-ease="smooth">
           <Card padding="lg" class="h-full flex flex-col justify-center">
             <h2 class="font-display text-xl font-bold text-foreground mb-6 sm:text-center glitch:text-left">{t('pages.contact.formTitle', locale)}</h2>
-            <ContactForm />
+            <BriefForm locale={locale} id="contact-brief" />
           </Card>
         </div>
 

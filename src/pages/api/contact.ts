@@ -1,10 +1,10 @@
 export const prerender = false;
 
 import type { APIRoute } from 'astro';
-import { z } from 'astro/zod';
+import { contactSchema, readContactForm, FIELDS_WITH_MESSAGES } from '@/lib/contact-schema';
 import { Resend } from 'resend';
 import siteConfig from '@/config/site.config';
-import { t, resolveLocale } from '@/i18n';
+import { t, resolveLocale, getLocaleDirection } from '@/i18n';
 
 // Escape user-supplied values before they are interpolated into the
 // notification email's HTML, so a message containing markup (links,
@@ -101,33 +101,41 @@ async function sendViaResend(notification: Notification): Promise<SendResult> {
   return error ? { ok: false, error, visitorKey: SEND_FAILED } : { ok: true };
 }
 
-/** Fields with a message of their own in `contact.errors.*`. */
-const FIELDS_WITH_MESSAGES = new Set(['name', 'email', 'subject', 'message']);
-
-const contactSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters').max(100),
-  email: z.email('Please enter a valid email address'),
-  subject: z.string().max(200).optional(),
-  message: z.string().min(10, 'Message must be at least 10 characters').max(5000),
-  honeypot: z.string().max(0), // Anti-spam: must be empty
-});
+/**
+ * The form posts in the background with `Accept: application/json` and gets
+ * JSON. Without JavaScript it posts normally, and the visitor gets a short
+ * page in their language with the result and a link back.
+ */
+function reply(
+  request: Request,
+  locale: string,
+  status: number,
+  body: { success: boolean; errors?: Record<string, string[]> },
+  back: string
+): Response {
+  if ((request.headers.get('accept') ?? '').includes('application/json')) {
+    return new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
+  }
+  const messages = body.success
+    ? [t('home.contact.brief.ok', locale)]
+    : Object.values(body.errors ?? {}).flat();
+  const safeBack = back.startsWith('/') && !back.startsWith('//') ? back : '/';
+  const html = `<!doctype html><html lang="${locale}" dir="${getLocaleDirection(locale)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${escapeHtml(siteConfig.name)}</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#EEEBE3;color:#121212;font:17px/1.6 system-ui,sans-serif;padding:24px}main{max-width:560px}a{color:#2D2DF5;font-weight:600}</style></head><body><main>${messages
+    .map((m) => `<p>${escapeHtml(m)}</p>`)
+    .join('')}<p><a href="${escapeHtml(safeBack)}">${escapeHtml(t('contact.back', locale))}</a></p></main></body></html>`;
+  return new Response(html, { status, headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+}
 
 export const POST: APIRoute = async ({ request }) => {
   // Answer in the language of the page the form was sent from.
   let locale = resolveLocale(undefined);
+  let back = '/';
   try {
     const formData = await request.formData();
     locale = resolveLocale(formData.get('locale')?.toString());
+    const data = readContactForm(formData);
+    back = data.page || '/';
 
-    const data = {
-      name: formData.get('name')?.toString() || '',
-      email: formData.get('email')?.toString() || '',
-      subject: formData.get('subject')?.toString() || '',
-      message: formData.get('message')?.toString() || '',
-      honeypot: formData.get('honeypot')?.toString() || '',
-    };
-
-    // Validate
     const result = contactSchema.safeParse(data);
 
     if (!result.success) {
@@ -140,35 +148,33 @@ export const POST: APIRoute = async ({ request }) => {
           FIELDS_WITH_MESSAGES.has(field) ? t(`contact.errors.${field}`, locale) : t(SEND_FAILED, locale),
         ];
       }
-
-      return new Response(
-        JSON.stringify({ success: false, errors: fieldErrors }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
+      return reply(request, locale, 400, { success: false, errors: fieldErrors }, back);
     }
 
-    // Honeypot check (bot detection)
-    if (result.data.honeypot) {
-      return new Response(JSON.stringify({ success: true }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' },
-      });
-    }
-
+    const brief = result.data;
     const siteLabel = siteConfig.name;
+    const rows: [string, string][] = [
+      ['Name', brief.name],
+      ['Email', brief.email],
+      ['WhatsApp', brief.whatsapp || '—'],
+      ['Needs', brief.needs.join(', ') || '—'],
+      ['Budget', brief.budget || '—'],
+      ['Heard about us', brief.heard],
+      ['Language', locale],
+      ['Page', brief.page || '—'],
+    ];
     const notification: Notification = {
-      subject: result.data.subject
-        ? `[${siteLabel}] ${result.data.subject}`
-        : `[${siteLabel}] New contact from ${result.data.name}`,
+      subject: brief.subject
+        ? `[${siteLabel}] ${brief.subject}`
+        : `[${siteLabel}] New brief from ${brief.name}${brief.needs.length ? ` (${brief.needs.join(', ')})` : ''}`,
       // Replying in the inbox answers the visitor, not the site.
-      replyTo: result.data.email,
+      replyTo: brief.email,
       html: `
-        <p><strong>Name:</strong> ${escapeHtml(result.data.name)}</p>
-        <p><strong>Email:</strong> ${escapeHtml(result.data.email)}</p>
+        ${rows.map(([label, value]) => `<p><strong>${label}:</strong> ${escapeHtml(value)}</p>`).join('\n')}
         <p><strong>Message:</strong></p>
-        <p>${escapeHtml(result.data.message).replace(/\n/g, '<br>')}</p>
+        <p>${escapeHtml(brief.message).replace(/\n/g, '<br>')}</p>
       `,
-      text: `Name: ${result.data.name}\nEmail: ${result.data.email}\n\n${result.data.message}`,
+      text: `${rows.map(([label, value]) => `${label}: ${value}`).join('\n')}\n\n${brief.message}`,
     };
 
     const sent =
@@ -178,22 +184,12 @@ export const POST: APIRoute = async ({ request }) => {
 
     if (!sent.ok) {
       console.error('Contact form delivery failed:', sent.error);
-      return new Response(
-        JSON.stringify({ success: false, errors: { form: [t(sent.visitorKey, locale)] } }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
-      );
+      return reply(request, locale, 500, { success: false, errors: { form: [t(sent.visitorKey, locale)] } }, back);
     }
 
-    return new Response(JSON.stringify({ success: true }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return reply(request, locale, 200, { success: true }, back);
   } catch (error) {
     console.error('Contact form error:', error);
-
-    return new Response(
-      JSON.stringify({ success: false, errors: { form: [t(SEND_FAILED, locale)] } }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
+    return reply(request, locale, 500, { success: false, errors: { form: [t(SEND_FAILED, locale)] } }, back);
   }
 };

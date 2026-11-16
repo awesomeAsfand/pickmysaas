@@ -1,0 +1,111 @@
+---
+/**
+ * "(06) Pricing" teaser (new in V2): every service's real starting price in
+ * one list, linking to the full /pricing/ page. Prices are plain HTML.
+ */
+import SectionHead from '@/components/ds/SectionHead.astro';
+import { t, tData, localizedPath, getLocaleDirection } from '@/i18n';
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const k = (key: string) => t(`home.pricing.${key}`, locale);
+const arrow = getLocaleDirection(locale) === 'rtl' ? '←' : '→';
+const rows = tData<{ name: string; price: string; note: string }[]>('home.pricing.rows', locale)!;
+---
+
+<section id="pricing" class="ds-wrap ds-section">
+  <SectionHead n="06" label={k('label')} title={k('title')} lead={k('lead')} />
+  <div class="ds-card ds-card--hard-shadow price" data-reveal>
+    <dl class="price__list">
+      {
+        rows.map((row) => (
+          <div class="price__row">
+            <dt class="price__name">{row.name}</dt>
+            <dd class="price__note">{row.note}</dd>
+            <dd class="price__amount" dir="auto">
+              {row.price}
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+    <a class="ds-btn ds-btn--blue ds-btn--lg price__cta" href={localizedPath('/pricing', locale)}>
+      {k('all')}<span aria-hidden="true">{arrow}</span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .price {
+    display: grid;
+    gap: 28px;
+  }
+  .price__list {
+    margin: 0;
+  }
+  .price__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr) auto;
+    align-items: baseline;
+    gap: 8px 24px;
+    padding-block: 18px;
+    border-block-start: 1px solid var(--line);
+  }
+  .price__row:first-child {
+    border-block-start: 0;
+    padding-block-start: 0;
+  }
+  .price__name {
+    font-family: var(--fd);
+    font-weight: 800;
+    font-stretch: var(--fs);
+    text-transform: var(--tt);
+    letter-spacing: var(--ls);
+    font-size: clamp(20px, 1.9vw, 28px);
+    line-height: var(--lh);
+  }
+  .price__note {
+    margin: 0;
+    font-size: var(--text-small);
+    color: var(--ink-3);
+  }
+  .price__amount {
+    margin: 0;
+    font-family: var(--font-latin);
+    font-weight: 850;
+    font-stretch: 110%;
+    letter-spacing: -0.03em;
+    font-size: clamp(26px, 2.8vw, 42px);
+    line-height: 1;
+    white-space: nowrap;
+    text-align: end;
+  }
+  :root:lang(ar) .price__amount {
+    font-family: var(--font-arabic-display);
+    letter-spacing: 0;
+    font-size: clamp(22px, 2.2vw, 32px);
+  }
+  .price__cta {
+    justify-self: start;
+  }
+  @media (max-width: 719.98px) {
+    .price__row {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+    .price__name {
+      grid-column: 1 / -1;
+    }
+    .price__note {
+      grid-column: 1;
+      grid-row: 2;
+    }
+    .price__amount {
+      grid-row: 2;
+      grid-column: 2;
+      align-self: end;
+    }
+  }
+</style>

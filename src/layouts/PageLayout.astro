@@ -20,6 +20,10 @@ interface Props {
   languageAlternates?: Record<string, string>;
   extraSchemas?: WithContext<Thing>[];
   hideWhatsApp?: boolean;
+  includeOrgSchema?: boolean;
+  includeProfessionalServiceSchema?: boolean;
+  /** No top padding: the page opens with its own hero spacing. */
+  flush?: boolean;
   /** @deprecated v1 leftover, ignored. Removed when the templates are rebuilt (V5). */
   showScrollProgress?: boolean;
   /** @deprecated v1 leftover, ignored. */
@@ -39,6 +43,9 @@ const {
   languageAlternates,
   extraSchemas,
   hideWhatsApp,
+  includeOrgSchema,
+  includeProfessionalServiceSchema,
+  flush = false,
 } = Astro.props;
 
 // A page in one language only (an hreflang list of one) whose switch points
@@ -57,10 +64,12 @@ const notTwin = !!languageAlternates && !!localeAlternates && localeAlternates.l
   localeAlternates={localeAlternates}
   extraSchemas={extraSchemas}
   hideWhatsApp={hideWhatsApp}
+  includeOrgSchema={includeOrgSchema}
+  includeProfessionalServiceSchema={includeProfessionalServiceSchema}
 >
   <slot name="head" slot="head" />
   <Header slot="header" languageAlternates={languageAlternates} notTwin={notTwin} />
-  <div class="page">
+  <div class:list={['page', flush && 'page--flush']}>
     <slot />
   </div>
   <Footer slot="footer" />
@@ -70,5 +79,8 @@ const notTwin = !!languageAlternates && !!localeAlternates && localeAlternates.l
   .page {
     min-height: 70vh;
     padding-block-start: var(--header-offset);
+  }
+  .page--flush {
+    padding-block-start: calc(var(--header-offset) + 8px);
   }
 </style>

@@ -239,24 +239,6 @@
       },
       "premium": false
     },
-    "contact-form": {
-      "name": "ContactForm",
-      "category": "patterns",
-      "files": [
-        "src/components/patterns/ContactForm.astro"
-      ],
-      "dependencies": {
-        "utilities": [
-          "cn"
-        ],
-        "components": [
-          "input",
-          "textarea",
-          "button"
-        ]
-      },
-      "premium": false
-    },
     "cta": {
       "name": "CTA",
       "category": "ui",
@@ -799,6 +781,18 @@
         "utilities": [
           "cn"
         ],
+        "components": []
+      },
+      "premium": false
+    },
+    "brief-form": {
+      "name": "BriefForm",
+      "category": "patterns",
+      "files": [
+        "src/components/ds/BriefForm.astro"
+      ],
+      "dependencies": {
+        "utilities": [],
         "components": []
       },
       "premium": false

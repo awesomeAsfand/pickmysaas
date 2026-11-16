@@ -1,0 +1,349 @@
+---
+/**
+ * "(09) Contact" (V4): WhatsApp and email on one side; on the other, v2's card
+ * with two tabs, "Book a call" (the real Cal.com calendar) and "Send a brief"
+ * (the brief form, posting to /api/contact).
+ *
+ * - The Cal.com calendar mounts inline when this section nears the screen,
+ *   or at once if the visitor presses the button. A plain link to the Cal.com
+ *   page is always there, so booking works without JavaScript.
+ * - Without JavaScript the tabs are not needed: both panels show.
+ * - The floating WhatsApp button hides while this section is on screen
+ *   (data-hide-fab), since it has its own.
+ */
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import BriefForm from '@/components/ds/BriefForm.astro';
+import siteConfig from '@/config/site.config';
+import { t, tData, getLocaleDirection } from '@/i18n';
+import { whatsAppUrl } from '@/lib/booking';
+
+interface Props {
+  locale: string;
+  /** Section number shown in the marker. */
+  n?: string;
+  /** Heading level: h2 on the home page, h1 when it opens the contact page. */
+  as?: 'h1' | 'h2';
+}
+
+const { locale, n = '09', as: Tag = 'h2' } = Astro.props;
+const k = (key: string) => t(`home.contact.${key}`, locale);
+const arrow = getLocaleDirection(locale) === 'rtl' ? '←' : '→';
+const tabs = tData<string[]>('home.contact.tabs', locale)!;
+const meta = tData<string[]>('home.contact.book.meta', locale)!;
+const wa = whatsAppUrl(t('common.whatsappMessage', locale));
+const calLink = siteConfig.booking?.calLink;
+const calUrl = calLink ? `https://cal.com/${calLink}` : undefined;
+---
+
+<section id="contact" class="ds-wrap ds-section contact" data-hide-fab>
+  <div class="contact__grid">
+    <div class="contact__intro">
+      <span class="ds-marker">({n}) {k('label')}</span>
+      <Tag class="ds-display ds-display--xl contact__title">{k('title')}</Tag>
+      <p class="contact__sub">{k('sub')}</p>
+      {
+        wa && (
+          <a class="contact__wa" href={wa} target="_blank" rel="noopener noreferrer" data-whatsapp>
+            <span class="contact__wa-icon">
+              <Icon name="whatsapp" />
+            </span>
+            <span class="contact__wa-text">
+              <span>{k('wa')}</span>
+              <span>{k('waNote')}</span>
+            </span>
+            <span aria-hidden="true">{arrow}</span>
+          </a>
+        )
+      }
+      <a class="contact__email" href={`mailto:${siteConfig.email}`}>
+        <span>{k('email')}</span>
+        <span dir="ltr">{siteConfig.email}</span>
+      </a>
+    </div>
+
+    <div class="ds-card ds-card--hard-shadow contact__card" data-tabs>
+      <div class="contact__tabs" role="tablist" hidden data-tablist>
+        {
+          tabs.map((label, i) => (
+            <button
+              type="button"
+              role="tab"
+              id={`contact-tab-${i}`}
+              aria-controls={`contact-panel-${i}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              tabindex={i === 0 ? 0 : -1}
+            >
+              {label}
+            </button>
+          ))
+        }
+      </div>
+
+      <div class="contact__panel" id="contact-panel-0" role="tabpanel" aria-labelledby="contact-tab-0" data-panel>
+        <div class="book__head">
+          <h3 class="ds-title ds-title--md book__title">{k('book.title')}</h3>
+          <div class="book__meta">{meta.map((m) => <span class="ds-pill">{m}</span>)}</div>
+        </div>
+        <p class="ds-body">{k('book.text')}</p>
+        {
+          calLink && calUrl && (
+            <>
+              <div class="book__embed" data-cal-inline={calLink} data-loading={k('book.loading')} />
+              <div class="book__actions">
+                <a class="ds-btn ds-btn--blue ds-btn--block" href={calUrl} data-cal-link={calLink}>
+                  {k('book.open')}
+                  <span aria-hidden="true">{arrow}</span>
+                </a>
+                <a class="ds-link" href={calUrl} target="_blank" rel="noopener">
+                  {k('book.fallback')}
+                </a>
+              </div>
+            </>
+          )
+        }
+      </div>
+
+      <div class="contact__panel" id="contact-panel-1" role="tabpanel" aria-labelledby="contact-tab-1" data-panel>
+        <h3 class="sr-only">{tabs[1]}</h3>
+        <BriefForm locale={locale} id="home-brief" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact {
+    padding-block-end: clamp(90px, 10vw, 140px);
+  }
+  .contact__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+    gap: clamp(32px, 5vw, 80px);
+    align-items: start;
+  }
+  .contact__title {
+    margin-block-start: 20px;
+  }
+  .contact__sub {
+    margin: 28px 0 36px;
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 460px;
+  }
+  .contact__wa {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 22px;
+    border-radius: 22px;
+    background: var(--ink);
+    color: var(--on-ink);
+    max-width: 480px;
+    transition: transform 0.25s;
+  }
+  .contact__wa:hover {
+    transform: translateY(-3px);
+  }
+  .contact__wa-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--whatsapp-fill);
+    display: grid;
+    place-items: center;
+    color: var(--white);
+    flex: none;
+  }
+  .contact__wa-icon :global(svg) {
+    width: 24px;
+    height: 24px;
+  }
+  .contact__wa-text {
+    flex: 1;
+    display: grid;
+    gap: 3px;
+  }
+  .contact__wa-text span:first-child {
+    font-weight: 600;
+    font-size: 17px;
+  }
+  .contact__wa-text span:last-child {
+    font-size: 14px;
+    color: var(--on-ink-muted);
+  }
+  .contact__email {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    margin-block-start: 20px;
+    font-size: 16px;
+    padding-inline-start: 4px;
+  }
+  .contact__email span:first-child {
+    color: var(--ink-3);
+  }
+  .contact__email span:last-child {
+    font-weight: 600;
+    border-block-end: 1.5px solid currentColor;
+  }
+  .contact__email:hover span:last-child {
+    color: var(--blue);
+  }
+
+  .contact__card {
+    padding: 0;
+  }
+  .contact__tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-block-end: 1.5px solid var(--ink);
+  }
+  .contact__tabs button {
+    border: 0;
+    padding: 18px;
+    min-height: 56px;
+    font-size: 15px;
+    font-weight: 700;
+    background: transparent;
+    color: var(--ink);
+    transition:
+      background-color 0.25s,
+      color 0.25s;
+  }
+  .contact__tabs button[aria-selected='true'] {
+    background: var(--ink);
+    color: var(--white);
+  }
+  .contact__tabs button:focus-visible {
+    outline-offset: -4px;
+  }
+  .contact__panel {
+    padding: clamp(20px, 2.6vw, 32px);
+    display: grid;
+    gap: 18px;
+    align-content: start;
+  }
+  /* No JavaScript: both panels, one after the other. */
+  .contact__panel + .contact__panel {
+    border-block-start: 1.5px solid var(--ink);
+  }
+  [data-tabs-ready] .contact__panel + .contact__panel {
+    border-block-start: 0;
+  }
+  .contact__panel :global(.ds-body) {
+    margin: 0;
+  }
+  .book__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px 16px;
+    flex-wrap: wrap;
+  }
+  .book__title {
+    text-transform: none;
+  }
+  .book__meta {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .book__embed:empty:not([data-state]) {
+    display: none;
+  }
+  .book__embed {
+    min-height: 480px;
+    border-radius: var(--theme-radius-lg);
+    overflow: hidden;
+    background: var(--white);
+  }
+  .book__embed[data-state='loading']::before {
+    content: attr(data-loading);
+    display: grid;
+    place-items: center;
+    min-height: 480px;
+    color: var(--ink-3);
+    font-size: var(--text-small);
+  }
+  .book__actions {
+    display: grid;
+    gap: 14px;
+    justify-items: start;
+  }
+  .book__actions .ds-btn {
+    width: 100%;
+  }
+</style>
+
+<script>
+  import { mountInlineBooking } from '@/lib/cal';
+
+  function initContact() {
+    const card = document.querySelector<HTMLElement>('[data-tabs]');
+    if (!card || card.dataset.ready) return;
+    card.dataset.ready = 'true';
+
+    // Tabs (WAI-ARIA pattern: arrow keys move between tabs).
+    const tablist = card.querySelector<HTMLElement>('[data-tablist]')!;
+    const tabs = [...tablist.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = [...card.querySelectorAll<HTMLElement>('[data-panel]')];
+    const select = (index: number, focus = false) => {
+      tabs.forEach((tab, i) => {
+        tab.setAttribute('aria-selected', String(i === index));
+        tab.tabIndex = i === index ? 0 : -1;
+        panels[i].hidden = i !== index;
+      });
+      if (focus) tabs[index].focus();
+    };
+    tablist.hidden = false;
+    card.setAttribute('data-tabs-ready', '');
+    select(location.hash === '#brief' ? 1 : 0);
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(i));
+      tab.addEventListener('keydown', (event) => {
+        const rtl = document.dir === 'rtl';
+        const next = { ArrowRight: rtl ? -1 : 1, ArrowLeft: rtl ? 1 : -1 }[event.key];
+        if (next) select((i + next + tabs.length) % tabs.length, true);
+        if (event.key === 'Home') select(0, true);
+        if (event.key === 'End') select(tabs.length - 1, true);
+      });
+    });
+
+    // Cal.com inline calendar: mount once, as the section nears the screen
+    // or when the visitor presses the button. The button then just scrolls.
+    const embed = card.querySelector<HTMLElement>('[data-cal-inline]');
+    const button = card.querySelector<HTMLAnchorElement>('.book__actions [data-cal-link]');
+    if (!embed || !button) return;
+    let mounted = false;
+    const mount = () => {
+      if (mounted) return;
+      mounted = true;
+      embed.dataset.state = 'loading';
+      mountInlineBooking(embed, embed.dataset.calInline!);
+      // Cal replaces the placeholder with its iframe; clear the loading text then.
+      new MutationObserver((_, observer) => {
+        if (embed.querySelector('iframe')) {
+          delete embed.dataset.state;
+          observer.disconnect();
+        }
+      }).observe(embed, { childList: true, subtree: true });
+      // The inline calendar replaces the popup button.
+      button.removeAttribute('data-cal-link');
+      button.hidden = true;
+    };
+    new IntersectionObserver(
+      ([entry], observer) => {
+        if (entry.isIntersecting) {
+          mount();
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '600px 0px' }
+    ).observe(card);
+    // The hero and process "Book a call" buttons on this page open the popup
+    // (BookingPopup); nothing else to wire here.
+  }
+
+  initContact();
+</script>

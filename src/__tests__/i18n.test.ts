@@ -62,8 +62,8 @@ describe('i18n tData() helper', () => {
   });
 
   it('returns the Arabic structured value when locale is ar', () => {
-    const hero = tData<{ badge: string }>('pages.home.hero', 'ar');
-    expect(hero?.badge).toBe('نستقبل مشاريع جديدة في دول الخليج');
+    const hero = tData<{ l1: string }>('home.hero', 'ar');
+    expect(hero?.l1).toBe('مواقع');
   });
 
   it('falls back to the default-locale value when the locale has no entry', () => {
@@ -183,7 +183,7 @@ describe('i18n meta titles never embed the site name', () => {
     'projects.pageMetaTitle',
     'projects.tagMetaTitle',
     'errors.metaTitle',
-    'pages.home.meta.title',
+    'home.meta.title',
     'pages.about.meta.title',
     'pages.services.meta.title',
     'pages.contact.meta.title',

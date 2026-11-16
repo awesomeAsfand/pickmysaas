@@ -1,0 +1,177 @@
+---
+/**
+ * "Selected work" (fix 1: v2 showed no proof). The two real clients, with
+ * their real figures and screenshots, each linking to its case study.
+ */
+import { Image } from 'astro:assets';
+import SectionHead from '@/components/ds/SectionHead.astro';
+import { t, tData, localizedPath, getLocaleDirection } from '@/i18n';
+import gnDesktop from '@/assets/home/work-gulfnurseries-desktop.webp';
+import gnMobile from '@/assets/home/work-gulfnurseries-mobile.webp';
+import attiaDesktop from '@/assets/home/work-healing-with-attia-desktop.webp';
+import attiaMobile from '@/assets/home/work-healing-with-attia-mobile.webp';
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const k = (key: string) => t(`home.work.${key}`, locale);
+const arrow = getLocaleDirection(locale) === 'rtl' ? '←' : '→';
+
+type Item = {
+  name: string;
+  kind: string;
+  summary: string;
+  alt: string;
+  stats?: { value: string; label: string }[];
+  points?: string[];
+};
+const items = tData<Item[]>('home.work.items', locale)!;
+const media = [
+  { desktop: gnDesktop, mobile: gnMobile, href: localizedPath('/projects/gulfnurseries', locale), tone: 'ds-blue' },
+  { desktop: attiaDesktop, mobile: attiaMobile, href: localizedPath('/projects/healing-with-attia', locale), tone: 'ds-dark' },
+];
+---
+
+<section id="work" class="ds-wrap ds-section work">
+  <SectionHead n="03" label={k('label')} title={k('title')} lead={k('lead')}>
+    <a class="ds-link" href={localizedPath('/projects', locale)}>{k('all')} <span aria-hidden="true">{arrow}</span></a>
+  </SectionHead>
+
+  <div class="work__list">
+    {
+      items.map((item, i) => (
+        <article class="work__item" data-reveal>
+          <a class:list={['work__shot', media[i].tone]} href={media[i].href} tabindex="-1" aria-hidden="true">
+            <div class="ds-frame work__desktop">
+              <div class="ds-frame__bar">
+                <i />
+                <i />
+                <i />
+              </div>
+              <Image src={media[i].desktop} alt="" widths={[640, 960, 1400]} sizes="(min-width: 1024px) 760px, 92vw" />
+            </div>
+            <div class="work__phone">
+              <Image src={media[i].mobile} alt="" widths={[200, 380]} sizes="160px" />
+            </div>
+          </a>
+          <div class="work__text">
+            <span class="ds-marker">{item.kind}</span>
+            <h3 class="ds-display ds-display--3">
+              <a href={media[i].href}>{item.name}</a>
+            </h3>
+            <p class="ds-body">{item.summary}</p>
+            <span class="sr-only">{item.alt}</span>
+            {item.stats && (
+              <dl class="ds-stats work__stats">
+                {item.stats.map((stat) => (
+                  <div class="ds-stat">
+                    <dt class="ds-stat__label">{stat.label}</dt>
+                    <dd class="ds-stat__value">{stat.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+            {item.points && (
+              <ul class="ds-list work__points">
+                {item.points.map((point) => (
+                  <li>{point}</li>
+                ))}
+              </ul>
+            )}
+            <a class="ds-link" href={media[i].href}>
+              {k('more')}: {item.name} <span aria-hidden="true">{arrow}</span>
+            </a>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .work__list {
+    display: grid;
+    gap: clamp(56px, 7vw, 100px);
+  }
+  .work__item {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: clamp(28px, 4vw, 64px);
+    align-items: center;
+  }
+  .work__item:nth-child(even) .work__shot {
+    order: 2;
+  }
+  .work__shot {
+    position: relative;
+    display: block;
+    border-radius: 30px;
+    padding: clamp(18px, 3.4vw, 48px);
+    padding-inline-end: clamp(48px, 7vw, 110px);
+    background-image: radial-gradient(rgb(255 255 255 / 0.14) 1px, transparent 1px);
+    background-size: 22px 22px;
+    overflow: hidden;
+  }
+  .work__desktop {
+    transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .work__shot:hover .work__desktop {
+    transform: translateY(-6px);
+  }
+  .work__phone {
+    position: absolute;
+    inset-inline-end: clamp(14px, 2.4vw, 32px);
+    bottom: clamp(14px, 2.4vw, 32px);
+    width: clamp(78px, 11vw, 150px);
+    border-radius: 18px;
+    overflow: hidden;
+    border: 4px solid var(--ink);
+    background: var(--ink);
+    box-shadow: 0 30px 50px -20px rgb(0 0 0 / 0.6);
+  }
+  .work__phone :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .work__text {
+    display: grid;
+    gap: 18px;
+    justify-items: start;
+  }
+  .work__text h3 {
+    text-transform: none;
+  }
+  .work__text h3 a:hover {
+    color: var(--blue);
+  }
+  .work__stats {
+    width: 100%;
+    margin: 6px 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .work__stats dd {
+    margin: 0;
+  }
+  .work__stats .ds-stat {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+  }
+  .work__stats .ds-stat__value {
+    font-size: clamp(32px, 3.2vw, 48px);
+  }
+  .work__points {
+    width: 100%;
+  }
+  @media (max-width: 899.98px) {
+    .work__item {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .work__item:nth-child(even) .work__shot {
+      order: 0;
+    }
+  }
+</style>

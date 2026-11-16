@@ -1,0 +1,142 @@
+---
+/**
+ * "(04) Services": v2's stacked cards, one per service (fix 4).
+ *
+ * Every card carries a one-line answer, its deliverables, the price, the
+ * timeline and a link to its page. The stacking (each card sticks a little
+ * lower than the last, and the next slides over it) only runs where a whole
+ * card fits on screen: wide and tall viewports. Elsewhere the cards simply
+ * follow each other, so no card's text can sit hidden under the next one.
+ */
+import SectionHead from '@/components/ds/SectionHead.astro';
+import { t, tData, localizedPath, getLocaleDirection } from '@/i18n';
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const k = (key: string) => t(`home.services.${key}`, locale);
+const arrow = getLocaleDirection(locale) === 'rtl' ? '←' : '→';
+
+type Item = { title: string; answer: string; deliverables: string[]; price: string; time: string };
+const items = tData<Item[]>('home.services.items', locale)!;
+const links = [
+  localizedPath('/services/websites', locale),
+  localizedPath('/services/ecommerce', locale),
+  localizedPath('/services/arabic-websites', locale),
+  `${localizedPath('/services', locale)}#brand-identity`,
+  `${localizedPath('/services', locale)}#growth-care`,
+];
+const tones = ['', 'ds-card--blue', 'ds-card--ink', 'ds-card--sand', ''];
+const total = String(items.length).padStart(2, '0');
+---
+
+<section id="services" class="ds-wrap ds-section">
+  <SectionHead n="04" label={k('label')} title={k('title')} />
+  <div class="svc">
+    {
+      items.map((item, i) => {
+        const n = String(i + 1).padStart(2, '0');
+        return (
+          <article class:list={['ds-card', 'svc__card', tones[i]]} style={`--i:${i}`}>
+            <span class="ds-ghost" aria-hidden="true">
+              {n}
+            </span>
+            <div class="svc__head">
+              <span class="ds-count">
+                {n} / {total}
+              </span>
+              <h3 class="ds-display ds-display--2">{item.title}</h3>
+            </div>
+            <div class="svc__body">
+              <p class="svc__answer">{item.answer}</p>
+              <ul class="ds-list">
+                {item.deliverables.map((d) => (
+                  <li>{d}</li>
+                ))}
+              </ul>
+              <div class="svc__foot">
+                <div class="svc__price">
+                  <span class="svc__amount">{item.price}</span>
+                  <span class="svc__time">{item.time}</span>
+                </div>
+                <a class="ds-link" href={links[i]}>
+                  {k('details')}
+                  <span class="sr-only">: {item.title}</span>
+                  <span aria-hidden="true">{arrow}</span>
+                </a>
+              </div>
+            </div>
+          </article>
+        );
+      })
+    }
+  </div>
+</section>
+
+<style>
+  .svc {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .svc__card {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: clamp(24px, 4vw, 64px);
+    box-shadow: 0 -24px 40px -32px rgb(0 0 0 / 0.4);
+  }
+  .svc__head {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .svc__head h3 {
+    margin-block-start: auto;
+  }
+  .svc__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 22px;
+  }
+  .svc__answer {
+    margin: 0;
+    font-size: var(--text-lead);
+    line-height: 1.5;
+  }
+  .svc__foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 14px 24px;
+  }
+  .svc__price {
+    display: grid;
+    gap: 4px;
+  }
+  .svc__amount {
+    font-family: var(--fd);
+    font-weight: 850;
+    font-stretch: var(--fs);
+    letter-spacing: var(--ls);
+    font-size: clamp(24px, 2.2vw, 32px);
+    line-height: 1.1;
+  }
+  .svc__time {
+    font-size: var(--text-small);
+    font-weight: 500;
+    opacity: 0.85;
+  }
+
+  /* Stacking only where a whole card fits on screen. */
+  @media (min-width: 1024px) and (min-height: 760px) {
+    .svc__card {
+      position: sticky;
+      top: calc(96px + var(--i) * 14px);
+      min-height: min(500px, calc(100vh - 160px));
+    }
+  }
+</style>
