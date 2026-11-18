@@ -316,6 +316,36 @@ function verifySiteUrl() {
 }
 
 /**
+ * Wildcard redirects for the removed project tag pages, appended to the
+ * Cloudflare build's `_redirects`, which supports `*` splats. Astro's own
+ * `redirects` option can't send a dynamic route to a static one. Two
+ * projects don't need tag pages; every tag URL goes to the projects list.
+ */
+function tagRedirects() {
+  const lines = ['/projects/tag/*    /projects/    301', '/ar/projects/tag/*    /ar/projects/    301'];
+  return {
+    name: 'tag-redirects',
+    hooks: {
+      'astro:build:done': async ({ dir, logger }) => {
+        if (deployTarget !== 'cloudflare') return;
+        const file = join(fileURLToPath(dir), '_redirects');
+        let current = '';
+        try {
+          current = await readFile(file, 'utf8');
+        } catch {
+          // No file yet: write one.
+        }
+        const missing = lines.filter((line) => !current.includes(line));
+        if (!missing.length) return;
+        const head = current.replace(/\n*$/, '');
+        await writeFile(file, `${head}${head ? '\n' : ''}${missing.join('\n')}\n`);
+        logger.info(`added ${missing.length} tag redirects to _redirects`);
+      },
+    },
+  };
+}
+
+/**
  * Native Astro i18n is only wired up when the user opts in *and* has
  * more than one locale configured. With i18n off (the default) this
  * block is undefined and the build emits the exact same routes as
@@ -344,11 +374,19 @@ export default defineConfig({
   // rendering — significant whitespace between inline tags is preserved.
   compressHTML: true,
 
-  // Retired projects send visitors and search engines to the projects list
-  // instead of a 404. Snippet Tester was taken out of production in Nov 2026.
+  // Permanent (301) redirects for retired URLs, written to `_redirects` in
+  // the Cloudflare build.
+  // - Snippet Tester: taken out of production in Nov 2026.
+  // - SaaS and MVP services: dropped on 16 Nov 2026 (v2 redesign).
+  // Project tag pages (removed in the v2 redesign) need a wildcard, which
+  // this option can't express: see tagRedirects() above.
   redirects: {
     '/projects/snippet-tester/': '/projects/',
     '/ar/projects/snippet-tester/': '/ar/projects/',
+    '/services/saas/': '/services/',
+    '/services/mvp/': '/services/',
+    '/ar/services/saas/': '/ar/services/',
+    '/ar/services/mvp/': '/ar/services/',
   },
 
   build: {
@@ -404,6 +442,7 @@ export default defineConfig({
     faviconAssets(),
     ogCards(),
     verifySiteUrl(),
+    tagRedirects(),
   ],
 
   vite: {

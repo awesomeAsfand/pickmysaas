@@ -33,7 +33,7 @@ export function createPersonSchema(): WithContext<Person> {
     name: 'Asfand Yar Khan',
     jobTitle: 'Founder',
     url: `${siteConfig.url}/about/`,
-    knowsAbout: ['Website design', 'SaaS development', 'MVP development', 'Python', 'Django'],
+    knowsAbout: ['Website design', 'Ecommerce website development', 'Arabic and English websites', 'Python', 'Django'],
     worksFor: {
       '@type': 'Organization',
       name: siteConfig.name,
@@ -84,23 +84,34 @@ export function createProfessionalServiceSchema(): WithContext<LocalBusiness> {
     knowsAbout: [
       'Website design',
       'Ecommerce website development',
-      'SaaS development',
-      'MVP development',
       'Arabic and English bilingual websites',
+      'Right-to-left (RTL) web design',
+      'Brand identity',
       'Python',
       'Django',
     ],
+    // The five services (16 Nov 2026) with their prices as the pages show
+    // them: "from" prices as minPrice, fixed prices as price, Growth & care
+    // per month.
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
       name: 'Services',
-      itemListElement: [
-        ['Website design', '/services/websites/'],
-        ['Ecommerce website development', '/services/ecommerce/'],
-        ['SaaS development', '/services/saas/'],
-        ['MVP development', '/services/mvp/'],
-      ].map(([name, path]) => ({
-        '@type': 'Offer',
-        itemOffered: { '@type': 'Service', name, url: `${siteConfig.url}${path}` },
+      itemListElement: (
+        [
+          ['Website design', '/services/websites/', { minPrice: 300 }],
+          ['Ecommerce stores', '/services/ecommerce/', { minPrice: 700 }],
+          ['Arabic and RTL websites', '/services/arabic-websites/', { price: 300 }],
+          ['Brand identity', '/services/#brand-identity', { price: 500 }],
+          ['Growth and care', '/services/#growth-care', { price: 400, unitText: 'month' }],
+        ] as [string, string, { minPrice?: number; price?: number; unitText?: string }][]
+      ).map(([name, path, price]) => ({
+        '@type': 'Offer' as const,
+        itemOffered: { '@type': 'Service' as const, name, url: `${siteConfig.url}${path}` },
+        priceSpecification: {
+          '@type': price.unitText ? ('UnitPriceSpecification' as const) : ('PriceSpecification' as const),
+          priceCurrency: 'USD',
+          ...price,
+        },
       })),
     },
     sameAs: siteConfig.socialLinks,

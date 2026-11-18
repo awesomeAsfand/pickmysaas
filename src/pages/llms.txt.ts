@@ -81,14 +81,33 @@ export const GET: APIRoute = async ({ site }) => {
     );
   }
 
+  // Services, prices and facts, as the site's pages state them (16 Nov 2026).
   const sections = [
     `# ${siteConfig.name}`,
     ``,
     `> ${siteConfig.description}`,
     ``,
+    `Founded and run by Asfand Yar Khan (five years' experience). Works remotely with businesses in Saudi Arabia, the UAE, Qatar, Kuwait, Bahrain and Oman; no office in the Gulf. Every site is custom-built on Python and Django, in Arabic and English; the client hosts the finished site and owns the code. PickMySaaS does not build on Shopify, Salla, Zid, WooCommerce, Webflow, Next.js or WordPress. Payment: 50% upfront and 50% on completion, by invoice and bank transfer; no hourly billing. A simple website takes about a week; online stores and larger sites take 4 to 8 weeks.`,
+    ``,
+    `## Services and prices (USD)`,
+    ``,
+    line('Website design', `${base}/services/websites/`, 'from $300: Starter $300, Business $500, Premium from $700'),
+    line('E-commerce stores', `${base}/services/ecommerce/`, 'fixed price, from $700'),
+    line('Arabic & RTL websites', `${base}/services/arabic-websites/`, '$300, fixed price, 2–3 weeks'),
+    line('Brand identity', `${base}/services/#brand-identity`, '$500, fixed price, 2–3 weeks'),
+    line('Growth & care', `${base}/services/#growth-care`, '$400 a month'),
+    line('All prices', `${base}/pricing/`),
+    ``,
     `## Pages`,
     ``,
     ...pageLines,
+    line('Arabic home page', `${base}/ar/`),
+    ``,
+    `## Guides`,
+    ``,
+    line('How much does a website cost in the UAE?', `${base}/guides/website-cost-uae/`),
+    line('Salla, Shopify or a custom store', `${base}/guides/salla-vs-shopify-vs-custom-store/`),
+    line('تكلفة تصميم موقع في السعودية (Arabic)', `${base}/ar/guides/website-cost/`),
   ];
 
   if (projectLines) {

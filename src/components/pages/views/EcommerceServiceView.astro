@@ -58,7 +58,7 @@ const page = tData<{
     lead: string;
     cards: { name: string; for: string; features: string[] }[];
     customPrice: string;
-    customLink: string;
+    fixedFrom: string;
     detailsLink: string;
     guideLink: string;
     note: string;
@@ -76,13 +76,13 @@ const page = tData<{
   cta: { heading: string; description: string; primary: string; secondary: string };
 }>('pages.serviceEcommerce', locale)!;
 
-// Business and Premium prices, straight from the website packages.
+// The store price: fixed, from $700. Its conversions are the $700 package's,
+// straight from the website packages, so the two can't drift apart.
 const packageItems = tData<{ price: string; pricePrefix: string; priceLocal: string[] }[]>(
   'pages.services.packages.items',
   locale
 )!;
-const priceFor = [packageItems[1], packageItems[2]];
-const fromLabel = (prefix: string) => (prefix ? `${prefix} ` : '');
+const priceFor = [packageItems[2]];
 
 // The Noble Muse concept store screenshots (shared with the homepage card).
 const shot = {
@@ -95,7 +95,6 @@ const shot = {
 
 const contactUrl = localizedPath('/contact', locale);
 const packagesUrl = `${localizedPath('/services/websites', locale)}#packages`;
-const saasUrl = localizedPath('/services/saas', locale);
 // The price guide for this language: the UAE guide in English, the Saudi one in Arabic.
 const guideUrl = locale === defaultLocale ? '/guides/website-cost-uae/' : localizedPath('/guides/website-cost', locale);
 // The Salla vs Shopify vs custom guide exists in both languages (P2-06).
@@ -245,7 +244,7 @@ const breadcrumbs = [
   <section id="prices" class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
       <SectionHeading icon="tag" badge={page.packages.badge} heading={page.packages.heading} lead={page.packages.lead} />
-      <div class="grid gap-6 lg:grid-cols-3 lg:items-stretch">
+      <div class="grid gap-6 lg:grid-cols-2 lg:items-stretch">
         {page.packages.cards.map((card, i) => {
           const price = priceFor[i];
           return (
@@ -263,7 +262,7 @@ const breadcrumbs = [
               {price ? (
                 <div class="flex flex-col gap-1">
                   <p class="font-display text-4xl font-bold text-foreground">
-                    <span class="text-base font-medium text-foreground-muted">{fromLabel(price.pricePrefix)}</span>{price.price}
+                    <span class="block text-sm font-semibold text-foreground-muted">{page.packages.fixedFrom}</span>{price.price}
                   </p>
                   <p class="text-xs text-foreground-muted">{price.priceLocal.join(' · ')}</p>
                 </div>
@@ -278,16 +277,9 @@ const breadcrumbs = [
                   </li>
                 ))}
               </ul>
-              {price ? (
-                <Button variant={i === 0 ? 'primary' : 'outline'} {...bookingLinkAttrs(contactUrl)} class="w-full justify-center">
-                  {page.cta.primary}
-                </Button>
-              ) : (
-                <a href={saasUrl} class="inline-flex items-center gap-2 text-sm font-semibold text-brand-700 dark:text-brand-400">
-                  {page.packages.customLink}
-                  <Icon name="arrow-right" size="sm" class="rtl:-scale-x-100" />
-                </a>
-              )}
+              <Button variant={i === 0 ? 'primary' : 'outline'} {...bookingLinkAttrs(contactUrl)} class="w-full justify-center">
+                {page.cta.primary}
+              </Button>
             </Card>
           );
         })}

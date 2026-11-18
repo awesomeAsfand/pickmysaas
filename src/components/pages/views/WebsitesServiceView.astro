@@ -43,7 +43,7 @@ const page = tData<{
     lead: string;
     situationLabel: string;
     packageLabel: string;
-    rows: { situation: string; pkg: string; link?: 'saas' }[];
+    rows: { situation: string; pkg: string }[];
   };
   market: {
     badge: string;
@@ -77,7 +77,6 @@ const page = tData<{
 }>('pages.serviceWebsites', locale)!;
 
 const contactUrl = localizedPath('/contact', locale);
-const saasUrl = localizedPath('/services/saas', locale);
 const otherLocale = locale === defaultLocale ? 'ar' : defaultLocale;
 const otherLanguageUrl = swapLocaleInPath(localizedPath('/services/websites', locale), otherLocale);
 const example = (await getVisibleProjects(locale)).find((p) => p.id === `${locale}/healing-with-attia`);
@@ -149,7 +148,7 @@ const breadcrumbs = [
       <SectionHeading icon="compass" badge={page.guide.badge} heading={page.guide.heading} lead={page.guide.lead} />
       <DataTable
         headers={[page.guide.situationLabel, page.guide.packageLabel]}
-        rows={page.guide.rows.map((row) => [row.situation, row.link ? { text: row.pkg, href: saasUrl } : row.pkg])}
+        rows={page.guide.rows.map((row) => [row.situation, row.pkg])}
       />
     </div>
   </section>
