@@ -7,6 +7,7 @@
  */
 import PageLayout from '@/layouts/PageLayout.astro';
 import Contact from '@/components/home/Contact.astro';
+import Process from '@/components/home/Process.astro';
 import Breadcrumbs from '@/components/seo/Breadcrumbs.astro';
 import { t, defaultLocale, localizedPath } from '@/i18n';
 
@@ -27,13 +28,20 @@ const breadcrumbs = [
     <Breadcrumbs items={breadcrumbs} />
   </div>
   <div class="ct">
-    <Contact locale={locale} n="01" as="h1" formId="contact-brief" />
+    <Contact locale={locale} n="auto" as="h1" formId="contact-brief" />
+  </div>
+  <div class="ct-process">
+    <Process locale={locale} auto />
   </div>
 </PageLayout>
 
 <style>
   .ct-crumbs {
     padding-block-start: clamp(20px, 3vw, 32px);
+  }
+  /* What happens after you get in touch. */
+  .ct-process :global(#process) {
+    margin-block-start: 0;
   }
   .ct :global(#contact) {
     padding-block-start: clamp(28px, 4vw, 48px);

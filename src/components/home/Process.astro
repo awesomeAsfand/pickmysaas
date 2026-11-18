@@ -2,7 +2,7 @@
 /**
  * "(05) Process": four steps on a dark section, rewritten to the real
  * timelines (fix 14). A thin blue line fills as the section scrolls past and
- * lights each step in turn. All steps are fully visible without the script;
+ * fills each step's dot in turn (the text stays at full contrast). All steps are fully visible without the script;
  * it only adds the progress effect, and skips it for reduced motion.
  */
 import SectionHead from '@/components/ds/SectionHead.astro';
@@ -80,12 +80,8 @@ const steps = tData<{ time: string; title: string; desc: string }[]>('home.proce
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
     gap: clamp(24px, 3vw, 40px);
   }
-  .proc__step {
-    transition: opacity 0.5s;
-  }
-  .proc__step[data-dim] {
-    opacity: 0.4;
-  }
+  /* Steps not yet reached keep their text at full contrast; only the dot
+     shows progress. */
   .proc__top {
     display: flex;
     align-items: center;

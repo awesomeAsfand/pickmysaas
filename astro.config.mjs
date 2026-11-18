@@ -1,6 +1,7 @@
 import { join, dirname } from 'node:path';
 import { writeFile, mkdir, readdir, readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
+import { spawnSync } from 'node:child_process';
 import { defineConfig, envField } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
@@ -346,6 +347,31 @@ function tagRedirects() {
 }
 
 /**
+ * Runs scripts/seo-audit.mjs on the finished Cloudflare build and fails the
+ * build if it finds an error (v2 redesign, section 10): a leftover of the v2
+ * design export, a page that needs JavaScript to show its text, a missing H1,
+ * title, description or self canonical, the wrong lang/dir, broken hreflang,
+ * or a noindex page in the sitemap. Last in the list, so the sitemap and
+ * _redirects exist when it runs.
+ */
+function seoAuditGate() {
+  return {
+    name: 'seo-audit-gate',
+    hooks: {
+      'astro:build:done': ({ logger }) => {
+        if (deployTarget !== 'cloudflare') return;
+        const result = spawnSync(process.execPath, ['scripts/seo-audit.mjs', '--no-write'], { encoding: 'utf8' });
+        const output = `${result.stdout ?? ''}${result.stderr ?? ''}`.trim();
+        if (result.status !== 0) {
+          throw new Error(`SEO audit failed:\n${output}`);
+        }
+        logger.info(output.split('\n')[0]);
+      },
+    },
+  };
+}
+
+/**
  * Native Astro i18n is only wired up when the user opts in *and* has
  * more than one locale configured. With i18n off (the default) this
  * block is undefined and the build emits the exact same routes as
@@ -389,8 +415,11 @@ export default defineConfig({
     '/ar/services/mvp/': '/ar/services/',
   },
 
+  // All CSS inlined into each page: about 30 KB gzipped in total, and four
+  // render-blocking requests cost more on a phone than re-sending it does
+  // (Lighthouse mobile, V7: LCP 3.3 s with linked CSS).
   build: {
-    inlineStylesheets: 'auto',
+    inlineStylesheets: 'always',
   },
 
   env: {
@@ -443,6 +472,7 @@ export default defineConfig({
     ogCards(),
     verifySiteUrl(),
     tagRedirects(),
+    seoAuditGate(),
   ],
 
   vite: {

@@ -19,7 +19,7 @@ import { whatsAppUrl } from '@/lib/booking';
 
 interface Props {
   locale: string;
-  /** Section number shown in the marker. */
+  /** Section number shown in the marker, or "auto" to join the page's numbering. */
   n?: string;
   /** Heading level: h2 on the home page, h1 when it opens the contact page. */
   as?: 'h1' | 'h2';
@@ -40,7 +40,7 @@ const calUrl = calLink ? `https://cal.com/${calLink}` : undefined;
 <section id="contact" class="ds-wrap ds-section contact" data-hide-fab>
   <div class="contact__grid">
     <div class="contact__intro">
-      <span class="ds-marker">({n}) {k('label')}</span>
+      <span class:list={['ds-marker', n === 'auto' && 'ds-badge-marker']}>{n !== 'auto' && `(${n}) `}{k('label')}</span>
       <Tag class="ds-display ds-display--xl contact__title">{k('title')}</Tag>
       <p class="contact__sub">{k('sub')}</p>
       {
