@@ -11,8 +11,19 @@
 ---
 
 <script>
-  import { openBookingPopup } from '@/lib/cal';
+  import { openBookingPopup, warmBooking } from '@/lib/cal';
   import { track } from '@/lib/track';
+
+  // Load Cal's script once, the first time a visitor points at or tabs to a
+  // booking button, so the popup opens faster.
+  const warm = (event: Event) => {
+    if (!(event.target as Element | null)?.closest?.('[data-cal-link]')) return;
+    document.removeEventListener('pointerover', warm);
+    document.removeEventListener('focusin', warm);
+    warmBooking();
+  };
+  document.addEventListener('pointerover', warm, { passive: true });
+  document.addEventListener('focusin', warm);
 
   document.addEventListener('click', (event) => {
     const target = event.target as Element | null;

@@ -2,11 +2,11 @@
  * Cal.com embed, loaded on demand (client side only).
  *
  * Cal's script (app.cal.com/embed/embed.js) is fetched the first time a
- * booking button is pressed or an inline calendar is mounted, never on page
+ * visitor points at, focuses or presses a booking button, never on page
  * load. Every booking link is also a plain link to the Cal.com page, so
  * booking works without JavaScript.
  *
- * Fires `booking_opened` (popup or inline) and `booking_completed` (Cal's
+ * Fires `booking_opened` (popup) and `booking_completed` (Cal's
  * bookingSuccessful event) to the data layer.
  */
 import { track } from '@/lib/track';
@@ -86,8 +86,11 @@ export function openBookingPopup(calLink: string, source = 'button'): void {
   calApi()('modal', { calLink, config: { layout: 'month_view', theme: 'light' } });
 }
 
-/** Render the booking calendar inside `element`. */
-export function mountInlineBooking(element: HTMLElement, calLink: string): void {
-  track('booking_opened', { mode: 'inline' });
-  calApi()('inline', { elementOrSelector: element, calLink, config: { layout: 'month_view', theme: 'light' } });
+/**
+ * Fetch Cal's script ahead of a likely click (pointer over or focus on a
+ * booking button), so the popup opens without waiting for it. Loads no
+ * calendar and tracks nothing.
+ */
+export function warmBooking(): void {
+  calApi();
 }

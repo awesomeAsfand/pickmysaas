@@ -1863,10 +1863,13 @@
           "Video call",
           "30 minutes"
         ],
-        "text": "Pick a time that suits you. The calendar shows times in your own time zone, and you get an email confirming the call.",
-        "open": "Open the calendar",
-        "fallback": "Or book on Cal.com",
-        "loading": "Loading the calendar…"
+        "steps": [
+          "Choose a day and a time. The calendar shows times in your own time zone.",
+          "You get an email confirming the call, with the video-call link.",
+          "We talk through your project for 30 minutes, free."
+        ],
+        "open": "Choose a time",
+        "fallback": "Or book on Cal.com"
       },
       "brief": {
         "need": "What do you need?",

@@ -1,12 +1,14 @@
 ---
 /**
  * "(09) Contact" (V4): WhatsApp and email on one side; on the other, v2's card
- * with two tabs, "Book a call" (the real Cal.com calendar) and "Send a brief"
- * (the brief form, posting to /api/contact).
+ * with two tabs, "Book a call" and "Send a brief" (the brief form, posting to
+ * /api/contact).
  *
- * - The Cal.com calendar mounts inline when this section nears the screen,
- *   or at once if the visitor presses the button. A plain link to the Cal.com
- *   page is always there, so booking works without JavaScript.
+ * - "Book a call" shows the three steps and one button that opens Cal.com's
+ *   full-size popup (owner, 19 Nov 2026: the inline calendar, squeezed into
+ *   this card, fell back to Cal's stacked phone layout and a long, cut-off
+ *   list of times). The button is a plain link to the Cal.com page, so
+ *   booking works without JavaScript.
  * - Without JavaScript the tabs are not needed: both panels show.
  * - The floating WhatsApp button hides while this section is on screen
  *   (data-hide-fab), since it has its own.
@@ -32,6 +34,7 @@ const k = (key: string) => t(`home.contact.${key}`, locale);
 const arrow = getLocaleDirection(locale) === 'rtl' ? '←' : '→';
 const tabs = tData<string[]>('home.contact.tabs', locale)!;
 const meta = tData<string[]>('home.contact.book.meta', locale)!;
+const steps = tData<string[]>('home.contact.book.steps', locale)!;
 const wa = whatsAppUrl(t('common.whatsappMessage', locale));
 const calLink = siteConfig.booking?.calLink;
 const calUrl = calLink ? `https://cal.com/${calLink}` : undefined;
@@ -86,21 +89,29 @@ const calUrl = calLink ? `https://cal.com/${calLink}` : undefined;
           <h3 class="ds-title ds-title--md book__title">{k('book.title')}</h3>
           <div class="book__meta">{meta.map((m) => <span class="ds-pill">{m}</span>)}</div>
         </div>
-        <p class="ds-body">{k('book.text')}</p>
+        <ol class="book__steps">
+          {
+            steps.map((step, i) => (
+              <li>
+                <span class="book__num" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span>{step}</span>
+              </li>
+            ))
+          }
+        </ol>
         {
           calLink && calUrl && (
-            <>
-              <div class="book__embed" data-cal-inline={calLink} data-loading={k('book.loading')} />
-              <div class="book__actions">
-                <a class="ds-btn ds-btn--blue ds-btn--block" href={calUrl} data-cal-link={calLink}>
-                  {k('book.open')}
-                  <span aria-hidden="true">{arrow}</span>
-                </a>
-                <a class="ds-link" href={calUrl} target="_blank" rel="noopener">
-                  {k('book.fallback')}
-                </a>
-              </div>
-            </>
+            <div class="book__actions">
+              <a class="ds-btn ds-btn--blue ds-btn--lg ds-btn--block" href={calUrl} data-cal-link={calLink}>
+                {k('book.open')}
+                <span aria-hidden="true">{arrow}</span>
+              </a>
+              <a class="ds-link" href={calUrl} target="_blank" rel="noopener">
+                {k('book.fallback')}
+              </a>
+            </div>
           )
         }
       </div>
@@ -251,24 +262,34 @@ const calUrl = calLink ? `https://cal.com/${calLink}` : undefined;
     gap: 6px;
     flex-wrap: wrap;
   }
-  .book__embed:empty:not([data-state]) {
-    display: none;
+  .book__steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-block-end: 1px solid var(--line);
   }
-  .book__embed {
-    min-height: 480px;
-    border-radius: var(--theme-radius-lg);
-    overflow: hidden;
-    background: var(--white);
-  }
-  .book__embed[data-state='loading']::before {
-    content: attr(data-loading);
+  .book__steps li {
     display: grid;
-    place-items: center;
-    min-height: 480px;
-    color: var(--ink-3);
-    font-size: var(--text-small);
+    grid-template-columns: 44px minmax(0, 1fr);
+    align-items: baseline;
+    gap: 12px;
+    padding-block: 16px;
+    border-block-start: 1px solid var(--line);
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .book__num {
+    font-family: var(--font-latin);
+    font-weight: 850;
+    font-stretch: 110%;
+    font-size: 22px;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--blue);
   }
   .book__actions {
+    margin-block-start: 6px;
     display: grid;
     gap: 14px;
     justify-items: start;
@@ -279,8 +300,6 @@ const calUrl = calLink ? `https://cal.com/${calLink}` : undefined;
 </style>
 
 <script>
-  import { mountInlineBooking } from '@/lib/cal';
-
   function initContact() {
     const card = document.querySelector<HTMLElement>('[data-tabs]');
     if (!card || card.dataset.ready) return;
@@ -311,40 +330,8 @@ const calUrl = calLink ? `https://cal.com/${calLink}` : undefined;
         if (event.key === 'End') select(tabs.length - 1, true);
       });
     });
-
-    // Cal.com inline calendar: mount once, as the section nears the screen
-    // or when the visitor presses the button. The button then just scrolls.
-    const embed = card.querySelector<HTMLElement>('[data-cal-inline]');
-    const button = card.querySelector<HTMLAnchorElement>('.book__actions [data-cal-link]');
-    if (!embed || !button) return;
-    let mounted = false;
-    const mount = () => {
-      if (mounted) return;
-      mounted = true;
-      embed.dataset.state = 'loading';
-      mountInlineBooking(embed, embed.dataset.calInline!);
-      // Cal replaces the placeholder with its iframe; clear the loading text then.
-      new MutationObserver((_, observer) => {
-        if (embed.querySelector('iframe')) {
-          delete embed.dataset.state;
-          observer.disconnect();
-        }
-      }).observe(embed, { childList: true, subtree: true });
-      // The inline calendar replaces the popup button.
-      button.removeAttribute('data-cal-link');
-      button.hidden = true;
-    };
-    new IntersectionObserver(
-      ([entry], observer) => {
-        if (entry.isIntersecting) {
-          mount();
-          observer.disconnect();
-        }
-      },
-      { rootMargin: '600px 0px' }
-    ).observe(card);
-    // The hero and process "Book a call" buttons on this page open the popup
-    // (BookingPopup); nothing else to wire here.
+    // The "Choose a time" button opens Cal.com's full-size popup through
+    // BookingPopup, like every other booking button on the site.
   }
 
   initContact();
