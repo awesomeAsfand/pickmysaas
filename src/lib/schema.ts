@@ -1,7 +1,6 @@
 import type {
   WebSite,
   Organization,
-  Person,
   LocalBusiness,
   BlogPosting,
   BreadcrumbList,
@@ -23,24 +22,8 @@ export function createWebsiteSchema(): WithContext<WebSite> {
   };
 }
 
-/**
- * Create Person schema for the founder
- */
-export function createPersonSchema(): WithContext<Person> {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: 'Asfand Yar Khan',
-    jobTitle: 'Founder',
-    url: `${siteConfig.url}/about/`,
-    knowsAbout: ['Website design', 'Ecommerce website development', 'Arabic and English websites', 'Python', 'Django'],
-    worksFor: {
-      '@type': 'Organization',
-      name: siteConfig.name,
-      url: siteConfig.url,
-    },
-  };
-}
+// No Person schema: the owner asked (19 Nov 2026) that the founder's name
+// not appear on the site, and a Person needs a name.
 
 /**
  * Create ProfessionalService schema for local SEO
@@ -79,7 +62,6 @@ export function createProfessionalServiceSchema(): WithContext<LocalBusiness> {
     // which languages. Facts only from the site's own pages.
     description: siteConfig.description,
     logo: `${siteConfig.url}/apple-touch-icon.png`,
-    founder: { '@type': 'Person', name: 'Asfand Yar Khan', url: `${siteConfig.url}/about/` },
     knowsLanguage: ['en', 'ar'],
     knowsAbout: [
       'Website design',

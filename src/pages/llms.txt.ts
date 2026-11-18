@@ -87,7 +87,7 @@ export const GET: APIRoute = async ({ site }) => {
     ``,
     `> ${siteConfig.description}`,
     ``,
-    `Founded and run by Asfand Yar Khan (five years' experience). Works remotely with businesses in Saudi Arabia, the UAE, Qatar, Kuwait, Bahrain and Oman; no office in the Gulf. Every site is custom-built on Python and Django, in Arabic and English; the client hosts the finished site and owns the code. PickMySaaS does not build on Shopify, Salla, Zid, WooCommerce, Webflow, Next.js or WordPress. Payment: 50% upfront and 50% on completion, by invoice and bank transfer; no hourly billing. A simple website takes about a week; online stores and larger sites take 4 to 8 weeks.`,
+    `Founder-led: the founder works directly with every client and has five years' experience. Works remotely with businesses in Saudi Arabia, the UAE, Qatar, Kuwait, Bahrain and Oman; no office in the Gulf. Every site is custom-built on Python and Django, in Arabic and English; the client hosts the finished site and owns the code. PickMySaaS does not build on Shopify, Salla, Zid, WooCommerce, Webflow, Next.js or WordPress. Payment: 50% upfront and 50% on completion, by invoice and bank transfer; no hourly billing. A simple website takes about a week; online stores and larger sites take 4 to 8 weeks.`,
     ``,
     `## Services and prices (USD)`,
     ``,

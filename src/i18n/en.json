@@ -287,26 +287,22 @@
     "about": {
       "meta": {
         "title": "About: A Founder-Led Web Design Studio for the Gulf",
-        "description": "PickMySaaS is a founder-led web design studio run by Asfand Yar Khan: custom websites and online stores in Arabic and English for Gulf businesses."
+        "description": "PickMySaaS is a founder-led web design studio: custom websites and online stores in Arabic and English for Gulf businesses, at fixed prices."
       },
       "hero": {
         "badge": "About",
         "titleLead": "A founder-led web design studio",
         "titleHighlight": "for the Gulf.",
-        "description": "PickMySaaS is run by Asfand Yar Khan, who works on every project from the first call to launch. Custom websites and online stores in Arabic and English, for businesses in the six Gulf countries."
+        "description": "The person on your first call works on your project through to launch. Custom websites and online stores in Arabic and English, for businesses in the six Gulf countries."
       },
       "founder": {
         "badge": "The founder",
-        "heading": "Asfand Yar Khan",
+        "heading": "One person, first call to launch",
         "paragraphs": [
-          "Asfand founded PickMySaaS and works directly with every client. He has five years of experience designing and building websites for clients around the world.",
+          "PickMySaaS is run by its founder, who works directly with every client. The founder has five years of experience designing and building websites for clients around the world.",
           "PickMySaaS works remotely, by video call, WhatsApp and email. There is no office in the Gulf."
         ],
         "facts": [
-          {
-            "label": "Founded and run by",
-            "value": "Asfand Yar Khan"
-          },
           {
             "label": "Experience",
             "value": "Five years"
@@ -348,7 +344,7 @@
         "items": [
           {
             "question": "What is PickMySaaS?",
-            "answer": "PickMySaaS is a web design studio for Gulf businesses, founded by Asfand Yar Khan."
+            "answer": "PickMySaaS is a founder-led web design studio for Gulf businesses."
           },
           {
             "question": "Where are you based?",
@@ -356,7 +352,7 @@
           },
           {
             "question": "Who will I work with?",
-            "answer": "Asfand Yar Khan, the founder, from the first call to launch."
+            "answer": "The founder, directly, from the first call to launch."
           },
           {
             "question": "Do you build in Arabic?",
@@ -699,7 +695,7 @@
           },
           {
             "question": "Who will I actually talk to?",
-            "answer": "Asfand, directly. The person on your first call designs and builds your site."
+            "answer": "The founder, directly. The person on your first call designs and builds your site."
           },
           {
             "question": "What exactly does the price include?",
@@ -1123,7 +1119,7 @@
         {
           "heading": "Who we are",
           "paragraphs": [
-            "This website belongs to PickMySaaS, which is responsible for the information collected here. PickMySaaS is a founder-led web design studio run by Asfand Yar Khan. We work remotely with clients worldwide, with a focus on the Gulf. For anything about your information, email us at the address at the end of this page."
+            "This website belongs to PickMySaaS, which is responsible for the information collected here. PickMySaaS is a founder-led web design studio. We work remotely with clients worldwide, with a focus on the Gulf. For anything about your information, email us at the address at the end of this page."
           ]
         },
         {
@@ -1342,7 +1338,7 @@
     },
     "footer": {
       "tagline": "Web design studio for Gulf businesses",
-      "about": "Founded and run by Asfand Yar Khan. Custom websites and online stores in Arabic and English, built on Python and Django.",
+      "about": "A founder-led studio. Custom websites and online stores in Arabic and English, built on Python and Django.",
       "remote": "Works remotely with clients across the six Gulf countries.",
       "servicesTitle": "Services",
       "studioTitle": "Studio",
@@ -1517,7 +1513,7 @@
         },
         {
           "question": "What is PickMySaaS?",
-          "answer": "A web design studio for Gulf businesses, founded by Asfand Yar Khan."
+          "answer": "A founder-led web design studio for Gulf businesses."
         }
       ]
     },
@@ -1803,7 +1799,7 @@
     "about": {
       "label": "About",
       "badge": "WEBSITES • STORES • ARABIC • ENGLISH • ",
-      "s1": "A founder-led studio run by Asfand Yar Khan,",
+      "s1": "A founder-led studio",
       "s2": "designing bilingual websites and online stores",
       "s3": "for Gulf businesses that care how they look, and how they sell.",
       "facts": "Five years of building websites for clients around the world. PickMySaaS works remotely and has no office in the Gulf.",

@@ -4,8 +4,9 @@
  * language. Section order, as v2 plus the new sections:
  *
  *   (01) hero + live demo store + facts strip · marquee · (02) bilingual ·
- *   (03) selected work (new) · (04) services · (05) process ·
- *   (06) pricing teaser (new) · (07) about · (08) FAQ (new) · (09) contact
+ *   (03) services · (04) process · (05) pricing teaser (new) · (06) about ·
+ *   (07) FAQ (new) · (08) contact. Selected work lives on /projects/ only
+ *   (owner, 19 Nov 2026).
  *
  * Copy lives in src/i18n/<locale>.json under `home`. Structured data:
  * ProfessionalService (BaseLayout) and FAQPage matching the visible FAQ.
@@ -13,7 +14,6 @@
 import PageLayout from '@/layouts/PageLayout.astro';
 import Hero from '@/components/home/Hero.astro';
 import Bilingual from '@/components/home/Bilingual.astro';
-import Work from '@/components/home/Work.astro';
 import Services from '@/components/home/Services.astro';
 import Process from '@/components/home/Process.astro';
 import PricingTeaser from '@/components/home/PricingTeaser.astro';
@@ -55,14 +55,13 @@ const homeAlternates = getLocales().map((loc) => ({ locale: loc, url: localizedP
 >
   <Hero locale={locale} />
   <Bilingual locale={locale} />
-  <Work locale={locale} />
   <Services locale={locale} />
   <Process locale={locale} />
   <PricingTeaser locale={locale} />
   <About locale={locale} />
 
   <section id="faq" class="ds-wrap ds-section">
-    <SectionHead n="08" label={t('home.faq.label', locale)} title={t('home.faq.title', locale)} />
+    <SectionHead n="07" label={t('home.faq.label', locale)} title={t('home.faq.title', locale)} />
     <Faq items={faq} name="home-faq" headingLevel="h3" />
   </section>
 

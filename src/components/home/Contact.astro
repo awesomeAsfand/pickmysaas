@@ -27,7 +27,7 @@ interface Props {
   formId?: string;
 }
 
-const { locale, n = '09', as: Tag = 'h2', formId = 'home-brief' } = Astro.props;
+const { locale, n = '08', as: Tag = 'h2', formId = 'home-brief' } = Astro.props;
 const k = (key: string) => t(`home.contact.${key}`, locale);
 const arrow = getLocaleDirection(locale) === 'rtl' ? '←' : '→';
 const tabs = tData<string[]>('home.contact.tabs', locale)!;

@@ -1,10 +1,11 @@
 ---
 /**
- * About (/about/, /ar/about/), rebuilt in V5: founder-led, the founder named,
+ * About (/about/, /ar/about/), rebuilt in V5: founder-led,
  * what we build and don't, the studio statement and principles, selected
  * work, and an FAQ that opens with "What is PickMySaaS?" (the name no longer
  * describes the services, and a search for it also finds an unrelated
- * company). Person and FAQPage markup match the page. Copy in `pages.about`.
+ * company). FAQPage markup matches the page. The founder is not named
+ * (owner request, 19 Nov 2026). Copy in `pages.about`.
  */
 import PageLayout from '@/layouts/PageLayout.astro';
 import { Hero } from '@/components/hero';
@@ -16,7 +17,7 @@ import About from '@/components/home/About.astro';
 import Work from '@/components/home/Work.astro';
 import ServiceAudience, { type ServiceAudienceCopy } from '@/components/services/ServiceAudience.astro';
 import ServiceCta from '@/components/services/ServiceCta.astro';
-import { createFAQSchema, createPersonSchema } from '@/lib/schema';
+import { createFAQSchema } from '@/lib/schema';
 import { t, tData, defaultLocale, localizedPath, getLocaleDirection } from '@/i18n';
 import { bookingLinkAttrs } from '@/lib/booking';
 
@@ -43,7 +44,7 @@ const breadcrumbs = [
 <PageLayout
   title={t('pages.about.meta.title', locale)}
   description={t('pages.about.meta.description', locale)}
-  extraSchemas={[createPersonSchema(), createFAQSchema(page.faq.items)]}
+  extraSchemas={[createFAQSchema(page.faq.items)]}
   flush
 >
   <Hero>
