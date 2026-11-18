@@ -321,26 +321,48 @@ function verifySiteUrl() {
  * Cloudflare build's `_redirects`, which supports `*` splats. Astro's own
  * `redirects` option can't send a dynamic route to a static one. Two
  * projects don't need tag pages; every tag URL goes to the projects list.
+ *
+ * Also a permanent (301) redirect from each page's no-slash address to its
+ * canonical slash address (`/about` → `/about/`). Without these, Cloudflare's
+ * asset handling does the same with a temporary 307.
  */
 function tagRedirects() {
-  const lines = ['/projects/tag/*    /projects/    301', '/ar/projects/tag/*    /ar/projects/    301'];
+  const tagLines = ['/projects/tag/*    /projects/    301', '/ar/projects/tag/*    /ar/projects/    301'];
+
+  async function pageDirs(root, base = '') {
+    const found = [];
+    for (const entry of await readdir(join(root, base), { withFileTypes: true })) {
+      if (!entry.isDirectory() || entry.name.startsWith('_') || entry.name === 'og') continue;
+      const rel = `${base}/${entry.name}`;
+      const names = await readdir(join(root, rel));
+      if (names.includes('index.html')) found.push(rel);
+      found.push(...(await pageDirs(root, rel)));
+    }
+    return found;
+  }
+
   return {
     name: 'tag-redirects',
     hooks: {
       'astro:build:done': async ({ dir, logger }) => {
         if (deployTarget !== 'cloudflare') return;
-        const file = join(fileURLToPath(dir), '_redirects');
+        const root = fileURLToPath(dir);
+        const file = join(root, '_redirects');
         let current = '';
         try {
           current = await readFile(file, 'utf8');
         } catch {
           // No file yet: write one.
         }
-        const missing = lines.filter((line) => !current.includes(line));
+        const taken = new Set(current.split('\n').map((line) => line.trim().split(/\s+/)[0]));
+        const slashLines = (await pageDirs(root))
+          .filter((path) => !taken.has(path) && /^[\x21-\x7e]+$/.test(path))
+          .map((path) => `${path}    ${path}/    301`);
+        const missing = [...tagLines, ...slashLines].filter((line) => !current.includes(line));
         if (!missing.length) return;
         const head = current.replace(/\n*$/, '');
         await writeFile(file, `${head}${head ? '\n' : ''}${missing.join('\n')}\n`);
-        logger.info(`added ${missing.length} tag redirects to _redirects`);
+        logger.info(`added ${missing.length} redirects to _redirects (tags and no-slash addresses)`);
       },
     },
   };
