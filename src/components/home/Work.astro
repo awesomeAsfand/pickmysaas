@@ -13,9 +13,13 @@ import attiaMobile from '@/assets/home/work-healing-with-attia-mobile.webp';
 
 interface Props {
   locale: string;
+  /** Join the page's automatic section numbering instead of "(03)". */
+  auto?: boolean;
+  /** Hide the "All projects" link (on the projects page itself). */
+  hideAll?: boolean;
 }
 
-const { locale } = Astro.props;
+const { locale, auto = false, hideAll = false } = Astro.props;
 const k = (key: string) => t(`home.work.${key}`, locale);
 const arrow = getLocaleDirection(locale) === 'rtl' ? '←' : '→';
 
@@ -35,8 +39,8 @@ const media = [
 ---
 
 <section id="work" class="ds-wrap ds-section work">
-  <SectionHead n="03" label={k('label')} title={k('title')} lead={k('lead')}>
-    <a class="ds-link" href={localizedPath('/projects', locale)}>{k('all')} <span aria-hidden="true">{arrow}</span></a>
+  <SectionHead n={auto ? undefined : '03'} label={k('label')} title={k('title')} lead={k('lead')}>
+    {!hideAll && <a class="ds-link" href={localizedPath('/projects', locale)}>{k('all')} <span aria-hidden="true">{arrow}</span></a>}
   </SectionHead>
 
   <div class="work__list">

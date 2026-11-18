@@ -1,23 +1,14 @@
 ---
 /**
- * ContactView — the Contact page body.
- *
- * Shared by the default-locale route (`/contact`) and the locale-prefixed route
- * (`/<locale>/contact`). Page copy is read from `pages.contact.*`; the embedded
- * The brief form (ds/BriefForm) takes the locale, so the form fields follow
- * the active locale automatically. Untranslated keys fall back to the default
- * locale.
+ * Contact (/contact/, /ar/contact/), rebuilt in V5: the same contact section
+ * as the home page (WhatsApp, email, the Cal.com calendar and the brief form),
+ * with its "Let's talk." title as the page's h1. The pricing page's "Get a
+ * fixed price" links to #contact-brief, which opens the brief tab.
  */
 import PageLayout from '@/layouts/PageLayout.astro';
-import Icon from '@/components/ui/primitives/Icon/Icon.astro';
-import Badge from '@/components/ui/data-display/Badge/Badge.astro';
-import Card from '@/components/ui/data-display/Card/Card.astro';
-import { Hero } from '@/components/hero';
-import BriefForm from '@/components/ds/BriefForm.astro';
-import siteConfig from '@/config/site.config';
-import { resolveSocialLinks } from '@/lib/utils';
-import { t, tData, defaultLocale } from '@/i18n';
-import { bookingLinkAttrs, whatsAppUrl } from '@/lib/booking';
+import Contact from '@/components/home/Contact.astro';
+import Breadcrumbs from '@/components/seo/Breadcrumbs.astro';
+import { t, defaultLocale, localizedPath } from '@/i18n';
 
 interface Props {
   /** Locale whose copy this page renders. Defaults to the site default. */
@@ -25,155 +16,26 @@ interface Props {
 }
 
 const { locale = defaultLocale } = Astro.props;
-
-const hero = tData<{ badge: string; titleLead: string; titleHighlight: string; description: string }>(
-  'pages.contact.hero',
-  locale
-)!;
-
-const socialLinks = resolveSocialLinks(siteConfig.socialLinks);
-const whatsAppHref = whatsAppUrl(t('common.whatsappMessage', locale));
-
-interface Channel {
-  icon: string;
-  label: string;
-  value: string;
-  note: string;
-  href: string;
-  external: boolean;
-  /** Set on the booking card, so it opens the Cal.com popup (see BookingPopup). */
-  dataCalLink?: string;
-}
-
-// Booking and WhatsApp lead: the quickest ways to a conversation. Each only
-// shows when it is configured in site.config.ts.
-const channels: Channel[] = [
-  ...(siteConfig.booking?.calLink
-    ? (() => {
-        const { href, 'data-cal-link': dataCalLink } = bookingLinkAttrs('');
-        return [{
-          icon: 'calendar',
-          label: t('pages.contact.bookingLabel', locale),
-          value: t('pages.contact.bookingNote', locale),
-          note: t('pages.contact.bookingNote', locale),
-          href,
-          external: true,
-          dataCalLink,
-        }];
-      })()
-    : []),
-  ...(whatsAppHref
-    ? [{
-        icon: 'whatsapp',
-        label: t('common.whatsappChat', locale),
-        value: t('pages.contact.whatsappNote', locale),
-        note: t('pages.contact.whatsappNote', locale),
-        href: whatsAppHref,
-        external: true,
-      }]
-    : []),
-  {
-    icon: 'mail',
-    label: t('pages.contact.emailLabel', locale),
-    value: siteConfig.email,
-    note: t('pages.contact.emailNote', locale),
-    href: `mailto:${siteConfig.email}`,
-    external: false,
-  },
-  ...socialLinks.map((link) => ({
-    icon: link.icon,
-    label: link.label,
-    value: link.href.replace(/^https?:\/\/(www\.)?/, ''),
-    note: t('pages.contact.socialNote', locale),
-    href: link.href,
-    external: true,
-  })),
+const breadcrumbs = [
+  { label: t('common.home', locale), href: localizedPath('/', locale) },
+  { label: t('nav.items.contact', locale) },
 ];
 ---
 
-<PageLayout
-  title={t('pages.contact.meta.title', locale)}
-  description={t('pages.contact.meta.description', locale)}
-  eagerReveal
->
-  <Hero layout="centered" size="sm" class="isolate" showHeroHalo>
-    <Badge slot="badge" variant="brand" pill>
-      <Icon name="mail" size="sm" />
-      {hero.badge}
-    </Badge>
-
-    <h1 slot="title">
-      {hero.titleLead} <span class="text-brand-500">{hero.titleHighlight}</span>
-    </h1>
-
-    <p slot="description" class="!text-balance">
-      {hero.description}
-    </p>
-  </Hero>
-
-  <!-- Contact Section -->
-  <section class="relative isolate overflow-hidden py-[var(--space-section-md)] bg-background-secondary border-t border-border">
-    <div class="relative z-10 mx-auto max-w-5xl px-6">
-      <div class="grid grid-cols-1 glitch:grid-cols-5 gap-10 glitch:gap-16 items-stretch">
-
-        <!-- Left column: contact form -->
-        <div class="glitch:col-span-3 h-full sm:max-w-xl sm:mx-auto glitch:max-w-none glitch:mx-0" data-reveal data-reveal-ease="smooth">
-          <Card padding="lg" class="h-full flex flex-col justify-center">
-            <h2 class="font-display text-xl font-bold text-foreground mb-6 sm:text-center glitch:text-left">{t('pages.contact.formTitle', locale)}</h2>
-            <BriefForm locale={locale} id="contact-brief" />
-          </Card>
-        </div>
-
-        <!-- Right column: contact channels -->
-        <div class="glitch:col-span-2 space-y-4 sm:max-w-xl sm:mx-auto glitch:max-w-none glitch:mx-0" data-reveal data-reveal-delay="1" data-reveal-ease="smooth">
-          <div class="sm:text-center glitch:text-left">
-            <h2 class="font-display text-lg font-bold text-foreground mb-1">{t('pages.contact.channelsTitle', locale)}</h2>
-            <p class="text-sm text-foreground-muted">{t('pages.contact.channelsSubtitle', locale)}</p>
-          </div>
-
-          <!-- Channel list -->
-          <div class="space-y-2">
-            {channels.map((ch) => (
-              <a
-                href={ch.href}
-                {...ch.external ? { target: '_blank', rel: 'noopener noreferrer' } : {}}
-                data-cal-link={ch.dataCalLink}
-                class="block group"
-              >
-                <Card hover padding="sm" class="h-full">
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 shrink-0 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500">
-                      <Icon name={ch.icon} size="sm" />
-                    </div>
-                    <div class="min-w-0 flex-1">
-                      <p class="font-semibold text-sm text-foreground">{ch.label}</p>
-                      <p class="text-xs text-foreground-muted truncate">{ch.value}</p>
-                    </div>
-                    <Icon name="arrow-up-right" size="sm" class="text-foreground-muted group-hover:text-brand-500 transition-colors shrink-0" />
-                  </div>
-                </Card>
-              </a>
-            ))}
-          </div>
-
-          <!-- Location card — only when siteConfig.address is set. -->
-          {siteConfig.address && (
-          <Card hover padding="sm" class="bg-brand-500/5 border-brand-500/20">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 shrink-0 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500">
-                <Icon name="map-pin" size="sm" />
-              </div>
-              <div>
-                <p class="font-semibold text-sm text-foreground">{siteConfig.address.city}</p>
-                <p class="text-xs text-foreground-muted mt-0.5">{t('pages.contact.basedIn', locale, { country: siteConfig.address.country })}</p>
-              </div>
-            </div>
-          </Card>
-          )}
-
-        </div>
-
-      </div>
-    </div>
-  </section>
+<PageLayout title={t('pages.contact.meta.title', locale)} description={t('pages.contact.meta.description', locale)} flush>
+  <div class="ds-wrap ct-crumbs">
+    <Breadcrumbs items={breadcrumbs} />
+  </div>
+  <div class="ct">
+    <Contact locale={locale} n="01" as="h1" formId="contact-brief" />
+  </div>
 </PageLayout>
+
+<style>
+  .ct-crumbs {
+    padding-block-start: clamp(20px, 3vw, 32px);
+  }
+  .ct :global(#contact) {
+    padding-block-start: clamp(28px, 4vw, 48px);
+  }
+</style>

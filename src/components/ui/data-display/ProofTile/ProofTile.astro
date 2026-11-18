@@ -54,9 +54,9 @@ const hasBody = Astro.slots.has('default');
   href={href}
   {...attrs}
 >
-  {icon && <Icon name={icon} class="w-10 h-10 text-brand-500" />}
+  {icon && <Icon name={icon} class="w-7 h-7 text-blue" />}
   {number !== undefined && (
-    <span class="font-display text-3xl font-bold text-brand-500 leading-none">{number}</span>
+    <span class="font-display text-4xl font-extrabold text-blue leading-none" style="font-stretch: 110%">{number}</span>
   )}
   {(title || hasBody) && (
     <div>

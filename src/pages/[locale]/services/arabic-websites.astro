@@ -1,0 +1,12 @@
+---
+import ArabicWebsitesView from '@/components/pages/views/ArabicWebsitesView.astro';
+import { getSecondaryLocales } from '@/i18n';
+
+export function getStaticPaths() {
+  return getSecondaryLocales().map((locale) => ({ params: { locale } }));
+}
+
+const { locale } = Astro.params;
+---
+
+<ArabicWebsitesView locale={locale} />

@@ -18,9 +18,13 @@ import { DEMO_PRODUCT_PAGE } from '@/data/demo-store';
 
 interface Props {
   locale: string;
+  /** Show the word marquee above (home page only). */
+  marquee?: boolean;
+  /** Join the page's automatic section numbering instead of "(02)". */
+  auto?: boolean;
 }
 
-const { locale } = Astro.props;
+const { locale, marquee: showMarquee = true, auto = false } = Astro.props;
 const k = (key: string) => t(`home.${key}`, locale);
 
 const words = [
@@ -33,6 +37,7 @@ const marquee = Array.from({ length: 5 }, () => words).flat();
 const layers = (['en', 'ar'] as const).map((lang) => ({ lang, ...DEMO_PRODUCT_PAGE[lang] }));
 ---
 
+{showMarquee && (
 <div class="mq" dir="ltr" aria-hidden="true">
   <div class="mq__track" data-marquee>
     {
@@ -45,9 +50,10 @@ const layers = (['en', 'ar'] as const).map((lang) => ({ lang, ...DEMO_PRODUCT_PA
     }
   </div>
 </div>
+)}
 
 <section id="bilingual" class="ds-wrap ds-section bi" data-reveal>
-  <SectionHead n="02" label={k('bi.label')} title={k('bi.title')} lead={k('bi.sub')} />
+  <SectionHead n={auto ? undefined : '02'} label={k('bi.label')} title={k('bi.title')} lead={k('bi.sub')} />
 
   <figure class="split" style="--split: 50%" data-split>
     <figcaption class="split__caption">

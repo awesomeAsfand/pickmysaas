@@ -12,9 +12,11 @@ import attiaMobile from '@/assets/home/work-healing-with-attia-mobile.webp';
 
 interface Props {
   locale: string;
+  /** Join the page's automatic section numbering instead of "(07)". */
+  auto?: boolean;
 }
 
-const { locale } = Astro.props;
+const { locale, auto = false } = Astro.props;
 const k = (key: string) => t(`home.about.${key}`, locale);
 const rtl = getLocaleDirection(locale) === 'rtl';
 const principles = tData<{ t: string; d: string }[]>('home.about.principles', locale)!;
@@ -22,7 +24,7 @@ const principles = tData<{ t: string; d: string }[]>('home.about.principles', lo
 
 <section id="about" class="ds-wrap ds-section about" data-reveal>
   <div class="about__top">
-    <span class="ds-marker">(07) {k('label')}</span>
+    <span class:list={['ds-marker', auto && 'ds-badge-marker']}>{!auto && '(07) '}{k('label')}</span>
     <div class="about__badge" aria-hidden="true">
       <svg viewBox="0 0 200 200" class="about__ring">
         <defs><path id="about-ring" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"></path></defs>
@@ -54,7 +56,7 @@ const principles = tData<{ t: string; d: string }[]>('home.about.principles', lo
     }
   </div>
 
-  <a class="ds-link about__more" href={localizedPath('/about', locale)}>{k('more')} <span aria-hidden="true">{rtl ? '←' : '→'}</span></a>
+  {!auto && <a class="ds-link about__more" href={localizedPath('/about', locale)}>{k('more')} <span aria-hidden="true">{rtl ? '←' : '→'}</span></a>}
 </section>
 
 <style>

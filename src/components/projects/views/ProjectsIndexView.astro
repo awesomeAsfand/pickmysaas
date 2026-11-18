@@ -1,31 +1,18 @@
 ---
 /**
- * ProjectsIndexView — the projects landing page (page 1).
- *
- * Shared body for the default-locale route (`/projects`) and the
- * locale-prefixed route (`/<locale>/projects`). All project/pagination/tag URLs
- * are built locale-aware via the helpers in `lib/projects`, so rendering with
- * the default locale produces exactly the same markup the route did before this
- * was extracted.
+ * ProjectsIndexView: the projects page (/projects/, /ar/projects/), rebuilt
+ * in V5. The two client projects with their figures (the home page's
+ * "Selected work" section), then the call to action. No tag filters: two
+ * projects don't need them (the tag pages redirect here).
  */
 import PageLayout from '@/layouts/PageLayout.astro';
-import Icon from '@/components/ui/primitives/Icon/Icon.astro';
-import Badge from '@/components/ui/data-display/Badge/Badge.astro';
-import Button from '@/components/ui/form/Button/Button.astro';
 import { Hero } from '@/components/hero';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Breadcrumbs from '@/components/seo/Breadcrumbs.astro';
+import Work from '@/components/home/Work.astro';
 import CtaBand from '@/components/patterns/CtaBand.astro';
-import ProjectCard from '@/components/projects/ProjectCard.astro';
-import ProjectTagList from '@/components/projects/ProjectTagList.astro';
-import Pagination from '@/components/blog/Pagination.astro';
-import { t, defaultLocale, localizedPath } from '@/i18n';
+import { t, defaultLocale, localizedPath, getLocaleDirection } from '@/i18n';
 import { bookingLinkAttrs } from '@/lib/booking';
-import {
-  collectTopProjectTags,
-  getProjectsPageUrl,
-  getVisibleProjects,
-  PROJECT_TAG_CLOUD_LIMIT,
-  PROJECTS_PER_PAGE,
-} from '@/lib/projects';
 
 interface Props {
   /** Locale whose projects this index renders. Defaults to the site default. */
@@ -33,82 +20,50 @@ interface Props {
 }
 
 const { locale = defaultLocale } = Astro.props;
-
-const projects = await getVisibleProjects(locale);
-const topTags = collectTopProjectTags(projects, PROJECT_TAG_CLOUD_LIMIT);
-
-// Page 1 lives here at /projects; /projects/page/2..N handle the rest.
-const totalPages = Math.max(1, Math.ceil(projects.length / PROJECTS_PER_PAGE));
-const pageProjects = projects.slice(0, PROJECTS_PER_PAGE);
-
+const arrow = getLocaleDirection(locale) === 'rtl' ? '←' : '→';
 const contactUrl = localizedPath('/contact', locale);
-const aboutUrl = localizedPath('/about', locale);
+const breadcrumbs = [
+  { label: t('common.home', locale), href: localizedPath('/', locale) },
+  { label: t('nav.items.projects', locale) },
+];
 ---
 
-<PageLayout
-  title={t('projects.metaTitle', locale)}
-  description={t('projects.metaDescription', locale)}
-  eagerReveal
-  footerBackground="secondary"
->
-  <Hero layout="centered" size="sm" class="isolate" showHeroHalo>
-    <Badge slot="badge" variant="brand" pill>
-      <Icon name="layers" size="sm" />
-      {t('projects.heroBadge', locale)}
-    </Badge>
-
+<PageLayout title={t('projects.metaTitle', locale)} description={t('projects.metaDescription', locale)} flush>
+  <Hero>
+    <Badge slot="badge" variant="brand">{t('projects.heroBadge', locale)}</Badge>
     <h1 slot="title">{t('projects.title', locale)}</h1>
-
-    <p slot="description">
-      {t('projects.heroDescription', locale)}
-    </p>
+    <p slot="description">{t('projects.heroDescription', locale)}</p>
+    <Breadcrumbs slot="bottom" items={breadcrumbs} class="pj-crumbs" />
   </Hero>
 
-  <!-- All projects -->
-  {projects.length > 0 && (
-    <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
-      <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
+  <div class="pj-work">
+    <Work locale={locale} auto hideAll />
+  </div>
 
-        {topTags.length > 0 && (
-          <div class="flex flex-col items-center gap-4" data-reveal>
-            <ProjectTagList tags={topTags} locale={locale} class="justify-center" />
-          </div>
-        )}
-
-        <div class="grid gap-6 md:grid-cols-2">
-          {pageProjects.map((project, i) => (
-            <ProjectCard project={project} index={i} locale={locale} />
-          ))}
-        </div>
-
-        <Pagination
-          currentPage={1}
-          totalPages={totalPages}
-          href={(p) => getProjectsPageUrl(p, locale)}
-        />
-      </div>
-    </section>
-  )}
-
- <!-- CTA -->
-  <section class="relative z-10 py-[var(--space-section-md)] bg-background">
+  <section class="ds-section--sm">
     <CtaBand>
-      <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">
-        {t('projects.ctaHeading', locale)}
-      </h2>
-      <p class="text-lg text-foreground-muted mb-8 text-balance">
-        {t('projects.ctaLead', locale)}
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button size="lg" {...bookingLinkAttrs(contactUrl)}>
-          {t('projects.ctaPrimary', locale)}
-          <Icon name="arrow-right" size="sm" />
-        </Button>
-        <Button size="lg" variant="outline" class="cta-btn-brand" href={aboutUrl}>
-          {t('projects.ctaSecondary', locale)}
-          <Icon name="arrow-right" size="sm" />
-        </Button>
+      <h2>{t('projects.ctaHeading', locale)}</h2>
+      <p>{t('projects.ctaLead', locale)}</p>
+      <div class="pj-cta">
+        <a class="ds-btn ds-btn--light" {...bookingLinkAttrs(contactUrl)}>
+          {t('projects.ctaPrimary', locale)}<span aria-hidden="true">{arrow}</span>
+        </a>
+        <a class="ds-btn ds-btn--ghost-light" href={localizedPath('/about', locale)}>{t('projects.ctaSecondary', locale)}</a>
       </div>
     </CtaBand>
   </section>
 </PageLayout>
+
+<style>
+  :global(.pj-crumbs) {
+    margin-block-start: clamp(28px, 3vw, 40px);
+  }
+  .pj-work :global(#work) {
+    padding-block-start: var(--section-y-sm);
+  }
+  .pj-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+</style>

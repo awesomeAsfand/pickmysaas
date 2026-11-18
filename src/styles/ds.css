@@ -908,3 +908,79 @@ select.ds-input {
 .ds-fab-safe {
   padding-block-end: var(--fab-safe);
 }
+
+/* ---- Auto-numbered section markers (inner pages) -------------------------- */
+/* A Badge with variant="brand" is a section marker. Each one takes the next
+   number in the page: "(01) Website packages", "(02) …". */
+main {
+  counter-reset: ds-sec;
+}
+.ds-badge-marker {
+  counter-increment: ds-sec;
+  font-size: var(--text-label);
+}
+.ds-badge-marker::before {
+  content: '(' counter(ds-sec, decimal-leading-zero) ')\a0';
+}
+
+/* ---- Bridge: older page markup in the v2 look ------------------------------
+   Inner pages written before the redesign use Tailwind utilities directly.
+   These unlayered rules beat those utilities and bring that markup into the
+   v2 system: one paper ground (no zebra bands or rules between sections),
+   the v2 page width with left-aligned content, and display headings. */
+main section.bg-background-secondary,
+main section.bg-background {
+  background: transparent;
+}
+main section.border-t.border-border {
+  border-top: 0;
+}
+main section > .mx-auto.px-6 {
+  max-width: var(--page-max);
+  padding-inline: var(--gutter);
+  margin-inline: auto;
+}
+main section > .mx-auto.max-w-3xl.px-6 > :not(.ds-head):not(.ds-table-wrap):not(.aud),
+main section > .mx-auto.max-w-2xl.px-6 > :not(.ds-head):not(.ds-table-wrap) {
+  max-width: 820px;
+}
+main section > .mx-auto.max-w-4xl.px-6 > :not(.ds-head) {
+  max-width: 1040px;
+}
+main :is(h2, h3).font-display {
+  font-stretch: var(--fs);
+}
+main h2.font-display {
+  font-size: var(--display-3);
+  font-weight: 850;
+  text-transform: var(--tt);
+  line-height: var(--hlh);
+  letter-spacing: var(--hls);
+}
+:root:lang(ar) main h2.font-display {
+  line-height: var(--hlh);
+}
+main h3.font-display {
+  letter-spacing: var(--ls);
+}
+main .text-center.flex-col.items-center:has(> .ds-badge-marker) {
+  align-items: flex-start;
+  text-align: start;
+}
+main h1.font-display {
+  font-size: clamp(38px, 5.4vw, 84px);
+  font-weight: 850;
+  font-stretch: var(--fs);
+  text-transform: var(--tt);
+  line-height: var(--hlh);
+  letter-spacing: var(--hls);
+  margin-block-end: 20px;
+}
+/* A heading inside a card is a card title, not a section title. */
+main [class*='bg-card'] h2.font-display,
+main .ds-card h2.font-display {
+  font-size: clamp(20px, 1.8vw, 26px);
+  text-transform: none;
+  line-height: 1.15;
+  letter-spacing: var(--ls);
+}

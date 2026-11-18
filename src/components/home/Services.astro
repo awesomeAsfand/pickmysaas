@@ -14,9 +14,11 @@ import { t, tData, localizedPath, getLocaleDirection } from '@/i18n';
 
 interface Props {
   locale: string;
+  /** Join the page's automatic section numbering instead of "(04)". */
+  auto?: boolean;
 }
 
-const { locale } = Astro.props;
+const { locale, auto = false } = Astro.props;
 const k = (key: string) => t(`home.services.${key}`, locale);
 const arrow = getLocaleDirection(locale) === 'rtl' ? '←' : '→';
 
@@ -34,7 +36,7 @@ const total = String(items.length).padStart(2, '0');
 ---
 
 <section id="services" class="ds-wrap ds-section">
-  <SectionHead n="04" label={k('label')} title={k('title')} />
+  <SectionHead n={auto ? undefined : '04'} label={k('label')} title={k('title')} />
   <div class="svc">
     {
       items.map((item, i) => {

@@ -5,6 +5,9 @@
  *
  *   <SectionHead n="03" label="Services" title="What we do" lead="…" />
  *
+ * Without `n` the marker joins the page's automatic numbering (see
+ * `.ds-badge-marker` in ds.css), as on the inner pages.
+ *
  * `as` sets the heading level (h2 by default); `size` picks the display step.
  * Pass `id` to give the title an anchor.
  */
@@ -25,7 +28,7 @@ const { n, label, title, lead, as: Tag = 'h2', size = '1', id, class: className 
 
 <div class:list={['ds-head', className]}>
   <div>
-    <span class="ds-marker">{n && <>({n}) </>}{label}</span>
+    <span class:list={['ds-marker', !n && 'ds-badge-marker']}>{n && <>({n}) </>}{label}</span>
     <Tag id={id} class:list={['ds-display', `ds-display--${size}`, 'ds-head__title']}>{title}</Tag>
   </div>
   {lead && <p class="ds-head__lead">{lead}</p>}

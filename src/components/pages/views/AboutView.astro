@@ -1,28 +1,23 @@
 ---
 /**
- * AboutView — the About page body.
- *
- * Shared by the default-locale route (`/about`) and the locale-prefixed route
- * (`/<locale>/about`). All copy is read from the `pages.about.*` keys in the
- * locale dictionaries (`src/i18n/<locale>.json`) via `t()` / `tData()`, so
- * translating the page is a matter of editing JSON — no markup changes — and
- * any untranslated key falls back to the default locale automatically.
- *
- * Rendering with the default locale produces the same markup the page had
- * before this was extracted.
+ * About (/about/, /ar/about/), rebuilt in V5: founder-led, the founder named,
+ * what we build and don't, the studio statement and principles, selected
+ * work, and an FAQ that opens with "What is PickMySaaS?" (the name no longer
+ * describes the services, and a search for it also finds an unrelated
+ * company). Person and FAQPage markup match the page. Copy in `pages.about`.
  */
 import PageLayout from '@/layouts/PageLayout.astro';
-import Icon from '@/components/ui/primitives/Icon/Icon.astro';
-import Badge from '@/components/ui/data-display/Badge/Badge.astro';
-import Card from '@/components/ui/data-display/Card/Card.astro';
-import ProofTile from '@/components/ui/data-display/ProofTile/ProofTile.astro';
-import Button from '@/components/ui/form/Button/Button.astro';
 import { Hero } from '@/components/hero';
-import TypingEffect from '@/components/ui/TypingEffect.astro';
-import CtaBand from '@/components/patterns/CtaBand.astro';
-import JsonLd from '@/components/seo/JsonLd.astro';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Breadcrumbs from '@/components/seo/Breadcrumbs.astro';
+import SectionHead from '@/components/ds/SectionHead.astro';
+import Faq from '@/components/ds/Faq.astro';
+import About from '@/components/home/About.astro';
+import Work from '@/components/home/Work.astro';
+import ServiceAudience, { type ServiceAudienceCopy } from '@/components/services/ServiceAudience.astro';
+import ServiceCta from '@/components/services/ServiceCta.astro';
 import { createFAQSchema, createPersonSchema } from '@/lib/schema';
-import { t, tData, defaultLocale, localizedPath } from '@/i18n';
+import { t, tData, defaultLocale, localizedPath, getLocaleDirection } from '@/i18n';
 import { bookingLinkAttrs } from '@/lib/booking';
 
 interface Props {
@@ -30,249 +25,112 @@ interface Props {
   locale?: string;
 }
 
-interface IconText {
-  icon: string;
-  title: string;
-  description: string;
-}
-interface FaqItem {
-  question: string;
-  answer: string;
-}
-interface FaqCard {
-  icon: string;
-  title: string;
-  items: FaqItem[];
-}
-interface TitleText {
-  title: string;
-  text: string;
-}
-
 const { locale = defaultLocale } = Astro.props;
-
-const projectsUrl = localizedPath('/projects', locale);
-const contactUrl = localizedPath('/contact', locale);
-
-const hero = tData<{
-  badge: string;
-  title: string;
-  typingWords: string[];
-  /** Shorter set for phones (below sm), dropping the one word wide enough to clip at the hero size. */
-  typingWordsMobile: string[];
-  description: string;
-}>('pages.about.hero', locale)!;
-const whatYouGet = tData<{ badge: string; heading: string; lead: string; items: IconText[] }>(
-  'pages.about.whatYouGet',
-  locale
-)!;
-const principles = tData<{ badge: string; heading: string; lead: string; items: IconText[] }>(
-  'pages.about.principles',
-  locale
-)!;
-const faq = tData<{ badge: string; heading: string; lead: string; cards: FaqCard[] }>('pages.about.faq', locale)!;
-const proof = tData<{
-  badge: string;
-  heading: string;
-  description: string;
-  button: string;
-  cards: TitleText[];
-}>('pages.about.proof', locale)!;
-const cta = tData<{ badge: string; heading: string; description: string; button: string }>('pages.about.cta', locale)!;
+const arrow = getLocaleDirection(locale) === 'rtl' ? '←' : '→';
+const page = tData<{
+  hero: { badge: string; titleLead: string; titleHighlight: string; description: string };
+  founder: { badge: string; heading: string; paragraphs: string[]; facts: { label: string; value: string }[] };
+  scope: ServiceAudienceCopy;
+  faq: { badge: string; heading: string; items: { question: string; answer: string }[] };
+  cta: { heading: string; description: string; primary: string; secondary: string };
+}>('pages.about', locale)!;
+const breadcrumbs = [
+  { label: t('common.home', locale), href: localizedPath('/', locale) },
+  { label: t('nav.items.about', locale) },
+];
 ---
+
 <PageLayout
   title={t('pages.about.meta.title', locale)}
   description={t('pages.about.meta.description', locale)}
-  footerBackground="secondary"
+  extraSchemas={[createPersonSchema(), createFAQSchema(page.faq.items)]}
+  flush
 >
-  {/* Who runs the studio, and the questions this page answers, for search
-      engines and AI assistants. */}
-  <JsonLd schema={createPersonSchema()} />
-  <JsonLd schema={createFAQSchema(faq.cards.flatMap((card) => card.items))} />
-
-  <Hero layout="centered" size="sm" class="isolate" showHeroHalo>
-    <Badge slot="badge" variant="brand" pill>
-      <Icon name="users" size="sm" />
-      {hero.badge}
-    </Badge>
-    <h1 slot="title" class="!text-4xl md:!text-5xl lg:!text-6xl">
-      <span class="text-foreground [-webkit-text-fill-color:currentColor]">{hero.title}</span>
-    </h1>
-    {/* Outside the h1: TypingEffect prints an inline script, which search engines would read as heading text. */}
-    <p slot="title" class="mt-4 font-display text-2xl font-bold text-brand-500 md:text-3xl">
-      <span class="[-webkit-text-fill-color:var(--color-brand-500)] sm:hidden">
-        <TypingEffect words={hero.typingWordsMobile} />
-      </span>
-      <span class="[-webkit-text-fill-color:var(--color-brand-500)] hidden sm:inline">
-        <TypingEffect words={hero.typingWords} />
-      </span>
-    </p>
-
-    <p slot="description" class="!text-balance">
-      {hero.description}
-    </p>
+  <Hero>
+    <Badge slot="badge" variant="brand">{page.hero.badge}</Badge>
+    <h1 slot="title"><span>{page.hero.titleLead}</span> <span class="text-brand-500">{page.hero.titleHighlight}</span></h1>
+    <p slot="description">{page.hero.description}</p>
+    <Fragment slot="actions">
+      <a class="ds-btn" {...bookingLinkAttrs(localizedPath('/contact', locale))}>{page.cta.primary}<span aria-hidden="true">{arrow}</span></a>
+    </Fragment>
+    <Breadcrumbs slot="bottom" items={breadcrumbs} class="ab-crumbs" />
   </Hero>
 
-  <!-- What you get -->
-  <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
-    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
-      <div class="flex flex-col items-center gap-4 text-center" data-reveal data-reveal-eager data-reveal-ease="smooth">
-        <div class="flex flex-col items-center gap-6">
-          <Badge variant="brand" pill>
-            <Icon name="list-checks" size="sm" />
-            {whatYouGet.badge}
-          </Badge>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground text-balance">
-            {whatYouGet.heading}
-          </h2>
-        </div>
-        <p class="text-lg text-foreground-muted max-w-2xl mx-auto text-balance">
-          {whatYouGet.lead}
-        </p>
+  <section class="ds-wrap ds-section--sm">
+    <SectionHead label={page.founder.badge} title={page.founder.heading} size="2" />
+    <div class="ab-founder" data-reveal>
+      <div class="ab-founder__text">
+        {page.founder.paragraphs.map((p) => <p class="ds-body">{p}</p>)}
       </div>
-
-      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {whatYouGet.items.map((item, i) => (
-          <ProofTile icon={item.icon} title={item.title} data-reveal data-reveal-delay={i % 3 || undefined}>
-            {item.description}
-          </ProofTile>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Principles -->
-  <section class="py-[var(--space-section-md)] bg-background border-t border-border">
-    <div class="mx-auto max-w-6xl px-6">
-      <div class="mb-8 text-center flex flex-col items-center gap-4" data-reveal>
-        <div class="flex flex-col items-center gap-6">
-          <Badge variant="brand" pill>
-            <Icon name="pen-tool" size="sm" />
-            {principles.badge}
-          </Badge>
-          <h2 class="font-display text-4xl font-bold text-foreground">
-            {principles.heading}
-          </h2>
-        </div>
-        <p class="text-lg text-foreground-muted max-w-2xl mx-auto text-balance">
-          {principles.lead}
-        </p>
-      </div>
-      <div class="grid gap-6 sm:grid-cols-3">
-        {principles.items.map((item, i) => (
-          <ProofTile icon={item.icon} title={item.title} data-reveal data-reveal-delay={i || undefined}>
-            {item.description}
-          </ProofTile>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Tech Stack -->
-
-  <!-- FAQ. The id is what the footer's "Got questions?" column links to;
-       without it there was no way to point at this section. -->
-  <section id="faq" class="scroll-mt-24 py-[var(--space-section-md)] bg-background border-t border-border">
-    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
-      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
-        <div class="flex flex-col items-center gap-6">
-          <Badge variant="brand" pill>
-            <Icon name="info" size="sm" />
-            {faq.badge}
-          </Badge>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-            {faq.heading}
-          </h2>
-        </div>
-        <p class="text-lg text-foreground-muted max-w-2xl mx-auto text-balance">
-          {faq.lead}
-        </p>
-      </div>
-
-      <div class="grid gap-6 md:grid-cols-2">
-        {faq.cards.map((card, cardIndex) => (
-          <Card variant="elevated" padding="lg" data-reveal data-reveal-delay={cardIndex + 1}>
-            <div class="flex items-center gap-3 pb-4 border-b border-border">
-              <div class="w-11 h-11 rounded-lg bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-                <Icon name={card.icon} size="md" />
-              </div>
-              <h3 class="font-display text-base font-semibold text-foreground">{card.title}</h3>
+      <dl class="ds-card ab-facts">
+        {
+          page.founder.facts.map((fact) => (
+            <div>
+              <dt class="ds-label">{fact.label}</dt>
+              <dd>{fact.value}</dd>
             </div>
-            <div class="w-full">
-              {card.items.map((item) => (
-                <details class="border-b border-border last:border-0" name={`faq-${cardIndex}`}>
-                  <summary class="flex w-full items-center justify-between text-sm py-4 text-left font-medium text-foreground transition-colors hover:text-foreground-secondary cursor-pointer list-none [&::-webkit-details-marker]:hidden">
-                    {item.question}
-                    <Icon name="chevron-down" size="sm" class="faq-icon shrink-0 text-foreground-muted transition-transform duration-200" />
-                  </summary>
-                  <div class="pb-4 text-sm text-foreground-muted leading-relaxed" set:html={item.answer} />
-                </details>
-              ))}
-            </div>
-          </Card>
-        ))}
-      </div>
+          ))
+        }
+      </dl>
     </div>
+    <ServiceAudience copy={page.scope} class="ab-scope" />
   </section>
 
-  <!-- Proof: founder and live projects -->
-  <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
-    <div class="mx-auto max-w-6xl px-6">
-      <div class="grid gap-8 sm:gap-10 glitch:grid-cols-2 glitch:items-center">
-        <!-- Text -->
-        <div class="flex flex-col gap-4 sm:items-center sm:text-center glitch:items-start glitch:justify-center glitch:text-left" data-reveal data-reveal-ease="smooth">
-          <Badge variant="brand" pill class="self-start sm:self-center glitch:self-start">
-            <Icon name="award" size="sm" />
-            {proof.badge}
-          </Badge>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-            {proof.heading}
-          </h2>
-          <p class="text-lg text-foreground-muted leading-relaxed sm:max-w-xl sm:mx-auto glitch:max-w-none glitch:mx-0">
-            {proof.description}
-          </p>
-          <div class="flex flex-wrap gap-4 self-start sm:self-center sm:justify-center glitch:self-start mt-2">
-            <Button variant="brand-outline" size="lg" href={projectsUrl}>
-              {proof.button}
-              <Icon name="arrow-right" size="sm" />
-            </Button>
-          </div>
-        </div>
+  <About locale={locale} auto />
 
-        <!-- Info card -->
-        <div class="flex flex-col h-full" data-reveal data-reveal-delay="1" data-reveal-ease="smooth">
-          <Card variant="elevated" padding="lg" class="flex-1 flex flex-col justify-center gap-6">
-            {proof.cards.map((card) => (
-              <div class="flex flex-col gap-2">
-                <h3 class="text-base font-semibold text-foreground">{card.title}</h3>
-                <p class="text-sm text-foreground-muted leading-relaxed" set:html={card.text} />
-              </div>
-            ))}
-          </Card>
-        </div>
-      </div>
-    </div>
+  <Work locale={locale} auto />
+
+  <section id="faq" class="ds-wrap ds-section--sm">
+    <SectionHead label={page.faq.badge} title={page.faq.heading} size="2" />
+    <Faq items={page.faq.items} name="about-faq" headingLevel="h3" />
   </section>
 
-  <!-- CTA -->
-  <section class="relative z-10 py-[var(--space-section-md)] bg-background border-t border-border">
-    <CtaBand>
-      <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">
-        {cta.heading}
-      </h2>
-      <p class="text-lg text-foreground-muted mb-8 text-balance">
-        {cta.description}
-      </p>
-      <Button size="lg" {...bookingLinkAttrs(contactUrl)}>
-        {cta.button}
-        <Icon name="arrow-right" size="sm" />
-      </Button>
-    </CtaBand>
-  </section>
+  <ServiceCta locale={locale} cta={page.cta} />
 </PageLayout>
 
 <style>
-  details[open] > summary .faq-icon {
-    transform: rotate(180deg);
+  :global(.ab-crumbs) {
+    margin-block-start: clamp(28px, 3vw, 40px);
+  }
+  .ab-founder {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+    gap: clamp(24px, 4vw, 64px);
+    align-items: start;
+  }
+  .ab-founder__text {
+    display: grid;
+    gap: 16px;
+    max-width: 640px;
+  }
+  .ab-founder__text p {
+    margin: 0;
+    font-size: var(--text-lead);
+  }
+  .ab-facts {
+    margin: 0;
+    display: grid;
+    gap: 0;
+  }
+  .ab-facts > div {
+    display: grid;
+    gap: 4px;
+    padding-block: 14px;
+    border-block-start: 1px solid var(--line);
+  }
+  .ab-facts > div:first-child {
+    border-block-start: 0;
+    padding-block-start: 0;
+  }
+  .ab-facts dt {
+    color: var(--ink-3);
+  }
+  .ab-facts dd {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+  }
+  :global(.ab-scope) {
+    margin-block-start: clamp(40px, 5vw, 64px);
   }
 </style>

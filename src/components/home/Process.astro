@@ -11,16 +11,18 @@ import { bookingLinkAttrs } from '@/lib/booking';
 
 interface Props {
   locale: string;
+  /** Join the page's automatic section numbering instead of "(05)". */
+  auto?: boolean;
 }
 
-const { locale } = Astro.props;
+const { locale, auto = false } = Astro.props;
 const k = (key: string) => t(`home.process.${key}`, locale);
 const steps = tData<{ time: string; title: string; desc: string }[]>('home.process.steps', locale)!;
 ---
 
 <section id="process" class="ds-dark proc" data-process>
   <div class="ds-wrap proc__inner">
-    <SectionHead n="05" label={k('label')} title={k('title')}>
+    <SectionHead n={auto ? undefined : '05'} label={k('label')} title={k('title')}>
       <a class="ds-btn ds-btn--ghost-light" {...bookingLinkAttrs(localizedPath('/contact', locale))} data-booking-open>
         {k('book')}
       </a>
