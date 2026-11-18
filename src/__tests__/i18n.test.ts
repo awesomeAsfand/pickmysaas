@@ -46,31 +46,27 @@ describe('i18n tData() helper', () => {
     // `pages.about.intro.facts` and checked for the literal "Astro 7"; the
     // about page was later restructured, `intro` stopped existing, and the
     // test failed for a reason that had nothing to do with tData().
-    const items = tData<{ icon: string; title: string; description: string }[]>(
-      'pages.about.principles.items',
-      'en'
-    );
+    const items = tData<{ label: string; value: string }[]>('pages.about.founder.facts', 'en');
     expect(Array.isArray(items)).toBe(true);
     expect(items?.length).toBeGreaterThan(0);
     expect(items?.[0]).toEqual(
       expect.objectContaining({
-        icon: expect.any(String),
-        title: expect.any(String),
-        description: expect.any(String),
+        label: expect.any(String),
+        value: expect.any(String),
       })
     );
   });
 
   it('returns the Arabic structured value when locale is ar', () => {
-    const hero = tData<{ badge: string }>('pages.home.hero', 'ar');
-    expect(hero?.badge).toBe('نستقبل مشاريع جديدة في دول الخليج');
+    const hero = tData<{ l1: string }>('home.hero', 'ar');
+    expect(hero?.l1).toBe('مواقع');
   });
 
   it('falls back to the default-locale value when the locale has no entry', () => {
     // 'de' has no dictionary loaded yet — should fall back to the English data
-    const cards = tData<unknown[]>('pages.about.faq.cards', 'de');
-    expect(Array.isArray(cards)).toBe(true);
-    expect(cards?.length).toBe(2);
+    const items = tData<unknown[]>('pages.about.faq.items', 'de');
+    expect(Array.isArray(items)).toBe(true);
+    expect(items?.length).toBe(5);
   });
 
   it('returns undefined when the key is absent in every dictionary', () => {
@@ -183,7 +179,7 @@ describe('i18n meta titles never embed the site name', () => {
     'projects.pageMetaTitle',
     'projects.tagMetaTitle',
     'errors.metaTitle',
-    'pages.home.meta.title',
+    'home.meta.title',
     'pages.about.meta.title',
     'pages.services.meta.title',
     'pages.contact.meta.title',

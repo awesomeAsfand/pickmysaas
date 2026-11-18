@@ -1,30 +1,26 @@
 ---
-/** The centred badge, heading and lead that open a section on the service pages. */
-import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+/**
+ * The head that opens a section on inner pages (v2): the "(02) Label" marker
+ * (numbered automatically in page order, see `.ds-badge-marker` in ds.css),
+ * a display heading, and an optional lead set to the far side.
+ * `icon` is accepted for existing callers and not drawn.
+ */
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
 
 interface Props {
-  icon: string;
+  icon?: string;
   badge: string;
   heading: string;
   lead?: string;
 }
 
-const { icon, badge, heading, lead } = Astro.props;
+const { badge, heading, lead } = Astro.props;
 ---
-<div class="flex flex-col items-center gap-4 text-center" data-reveal>
-  <div class="flex flex-col items-center gap-6">
-    <Badge variant="brand" pill>
-      <Icon name={icon} size="sm" />
-      {badge}
-    </Badge>
-    <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground text-balance">
-      {heading}
-    </h2>
+
+<div class="ds-head" data-reveal>
+  <div>
+    <Badge variant="brand">{badge}</Badge>
+    <h2 class="ds-display ds-display--2 ds-head__title">{heading}</h2>
   </div>
-  {lead && (
-    <p class="text-lg text-foreground-muted max-w-2xl mx-auto text-balance">
-      {lead}
-    </p>
-  )}
+  {lead && <p class="ds-head__lead">{lead}</p>}
 </div>

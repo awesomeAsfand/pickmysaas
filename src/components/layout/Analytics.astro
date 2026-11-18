@@ -133,12 +133,22 @@ const analyticsDataJson = JSON.stringify({
       const d = JSON.parse(document.getElementById('analytics-data').textContent);
       const i = d.gtmId;
       window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-      const f = document.getElementsByTagName('script')[0],
-        j = document.createElement('script');
-      j.async = true;
-      j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i;
-      f.parentNode.insertBefore(j, f);
+      // Load GTM after the page has finished loading and the browser is idle,
+      // so it never competes with the page's own content. Events pushed to
+      // dataLayer before then are queued and processed when it arrives.
+      function load() {
+        window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        const j = document.createElement('script');
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i;
+        document.head.appendChild(j);
+      }
+      function later() {
+        if ('requestIdleCallback' in window) window.requestIdleCallback(load, { timeout: 4000 });
+        else setTimeout(load, 2000);
+      }
+      if (document.readyState === 'complete') later();
+      else window.addEventListener('load', later, { once: true });
     })();
   </script>
 )}
@@ -216,12 +226,22 @@ const analyticsDataJson = JSON.stringify({
       const d = JSON.parse(document.getElementById('analytics-data').textContent);
       const i = d.gtmId;
       window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-      const f = document.getElementsByTagName('script')[0],
-        j = document.createElement('script');
-      j.async = true;
-      j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i;
-      f.parentNode.insertBefore(j, f);
+      // Load GTM after the page has finished loading and the browser is idle,
+      // so it never competes with the page's own content. Events pushed to
+      // dataLayer before then are queued and processed when it arrives.
+      function load() {
+        window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        const j = document.createElement('script');
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i;
+        document.head.appendChild(j);
+      }
+      function later() {
+        if ('requestIdleCallback' in window) window.requestIdleCallback(load, { timeout: 4000 });
+        else setTimeout(load, 2000);
+      }
+      if (document.readyState === 'complete') later();
+      else window.addEventListener('load', later, { once: true });
     })();
   </script>
 )}

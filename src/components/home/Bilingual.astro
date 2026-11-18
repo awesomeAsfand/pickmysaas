@@ -1,0 +1,425 @@
+---
+/**
+ * The scrolling word marquee, then "(02) Bilingual": the same demo product
+ * page in English and Arabic, split by a drag-to-compare handle.
+ *
+ * Both layers keep the photo on the left and the text on the right, so at
+ * the start the Arabic text faces the English photo, and dragging swaps the
+ * text in place. The Arabic text itself runs right to left.
+ *
+ * The handle is a native range input laid over the picture, so it works by
+ * mouse, touch and keyboard (arrow keys, Home, End) with no custom key code.
+ * The demo carries a visible label and says "demo" in its caption (fix 6).
+ * The marquee is decorative (aria-hidden) and stands still for reduced motion.
+ */
+import SectionHead from '@/components/ds/SectionHead.astro';
+import { t } from '@/i18n';
+import { DEMO_PRODUCT_PAGE } from '@/data/demo-store';
+
+interface Props {
+  locale: string;
+  /** Show the word marquee above (home page only). */
+  marquee?: boolean;
+  /** Join the page's automatic section numbering instead of "(02)". */
+  auto?: boolean;
+}
+
+const { locale, marquee: showMarquee = true, auto = false } = Astro.props;
+const k = (key: string) => t(`home.${key}`, locale);
+
+const words = [
+  { w: 'Websites', cls: 'mq__solid' },
+  { w: 'Stores', cls: 'mq__outline' },
+  { w: 'عربي', cls: 'mq__ar' },
+  { w: 'English', cls: 'mq__outline' },
+];
+const marquee = Array.from({ length: 5 }, () => words).flat();
+const layers = (['en', 'ar'] as const).map((lang) => ({ lang, ...DEMO_PRODUCT_PAGE[lang] }));
+---
+
+{showMarquee && (
+<div class="mq" dir="ltr" aria-hidden="true">
+  <div class="mq__track" data-marquee>
+    {
+      marquee.map((item) => (
+        <span class="mq__item">
+          <span class={item.cls}>{item.w}</span>
+          <span class="mq__dot" />
+        </span>
+      ))
+    }
+  </div>
+</div>
+)}
+
+<section id="bilingual" class="ds-wrap ds-section bi" data-reveal>
+  <SectionHead n={auto ? undefined : '02'} label={k('bi.label')} title={k('bi.title')} lead={k('bi.sub')} />
+
+  <figure class="split" style="--split: 50%" data-split>
+    <figcaption class="split__caption">
+      <span class="ds-demo-label">{k('demo.label')}</span>
+      <span class="sr-only">{k('demo.note')}</span>
+    </figcaption>
+    <div class="split__stage" dir="ltr" aria-hidden="true">
+      {
+        layers.map((layer, i) => (
+          <div class:list={['split__layer', i === 1 && 'split__layer--ar']} dir="ltr" lang={layer.lang}>
+            <div class="pdp__media">
+              <div class="pdp__hero">
+                <span class="pdp__bottle" />
+                <span class="pdp__tag" dir={layer.lang === 'ar' ? 'rtl' : 'ltr'}>{layer.tag}</span>
+              </div>
+              <div class="pdp__thumbs">
+                <span class="is-on" />
+                <span />
+                <span />
+                <span />
+              </div>
+            </div>
+            <div class="pdp__info" dir={layer.lang === 'ar' ? 'rtl' : 'ltr'}>
+              <span class="pdp__crumb">{layer.crumb}</span>
+              <span class="pdp__name" style={`font-family:${layer.font}`}>
+                {layer.name}
+              </span>
+              <span class="pdp__meta">{layer.meta}</span>
+              <span class="pdp__price">{layer.price}</span>
+              <p class="pdp__desc">{layer.desc}</p>
+              <div class="pdp__sizes">
+                {layer.sizes.map((size, s) => (
+                  <span class:list={[s === 1 && 'is-on']}>{size}</span>
+                ))}
+              </div>
+              <span class="pdp__add">
+                {layer.add}
+                <span>{layer.arrow}</span>
+              </span>
+              <span class="pdp__note">
+                <span class="pdp__ok" />
+                {layer.note}
+              </span>
+            </div>
+          </div>
+        ))
+      }
+      <span class="split__line"></span>
+      <span class="split__knob">⟷</span>
+      <span class="split__tag split__tag--en">English · LTR</span>
+      <span class="split__tag split__tag--ar" lang="ar" dir="rtl">العربية · RTL</span>
+    </div>
+    <input class="split__range" type="range" min="3" max="97" value="50" step="1" aria-label={k('bi.slider')} dir="ltr" data-split-range />
+  </figure>
+</section>
+
+<style>
+  /* ---- Marquee ---- */
+  .mq {
+    overflow: hidden;
+    padding-block-start: clamp(60px, 7vw, 100px);
+  }
+  .mq__track {
+    display: flex;
+    gap: 0.45em;
+    width: max-content;
+    white-space: nowrap;
+    padding: 0.12em 0 0.2em;
+    font: 900 clamp(70px, 12vw, 200px) / 1 var(--font-latin);
+    font-stretch: 125%;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    transform: translateX(-60px);
+    will-change: transform;
+  }
+  .mq__item {
+    display: flex;
+    align-items: center;
+    gap: 0.45em;
+  }
+  .mq__solid {
+    color: var(--ink);
+  }
+  .mq__outline {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--ink);
+  }
+  .mq__ar {
+    color: var(--blue);
+    font-family: var(--font-arabic-display);
+    letter-spacing: 0;
+  }
+  .mq__dot {
+    width: 0.26em;
+    height: 0.26em;
+    border-radius: 50%;
+    background: var(--blue);
+    flex: none;
+  }
+
+  /* ---- Split ---- */
+  .split {
+    position: relative;
+    margin: 0;
+    border-radius: 28px;
+    overflow: hidden;
+    background: #14110d;
+    box-shadow: 0 40px 80px -40px rgb(0 0 0 / 0.5);
+  }
+  .split__caption {
+    position: absolute;
+    bottom: 18px;
+    inset-inline-start: 18px;
+    z-index: 4;
+  }
+  .split__stage {
+    position: relative;
+    user-select: none;
+  }
+  .split__layer {
+    inset: 0;
+    background: #14110d;
+    color: #e9dcc3;
+    font-family: var(--font-latin);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: clamp(20px, 3vw, 48px);
+    padding: clamp(56px, 4vw, 64px) clamp(20px, 4vw, 56px) clamp(64px, 5vw, 72px);
+  }
+  .split__layer--ar {
+    position: absolute;
+    font-family: var(--font-arabic-body);
+    clip-path: inset(0 0 0 var(--split));
+  }
+  .pdp__media {
+    display: grid;
+    gap: 10px;
+    align-content: start;
+  }
+  .pdp__hero {
+    background: radial-gradient(circle at 50% 60%, #3a2e20, #1f1a14 70%);
+    border-radius: 18px;
+    height: clamp(260px, 34vw, 480px);
+    display: grid;
+    place-items: center;
+    position: relative;
+  }
+  .pdp__bottle {
+    width: 26%;
+    aspect-ratio: 1/1.5;
+    border-radius: 30% 30% 8px 8px;
+    background: linear-gradient(160deg, #e2c27e, #9c7838);
+    box-shadow: 0 40px 50px -20px rgb(0 0 0 / 0.6);
+  }
+  .pdp__tag {
+    position: absolute;
+    top: 16px;
+    inset-inline-start: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgb(233 220 195 / 0.12);
+  }
+  .pdp__thumbs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  .pdp__thumbs span {
+    aspect-ratio: 1;
+    border-radius: 10px;
+    background: #2a2219;
+  }
+  .pdp__thumbs span:nth-child(even) {
+    background: #231d16;
+  }
+  .pdp__thumbs .is-on {
+    outline: 1.5px solid var(--gold);
+  }
+  .pdp__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+    padding: 10px 0;
+  }
+  .pdp__crumb {
+    font-size: 12px;
+    opacity: 0.7;
+  }
+  .pdp__name {
+    font-size: clamp(40px, 4.6vw, 68px);
+    line-height: 1;
+  }
+  [lang='ar'] .pdp__name {
+    line-height: 1.35;
+  }
+  .pdp__meta {
+    font-size: 14px;
+    opacity: 0.75;
+    margin-top: -8px;
+  }
+  .pdp__price {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--gold);
+  }
+  .pdp__desc {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.65;
+    opacity: 0.85;
+    max-width: 420px;
+  }
+  .pdp__sizes {
+    display: flex;
+    gap: 8px;
+  }
+  .pdp__sizes span {
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid rgb(233 220 195 / 0.3);
+  }
+  .pdp__sizes .is-on {
+    background: #e9dcc3;
+    color: #14110d;
+    border-color: #e9dcc3;
+  }
+  .pdp__add {
+    background: var(--gold);
+    color: #14110d;
+    padding: 16px 22px;
+    font-weight: 700;
+    font-size: 15px;
+    display: flex;
+    justify-content: space-between;
+    max-width: 420px;
+  }
+  .pdp__note {
+    font-size: 13px;
+    opacity: 0.75;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .pdp__ok {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #7dd3a0;
+  }
+  .split__line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--split);
+    width: 2px;
+    background: var(--white);
+    transform: translateX(-1px);
+    pointer-events: none;
+    box-shadow: 0 0 20px rgb(255 255 255 / 0.4);
+    z-index: 2;
+  }
+  .split__knob {
+    position: absolute;
+    top: 50%;
+    left: var(--split);
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--white);
+    color: var(--ink);
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+    font-weight: 700;
+    pointer-events: none;
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.35);
+    transform: translate(-50%, -50%);
+    z-index: 3;
+  }
+  .split__tag {
+    position: absolute;
+    top: 18px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 12px;
+    border-radius: 999px;
+    pointer-events: none;
+    z-index: 3;
+  }
+  .split__tag--en {
+    left: 18px;
+    background: var(--white);
+    color: var(--ink);
+    font-family: var(--font-latin);
+  }
+  .split__tag--ar {
+    right: 18px;
+    background: var(--blue);
+    color: var(--white);
+    font-family: var(--font-arabic-body);
+    font-size: 13px;
+  }
+  /* The real control: a transparent range input over the whole picture. */
+  .split__range {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: ew-resize;
+    touch-action: pan-y;
+    z-index: 5;
+  }
+  .split:has(.split__range:focus-visible) .split__knob {
+    outline: 3px solid var(--blue);
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .split:not([data-touched]) .split__knob {
+      animation: knob-nudge 1.6s ease-in-out infinite;
+    }
+  }
+  @keyframes knob-nudge {
+    50% {
+      transform: translate(calc(-50% + 6px), -50%);
+    }
+  }
+</style>
+
+<script>
+  function initBilingual() {
+    const split = document.querySelector<HTMLElement>('[data-split]');
+    const range = split?.querySelector<HTMLInputElement>('[data-split-range]');
+    if (split && range && !split.dataset.ready) {
+      split.dataset.ready = 'true';
+      range.addEventListener('input', () => {
+        split.style.setProperty('--split', `${range.value}%`);
+        split.dataset.touched = '';
+      });
+    }
+
+    const track = document.querySelector<HTMLElement>('[data-marquee]');
+    if (track && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      let queued = false;
+      const update = () => {
+        queued = false;
+        track.style.transform = `translateX(${(-60 - window.scrollY * 0.35).toFixed(1)}px)`;
+      };
+      window.addEventListener(
+        'scroll',
+        () => {
+          if (!queued) {
+            queued = true;
+            requestAnimationFrame(update);
+          }
+        },
+        { passive: true }
+      );
+    }
+  }
+
+  initBilingual();
+</script>

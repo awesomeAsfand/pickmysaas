@@ -20,7 +20,7 @@ const COUNT = Object.keys(registry.components).length;
 
 describe('component count', () => {
   it('the registry is the number the copy quotes', () => {
-    expect(COUNT).toBe(44);
+    expect(COUNT).toBe(43);
   });
 
   it('every file the registry lists exists', () => {

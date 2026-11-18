@@ -54,8 +54,6 @@ const blog = defineCollection({
         .optional(),
       /** Per-post override: hide table of contents on this post */
       toc: z.boolean().optional(),
-      /** Per-post override: hide comments on this post */
-      comments: z.boolean().optional(),
     }),
 });
 
@@ -180,25 +178,10 @@ const projects = defineCollection({
     }),
 });
 
-// Stack collection — one MDX file per tool, editable like blog posts
-const stack = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/stack' }),
-  schema: z.object({
-    name: z.string(),
-    description: z.string(),
-    version: z.string(),
-    url: z.string().url(),
-    icon: z.string(), // icon name, e.g. 'brand-astro'
-    colorOklch: z.string(), // OKLCH params, e.g. '62.5% 0.22 38'
-    order: z.number().default(0),
-  }),
-});
-
 export const collections = {
   blog,
   pages,
   authors,
   faqs,
-  stack,
   projects,
 };

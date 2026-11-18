@@ -62,47 +62,27 @@ const classes = cn(
 </Element>
 
 <style is:global>
-  /* Light mode: brand-600 fill, brand-700 hover — the brightest brand step
-     that keeps white label text at WCAG AA (>=4.5:1) on most themes. */
-  html:not(.dark) .btn-primary {
-    background-color: var(--color-brand-600);
+  /* Inside a dark section the ink pill would vanish: it turns paper there. */
+  .invert-section .btn-primary,
+  .ds-dark .btn-primary {
+    background-color: var(--paper);
+    border-color: var(--paper);
+    color: var(--ink);
   }
-  html:not(.dark) .btn-primary:hover {
-    background-color: var(--color-brand-700);
+  .invert-section .btn-primary:hover,
+  .ds-dark .btn-primary:hover {
+    background-color: var(--white);
+    border-color: var(--white);
+    color: var(--blue);
   }
-  /* The four cooler hues sit below 4.5:1 with white text at brand-600
-     (cyan 4.27, emerald 4.40, sky 4.45, teal 4.18), so they keep the
-     original brand-700/800 pair to stay WCAG AA. */
-  html:not(.dark)[data-theme="cyan"] .btn-primary,
-  html:not(.dark)[data-theme="emerald"] .btn-primary,
-  html:not(.dark)[data-theme="sky"] .btn-primary,
-  html:not(.dark)[data-theme="teal"] .btn-primary {
-    background-color: var(--color-brand-700);
+  .invert-section .btn-outline,
+  .ds-dark .btn-outline {
+    border-color: rgb(238 235 227 / 0.4);
+    color: var(--on-ink);
   }
-  html:not(.dark)[data-theme="cyan"] .btn-primary:hover,
-  html:not(.dark)[data-theme="emerald"] .btn-primary:hover,
-  html:not(.dark)[data-theme="sky"] .btn-primary:hover,
-  html:not(.dark)[data-theme="teal"] .btn-primary:hover {
-    background-color: var(--color-brand-800);
-  }
-
-  /*
-   * Dark mode: soften the flat near-white primary button background with a
-   * subtle top-to-bottom gradient — same principle as the hero H1 gradient.
-   * color-mix blends 55% foreground + 45% foreground-secondary so the bottom
-   * of the button is slightly dimmer and brand-tinted without looking grey.
-   * Hover clears the gradient image so the Tailwind bg-foreground/90 takes over.
-   */
-  .dark .btn-primary {
-    border: 1px solid var(--color-foreground-secondary);
-    background-image: linear-gradient(
-      180deg,
-      var(--color-foreground) 0%,
-      color-mix(in oklch, var(--color-foreground) 55%, var(--color-foreground-secondary)) 100%
-    );
-  }
-
-  .dark .btn-primary:hover {
-    background-image: none;
+  .invert-section .btn-outline:hover,
+  .ds-dark .btn-outline:hover {
+    background-color: var(--on-ink);
+    color: var(--ink);
   }
 </style>

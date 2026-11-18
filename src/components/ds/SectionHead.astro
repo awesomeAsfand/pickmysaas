@@ -1,0 +1,36 @@
+---
+/**
+ * Section head (v2): the "(01) Label" marker, a display title and an optional
+ * short lead set to the far side, as every v2 section opens.
+ *
+ *   <SectionHead n="03" label="Services" title="What we do" lead="…" />
+ *
+ * Without `n` the marker joins the page's automatic numbering (see
+ * `.ds-badge-marker` in ds.css), as on the inner pages.
+ *
+ * `as` sets the heading level (h2 by default); `size` picks the display step.
+ * Pass `id` to give the title an anchor.
+ */
+interface Props {
+  /** Two-digit section number, shown as "(03)". Omit for no number. */
+  n?: string;
+  label: string;
+  title: string;
+  lead?: string;
+  as?: 'h1' | 'h2' | 'h3';
+  size?: 'hero' | '1' | '2' | '3';
+  id?: string;
+  class?: string;
+}
+
+const { n, label, title, lead, as: Tag = 'h2', size = '1', id, class: className } = Astro.props;
+---
+
+<div class:list={['ds-head', className]}>
+  <div>
+    <span class:list={['ds-marker', !n && 'ds-badge-marker']}>{n && <>({n}) </>}{label}</span>
+    <Tag id={id} class:list={['ds-display', `ds-display--${size}`, 'ds-head__title']}>{title}</Tag>
+  </div>
+  {lead && <p class="ds-head__lead">{lead}</p>}
+  <slot />
+</div>

@@ -1,55 +1,81 @@
 /* =============================================================================
-   Astro Rocket Design Tokens - Typography
+   PickMySaaS typography tokens (v2 design)
    =============================================================================
-   Fluid typography using clamp() for responsive sizing.
-   Font families are theme-controlled — see themes/*.css
+   Three families, self-hosted with Fontsource (see global.css):
+   - Archivo (variable, weight 100–900, width 62–125%): Latin display and body.
+     Headlines use the wide width (125%), uppercase, tight leading.
+   - Noto Kufi Arabic (variable): Arabic display.
+   - IBM Plex Sans Arabic (400, 600): Arabic body.
+
+   Arabic never takes uppercase styling or negative letter-spacing, and needs
+   more line height. The per-language values below come from v2's
+   `:root[lang=ar]` rules; components read the short variables (--fd, --fb …)
+   and so switch automatically on /ar/ pages.
    ============================================================================= */
 
 :root {
-  /* ---------------------------------------------------------------------------
-     Font Sizes - Fluid Typography
-     Using clamp(min, preferred, max) for smooth scaling
-     --------------------------------------------------------------------------- */
-  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.8125rem);
-  --text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 0.9375rem);
-  --text-base: clamp(1rem, 0.925rem + 0.375vw, 1.0625rem);
-  --text-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
-  --text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
-  --text-2xl: clamp(1.5rem, 1.25rem + 1.25vw, 1.875rem);
-  --text-3xl: clamp(1.875rem, 1.5rem + 1.875vw, 2.5rem);
-  --text-4xl: clamp(2.25rem, 1.75rem + 2.5vw, 3.25rem);
-  --text-5xl: clamp(3rem, 2.25rem + 3.75vw, 4.5rem);
+  --font-latin: 'Archivo Variable', 'Archivo Fallback', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    Roboto, Arial, sans-serif;
+  --font-arabic-display: 'Noto Kufi Arabic Variable', 'Archivo Variable', 'Archivo Fallback', Tahoma, sans-serif;
+  --font-arabic-body: 'IBM Plex Sans Arabic', 'Archivo Variable', 'Archivo Fallback', Tahoma, sans-serif;
+  --font-code: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
 
-  /* ---------------------------------------------------------------------------
-     Line Heights
-     --------------------------------------------------------------------------- */
-  --leading-none: 1;
-  --leading-tight: 1.25;
-  --leading-snug: 1.375;
-  --leading-normal: 1.5;
-  --leading-relaxed: 1.625;
-  --leading-loose: 2;
+  /* Per-language switches (Latin defaults) */
+  --fd: var(--font-latin); /* display family */
+  --fb: var(--font-latin); /* body family */
+  --fs: 125%; /* display font-stretch */
+  --tt: uppercase; /* display text-transform */
+  --hlh: 0.84; /* display line-height (hero, section titles) */
+  --hls: -0.035em; /* display letter-spacing */
+  --lh: 1.02; /* sub-display line-height (card titles, step titles) */
+  --ls: -0.025em; /* sub-display letter-spacing */
+  --hpad: 0.05em; /* clip padding for masked headline lines */
+  --body-lh: 1.55;
 
-  /* ---------------------------------------------------------------------------
-     Letter Spacing
-     --------------------------------------------------------------------------- */
-  --tracking-tighter: -0.05em;
-  --tracking-tight: -0.025em;
-  --tracking-normal: 0;
-  --tracking-wide: 0.025em;
-  --tracking-wider: 0.05em;
-  --tracking-widest: 0.1em;
+  /* Display scale (fluid, from v2) */
+  --display-hero: clamp(44px, 10.6vw, 184px);
+  --display-xl: clamp(64px, 10vw, 176px); /* "Let's talk." */
+  --display-1: clamp(42px, 6.8vw, 116px); /* section titles */
+  --display-2: clamp(34px, 4.4vw, 68px); /* card titles */
+  --display-3: clamp(30px, 3.4vw, 52px); /* pricing rows, inner-page h2 */
+  --display-4: clamp(24px, 2.4vw, 34px); /* small display */
+  --display-5: 24px; /* principle titles, card headings */
+  --ghost-num: clamp(130px, 16vw, 260px);
 
-  /* ---------------------------------------------------------------------------
-     Font Weights
-     --------------------------------------------------------------------------- */
-  --weight-thin: 100;
-  --weight-extralight: 200;
-  --weight-light: 300;
-  --weight-normal: 400;
-  --weight-medium: 500;
-  --weight-semibold: 600;
-  --weight-bold: 700;
-  --weight-extrabold: 800;
-  --weight-black: 900;
+  /* Text scale */
+  --text-lead: clamp(17px, 1.5vw, 21px);
+  --text-body: 17px;
+  --text-ui: 15px;
+  --text-small: 14px;
+  --text-label: 13px; /* smallest text on the site (fix 11: never below 12px) */
+
+  /* Kept for components that still read them */
+  --text-xs: 0.8125rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+
+  --theme-font-sans: var(--fb);
+  --theme-font-display: var(--fd);
+  --theme-font-mono: var(--font-code);
+  --theme-heading-tracking: var(--ls);
+  --theme-body-leading: var(--body-lh);
+}
+
+:root:lang(ar) {
+  --fd: var(--font-arabic-display);
+  --fb: var(--font-arabic-body);
+  --fs: 100%;
+  --tt: none;
+  --hlh: 1.35;
+  --hls: 0;
+  --lh: 1.5;
+  --ls: 0;
+  --hpad: 0.22em;
+  --body-lh: 1.8;
 }

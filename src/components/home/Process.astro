@@ -1,0 +1,153 @@
+---
+/**
+ * "(05) Process": four steps on a dark section, rewritten to the real
+ * timelines (fix 14). A thin blue line fills as the section scrolls past and
+ * fills each step's dot in turn (the text stays at full contrast). All steps are fully visible without the script;
+ * it only adds the progress effect, and skips it for reduced motion.
+ */
+import SectionHead from '@/components/ds/SectionHead.astro';
+import { t, tData, localizedPath } from '@/i18n';
+import { bookingLinkAttrs } from '@/lib/booking';
+
+interface Props {
+  locale: string;
+  /** Join the page's automatic section numbering instead of "(05)". */
+  auto?: boolean;
+}
+
+const { locale, auto = false } = Astro.props;
+const k = (key: string) => t(`home.process.${key}`, locale);
+const steps = tData<{ time: string; title: string; desc: string }[]>('home.process.steps', locale)!;
+---
+
+<section id="process" class="ds-dark proc" data-process>
+  <div class="ds-wrap proc__inner">
+    <SectionHead n={auto ? undefined : '04'} label={k('label')} title={k('title')}>
+      <a class="ds-btn ds-btn--ghost-light" {...bookingLinkAttrs(localizedPath('/contact', locale))} data-booking-open>
+        {k('book')}
+      </a>
+    </SectionHead>
+
+    <div class="proc__track" aria-hidden="true"><span class="proc__fill" data-process-fill></span></div>
+
+    <ol class="proc__steps">
+      {
+        steps.map((step, i) => (
+          <li class="proc__step" data-step={i}>
+            <div class="proc__top">
+              <span class="proc__dot">{String(i + 1).padStart(2, '0')}</span>
+              <span class="proc__time">{step.time}</span>
+            </div>
+            <h3 class="ds-title ds-title--lg">{step.title}</h3>
+            <p>{step.desc}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .proc {
+    margin-block-start: var(--section-y);
+  }
+  .proc__inner {
+    padding-block: clamp(80px, 10vw, 140px);
+  }
+  .proc__inner :global(.ds-head) {
+    margin-block-end: clamp(56px, 7vw, 100px);
+  }
+  .proc__track {
+    position: relative;
+    height: 2px;
+    background: rgb(238 235 227 / 0.15);
+    margin-block-end: 36px;
+  }
+  .proc__fill {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: var(--progress, 100%);
+    background: var(--blue);
+    box-shadow: 0 0 18px var(--blue);
+    transition: width 0.2s linear;
+  }
+  .proc__steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+    gap: clamp(24px, 3vw, 40px);
+  }
+  /* Steps not yet reached keep their text at full contrast; only the dot
+     shows progress. */
+  .proc__top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .proc__dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 13px;
+    font-weight: 700;
+    background: var(--blue);
+    border: 1.5px solid var(--blue);
+    color: var(--white);
+    transition:
+      background-color 0.4s,
+      border-color 0.4s;
+  }
+  .proc__step[data-dim] .proc__dot {
+    background: transparent;
+    border-color: rgb(238 235 227 / 0.3);
+  }
+  .proc__time {
+    font-size: var(--text-label);
+    color: var(--on-ink-muted);
+  }
+  .proc__step h3 {
+    margin: 28px 0 12px;
+  }
+  .proc__step p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--on-ink-2);
+  }
+</style>
+
+<script>
+  function initProcess() {
+    const section = document.querySelector<HTMLElement>('[data-process]');
+    if (!section || section.dataset.ready || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    section.dataset.ready = 'true';
+    const steps = [...section.querySelectorAll<HTMLElement>('[data-step]')];
+    let queued = false;
+    const update = () => {
+      queued = false;
+      const rect = section.getBoundingClientRect();
+      const p = Math.max(0, Math.min(1, (window.innerHeight * 0.75 - rect.top) / (rect.height * 0.6)));
+      section.style.setProperty('--progress', `${(p * 100).toFixed(1)}%`);
+      steps.forEach((step, i) => step.toggleAttribute('data-dim', p < i / steps.length + 0.02));
+    };
+    const onScroll = () => {
+      if (!queued) {
+        queued = true;
+        requestAnimationFrame(update);
+      }
+    };
+    // Only track while the section is near the screen.
+    new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) window.addEventListener('scroll', onScroll, { passive: true });
+      else window.removeEventListener('scroll', onScroll);
+      update();
+    }, { rootMargin: '200px 0px' }).observe(section);
+  }
+
+  initProcess();
+</script>

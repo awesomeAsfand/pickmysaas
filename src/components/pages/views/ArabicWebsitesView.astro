@@ -1,0 +1,153 @@
+---
+/**
+ * The Arabic & RTL service page (V5, new): /services/arabic-websites/ and
+ * /ar/services/arabic-websites/. Answer first (what, price, timeline, who),
+ * "who it's for", what's included, proof (this site and the drag-to-compare
+ * demo), FAQ, call to action. Copy in `pages.serviceArabic`.
+ */
+import PageLayout from '@/layouts/PageLayout.astro';
+import { Hero } from '@/components/hero';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Breadcrumbs from '@/components/seo/Breadcrumbs.astro';
+import SectionHead from '@/components/ds/SectionHead.astro';
+import Faq from '@/components/ds/Faq.astro';
+import Bilingual from '@/components/home/Bilingual.astro';
+import ServiceAudience, { type ServiceAudienceCopy } from '@/components/services/ServiceAudience.astro';
+import DataTable from '@/components/services/DataTable.astro';
+import ServiceCta from '@/components/services/ServiceCta.astro';
+import { createFAQSchema } from '@/lib/schema';
+import { t, tData, defaultLocale, localizedPath, getLocaleDirection } from '@/i18n';
+import { bookingLinkAttrs } from '@/lib/booking';
+
+interface Props {
+  locale?: string;
+}
+
+const { locale = defaultLocale } = Astro.props;
+const arrow = getLocaleDirection(locale) === 'rtl' ? '←' : '→';
+const page = tData<{
+  breadcrumb: string;
+  hero: { badge: string; titleLead: string; titleHighlight: string; description: string };
+  answer: { heading: string; paragraphs: string[] };
+  audience: ServiceAudienceCopy;
+  included: { badge: string; heading: string; items: { title: string; text: string }[] };
+  proof: { badge: string; heading: string; lead: string };
+  faq: { badge: string; heading: string; items: { question: string; answer: string }[] };
+  cta: { heading: string; description: string; primary: string; secondary: string };
+}>('pages.serviceArabic', locale)!;
+// The "Arabic done right" comparison, shared with the Websites page.
+const arabic = tData<{ shortcutLabel: string; oursLabel: string; rows: { shortcut: string; ours: string }[] }>(
+  'pages.serviceWebsites.arabic',
+  locale
+)!;
+const contactUrl = localizedPath('/contact', locale);
+const breadcrumbs = [
+  { label: t('common.home', locale), href: localizedPath('/', locale) },
+  { label: t('nav.items.services', locale), href: localizedPath('/services', locale) },
+  { label: page.breadcrumb },
+];
+---
+
+<PageLayout
+  title={t('pages.serviceArabic.meta.title', locale)}
+  description={t('pages.serviceArabic.meta.description', locale)}
+  extraSchemas={[createFAQSchema(page.faq.items)]}
+  flush
+>
+  <Hero>
+    <Badge slot="badge" variant="brand">{page.hero.badge}</Badge>
+    <h1 slot="title"><span>{page.hero.titleLead}</span><br /><span class="text-brand-500">{page.hero.titleHighlight}</span></h1>
+    <p slot="description">{page.hero.description}</p>
+    <Fragment slot="actions">
+      <a class="ds-btn" {...bookingLinkAttrs(contactUrl)}>{page.cta.primary}<span aria-hidden="true">{arrow}</span></a>
+      <a class="ds-btn ds-btn--outline" href={localizedPath('/pricing', locale)}>{t('home.hero.prices', locale)}</a>
+    </Fragment>
+  </Hero>
+
+  <section class="ds-wrap ds-section--sm">
+    <Breadcrumbs items={breadcrumbs} class="ar-crumbs" />
+    <div class="ar-answer">
+      <h2 class="ds-display ds-display--3">{page.answer.heading}</h2>
+      {page.answer.paragraphs.map((p) => <p class="ds-body">{p}</p>)}
+    </div>
+    <ServiceAudience copy={page.audience} class="ar-aud" />
+  </section>
+
+  <section class="ds-wrap ds-section--sm">
+    <SectionHead label={page.included.badge} title={page.included.heading} size="2" />
+    <div class="ar-cards">
+      {
+        page.included.items.map((item, i) => (
+          <article class:list={['ds-card', 'ds-card--sm', i === 1 && 'ds-card--blue']} data-reveal>
+            <span class="ds-count">0{i + 1}</span>
+            <h3 class="ds-title ds-title--md">{item.title}</h3>
+            <p>{item.text}</p>
+          </article>
+        ))
+      }
+    </div>
+    <div class="ar-table">
+      <DataTable headers={[arabic.shortcutLabel, arabic.oursLabel]} rows={arabic.rows.map((row) => [row.shortcut, row.ours])} />
+    </div>
+  </section>
+
+  <section class="ds-wrap ds-section--sm ar-proof-head">
+    <SectionHead label={page.proof.badge} title={page.proof.heading} lead={page.proof.lead} size="2" />
+  </section>
+  <div class="ar-proof">
+    <Bilingual locale={locale} marquee={false} auto />
+  </div>
+
+  <section id="faq" class="ds-wrap ds-section--sm">
+    <SectionHead label={page.faq.badge} title={page.faq.heading} size="2" />
+    <Faq items={page.faq.items} name="arabic-faq" headingLevel="h3" />
+  </section>
+
+  <ServiceCta locale={locale} cta={page.cta} />
+</PageLayout>
+
+<style>
+  :global(.ar-crumbs) {
+    margin-block-end: 28px;
+  }
+  .ar-answer {
+    display: grid;
+    gap: 16px;
+    max-width: 820px;
+  }
+  .ar-answer h2,
+  .ar-answer p {
+    margin: 0;
+  }
+  :global(.ar-aud) {
+    margin-block-start: 40px;
+  }
+  .ar-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 14px;
+  }
+  .ar-cards article {
+    display: grid;
+    gap: 12px;
+    align-content: start;
+  }
+  .ar-cards h3,
+  .ar-cards p {
+    margin: 0;
+  }
+  .ar-cards h3 {
+    text-transform: none;
+  }
+  .ar-table {
+    margin-block-start: 28px;
+  }
+  /* The demo section brings its own head; on this page the proof head above
+     introduces it, so hide the demo's own. */
+  .ar-proof :global(#bilingual) {
+    padding-block-start: 0;
+  }
+  .ar-proof :global(#bilingual .ds-head) {
+    display: none;
+  }
+</style>

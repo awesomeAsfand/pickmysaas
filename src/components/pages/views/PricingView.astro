@@ -1,0 +1,445 @@
+---
+/**
+ * /pricing/ and /ar/pricing/ (V3), from v2's pricing design.
+ *
+ * Every price is in the HTML in US dollars. The script only converts to SAR
+ * or AED and builds the estimate. Without it, the page shows every price,
+ * the deliverables and the FAQ; the currency switch and estimate bar stay
+ * hidden.
+ *
+ * Fix 12: the sticky estimate bar shows only once a service is picked, the
+ * list reserves room for it so it never sits over the last card, and the
+ * floating WhatsApp button hides while it is up.
+ */
+import PageLayout from '@/layouts/PageLayout.astro';
+import SectionHead from '@/components/ds/SectionHead.astro';
+import Faq from '@/components/ds/Faq.astro';
+import { createFAQSchema } from '@/lib/schema';
+import { formatPrice } from '@/lib/currency';
+import { keepHyphenated } from '@/lib/text';
+import { t, tData, localizedPath, getLocaleDirection, getLocales } from '@/i18n';
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const k = (key: string) => t(`pricing.${key}`, locale);
+const rtl = getLocaleDirection(locale) === 'rtl';
+const arrow = rtl ? '←' : '→';
+
+type Item = { title: string; desc: string; deliverables: string[]; time: string };
+const items = tData<Item[]>('pricing.items', locale)!;
+/** USD, how the price is labelled, monthly or not. */
+const prices: { usd: number; kind: 'from' | 'fixedFrom' | 'fixed'; monthly?: boolean }[] = [
+  { usd: 300, kind: 'from' },
+  { usd: 700, kind: 'fixedFrom' },
+  { usd: 300, kind: 'fixed' },
+  { usd: 500, kind: 'fixed' },
+  { usd: 400, kind: 'fixed', monthly: true },
+];
+const tones = ['', 'ds-card--blue'];
+const faq = tData<{ question: string; answer: string }[]>('pricing.faq.items', locale)!;
+const alternates = getLocales().map((loc) => ({ locale: loc, url: localizedPath('/pricing', loc) }));
+const total = String(items.length).padStart(2, '0');
+---
+
+<PageLayout
+  title={k('meta.title')}
+  description={k('meta.description')}
+  localeAlternates={alternates}
+  extraSchemas={[createFAQSchema(faq)]}
+  flush
+>
+  <section class="ds-wrap pr-hero">
+    <div class="ds-meta-row">
+      <span>(01) {k('m1')}</span>
+      <span>{k('m2')}</span>
+    </div>
+    <div class="pr-hero__row">
+      <h1 class="ds-display ds-display--hero">
+        <span class="pr-line">{k('l1')}</span>
+        <span class="pr-line ds-accent">{k('l2')}</span>
+      </h1>
+      <div class="pr-hero__side">
+        <p class="pr-hero__sub">{k('sub')}</p>
+        <div class="pr-cur" data-currency hidden>
+          <span class="ds-label" id="pr-cur-label">{k('currency')}</span>
+          <div class="ds-segment" role="group" aria-labelledby="pr-cur-label" dir="ltr">
+            {['USD', 'SAR', 'AED'].map((c, i) => (
+              <button type="button" data-cur={c} aria-pressed={i === 0 ? 'true' : 'false'}>
+                {c}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ds-wrap pr-list-wrap" data-pricing data-locale={locale}>
+    <div class="pr-list">
+      {
+        items.map((item, i) => {
+          const p = prices[i];
+          const n = String(i + 1).padStart(2, '0');
+          return (
+            <article class:list={['ds-card', 'pr-card', tones[0]]} data-row={i} data-usd={p.usd} data-monthly={p.monthly ? '' : undefined}>
+              <span class="ds-ghost ds-ghost--bottom" aria-hidden="true">
+                {n}
+              </span>
+              <div class="pr-card__main">
+                <span class="ds-count">
+                  {n} / {total}
+                </span>
+                <h2 class="ds-display ds-display--3" set:html={keepHyphenated(item.title)} />
+                <p>{item.desc}</p>
+              </div>
+              <ul class="ds-list">
+                {item.deliverables.map((d) => (
+                  <li>{d}</li>
+                ))}
+              </ul>
+              <div class="pr-card__price">
+                <span class="ds-label">{k(p.kind)}</span>
+                <span class="pr-amount">
+                  <span data-price>{formatPrice(p.usd, 'USD', locale)}</span>
+                  {p.monthly && <span class="pr-per"> {k('perMonth')}</span>}
+                </span>
+                <span class="pr-time">{item.time}</span>
+                <button type="button" class="pr-toggle" aria-pressed="false" data-toggle hidden>
+                  <span class="pr-toggle__mark" aria-hidden="true">+</span>
+                  <span data-toggle-label>{k('add')}</span>
+                  <span class="sr-only">: {item.title}</span>
+                </button>
+              </div>
+            </article>
+          );
+        })
+      }
+    </div>
+    <p class="pr-note">{k('note')}</p>
+
+    <div class="pr-bar" data-bar data-hide-fab hidden>
+      <div class="pr-bar__inner">
+        <div class="pr-bar__text" aria-live="polite">
+          <span class="pr-bar__label" data-bar-label>{k('sumEmpty')}</span>
+          <span class="pr-bar__names" data-bar-names></span>
+        </div>
+        <span class="pr-bar__total" dir="ltr" data-bar-total></span>
+        <a class="ds-btn ds-btn--blue" href={`${localizedPath('/contact', locale)}#contact-brief`}>
+          {k('cta')}<span aria-hidden="true">{arrow}</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="ds-wrap ds-section--sm ds-fab-safe">
+    <SectionHead n="02" label={k('faq.label')} title={k('faq.title')} size="2" />
+    <Faq items={faq} name="pricing-faq" headingLevel="h3" />
+  </section>
+
+  <script
+    type="application/json"
+    id="pricing-text"
+    set:html={JSON.stringify({
+      add: k('add'),
+      added: k('added'),
+      sum: k('sum'),
+      sumFrom: k('sumFrom'),
+      sumEmpty: k('sumEmpty'),
+      perMonth: k('perMonth'),
+      titles: items.map((i) => i.title),
+    })}
+  />
+</PageLayout>
+
+<style>
+  .pr-hero {
+    padding-block-start: clamp(28px, 4vw, 40px);
+  }
+  .pr-hero__row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px 48px;
+  }
+  .pr-line {
+    display: block;
+    padding-block: var(--hpad);
+  }
+  .pr-hero__side {
+    max-width: 420px;
+    padding-block-end: 12px;
+    display: grid;
+    gap: 20px;
+  }
+  .pr-hero__sub {
+    margin: 0;
+    font-size: clamp(16px, 1.25vw, 18px);
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+  .pr-cur {
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .pr-cur:not([hidden]) {
+    display: flex;
+  }
+
+  .pr-list-wrap {
+    padding-block-start: clamp(40px, 5vw, 72px);
+  }
+  .pr-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .pr-card {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr));
+    gap: clamp(20px, 3vw, 48px);
+    align-items: start;
+    transition:
+      background-color 0.35s,
+      color 0.35s,
+      border-color 0.35s;
+  }
+  .pr-card[data-on] {
+    --card-bg: var(--blue);
+    --card-fg: var(--white);
+    --card-bd: var(--blue);
+    --card-line: rgb(255 255 255 / 0.3);
+    --card-ghost: rgb(255 255 255 / 0.1);
+    --card-muted: rgb(255 255 255 / 0.9);
+  }
+  .pr-card__main {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  /* Sized to the column, so "E-commerce" (kept on one line) always fits. */
+  .pr-card__main {
+    container-type: inline-size;
+  }
+  .pr-card__main h2 {
+    margin: 0;
+    font-size: min(var(--display-3), 11cqi);
+  }
+  .pr-card__main p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.55;
+    max-width: 400px;
+  }
+  .pr-card__price {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .pr-amount {
+    font: 850 clamp(40px, 4.4vw, 68px) / 1 var(--font-latin);
+    font-stretch: 110%;
+    letter-spacing: -0.035em;
+    white-space: nowrap;
+  }
+  :root:lang(ar) .pr-amount {
+    font-family: var(--font-arabic-display);
+    letter-spacing: 0;
+    font-size: clamp(32px, 3.4vw, 52px);
+    line-height: 1.3;
+  }
+  .pr-per {
+    font-size: 0.34em;
+    font-weight: 600;
+    letter-spacing: 0;
+    font-stretch: 100%;
+  }
+  .pr-time {
+    font-size: var(--text-small);
+    font-weight: 500;
+    margin-block-start: 4px;
+  }
+  .pr-toggle {
+    margin-block-start: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 0;
+    font-size: var(--text-small);
+    font-weight: 600;
+    background: var(--ink);
+    color: var(--on-ink);
+    transition:
+      background-color 0.3s,
+      color 0.3s;
+  }
+  .pr-toggle[aria-pressed='true'] {
+    background: var(--white);
+    color: var(--ink);
+  }
+  .pr-toggle:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+  .pr-card[data-on] .pr-toggle:focus-visible {
+    outline-color: var(--white);
+  }
+  .pr-toggle__mark {
+    font-size: 16px;
+    line-height: 1;
+  }
+  .pr-note {
+    margin: 28px 0 0;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--ink-3);
+    max-width: 680px;
+  }
+
+  /* Estimate bar. Reserves its own height in the flow, so it never covers
+     the last card or the note, and sticks to the bottom while the list
+     scrolls past. */
+  .pr-bar {
+    position: sticky;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    z-index: 40;
+    margin-block-start: clamp(32px, 4vw, 56px);
+    display: flex;
+    justify-content: center;
+  }
+  .pr-bar__inner {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 28px;
+    padding: 14px;
+    padding-inline-start: 26px;
+    border-radius: 26px;
+    background: var(--ink);
+    color: var(--on-ink);
+    box-shadow: 0 24px 50px -20px rgb(0 0 0 / 0.55);
+  }
+  .pr-bar__text {
+    flex: 1;
+    min-width: 200px;
+    display: grid;
+    gap: 4px;
+  }
+  .pr-bar__label {
+    font-size: var(--text-label);
+    font-weight: 500;
+    color: var(--on-ink-muted);
+  }
+  .pr-bar__names {
+    font-size: var(--text-small);
+    font-weight: 500;
+  }
+  .pr-bar__total {
+    font: 850 clamp(20px, 2.2vw, 30px) / 1.1 var(--font-latin);
+    font-stretch: 110%;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+  }
+  :root:lang(ar) .pr-bar__total {
+    font-family: var(--font-arabic-display);
+    letter-spacing: 0;
+  }
+  .pr-bar .ds-btn:hover {
+    --btn-bg-hover: var(--paper);
+    --btn-fg-hover: var(--ink);
+  }
+  @media (max-width: 599.98px) {
+    .pr-bar__inner {
+      padding-inline-start: 18px;
+    }
+    .pr-bar .ds-btn {
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  import { formatPrice, type Currency } from '@/lib/currency';
+
+  function initPricing() {
+    const root = document.querySelector<HTMLElement>('[data-pricing]');
+    const textEl = document.getElementById('pricing-text');
+    if (!root || !textEl || root.dataset.ready) return;
+    root.dataset.ready = 'true';
+    const text = JSON.parse(textEl.textContent || '{}') as Record<string, string> & { titles: string[] };
+    const locale = root.dataset.locale ?? 'en';
+    const rows = [...root.querySelectorAll<HTMLElement>('[data-row]')];
+    const bar = root.querySelector<HTMLElement>('[data-bar]')!;
+    const switcher = document.querySelector<HTMLElement>('[data-currency]')!;
+    let currency: Currency = 'USD';
+    try {
+      const saved = localStorage.getItem('pms-currency');
+      if (saved === 'SAR' || saved === 'AED') currency = saved;
+    } catch {
+      /* storage unavailable */
+    }
+    const selected = new Set<number>();
+
+    const render = () => {
+      rows.forEach((row, i) => {
+        const usd = Number(row.dataset.usd);
+        row.querySelector('[data-price]')!.textContent = formatPrice(usd, currency, locale);
+        const on = selected.has(i);
+        row.toggleAttribute('data-on', on);
+        const toggle = row.querySelector<HTMLButtonElement>('[data-toggle]')!;
+        toggle.setAttribute('aria-pressed', String(on));
+        toggle.querySelector('.pr-toggle__mark')!.textContent = on ? '✓' : '+';
+        toggle.querySelector('[data-toggle-label]')!.textContent = on ? text.added : text.add;
+      });
+      switcher.querySelectorAll<HTMLButtonElement>('[data-cur]').forEach((b) =>
+        b.setAttribute('aria-pressed', String(b.dataset.cur === currency))
+      );
+
+      bar.hidden = selected.size === 0;
+      const picked = [...selected].sort();
+      const once = picked.filter((i) => !rows[i].hasAttribute('data-monthly')).reduce((a, i) => a + Number(rows[i].dataset.usd), 0);
+      const monthly = picked.filter((i) => rows[i].hasAttribute('data-monthly')).reduce((a, i) => a + Number(rows[i].dataset.usd), 0);
+      bar.querySelector('[data-bar-label]')!.textContent = picked.length ? `${text.sum} · ${text.sumFrom}` : text.sumEmpty;
+      bar.querySelector('[data-bar-names]')!.textContent = picked.map((i) => text.titles[i]).join(locale === 'ar' ? '، ' : ' + ');
+      const parts: string[] = [];
+      if (once) parts.push(formatPrice(once, currency, locale));
+      if (monthly) parts.push(`${formatPrice(monthly, currency, locale)} ${text.perMonth}`);
+      bar.querySelector('[data-bar-total]')!.textContent = parts.join(' + ');
+    };
+
+    rows.forEach((row, i) => {
+      const toggle = row.querySelector<HTMLButtonElement>('[data-toggle]')!;
+      toggle.hidden = false;
+      toggle.addEventListener('click', () => {
+        if (selected.has(i)) selected.delete(i);
+        else selected.add(i);
+        render();
+      });
+    });
+    switcher.hidden = false;
+    switcher.addEventListener('click', (event) => {
+      const button = (event.target as Element).closest<HTMLButtonElement>('[data-cur]');
+      if (!button) return;
+      currency = button.dataset.cur as Currency;
+      try {
+        localStorage.setItem('pms-currency', currency);
+      } catch {
+        /* storage unavailable */
+      }
+      render();
+    });
+    render();
+  }
+
+  initPricing();
+</script>

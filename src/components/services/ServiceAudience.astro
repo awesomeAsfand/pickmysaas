@@ -1,0 +1,62 @@
+---
+/**
+ * "Who this is for, and who it isn't" (SEO plan P2-05): two short lists that
+ * sit under a service page's opening answer. v2 cards: the "for" list on a
+ * paper card, the "not for" list on an ink card.
+ *
+ * Only list what PickMySaaS doesn't do once the owner has confirmed it. As of
+ * 16 Nov 2026 that is: Shopify, Salla, Zid, WooCommerce, Webflow, Next.js or
+ * WordPress builds; native mobile apps; hourly or staff-augmentation work.
+ */
+export interface ServiceAudienceCopy {
+  heading: string;
+  goodTitle: string;
+  good: string[];
+  notTitle: string;
+  not: string[];
+}
+
+interface Props {
+  copy: ServiceAudienceCopy;
+  class?: string;
+}
+
+const { copy, class: className } = Astro.props;
+---
+
+<div class:list={['aud', className]} data-reveal>
+  <h3 class="ds-title ds-title--md aud__heading">{copy.heading}</h3>
+  <div class="aud__grid">
+    <div class="ds-card ds-card--sm">
+      <p class="ds-label aud__title">{copy.goodTitle}</p>
+      <ul class="ds-list">
+        {copy.good.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+    <div class="ds-card ds-card--sm ds-card--ink">
+      <p class="ds-label aud__title">{copy.notTitle}</p>
+      <ul class="ds-list ds-list--x">
+        {copy.not.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </div>
+</div>
+
+<style>
+  .aud__heading {
+    margin: 0 0 18px;
+    text-transform: none;
+  }
+  .aud__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 14px;
+  }
+  .aud__title {
+    margin: 0 0 8px;
+    font-size: 15px;
+  }
+  .aud :global(.ds-list > li) {
+    line-height: 1.45;
+  }
+</style>

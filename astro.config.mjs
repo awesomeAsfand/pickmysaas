@@ -1,6 +1,7 @@
 import { join, dirname } from 'node:path';
 import { writeFile, mkdir, readdir, readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
+import { spawnSync } from 'node:child_process';
 import { defineConfig, envField } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
@@ -98,34 +99,6 @@ function siteUrlCheck() {
 }
 
 /**
- * Pagefind static search index, generated after every `astro build`.
- *
- * Runs in the `astro:build:done` hook so it indexes the *actual* output
- * directory — the Vercel adapter writes to `.vercel/output/static`, Netlify,
- * Cloudflare, and plain static builds to `dist/` — without the build command
- * needing to know which. The index is served from `/pagefind/` and loaded lazily by
- * `src/components/layout/SearchModal.astro`; `astro dev` has no index, and
- * the search modal explains that instead of erroring.
- */
-function pagefind() {
-  return {
-    name: 'pagefind',
-    hooks: {
-      'astro:build:done': async ({ dir, logger }) => {
-        const sitePath = fileURLToPath(dir);
-        const outputPath = join(sitePath, 'pagefind');
-        const { createIndex, close } = await import('pagefind');
-        const { index } = await createIndex();
-        const { page_count } = await index.addDirectory({ path: sitePath });
-        await index.writeFiles({ outputPath });
-        await close();
-        logger.info(`indexed ${page_count} pages into ${outputPath}`);
-      },
-    },
-  };
-}
-
-/**
  * Favicon PNG/ICO files, written after every `astro build`.
  *
  * These used to be prerendered endpoints under `src/pages/`. That worked on
@@ -161,8 +134,8 @@ function faviconAssets() {
     hooks: {
       'astro:build:done': async ({ dir, logger }) => {
         // Imported here rather than at the top of this file: a static import
-        // of the sharp-backed module makes pagefind's own dynamic import above
-        // fail with "Vite module runner has been closed" (#600).
+        // of the sharp-backed module breaks the other build hooks' dynamic
+        // imports with "Vite module runner has been closed" (#600).
         const { buildFaviconSvg } = await import('./src/lib/favicon/svg.ts');
         const { renderFaviconPng, renderFaviconIco } = await import('./src/lib/favicon/raster.ts');
         const out = fileURLToPath(dir);
@@ -243,7 +216,8 @@ function ogCards() {
 
         for (const file of files) {
           const html = await readFile(file, 'utf8');
-          // A noindex page (the 404 page) never names a shared card.
+          // A noindex page (404, styleguide) never names a shared card.
+
           if (/<meta name="robots" content="noindex/.test(html)) continue;
           const image = meta(html, 'og:image');
           if (!image) continue;
@@ -344,6 +318,83 @@ function verifySiteUrl() {
 }
 
 /**
+ * Wildcard redirects for the removed project tag pages, appended to the
+ * Cloudflare build's `_redirects`, which supports `*` splats. Astro's own
+ * `redirects` option can't send a dynamic route to a static one. Two
+ * projects don't need tag pages; every tag URL goes to the projects list.
+ *
+ * Also a permanent (301) redirect from each page's no-slash address to its
+ * canonical slash address (`/about` → `/about/`). Without these, Cloudflare's
+ * asset handling does the same with a temporary 307.
+ */
+function tagRedirects() {
+  const tagLines = ['/projects/tag/*    /projects/    301', '/ar/projects/tag/*    /ar/projects/    301'];
+
+  async function pageDirs(root, base = '') {
+    const found = [];
+    for (const entry of await readdir(join(root, base), { withFileTypes: true })) {
+      if (!entry.isDirectory() || entry.name.startsWith('_') || entry.name === 'og') continue;
+      const rel = `${base}/${entry.name}`;
+      const names = await readdir(join(root, rel));
+      if (names.includes('index.html')) found.push(rel);
+      found.push(...(await pageDirs(root, rel)));
+    }
+    return found;
+  }
+
+  return {
+    name: 'tag-redirects',
+    hooks: {
+      'astro:build:done': async ({ dir, logger }) => {
+        if (deployTarget !== 'cloudflare') return;
+        const root = fileURLToPath(dir);
+        const file = join(root, '_redirects');
+        let current = '';
+        try {
+          current = await readFile(file, 'utf8');
+        } catch {
+          // No file yet: write one.
+        }
+        const taken = new Set(current.split('\n').map((line) => line.trim().split(/\s+/)[0]));
+        const slashLines = (await pageDirs(root))
+          .filter((path) => !taken.has(path) && /^[\x21-\x7e]+$/.test(path))
+          .map((path) => `${path}    ${path}/    301`);
+        const missing = [...tagLines, ...slashLines].filter((line) => !current.includes(line));
+        if (!missing.length) return;
+        const head = current.replace(/\n*$/, '');
+        await writeFile(file, `${head}${head ? '\n' : ''}${missing.join('\n')}\n`);
+        logger.info(`added ${missing.length} redirects to _redirects (tags and no-slash addresses)`);
+      },
+    },
+  };
+}
+
+/**
+ * Runs scripts/seo-audit.mjs on the finished Cloudflare build and fails the
+ * build if it finds an error (v2 redesign, section 10): a leftover of the v2
+ * design export, a page that needs JavaScript to show its text, a missing H1,
+ * title, description or self canonical, the wrong lang/dir, broken hreflang,
+ * or a noindex page in the sitemap. Last in the list, so the sitemap and
+ * _redirects exist when it runs.
+ */
+function seoAuditGate() {
+  return {
+    name: 'seo-audit-gate',
+    hooks: {
+      'astro:build:done': ({ logger }) => {
+        if (deployTarget !== 'cloudflare') return;
+        const result = spawnSync(process.execPath, ['scripts/seo-audit.mjs', '--no-write'], { encoding: 'utf8' });
+        const output = `${result.stdout ?? ''}${result.stderr ?? ''}`.trim();
+        if (result.status !== 0) {
+          throw new Error(`SEO audit failed:\n${output}`);
+        }
+        logger.info(output.split('\n')[0]);
+      },
+    },
+  };
+}
+
+/**
  * Native Astro i18n is only wired up when the user opts in *and* has
  * more than one locale configured. With i18n off (the default) this
  * block is undefined and the build emits the exact same routes as
@@ -372,15 +423,26 @@ export default defineConfig({
   // rendering — significant whitespace between inline tags is preserved.
   compressHTML: true,
 
-  // Retired projects send visitors and search engines to the projects list
-  // instead of a 404. Snippet Tester was taken out of production in Nov 2026.
+  // Permanent (301) redirects for retired URLs, written to `_redirects` in
+  // the Cloudflare build.
+  // - Snippet Tester: taken out of production in Nov 2026.
+  // - SaaS and MVP services: dropped on 16 Nov 2026 (v2 redesign).
+  // Project tag pages (removed in the v2 redesign) need a wildcard, which
+  // this option can't express: see tagRedirects() above.
   redirects: {
     '/projects/snippet-tester/': '/projects/',
     '/ar/projects/snippet-tester/': '/ar/projects/',
+    '/services/saas/': '/services/',
+    '/services/mvp/': '/services/',
+    '/ar/services/saas/': '/ar/services/',
+    '/ar/services/mvp/': '/ar/services/',
   },
 
+  // All CSS inlined into each page: about 30 KB gzipped in total, and four
+  // render-blocking requests cost more on a phone than re-sending it does
+  // (Lighthouse mobile, V7: LCP 3.3 s with linked CSS).
   build: {
-    inlineStylesheets: 'auto',
+    inlineStylesheets: 'always',
   },
 
   env: {
@@ -399,8 +461,6 @@ export default defineConfig({
       }),
       RESEND_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
       RESEND_FROM_EMAIL: envField.string({ context: 'server', access: 'secret', optional: true }),
-      RESEND_AUDIENCE_ID: envField.string({ context: 'server', access: 'secret', optional: true }),
-      NEWSLETTER_API_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
       GOOGLE_SITE_VERIFICATION: envField.string({ context: 'server', access: 'public', optional: true }),
       BING_SITE_VERIFICATION: envField.string({ context: 'server', access: 'public', optional: true }),
       PUBLIC_GOOGLE_MAPS_API_KEY: envField.string({ context: 'client', access: 'public', optional: true, default: '' }),
@@ -424,15 +484,18 @@ export default defineConfig({
       filter: (page) => {
         const { pathname } = new URL(page);
         if (/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?projects\/tag\//.test(pathname)) return false;
+        // The private design-system page is noindex and never listed.
+        if (/^\/(?:[a-z]{2}\/)?styleguide\//.test(pathname)) return false;
         return BLOG_VISIBLE || !/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?blog(\/|$)/.test(pathname);
       },
     }),
     icon(),
     siteUrlCheck(),
-    pagefind(),
     faviconAssets(),
     ogCards(),
     verifySiteUrl(),
+    tagRedirects(),
+    seoAuditGate(),
   ],
 
   vite: {

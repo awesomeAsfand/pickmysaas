@@ -1,0 +1,264 @@
+---
+/**
+ * The brief form (V4): what you need, budget, name, email, optional WhatsApp,
+ * how you heard about us, and the message. Posts to /api/contact.
+ *
+ * Works without JavaScript: the form posts normally and the API answers with
+ * a short HTML page. With JavaScript it posts in the background, shows field
+ * errors inline and a real success or error message, and pushes `brief_sent`.
+ * The honeypot field stays hidden from people and filled by bots.
+ */
+import { t, tData, localizedPath } from '@/i18n';
+
+interface Props {
+  locale: string;
+  /** Unique per page, so two forms never share ids. */
+  id?: string;
+}
+
+const { locale, id = 'brief' } = Astro.props;
+const b = (key: string) => t(`home.contact.brief.${key}`, locale);
+const needs = tData<string[]>('home.contact.brief.needs', locale)!;
+const budgets = tData<string[]>('home.contact.brief.budgets', locale)!;
+const heard = tData<string[]>('home.contact.brief.heardOptions', locale)!;
+// Values sent to the inbox are in English, whatever the page language.
+const needsEn = tData<string[]>('home.contact.brief.needs', 'en')!;
+const budgetsEn = tData<string[]>('home.contact.brief.budgets', 'en')!;
+const heardEn = tData<string[]>('home.contact.brief.heardOptions', 'en')!;
+const privacy = b('privacy').replace('{privacy}', localizedPath('/privacy', locale));
+const errors = tData<Record<string, string>>('home.contact.brief.errors', locale)!;
+---
+
+<form
+  id={id}
+  class="brief"
+  action="/api/contact"
+  method="post"
+  novalidate
+  data-brief-form
+  data-errors={JSON.stringify(errors)}
+  data-generic-error={b('error')}
+  data-sending={b('sending')}
+>
+  <input type="hidden" name="locale" value={locale} />
+  <input type="hidden" name="page" value={Astro.url.pathname} />
+  <div class="brief__hp" aria-hidden="true">
+    <label>Leave this empty <input type="text" name="honeypot" tabindex="-1" autocomplete="off" /></label>
+  </div>
+
+  <fieldset class="ds-chips">
+    <legend>{b('need')}</legend>
+    {
+      needs.map((need, i) => (
+        <label class="ds-chip">
+          <input type="checkbox" name="needs" value={needsEn[i]} checked={i === 0} />
+          <span>{need}</span>
+        </label>
+      ))
+    }
+  </fieldset>
+
+  <fieldset class="ds-chips">
+    <legend>{b('budget')}</legend>
+    {
+      budgets.map((budget, i) => (
+        <label class="ds-chip">
+          <input type="radio" name="budget" value={budgetsEn[i]} />
+          <span dir="auto">{budget}</span>
+        </label>
+      ))
+    }
+  </fieldset>
+
+  <div class="brief__grid">
+    <label class="ds-field">
+      {b('name')}
+      <input class="ds-input" name="name" autocomplete="name" required minlength="2" maxlength="100" aria-describedby={`${id}-name-error`} />
+      <span class="ds-field__error" id={`${id}-name-error`} data-error-for="name" hidden></span>
+    </label>
+    <label class="ds-field">
+      {b('email')}
+      <input class="ds-input" type="email" name="email" autocomplete="email" required aria-describedby={`${id}-email-error`} />
+      <span class="ds-field__error" id={`${id}-email-error`} data-error-for="email" hidden></span>
+    </label>
+    <label class="ds-field">
+      {b('whatsapp')}
+      <input class="ds-input" type="tel" name="whatsapp" autocomplete="tel" inputmode="tel" maxlength="30" aria-describedby={`${id}-whatsapp-error`} />
+      <span class="ds-field__error" id={`${id}-whatsapp-error`} data-error-for="whatsapp" hidden></span>
+    </label>
+    <label class="ds-field">
+      {b('heard')}
+      <select class="ds-input" name="heard" required aria-describedby={`${id}-heard-error`}>
+        <option value="">{b('choose')}</option>
+        {heard.map((option, i) => <option value={heardEn[i]}>{option}</option>)}
+      </select>
+      <span class="ds-field__error" id={`${id}-heard-error`} data-error-for="heard" hidden></span>
+    </label>
+  </div>
+
+  <label class="ds-field">
+    {b('message')}
+    <textarea class="ds-input" name="message" rows="3" required minlength="10" maxlength="5000" placeholder={b('messagePlaceholder')} aria-describedby={`${id}-message-error`}></textarea>
+    <span class="ds-field__error" id={`${id}-message-error`} data-error-for="message" hidden></span>
+  </label>
+
+  <p class="ds-small brief__privacy" set:html={privacy} />
+
+  <p class="ds-form-status ds-form-status--error" data-brief-error role="alert" hidden></p>
+
+  <button class="ds-btn ds-btn--lg ds-btn--block" type="submit" data-brief-submit>
+    <span data-brief-label>{b('send')}</span><span aria-hidden="true">{locale === 'ar' ? '←' : '→'}</span>
+  </button>
+</form>
+
+<div class="brief-done" data-brief-done hidden tabindex="-1">
+  <span class="brief-done__tick" aria-hidden="true">✓</span>
+  <p class="ds-display ds-display--3" role="status">{b('ok')}</p>
+  <button class="ds-btn ds-btn--outline" type="button" data-brief-again>{b('again')}</button>
+</div>
+
+<style>
+  .brief {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .brief__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: 20px 16px;
+  }
+  .brief__hp {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .brief__privacy {
+    margin: 0;
+  }
+  .brief__privacy :global(a) {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .brief .ds-form-status {
+    margin: 0;
+  }
+  .brief-done {
+    min-height: 360px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 18px;
+  }
+  .brief-done p {
+    margin: 0;
+    text-transform: none;
+  }
+  .brief-done__tick {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: var(--blue);
+    color: var(--white);
+    display: grid;
+    place-items: center;
+    font-size: 30px;
+  }
+</style>
+
+<script>
+  import { track } from '@/lib/track';
+
+  document.querySelectorAll<HTMLFormElement>('[data-brief-form]').forEach((form) => {
+    if (form.dataset.ready) return;
+    form.dataset.ready = 'true';
+    const errors = JSON.parse(form.dataset.errors || '{}') as Record<string, string>;
+    const done = form.nextElementSibling as HTMLElement;
+    const formError = form.querySelector<HTMLElement>('[data-brief-error]')!;
+    const submit = form.querySelector<HTMLButtonElement>('[data-brief-submit]')!;
+    const label = form.querySelector<HTMLElement>('[data-brief-label]')!;
+    const idle = label.textContent;
+
+    const showError = (field: string, message: string | null) => {
+      const slot = form.querySelector<HTMLElement>(`[data-error-for="${field}"]`);
+      const input = form.elements.namedItem(field) as HTMLInputElement | null;
+      if (slot) {
+        slot.textContent = message ?? '';
+        slot.hidden = !message;
+      }
+      input?.setAttribute('aria-invalid', message ? 'true' : 'false');
+    };
+
+    // Same rules as the server, checked before sending.
+    const check = (): string[] => {
+      const data = new FormData(form);
+      const bad: string[] = [];
+      const value = (k: string) => (data.get(k)?.toString() ?? '').trim();
+      if (value('name').length < 2) bad.push('name');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value('email'))) bad.push('email');
+      const wa = value('whatsapp');
+      if (wa && (!/^[+\d\s()-]+$/.test(wa) || wa.replace(/\D/g, '').length < 6)) bad.push('whatsapp');
+      if (!value('heard')) bad.push('heard');
+      if (value('message').length < 10) bad.push('message');
+      for (const field of ['name', 'email', 'whatsapp', 'heard', 'message']) {
+        showError(field, bad.includes(field) ? errors[field] : null);
+      }
+      return bad;
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      formError.hidden = true;
+      const bad = check();
+      if (bad.length) {
+        (form.elements.namedItem(bad[0]) as HTMLElement | null)?.focus();
+        return;
+      }
+      submit.disabled = true;
+      label.textContent = form.dataset.sending ?? idle;
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        const result = (await response.json().catch(() => ({}))) as {
+          success?: boolean;
+          errors?: Record<string, string[]>;
+        };
+        if (response.ok && result.success) {
+          const data = new FormData(form);
+          track('brief_sent', { needs: data.getAll('needs').join(', '), budget: data.get('budget') ?? '' });
+          form.hidden = true;
+          done.hidden = false;
+          done.focus();
+          return;
+        }
+        const fieldErrors = result.errors ?? {};
+        const fields = Object.keys(fieldErrors).filter((f) => f !== 'form');
+        fields.forEach((f) => showError(f, fieldErrors[f]?.[0] ?? errors[f] ?? null));
+        if (!fields.length) {
+          formError.textContent = fieldErrors.form?.[0] ?? form.dataset.genericError ?? '';
+          formError.hidden = false;
+        }
+      } catch {
+        formError.textContent = form.dataset.genericError ?? '';
+        formError.hidden = false;
+      } finally {
+        submit.disabled = false;
+        label.textContent = idle;
+      }
+    });
+
+    done.querySelector('[data-brief-again]')?.addEventListener('click', () => {
+      form.reset();
+      done.hidden = true;
+      form.hidden = false;
+      form.querySelector<HTMLElement>('input:not([type=hidden]), select, textarea')?.focus();
+    });
+  });
+</script>

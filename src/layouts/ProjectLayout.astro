@@ -9,7 +9,6 @@ import Breadcrumbs from '@/components/seo/Breadcrumbs.astro';
 import ProjectHero from '@/components/projects/ProjectHero.astro';
 import TableOfContents from '@/components/blog/TableOfContents.astro';
 import CtaBand from '@/components/patterns/CtaBand.astro';
-import ProjectCard from '@/components/projects/ProjectCard.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import siteConfig from '@/config/site.config';
@@ -20,6 +19,7 @@ import {
   getProjectSlug,
   getProjectsBaseUrl,
   getProjectTranslations,
+  getProjectUrl,
 } from '@/lib/projects';
 
 interface Props {
@@ -121,19 +121,9 @@ const languageAlternates = Object.fromEntries(
   imageAlt={ogImageAlt}
   localeAlternates={projectTranslations}
 >
-  <Header
-    slot="header"
-    position="fixed"
-    shape="bar"
-    variant="solid"
-    size="lg"
-    showCta={false}
-    showScrollProgress
-    maxWidth="7xl"
-    languageAlternates={languageAlternates}
-  />
+  <Header slot="header" languageAlternates={languageAlternates} />
 
-  <div class="min-h-screen pt-16">
+  <div class="min-h-screen" style="padding-top: var(--header-offset)">
     <ProjectHero
       title={title}
       description={description}
@@ -148,7 +138,7 @@ const languageAlternates = Object.fromEntries(
 
     <article class="pt-8 pb-[var(--space-section-md)]">
       <div class:list={[
-        'mx-auto px-6 max-w-7xl',
+        'ds-wrap',
         sidebarActive && (sidebarOnLeft
           ? 'xl:grid xl:grid-cols-[15rem_minmax(0,1fr)] xl:gap-10'
           : 'xl:grid xl:grid-cols-[minmax(0,1fr)_15rem] xl:gap-10'),
@@ -164,7 +154,7 @@ const languageAlternates = Object.fromEntries(
           </aside>
         )}
 
-        <div class:list={['min-w-0 max-w-4xl w-full mx-auto', sidebarActive && 'xl:mx-0']}>
+        <div class="min-w-0 max-w-4xl w-full">
           <Breadcrumbs items={breadcrumbs} class="mb-8" />
 
           {sidebarActive && (
@@ -192,29 +182,24 @@ const languageAlternates = Object.fromEntries(
             Framed reading surface, matching the TOC card. Starts at `sm` so
             a phone held upright keeps the full screen width for the text.
           -->
-          <div class="sm:rounded-xl sm:border sm:border-border sm:bg-card sm:p-8 lg:p-10">
-            <div class="prose prose-lg max-w-none" data-reveal-content>
-              <slot />
-            </div>
+          <div class="prose prose-lg max-w-none" data-reveal-content>
+            <slot />
           </div>
 
           {quote && (
-            <figure class="mt-10 rounded-xl border border-border bg-card p-6 sm:p-8" data-reveal>
-              <blockquote class="font-display text-xl leading-relaxed text-foreground">
+            <figure class="ds-card ds-card--blue mt-10" data-reveal>
+              <blockquote class="font-display text-2xl md:text-3xl leading-snug font-bold">
                 <p>“{quote.text}”</p>
               </blockquote>
-              <figcaption class="mt-4 text-sm text-foreground-muted">
-                <span class="font-semibold text-foreground">{quote.name}</span>
+              <figcaption class="mt-4 text-sm">
+                <span class="font-semibold">{quote.name}</span>
                 {quote.city && <span>, {quote.city}</span>}
               </figcaption>
             </figure>
           )}
 
-          <footer class="border-border mt-12 border-t pt-8 flex justify-center" data-reveal>
-            <Button href={projectsHref} variant="brand-outline" size="sm">
-              <Icon name="arrow-left" size="sm" />
-              {t('projects.backToProjects', locale)}
-            </Button>
+          <footer class="mt-12 pt-8 border-t border-border" data-reveal>
+            <a class="ds-link" href={projectsHref}><span class="ds-arrow" aria-hidden="true">←</span> {t('projects.backToProjects', locale)}</a>
           </footer>
         </div>
 
@@ -232,17 +217,16 @@ const languageAlternates = Object.fromEntries(
     </article>
 
     {related.length > 0 && (
-      <section class="py-[var(--space-section-md)] bg-background-secondary border-t border-border" data-reveal>
-        <div class="mx-auto max-w-7xl px-6">
-          <h2 class="font-display text-2xl md:text-3xl font-bold text-foreground mb-8 text-center">{t('projects.moreProjects', locale)}</h2>
-          <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {/* The same card the projects index, the paginated pages, the tag
-                archives and the homepage use. `reveal={false}` because the
-                section above already carries the trigger. */}
-            {related.map((project, i) => (
-              <ProjectCard project={project} index={i} locale={locale} reveal={false} />
-            ))}
-          </div>
+      <section class="ds-wrap ds-section--sm" data-reveal>
+        <span class="ds-marker ds-badge-marker">{t('projects.moreProjects', locale)}</span>
+        <div class="pj-related">
+          {related.map((project) => (
+            <a class="ds-card pj-related__card" href={getProjectUrl(project.id, locale)}>
+              <span class="ds-display ds-display--3">{project.data.title}</span>
+              <span class="ds-body">{project.data.description}</span>
+              <span class="ds-link">{t('projects.viewProject', locale)} <span class="ds-arrow" aria-hidden="true">→</span></span>
+            </a>
+          ))}
         </div>
       </section>
     )}
@@ -270,10 +254,26 @@ const languageAlternates = Object.fromEntries(
     </section>
   </div>
 
-  <Footer
-    slot="footer"
-    layout="columns"
-    background="secondary"
-    maxWidth="7xl"
-  />
+  <Footer slot="footer" />
 </BaseLayout>
+
+<style>
+  .pj-related {
+    margin-block-start: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: 14px;
+  }
+  .pj-related__card {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+    transition: transform 0.3s;
+  }
+  .pj-related__card:hover {
+    transform: translateY(-3px);
+  }
+  .pj-related__card .ds-display {
+    text-transform: none;
+  }
+</style>

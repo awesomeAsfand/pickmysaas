@@ -1,13 +1,18 @@
 ---
 /**
- * FloatingWhatsApp
+ * Floating WhatsApp button (v2), fixed to the bottom inline-end corner: the
+ * right in English, the left in Arabic.
  *
- * A round WhatsApp button fixed to the bottom-right corner of every page,
- * opening a chat with `siteConfig.whatsapp` and a greeting already typed in
- * the page's language. Renders nothing when no number is configured.
+ * Fix 3 from the v2 audit, "covers content":
+ * - kept clear of the screen edge and the iOS home indicator;
+ * - icon-only and smaller on phones, with the "WhatsApp" label from 1024px;
+ * - hidden while the footer or any element marked `data-hide-fab` (the
+ *   contact section, which has its own WhatsApp button) is on screen, and
+ *   made unfocusable while hidden;
+ * - the pulse stops for visitors who prefer reduced motion.
  *
- * Sits below the back-to-top button, which BaseLayout lifts above it, and
- * under the consent banner (z-40 against the banner's z-50).
+ * Opens a chat with the pre-filled message in the page's language
+ * (`common.whatsappMessage`). Renders nothing when no number is configured.
  */
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import { whatsAppUrl } from '@/lib/booking';
@@ -19,7 +24,6 @@ interface Props {
 
 const { locale } = Astro.props;
 const href = whatsAppUrl(t('common.whatsappMessage', locale));
-const label = t('common.whatsappChat', locale);
 ---
 
 {
@@ -28,37 +32,110 @@ const label = t('common.whatsappChat', locale);
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={label}
-      class="floating-whatsapp fixed bottom-6 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full text-white shadow-lg transition-transform duration-200 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 print:hidden"
+      aria-label={t('common.whatsappChat', locale)}
+      class="fab print:hidden"
+      data-fab
+      data-whatsapp
     >
-      <Icon name="whatsapp" class="h-7 w-7" />
+      <Icon name="whatsapp" class="fab__icon" />
+      <span class="fab__label" aria-hidden="true">
+        {t('ds.fab.label', locale)}
+      </span>
     </a>
   )
 }
 
 <style>
-  /* WhatsApp green, a step deeper than the brand's #25D366 so the white
-     glyph clears 3:1 contrast (non-text contrast, WCAG 1.4.11). */
-  .floating-whatsapp {
-    background-color: #1da851;
-    /* Clear the iOS home indicator. */
-    margin-bottom: env(safe-area-inset-bottom, 0px);
+  .fab {
+    position: fixed;
+    inset-inline-end: 16px;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    z-index: 45;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 54px;
+    min-width: 54px;
+    padding-inline: 15px;
+    border-radius: 999px;
+    background: var(--whatsapp-fill);
+    color: var(--white);
+    font-weight: 600;
+    font-size: 15px;
+    box-shadow: 0 14px 30px -10px rgb(0 0 0 / 0.4);
+    transition:
+      transform 0.25s,
+      opacity 0.25s,
+      visibility 0s linear 0s,
+      background-color 0.2s;
   }
-
-  .floating-whatsapp:hover {
-    background-color: #189146;
+  .fab:hover {
+    background: var(--whatsapp-fill-hover);
+    color: var(--white);
+    transform: scale(1.05);
   }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .floating-whatsapp {
-      animation: floating-whatsapp-in 0.4s ease-out 1s backwards;
+  .fab:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 3px;
+  }
+  .fab__icon {
+    width: 24px;
+    height: 24px;
+    flex: none;
+  }
+  .fab__label {
+    display: none;
+  }
+  .fab[data-hidden] {
+    opacity: 0;
+    transform: translateY(16px);
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      transform 0.25s,
+      opacity 0.25s,
+      visibility 0s linear 0.25s;
+  }
+  @media (min-width: 1024px) {
+    .fab {
+      inset-inline-end: 22px;
+      bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+      height: 60px;
+      padding-inline: 18px;
+    }
+    .fab__label {
+      display: inline;
     }
   }
-
-  @keyframes floating-whatsapp-in {
-    from {
-      opacity: 0;
-      transform: translateY(1rem);
+  @media (prefers-reduced-motion: no-preference) {
+    .fab {
+      animation: pm-pulse 2.2s ease-out infinite;
     }
   }
 </style>
+
+<script>
+  function initFab() {
+    const fab = document.querySelector<HTMLElement>('[data-fab]');
+    if (!fab || fab.dataset.ready) return;
+    fab.dataset.ready = 'true';
+
+    const targets = document.querySelectorAll<HTMLElement>('footer, [data-hide-fab]');
+    if (!targets.length || !('IntersectionObserver' in window)) return;
+
+    const visible = new Set<Element>();
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) visible.add(entry.target);
+        else visible.delete(entry.target);
+      }
+      const hide = visible.size > 0;
+      fab.toggleAttribute('data-hidden', hide);
+      fab.toggleAttribute('inert', hide);
+    });
+    targets.forEach((target) => observer.observe(target));
+  }
+
+  initFab();
+</script>

@@ -1,0 +1,248 @@
+---
+/**
+ * Salla vs Shopify vs a custom store: an honest comparison (SEO plan P2-06).
+ * English twin of /ar/guides/salla-vs-shopify-vs-custom-store/, which came
+ * first. Slugs confirmed by the owner on 14 Nov 2026.
+ *
+ * Same rules as the Arabic page:
+ * - Platform prices and fees only from each platform's own pages, linked and
+ *   dated. PickMySaaS doesn't build on Salla or Shopify (owner, 4 Nov).
+ * - VERIFY before publishing: Salla's plan prices were read from the search
+ *   engine's copy of salla.com/plans (the live page blocks automated access).
+ * - Shopify prices are from the US version of shopify.com/pricing, 14 Nov 2026.
+ * - Custom store upkeep ($100–300 a year) and card fees paid to the provider
+ *   are the owner's answers of 14 Nov 2026.
+ * - The "where a custom store loses" section needs the owner's approval.
+ */
+import PageLayout from '@/layouts/PageLayout.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Breadcrumbs from '@/components/seo/Breadcrumbs.astro';
+import JsonLd from '@/components/seo/JsonLd.astro';
+import DataTable from '@/components/services/DataTable.astro';
+import FaqList from '@/components/services/FaqList.astro';
+import { createBlogPostSchema, createFAQSchema } from '@/lib/schema';
+import { bookingLinkAttrs } from '@/lib/booking';
+import siteConfig from '@/config/site.config';
+
+const TITLE = 'Salla vs Shopify vs Custom Store: Honest Comparison';
+const DESCRIPTION =
+  'Salla, Shopify or a custom store for the Gulf: fees from each platform’s own pricing page, the cost over three years, and when custom is the wrong choice.';
+const PATH = '/guides/salla-vs-shopify-vs-custom-store/';
+const AR_PATH = '/ar/guides/salla-vs-shopify-vs-custom-store/';
+const PUBLISHED = new Date('2026-11-14');
+const CHECKED = '14 November 2026';
+
+const SOURCES = {
+  salla: 'https://salla.com/plans',
+  shopify: 'https://www.shopify.com/pricing',
+  shopifyPayments: 'https://help.shopify.com/en/manual/payments/shopify-payments/supported-countries',
+};
+
+const faq = [
+  {
+    question: 'Is Salla or Shopify better for selling in Saudi Arabia?',
+    answer:
+      'For a store selling inside Saudi Arabia, Salla is closer to the market: a Saudi platform with a free starting plan and prices in riyals. Shopify Payments isn’t available in Saudi Arabia, so a Shopify store there needs another payment provider, and Shopify may charge its own fee on each sale when you use one.',
+  },
+  {
+    question: 'Is Shopify Payments available in the GCC?',
+    answer: `Only in the UAE. Shopify’s list of supported countries includes the United Arab Emirates and no other Gulf country (checked ${CHECKED}). Stores in Saudi Arabia, Qatar, Kuwait, Bahrain and Oman use another payment provider.`,
+  },
+  {
+    question: 'What does a custom store cost over three years?',
+    answer:
+      'With us: a fixed price from $700 to build the store, then about $100 to $300 a year for hosting and the domain renewal, which you pay on your own account. That’s roughly $1,000 to $1,600 over three years, before the card fees you pay your payment provider directly.',
+  },
+  {
+    question: 'Do you build stores on Salla or Shopify?',
+    answer:
+      'No. We only build custom stores. If Salla or Shopify suits you better, this guide should help you choose, and you can launch on either platform yourself.',
+  },
+  {
+    question: 'When is a custom store a bad idea?',
+    answer:
+      'When you need to sell this week, when you don’t yet know whether your product sells, or when you want to change the design and add features yourself without a developer. Start on a platform, and move to a custom store once you know what you need.',
+  },
+];
+
+const articleSchema = createBlogPostSchema({
+  title: TITLE,
+  description: DESCRIPTION,
+  url: new URL(PATH, siteConfig.url).toString(),
+  image: new URL(siteConfig.ogImage, siteConfig.url).toString(),
+  datePublished: PUBLISHED,
+  author: { type: 'Organization', name: siteConfig.name, url: new URL('/about/', siteConfig.url).toString() },
+});
+---
+<PageLayout
+  title={TITLE}
+  description={DESCRIPTION}
+  footerBackground="secondary"
+  localeAlternates={[
+    { locale: 'en', url: PATH },
+    { locale: 'ar', url: AR_PATH },
+  ]}
+  languageAlternates={{ en: PATH, ar: AR_PATH }}
+>
+  <JsonLd schema={articleSchema} />
+  <JsonLd schema={createFAQSchema(faq)} />
+
+  <article class="mx-auto max-w-3xl px-6 py-[var(--space-section-sm)]">
+    <Breadcrumbs
+      items={[
+        { label: 'Home', href: '/' },
+        { label: 'Online stores', href: '/services/ecommerce/' },
+        { label: 'Salla vs Shopify vs custom' },
+      ]}
+      class="mb-8"
+    />
+
+    <header class="mb-10">
+      <h1 class="font-display text-4xl md:text-5xl font-bold text-foreground text-balance mb-4 leading-tight">Salla, Shopify or a custom store: which one fits you?</h1>
+      <p class="text-sm text-foreground-muted">By PickMySaaS. Platform fees checked on {CHECKED}.</p>
+    </header>
+
+    <Card variant="elevated" padding="lg" class="mb-10">
+      <h2 class="font-display text-lg font-bold text-foreground mb-2">The short answer</h2>
+      <p class="text-foreground-muted leading-relaxed">
+        <strong class="text-foreground">Salla</strong> if you want to sell in Saudi Arabia quickly, on your own and on a small budget.
+        <strong class="text-foreground">Shopify</strong> if you sell outside Saudi Arabia or in the UAE and want a global app store.
+        <strong class="text-foreground">A custom store</strong> if you already know how you sell, want a store you own with no platform subscription, and can wait 4 to 8
+        weeks.
+      </p>
+    </Card>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        This guide is written by a studio that sells custom stores: us. So every Salla and Shopify figure comes from the platform’s own pricing page, with a link, and
+        there’s a whole section on when a custom store is the worse choice. We don’t build on Salla or Shopify, so we have no reason to favour one over the other.
+      </p>
+
+      <h2>The comparison in one table</h2>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable
+        headers={['', 'Salla', 'Shopify', 'Custom store with us']}
+        rows={[
+          ['What it is', 'A Saudi store platform you set up yourself', 'A global store platform you set up yourself', 'A store we design and build for you, handed over in your name'],
+          ['To start', 'A free Basic plan', '3-day trial, then $1 a month for 3 months', 'A fixed price, from $700'],
+          ['After that', 'Plus at SAR 990 a year, Pro at SAR 2,990 a year', 'Basic from $19 a month billed yearly, Grow from $49', 'No platform subscription. Hosting and the domain renewal, about $100–300 a year'],
+          ['Card payments in Saudi Arabia', 'Through the payment options Salla offers', 'Shopify Payments isn’t available. You need another provider, and Shopify may charge a fee on each sale', 'A provider that works in your country, paid directly. We take no cut of your sales'],
+          ['Time to launch', 'Days, as fast as you move', 'Days, as fast as you move', '4 to 8 weeks from when your products are ready'],
+          ['Ready-made add-ons', 'Salla’s app store', 'Shopify’s global app store', 'None. Each connection is built and priced in your proposal'],
+          ['Who edits the store', 'You, from the dashboard and themes', 'You, from the dashboard and themes', 'You, for products, prices and orders. Design changes and new features through us or any developer'],
+          ['Ownership', 'Your store runs on Salla', 'Your store runs on Shopify', 'Code, domain and customer data in your name'],
+        ]}
+      />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        Salla’s prices are from its <a href={SOURCES.salla} rel="noopener">plans page</a>. Shopify’s are from the US version of its
+        <a href={SOURCES.shopify} rel="noopener">pricing page</a>, in US dollars; Shopify may show a different price in your country. Check whether VAT (15% in Saudi
+        Arabia, 5% in the UAE) is included.
+      </p>
+
+      <h2>The cost over three years</h2>
+      <p>
+        A monthly subscription looks small, but it adds up. This is what you pay for the platform, or for the store itself, over three years, before payment fees, paid
+        apps and VAT. Riyals are converted at the fixed rate of 3.75 to the dollar.
+      </p>
+    </div>
+
+    <div class="not-prose my-8">
+      <DataTable
+        headers={['Option', 'Three years', 'Not included']}
+        rows={[
+          ['Salla Basic', 'SAR 0', 'Payment fees, and the features of the paid plans'],
+          ['Salla Plus', 'SAR 2,970 (990 × 3), about $792', 'Payment fees and paid apps'],
+          ['Salla Pro', 'SAR 8,970 (2,990 × 3), about $2,392', 'Payment fees and paid apps'],
+          ['Shopify Basic, billed yearly', '$684, about SAR 2,565', 'Shopify’s fee per sale with another payment provider, the provider’s own fees, paid apps'],
+          ['Shopify Grow, billed yearly', '$1,764, about SAR 6,615', 'The same fees'],
+          ['Custom store with us', 'About $1,000–1,600, or SAR 3,750–6,000', 'Payment provider fees, the monthly care plan if you choose it, and new features after launch'],
+        ]}
+      />
+    </div>
+
+    <div class="prose prose-lg max-w-none">
+      <p>
+        In short: over three years a custom store costs no more than a paid plan on a platform, but you pay most of it up front. The cheapest option of all is Salla’s
+        free Basic plan, if its features are enough for you.
+      </p>
+
+      <h2>When a custom store is the worse choice</h2>
+      <p>These are real, and we say them on the first call too:</p>
+      <ul>
+        <li>
+          <strong>You need to sell this week.</strong> On Salla or Shopify you can open a store in days. A custom store takes 4 to 8 weeks from when your products, photos
+          and prices are ready.
+        </li>
+        <li>
+          <strong>You haven’t tested your product yet.</strong> If you’re not sure people will buy, start on Salla’s free plan. The $700 is better spent once you know
+          what sells.
+        </li>
+        <li>
+          <strong>You need lots of ready-made add-ons.</strong> Salla’s and Shopify’s app stores add shipping, reviews and marketing tools in a few clicks. On a custom
+          store each connection is built, and priced in your proposal.
+        </li>
+        <li>
+          <strong>You want to change the design and add features yourself.</strong> On a custom store you manage products, prices and orders yourself, but a new design
+          or feature goes through us or another developer. The code is yours, so you aren’t tied to us.
+        </li>
+        <li>
+          <strong>You don’t want to think about hosting and updates.</strong> A platform handles them in its subscription. On a custom store the monthly care plan does,
+          or you run them yourself.
+        </li>
+      </ul>
+
+      <h2>When a custom store is the better choice</h2>
+      <ul>
+        <li><strong>You don’t want a platform subscription</strong>, just hosting and a domain renewal of about $100–300 a year.</li>
+        <li>
+          <strong>You sell in Saudi Arabia and are looking at Shopify:</strong> without Shopify Payments there, Shopify may add its own fee to each sale on top of your
+          payment provider’s, at a rate set by your plan. On a custom store you pay the provider’s fees only.
+        </li>
+        <li><strong>The way you sell doesn’t fit a template</strong>, such as custom order options or a different checkout flow.</li>
+        <li><strong>You want to own your store</strong>: the code, domain and customer data are in your name, and you can take them anywhere.</li>
+      </ul>
+
+      <h2>How to choose in five minutes</h2>
+      <ol>
+        <li>Is your product tested and already selling? If not, start on Salla.</li>
+        <li>Do you mainly sell outside Saudi Arabia, or in the UAE? Compare Shopify.</li>
+        <li>Do you need lots of ready-made add-ons, and want to change everything yourself? Stay on a platform.</li>
+        <li>Do you want a store you own, with no platform subscription, and can you wait a month or two? A custom store fits.</li>
+      </ol>
+      <p>
+        If you choose a custom store, see <a href="/services/ecommerce/">how we build online stores</a>. To compare website prices in the region, read
+        <a href="/guides/website-cost-uae/">what a website costs in the UAE</a>.
+      </p>
+    </div>
+
+    <div class="not-prose my-10 flex flex-col sm:flex-row gap-4">
+      <Button size="lg" {...bookingLinkAttrs('/contact/')}>
+        Ask us which option fits your store
+        <Icon name="arrow-right" size="sm" />
+      </Button>
+    </div>
+
+    <h2 class="font-display text-3xl font-bold text-foreground mt-12 mb-6">Questions</h2>
+    <Card variant="elevated" padding="lg">
+      <FaqList items={faq} name="store-compare-faq" />
+    </Card>
+
+    <div class="prose prose-lg max-w-none mt-12">
+      <h2>Sources</h2>
+      <p>Each page was checked on {CHECKED}. Prices change, so check them before you decide.</p>
+      <ul>
+        <li><a href={SOURCES.salla} rel="noopener">Salla plans</a>: Basic, Plus and Pro.</li>
+        <li><a href={SOURCES.shopify} rel="noopener">Shopify pricing</a> (US version): plans, the trial, and fees for other payment providers.</li>
+        <li><a href={SOURCES.shopifyPayments} rel="noopener">Shopify Payments supported countries</a>: the UAE is the only Gulf country listed.</li>
+        <li>Our prices are from the <a href="/services/ecommerce/#prices">online store page</a>.</li>
+      </ul>
+    </div>
+  </article>
+</PageLayout>

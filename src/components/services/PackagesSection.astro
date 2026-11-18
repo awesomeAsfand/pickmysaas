@@ -1,14 +1,11 @@
 ---
 /**
- * The website packages and their prices. Shared by the Services hub and the
- * Websites page, so a price only ever changes in `pages.services.packages`.
+ * The three website packages and their prices (v2 cards; the recommended
+ * Business package in blue). Shared by the Services hub and the Websites
+ * page, so a price only ever changes in `pages.services.packages`.
  */
-import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
-import Card from '@/components/ui/data-display/Card/Card.astro';
-import Button from '@/components/ui/form/Button/Button.astro';
 import { tData, defaultLocale, localizedPath } from '@/i18n';
-import { cn } from '@/lib/cn';
 import { bookingLinkAttrs } from '@/lib/booking';
 
 interface Props {
@@ -24,7 +21,7 @@ interface Package {
   priceLocal: string[];
   /** Shown before the price, e.g. "from". Empty for a fixed price. */
   pricePrefix: string;
-  bonus: string;
+  bonus?: string;
   features: string[];
   cta: string;
 }
@@ -39,65 +36,117 @@ const contactUrl = localizedPath('/contact', locale);
 /** The middle package is the one we recommend. */
 const RECOMMENDED_PACKAGE = 1;
 ---
-<section id="packages" class="py-[var(--space-section-md)] bg-background border-t border-border">
-  <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
-    <div class="flex flex-col items-center gap-4 text-center" data-reveal>
-      <div class="flex flex-col items-center gap-6">
-        <Badge variant="brand" pill>
-          <Icon name="tag" size="sm" />
-          {packages.badge}
-        </Badge>
-        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground text-balance">
-          {packages.heading}
-        </h2>
-      </div>
-      <p class="text-lg text-foreground-muted max-w-2xl mx-auto text-balance">
-        {packages.lead}
-      </p>
-    </div>
 
-    <div class="grid gap-6 lg:grid-cols-3">
-      {packages.items.map((pkg, i) => {
+<section id="packages" class="ds-wrap ds-section--sm">
+  <div class="ds-head">
+    <div>
+      <Badge variant="brand">{packages.badge}</Badge>
+      <h2 class="ds-display ds-display--1 ds-head__title">{packages.heading}</h2>
+    </div>
+    <p class="ds-head__lead">{packages.lead}</p>
+  </div>
+
+  <div class="pkgs">
+    {
+      packages.items.map((pkg, i) => {
         const recommended = i === RECOMMENDED_PACKAGE;
         return (
-          <Card
-            variant="elevated"
-            padding="lg"
-            class={cn('flex flex-col h-full', recommended && 'ring-2 ring-brand-500')}
-            data-reveal
-            data-reveal-delay={i || undefined}
-          >
-            <div class="flex items-center justify-between gap-3">
-              <h3 class="font-display text-xl font-bold text-foreground">{pkg.name}</h3>
-              {recommended && <Badge variant="brand" pill>{packages.recommended}</Badge>}
+          <article class:list={['ds-card', 'pkg', recommended && 'ds-card--blue']} data-reveal>
+            <div class="pkg__top">
+              <h3 class="ds-title ds-title--md">{pkg.name}</h3>
+              {recommended && <span class="ds-pill">{packages.recommended}</span>}
             </div>
-            <p class="mt-2 text-sm text-foreground-muted leading-relaxed">{pkg.for}</p>
-            <p class="mt-6 flex items-baseline gap-2">
-              {pkg.pricePrefix && <span class="text-sm text-foreground-muted">{pkg.pricePrefix}</span>}
-              <span class="font-display text-4xl font-bold text-foreground">{pkg.price}</span>
+            <p class="pkg__for">{pkg.for}</p>
+            <p class="pkg__price">
+              {pkg.pricePrefix && <span class="pkg__prefix">{pkg.pricePrefix}</span>}
+              <span class="pkg__amount">{pkg.price}</span>
             </p>
-            <p class="mt-2 flex flex-wrap gap-x-3 text-sm text-foreground-muted">
-              {pkg.priceLocal.map((price) => <span class="whitespace-nowrap">{price}</span>)}
+            <p class="pkg__local">
+              {pkg.priceLocal.map((price) => (
+                <span>{price}</span>
+              ))}
             </p>
-            <p class="mt-3 text-sm font-semibold text-brand-700 dark:text-brand-400">{pkg.bonus}</p>
-            <ul class="mt-6 mb-8 flex flex-1 flex-col gap-3 border-t border-border pt-6">
+            {pkg.bonus && <p class="pkg__bonus">{pkg.bonus}</p>}
+            <ul class="ds-list pkg__features">
               {pkg.features.map((feature) => (
-                <li class="flex items-start gap-3">
-                  <Icon name="check" size="sm" class="text-brand-500 shrink-0 mt-0.5" />
-                  <span class="text-sm text-foreground-muted leading-relaxed">{feature}</span>
-                </li>
+                <li>{feature}</li>
               ))}
             </ul>
-            <Button size="lg" fullWidth variant={recommended ? 'primary' : 'outline'} {...bookingLinkAttrs(contactUrl)}>
+            <a class:list={['ds-btn', 'ds-btn--block', recommended ? 'ds-btn--light' : '']} {...bookingLinkAttrs(contactUrl)}>
               {pkg.cta}
-            </Button>
-          </Card>
+              <span aria-hidden="true">{locale === 'ar' ? '←' : '→'}</span>
+            </a>
+          </article>
         );
-      })}
-    </div>
-
-    <p class="text-sm text-foreground-muted text-center max-w-3xl mx-auto text-balance" data-reveal>
-      {packages.note}
-    </p>
+      })
+    }
   </div>
+
+  <p class="pkgs__note">{packages.note}</p>
 </section>
+
+<style>
+  .pkgs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 18px;
+    align-items: stretch;
+  }
+  .pkg {
+    display: flex;
+    flex-direction: column;
+  }
+  .pkg__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .pkg__top h3 {
+    margin: 0;
+  }
+  .pkg__for {
+    margin: 10px 0 0;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .pkg__price {
+    margin: 28px 0 0;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .pkg__prefix {
+    font-size: var(--text-small);
+    font-weight: 600;
+  }
+  .pkg__amount {
+    font: 850 clamp(44px, 4.4vw, 64px) / 1 var(--font-latin);
+    font-stretch: 110%;
+    letter-spacing: -0.035em;
+  }
+  .pkg__local {
+    margin: 8px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    font-size: var(--text-small);
+    opacity: 0.85;
+  }
+  .pkg__bonus {
+    margin: 12px 0 0;
+    font-size: var(--text-small);
+    font-weight: 600;
+  }
+  .pkg__features {
+    flex: 1;
+    margin: 24px 0 28px;
+  }
+  .pkgs__note {
+    margin: 24px 0 0;
+    max-width: 760px;
+    font-size: var(--text-small);
+    line-height: 1.6;
+    color: var(--ink-3);
+  }
+</style>

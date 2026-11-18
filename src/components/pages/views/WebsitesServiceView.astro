@@ -8,6 +8,7 @@
 import { Image } from 'astro:assets';
 import PageLayout from '@/layouts/PageLayout.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import ServiceAudience, { type ServiceAudienceCopy } from '@/components/services/ServiceAudience.astro';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
 import Card from '@/components/ui/data-display/Card/Card.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
@@ -35,13 +36,14 @@ const page = tData<{
   breadcrumb: string;
   hero: { badge: string; titleLead: string; titleHighlight: string; description: string };
   answer: { heading: string; paragraphs: string[] };
+  audience: ServiceAudienceCopy;
   guide: {
     badge: string;
     heading: string;
     lead: string;
     situationLabel: string;
     packageLabel: string;
-    rows: { situation: string; pkg: string; link?: 'saas' }[];
+    rows: { situation: string; pkg: string }[];
   };
   market: {
     badge: string;
@@ -75,7 +77,6 @@ const page = tData<{
 }>('pages.serviceWebsites', locale)!;
 
 const contactUrl = localizedPath('/contact', locale);
-const saasUrl = localizedPath('/services/saas', locale);
 const otherLocale = locale === defaultLocale ? 'ar' : defaultLocale;
 const otherLanguageUrl = swapLocaleInPath(localizedPath('/services/websites', locale), otherLocale);
 const example = (await getVisibleProjects(locale)).find((p) => p.id === `${locale}/healing-with-attia`);
@@ -97,7 +98,7 @@ const breadcrumbs = [
       <Icon name="layout" size="sm" />
       {page.hero.badge}
     </Badge>
-    <h1 slot="title" class="!text-4xl md:!text-5xl lg:!text-6xl">
+    <h1 slot="title" >
       <span class="text-foreground">{page.hero.titleLead}</span><br />
       <span class="text-brand-500">{page.hero.titleHighlight}</span>
     </h1>
@@ -135,6 +136,7 @@ const breadcrumbs = [
           </p>
         )}
       </div>
+      <ServiceAudience copy={page.audience} class="mt-10" />
     </div>
   </section>
 
@@ -146,7 +148,7 @@ const breadcrumbs = [
       <SectionHeading icon="compass" badge={page.guide.badge} heading={page.guide.heading} lead={page.guide.lead} />
       <DataTable
         headers={[page.guide.situationLabel, page.guide.packageLabel]}
-        rows={page.guide.rows.map((row) => [row.situation, row.link ? { text: row.pkg, href: saasUrl } : row.pkg])}
+        rows={page.guide.rows.map((row) => [row.situation, row.pkg])}
       />
     </div>
   </section>

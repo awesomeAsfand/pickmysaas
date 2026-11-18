@@ -53,7 +53,8 @@
       "blog": "Blog",
       "about": "About",
       "contact": "Contact",
-      "faq": "FAQ"
+      "faq": "FAQ",
+      "pricing": "Pricing"
     }
   },
   "common": {
@@ -104,13 +105,13 @@
     "shareOn": "Share on {platform}",
     "copyLink": "Copy link",
     "metaTitle": "Blog",
-    "metaDescription": "Insights from PickMySaaS on building websites, SaaS platforms and AI products for the Gulf.",
+    "metaDescription": "Insights from PickMySaaS on building websites and online stores for Gulf businesses.",
     "heroBadge": "All posts",
     "heroDescription": "Notes from the build: what we learn designing and launching products for the Gulf.",
     "allPosts": "All posts",
     "noPosts": "No posts found",
     "pageMetaTitle": "Blog — Page {page}",
-    "pageMetaDescription": "Page {page} of {total}: insights on websites, SaaS platforms and AI products for the Gulf.",
+    "pageMetaDescription": "Page {page} of {total}: insights on websites and online stores for Gulf businesses.",
     "pageBadge": "Page {page} of {total}",
     "newestPosts": "Newest posts",
     "tagMetaTitle": "#{tag} — Blog",
@@ -151,10 +152,10 @@
     "galleryClose": "Close lightbox",
     "galleryNextImage": "Next image",
     "galleryPreviousImage": "Previous image",
-    "metaTitle": "Projects: Websites and Platforms We've Built",
-    "metaDescription": "Built by PickMySaaS: a directory platform listing 3,000+ nurseries across the six GCC countries, and a therapist website with WhatsApp booking.",
+    "metaTitle": "Projects: Websites We've Designed and Built",
+    "metaDescription": "Client work by PickMySaaS: a custom directory website listing 3,000+ nurseries across the six Gulf countries, and a therapist website with WhatsApp booking.",
     "heroBadge": "Selected work",
-    "heroDescription": "Websites and platforms we've designed and built.",
+    "heroDescription": "Two client websites, with what they achieved: a custom directory website for the Gulf and a therapist website with WhatsApp booking.",
     "allProjects": "All projects",
     "pageMetaTitle": "Projects — Page {page}",
     "pageMetaDescription": "Page {page} of {total}: websites, platforms and tools designed and built by PickMySaaS.",
@@ -222,7 +223,7 @@
     "privacyNote": "We use these details to reply to you.",
     "send": "Send message",
     "sending": "Sending…",
-    "success": "Thanks! We'll reply within 24 hours.",
+    "success": "Thanks, your message has been sent. We'll reply by email.",
     "genericError": "Something went wrong",
     "notConfigured": "Not configured yet — choose how the form sends in site.config.ts (contactForm.sendVia). Only you can see this line.",
     "unavailable": "This form is not available right now.",
@@ -231,8 +232,11 @@
       "name": "Your name should be between 2 and 100 characters.",
       "email": "Please enter a valid email address.",
       "subject": "Please keep this under 200 characters.",
-      "message": "Your message should be between 10 and 5,000 characters."
-    }
+      "message": "Your message should be between 10 and 5,000 characters.",
+      "heard": "Tell us how you heard about us.",
+      "whatsapp": "Enter a phone number with digits only, or leave it empty."
+    },
+    "back": "Back to the site"
   },
   "theme": {
     "selectColourTheme": "Select colour theme",
@@ -282,252 +286,101 @@
   "pages": {
     "about": {
       "meta": {
-        "title": "About — A Founder-Led Product Studio for the Gulf",
-        "description": "PickMySaaS is a founder-led studio run by Asfand Yar Khan. We build websites, SaaS platforms and MVPs in Arabic and English for businesses across the GCC."
+        "title": "About: A Founder-Led Web Design Studio for the Gulf",
+        "description": "PickMySaaS is a founder-led web design studio: custom websites and online stores in Arabic and English for Gulf businesses, at fixed prices."
       },
       "hero": {
-        "badge": "About us",
-        "title": "PickMySaaS: a founder-led product studio for the Gulf",
-        "typingWords": [
-          "Web design",
-          "SaaS products",
-          "AI-first MVPs",
-          "Arabic & English",
-          "Built for the GCC"
-        ],
-        "typingWordsMobile": [
-          "Web design",
-          "SaaS products",
-          "AI-first MVPs",
-          "Bilingual"
-        ],
-        "description": "A founder-led product studio that turns ideas into websites and software people actually use, for founders and businesses across the Gulf."
+        "badge": "About",
+        "titleLead": "A founder-led web design studio",
+        "titleHighlight": "for the Gulf.",
+        "description": "The person on your first call works on your project through to launch. Custom websites and online stores in Arabic and English, for businesses in the six Gulf countries."
       },
-      "whatYouGet": {
-        "badge": "What we bring",
-        "heading": "Everything a launch needs, under one roof",
-        "lead": "Design, engineering and growth, without juggling three different vendors.",
-        "items": [
+      "founder": {
+        "badge": "The founder",
+        "heading": "One person, first call to launch",
+        "paragraphs": [
+          "PickMySaaS is run by its founder, who works directly with every client. The founder has five years of experience designing and building websites for clients around the world.",
+          "PickMySaaS works remotely, by video call, WhatsApp and email. There is no office in the Gulf."
+        ],
+        "facts": [
           {
-            "icon": "languages",
-            "title": "Arabic & English by default",
-            "description": "Right-to-left layouts, Arabic typography and bilingual content, planned from day one."
+            "label": "Experience",
+            "value": "Five years"
           },
           {
-            "icon": "code",
-            "title": "Modern, proven engineering",
-            "description": "Built in Python and Django, the framework behind Instagram, so your product is fast, secure and easy to grow."
+            "label": "Works",
+            "value": "Remotely, with clients in the six Gulf countries"
           },
           {
-            "icon": "search",
-            "title": "Built to be found",
-            "description": "SEO and AI-search readiness built in from the start."
+            "label": "Builds on",
+            "value": "Python and Django, custom for each client"
           },
           {
-            "icon": "sparkles",
-            "title": "AI where it earns its place",
-            "description": "Chatbots, document processing and automation, used where they save time or money, not as a gimmick."
-          },
-          {
-            "icon": "globe",
-            "title": "Ready for the region",
-            "description": "Local payment methods, data-protection requirements and GCC hosting when your sector needs it."
-          },
-          {
-            "icon": "key-round",
-            "title": "Yours to keep",
-            "description": "Your domain and website are in your name, and the code is handed over at launch. No lock-in."
+            "label": "Payment",
+            "value": "50% upfront, 50% on completion"
           }
         ]
       },
-      "principles": {
-        "badge": "How we work",
-        "heading": "Three things we don't compromise on",
-        "lead": "The same three rules shape every project, from a three-page website to a full SaaS platform.",
-        "items": [
-          {
-            "icon": "zap",
-            "title": "Ship early, learn fast",
-            "description": "A working version in your hands within weeks, so decisions come from real users instead of guesses."
-          },
-          {
-            "icon": "compass",
-            "title": "Built for the region",
-            "description": "Gulf customers expect Arabic done right, local payments and fast mobile experiences. We design for that from the start."
-          },
-          {
-            "icon": "handshake",
-            "title": "Honest advice",
-            "description": "If something isn't worth building, or there's a cheaper way, we'll tell you, even if it means a smaller project."
-          }
+      "scope": {
+        "heading": "What we build, and what we don't",
+        "goodTitle": "We build",
+        "good": [
+          "Custom websites",
+          "Online stores",
+          "Arabic & RTL versions",
+          "Brand identities",
+          "Growth & care after launch"
+        ],
+        "notTitle": "We don't build",
+        "not": [
+          "Sites on Shopify, Salla, Zid, WooCommerce, Webflow, Next.js or WordPress",
+          "Native mobile apps",
+          "Hourly or staff-augmentation work"
         ]
-      },
-      "stack": {
-        "badge": "Tools & Tech",
-        "title": "The tools we build with",
-        "description": "Python and Django for the engine; Bootstrap, HTML and CSS for the interface. Proven technology that keeps your product fast, secure and easy to maintain."
       },
       "faq": {
-        "badge": "Good to know",
-        "heading": "Frequently asked questions",
-        "lead": "About PickMySaaS and how we work.",
-        "cards": [
+        "badge": "Questions",
+        "heading": "About PickMySaaS",
+        "items": [
           {
-            "icon": "building-2",
-            "title": "About PickMySaaS",
-            "items": [
-              {
-                "question": "Who is PickMySaaS?",
-                "answer": "A founder-led product studio run by Asfand Yar Khan, building websites, SaaS platforms and AI-first MVPs. Five years of shipping for clients worldwide, now focused on founders and businesses across the GCC."
-              },
-              {
-                "question": "Where are you based?",
-                "answer": "We work remotely with clients worldwide, with a focus on the Gulf. Calls happen on video, WhatsApp or phone, in Arabic or English."
-              },
-              {
-                "question": "Do you only work with Gulf companies?",
-                "answer": "No. The Gulf is our focus, but we work with clients anywhere."
-              },
-              {
-                "question": "What kind of clients do you work with?",
-                "answer": "Founders validating an idea, SMEs that need a stronger web presence, and larger teams that need a product built fast."
-              }
-            ]
+            "question": "What is PickMySaaS?",
+            "answer": "PickMySaaS is a founder-led web design studio for Gulf businesses."
           },
           {
-            "icon": "handshake",
-            "title": "Working with us",
-            "items": [
-              {
-                "question": "Do you work in Arabic?",
-                "answer": "Yes. We build fully bilingual products, and right-to-left layouts are standard, not an extra."
-              },
-              {
-                "question": "What does “AI-first” mean?",
-                "answer": "AI is part of the product’s core from the first design, such as an assistant that answers your customers or a tool that reads documents for you. It isn’t bolted on later."
-              },
-              {
-                "question": "Can you take over an existing product?",
-                "answer": "Usually, yes. We review it first and tell you honestly whether to improve it or rebuild."
-              },
-              {
-                "question": "How do we get started?",
-                "answer": "Book a free 30-minute call or message us on WhatsApp. We’ll talk through your idea and send you a clear proposal."
-              }
-            ]
-          }
-        ]
-      },
-      "proof": {
-        "badge": "Our work",
-        "heading": "Proof, not promises",
-        "description": "Five years of shipping websites and products for clients worldwide. Here are a few that are live today.",
-        "button": "See our projects",
-        "cards": [
-          {
-            "title": "Founded by Asfand Yar Khan",
-            "text": "PickMySaaS is led by Asfand Yar Khan, a developer with five years of experience designing and building websites and products for clients worldwide. When you work with PickMySaaS, you work with Asfand directly, from the first call to launch day and beyond."
+            "question": "Where are you based?",
+            "answer": "PickMySaaS works remotely and has no office in the Gulf. We work with clients in Saudi Arabia, the UAE, Qatar, Kuwait, Bahrain and Oman by video call, WhatsApp and email."
           },
           {
-            "title": "GulfNurseries",
-            "text": "A directory of 3,000+ nurseries across six GCC countries, built for a client."
+            "question": "Who will I work with?",
+            "answer": "The founder, directly, from the first call to launch."
           },
           {
-            "title": "Healing with Attia",
-            "text": "A trust-first website for an online therapy practice serving clients in four countries."
+            "question": "Do you build in Arabic?",
+            "answer": "Yes. Every site is built in Arabic and English from the first draft, with a true right-to-left Arabic layout."
+          },
+          {
+            "question": "How do we get started?",
+            "answer": "Book a free 30-minute call, send us a brief, or message us on WhatsApp. You get a fixed price before any work begins."
           }
         ]
       },
       "cta": {
-        "badge": "Let's talk",
-        "heading": "Have an idea? Let's pick the right build.",
-        "description": "Book a free 30-minute call. No pressure, no jargon, just an honest conversation about what you need.",
-        "button": "Book a free call"
+        "heading": "Let's build your site.",
+        "description": "Book a free 30-minute call and leave with a fixed price and a timeline.",
+        "primary": "Book a free call",
+        "secondary": "Chat on WhatsApp"
       }
     },
     "services": {
       "meta": {
-        "title": "Website Design, SaaS & MVP Development from $300",
-        "description": "Fixed-price website design from $300 and online stores from $500. SaaS platforms and MVPs get one fixed price in a written proposal. Founder-led, for the GCC."
+        "title": "Services: Websites, Stores, Arabic & Branding",
+        "description": "Five services for Gulf businesses at fixed prices: websites from $300, online stores from $700, Arabic & RTL $300, brand identity $500, care $400 a month."
       },
-      "includedLabel": "What you get",
       "hero": {
         "badge": "Services",
-        "titleLead": "Websites, online stores,",
-        "titleHighlight": "SaaS and AI-first MVPs",
-        "description": "Four ways to launch, one team: from a sharper website or an online store to a full software product, designed and built for the Gulf.",
-        "jumpLabels": [
-          "Websites",
-          "Online stores",
-          "SaaS products",
-          "AI-first MVPs"
-        ]
-      },
-      "web": {
-        "badge": "Websites",
-        "heading": "Web design & development",
-        "more": "See website packages and prices",
-        "paragraphs": [
-          "Your website is often the first conversation a customer has with you. It needs to look credible, load fast and make the next step obvious.",
-          "We design and build bilingual websites in Arabic and English around your business and your customers. They go live within a week, with right-to-left layouts done properly and every page built to rank in Google and be understood by AI assistants. The domain and website are in your name: you own it."
-        ],
-        "included": [
-          {
-            "lead": "A design that’s yours",
-            "text": "shaped around your brand and the customers you want to reach."
-          },
-          {
-            "lead": "Arabic and English, done right",
-            "text": "full right-to-left layouts and Arabic type that reads beautifully."
-          },
-          {
-            "lead": "Fast on every phone",
-            "text": "pages that open instantly, even on mobile data."
-          },
-          {
-            "lead": "Found by Google and AI",
-            "text": "SEO and AI-search readiness built in."
-          },
-          {
-            "lead": "Built to convert",
-            "text": "WhatsApp, booking and enquiry forms placed where customers actually use them."
-          }
-        ]
-      },
-      "ecommerce": {
-        "badge": "Online stores",
-        "heading": "Online stores",
-        "more": "More about ecommerce development",
-        "paragraphs": [
-          "Custom online stores in Arabic and English for businesses in the UAE, Saudi Arabia and across the GCC, built in Python and Django and owned by you: no store-builder subscription and no platform commission on your sales.",
-          "Stores take Visa, Mastercard and PayPal, plus bank transfer and cash on delivery. A small store starts at $500 with the Business package and goes live in about a week once we have your products."
-        ],
-        "included": [
-          {
-            "lead": "Catalogue and search",
-            "text": "products, categories and photos your customers can browse and search on any phone."
-          },
-          {
-            "lead": "Checkout in Arabic and English",
-            "text": "a short checkout that reads right to left, with prices shown including VAT."
-          },
-          {
-            "lead": "Payments Gulf shoppers use",
-            "text": "Visa, Mastercard and PayPal, plus bank transfer and cash on delivery."
-          },
-          {
-            "lead": "Orders you can act on",
-            "text": "order alerts by email and an admin to update orders, products and prices."
-          },
-          {
-            "lead": "Found by Google and AI",
-            "text": "product and category pages built to rank and to be read by AI assistants."
-          },
-          {
-            "lead": "Yours to keep",
-            "text": "the code, domain and customer data are in your name. No lock-in."
-          }
-        ]
+        "titleLead": "Five services,",
+        "titleHighlight": "one studio.",
+        "description": "PickMySaaS designs and builds custom websites and online stores for businesses in the six Gulf countries, in Arabic and English, on Python and Django. Every service has a fixed price you see before you call."
       },
       "packages": {
         "badge": "Website packages",
@@ -545,14 +398,13 @@
               "≈ OMR 115"
             ],
             "pricePrefix": "",
-            "bonus": "Free domain + Google Business setup",
+            "bonus": "Google Business Profile setup",
             "features": [
               "Up to 3 pages",
               "Arabic and English",
               "WhatsApp, call and map buttons",
               "Contact form",
               "Basic SEO and Google Maps link",
-              "Hosting and SSL setup",
               "Live in 1 week",
               "1 round of revisions",
               "2 weeks of support"
@@ -561,7 +413,7 @@
           },
           {
             "name": "Business",
-            "for": "For businesses that need more pages, a custom design or an online store.",
+            "for": "For businesses that need more pages, a custom design, booking or listings.",
             "price": "$500",
             "priceLocal": [
               "≈ SAR 1,875",
@@ -569,14 +421,13 @@
               "≈ OMR 192"
             ],
             "pricePrefix": "",
-            "bonus": "Free domain + Google Business setup",
+            "bonus": "Google Business Profile setup",
             "features": [
               "Up to 7 pages, custom designed",
               "Arabic and English",
-              "Online store, booking, menu or listings",
+              "Booking, menu or listings",
               "Order alerts by email",
               "Full SEO and AI-search setup",
-              "Hosting and SSL setup",
               "Live in 1 week",
               "2 rounds of revisions",
               "1 month of support"
@@ -593,7 +444,7 @@
               "≈ OMR 269"
             ],
             "pricePrefix": "from",
-            "bonus": "Free domain + Google Business setup",
+            "bonus": "Google Business Profile setup",
             "features": [
               "Up to 15 pages, fully custom premium design",
               "Arabic and English copy written for you",
@@ -608,458 +459,75 @@
             "cta": "Book a call"
           }
         ],
-        "note": "Hosting and SSL are set up in every package. Extra pages and work beyond your package are quoted separately. Timelines count business days (Sunday to Thursday) from when we have your content. The domain renews yearly at cost. SAR, AED and OMR prices are approximate conversions from USD. Online stores can take bank transfer, cash on delivery, Stripe, PayPal or another provider that works in your country."
-      },
-      "saas": {
-        "badge": "SaaS",
-        "heading": "SaaS products",
-        "more": "More about SaaS development",
-        "paragraphs": [
-          "A SaaS product is software your customers subscribe to and use online, from booking platforms and dashboards to marketplaces and internal tools.",
-          "We take you from idea to a working platform in 4 to 8 weeks, built in Python and Django, the framework behind Instagram. You get user accounts and roles, subscriptions and billing, admin dashboards and the integrations your business runs on, all built for Gulf customers, with local payment methods and GCC hosting when your sector requires it."
-        ],
-        "included": [
-          {
-            "lead": "Product thinking, not just code",
-            "text": "we help decide what to build first and what can wait."
-          },
-          {
-            "lead": "Accounts, roles and subscriptions",
-            "text": "everything a real SaaS needs to sign up customers and charge them."
-          },
-          {
-            "lead": "Local payments",
-            "text": "Stripe, PayPal or whichever payment provider works in your country."
-          },
-          {
-            "lead": "Data where it needs to be",
-            "text": "GCC hosting and data-protection requirements (PDPL) built in when your sector asks for them."
-          },
-          {
-            "lead": "Room to grow",
-            "text": "a clean architecture that scales from your first customer to your thousandth."
-          }
-        ]
-      },
-      "ai": {
-        "badge": "AI",
-        "heading": "AI-first MVPs",
-        "more": "More about MVP development",
-        "paragraphs": [
-          "An MVP (minimum viable product) is the smallest version of your idea that real users can try. It’s the fastest, cheapest way to find out if it works.",
-          "We build MVPs with AI at their core, in Python, the language modern AI is built in: assistants that answer customers in Arabic and English, tools that read and process documents, and automation that saves hours of manual work. You get a working product in 4 to 8 weeks, ready to show users and investors."
-        ],
-        "included": [
-          {
-            "lead": "A working product in weeks",
-            "text": "not slides or mock-ups, but something real people can use."
-          },
-          {
-            "lead": "AI that does real work",
-            "text": "chatbots, document processing and automation built around your use case."
-          },
-          {
-            "lead": "Arabic-capable AI",
-            "text": "assistants and tools that understand and respond in Arabic and English."
-          },
-          {
-            "lead": "Investor-ready",
-            "text": "a product you can demo, measure and build a pitch around."
-          },
-          {
-            "lead": "A path to scale",
-            "text": "when the MVP proves itself, it grows into a full product without starting over."
-          }
-        ]
-      },
-      "process": {
-        "badge": "How it works",
-        "heading": "How a project runs",
-        "lead": "From your first call to a live product.",
-        "steps": [
-          {
-            "title": "Discover",
-            "description": "You book a free 30-minute call or message us on WhatsApp. We talk through the problem, your users and your deadline. No obligation."
-          },
-          {
-            "title": "Scope",
-            "description": "You get one clear proposal: what we’ll build, when it’s ready and one fixed price. You decide with everything on the table."
-          },
-          {
-            "title": "Build",
-            "description": "We work in short sprints with a demo every week, so you see your product take shape and can steer it."
-          },
-          {
-            "title": "Launch & grow",
-            "description": "Your product goes live, with the domain and code in your name. Afterwards we stay reachable, and the monthly care plan keeps it updated, secure and growing."
-          }
-        ]
+        "note": "Extra pages and work beyond your package are quoted separately. Timelines count business days (Sunday to Thursday) from when we have your content. You host the finished site on your own account, and the code is yours. SAR, AED and OMR prices are approximate conversions from USD. Online stores can take bank transfer, cash on delivery, Stripe, PayPal or another provider that works in your country."
       },
       "faq": {
         "badge": "Questions",
         "heading": "Questions and answers",
-        "lead": "The things clients ask before we start.",
-        "cards": [
+        "lead": "What clients ask before we start.",
+        "items": [
           {
-            "icon": "tag",
-            "title": "Before we start",
-            "items": [
-              {
-                "question": "What do your website packages cost?",
-                "answer": "Websites have fixed package prices: Starter $300, Business $500, and Premium from $700. No hourly billing, no surprises."
-              },
-              {
-                "question": "How are SaaS and MVP projects priced?",
-                "answer": "Every product is different, so SaaS platforms and MVPs get one fixed price in your proposal, agreed before we start. No hourly billing, no surprises."
-              },
-              {
-                "question": "How do I pay?",
-                "answer": "We send you an invoice and you pay by direct bank transfer: 50% upfront and 50% once the job is done."
-              },
-              {
-                "question": "How do my customers pay on an online store?",
-                "answer": "Stores can take bank transfer and cash on delivery, and we can connect Stripe, PayPal or another payment provider that works in your country."
-              },
-              {
-                "question": "How long does it take to build a website or SaaS product?",
-                "answer": "Websites go live in about a week. SaaS platforms and AI MVPs typically take 4 to 8 weeks. Your proposal names the exact timeline."
-              },
-              {
-                "question": "Can you build my website in Arabic and English?",
-                "answer": "Yes. Bilingual Arabic and English is our default, not an add-on."
-              },
-              {
-                "question": "What happens to my current website?",
-                "answer": "It stays online until the new one is ready. Your content and domain come with you, and we redirect your old pages to protect your Google rankings."
-              },
-              {
-                "question": "Do you work with clients in Saudi Arabia, the UAE and across the GCC without a local office?",
-                "answer": "Yes. We work fully remotely, so you never need to meet in person. Projects run by video, WhatsApp and email, and we work across Gulf time zones."
-              }
-            ]
+            "question": "What do your services cost?",
+            "answer": "Website design starts at $300 (Starter $300, Business $500, Premium from $700). An online store is a fixed price from $700. Arabic & RTL is $300, brand identity $500, and growth & care $400 a month."
           },
           {
-            "icon": "user",
-            "title": "Working with us",
-            "items": [
-              {
-                "question": "Who will I work with?",
-                "answer": "Asfand, directly. PickMySaaS is founder-led: the person you talk to on the first call is the person who designs and builds your product. No account managers, no handoffs."
-              },
-              {
-                "question": "Is the product really mine?",
-                "answer": "Yes. The domain is registered in your name and the code is handed over when the project is complete. Hosting can run on your own account, or we manage it for you under the care plan. Either way, you can take everything with you."
-              },
-              {
-                "question": "What’s in the care plan?",
-                "answer": "A monthly plan that keeps your website or product updated, secure and backed up, with small changes included. Ask about it on the call."
-              },
-              {
-                "question": "Can I edit the website myself after launch?",
-                "answer": "Yes, if you want to. Tell us on the first call and we’ll set it up for easy editing. Or send us your changes under the care plan."
-              },
-              {
-                "question": "Is there anything you don’t build?",
-                "answer": "If it runs on the web, we build it: websites, online stores, SaaS platforms, dashboards, APIs and AI tools, all in Python and Django. What we don’t build is native iPhone or Android apps. Instead we build fast, mobile-friendly web apps that work on any phone, no app store needed."
-              }
-            ]
+            "question": "How do I pay?",
+            "answer": "By invoice and bank transfer: 50% upfront and 50% when the work is done. There is no hourly billing."
+          },
+          {
+            "question": "How long does it take?",
+            "answer": "A simple website takes about a week once we have your content. Online stores and larger sites take 4 to 8 weeks. Arabic & RTL and brand identity take 2 to 3 weeks."
+          },
+          {
+            "question": "Do you build on Shopify, Salla, Zid or WordPress?",
+            "answer": "No. Every site is custom-built on Python and Django. You host the finished site and own the code."
+          },
+          {
+            "question": "How do my customers pay on an online store?",
+            "answer": "Stores can take bank transfer and cash on delivery, and we can connect Stripe, PayPal or another payment provider that works in your country."
+          },
+          {
+            "question": "Is every site in Arabic and English?",
+            "answer": "Yes. Arabic and English are built in from the first draft, not added later."
           }
         ]
       },
       "cta": {
-        "badge": "Let's talk",
-        "heading": "Let's talk about what you need",
-        "description": "The first call is free, with no obligation. You get honest answers, and then one clear proposal with a timeline and a fixed price.",
+        "heading": "Not sure which service you need?",
+        "description": "Book a free 30-minute call. We'll look at your business and tell you what fits, with a fixed price.",
         "primary": "Book a free call",
         "secondary": "Chat on WhatsApp"
-      }
-    },
-    "serviceSaas": {
-      "meta": {
-        "title": "SaaS Development for Saudi Arabia, the UAE & the GCC",
-        "description": "SaaS and web application development for Gulf startups and businesses. A working platform in 4 to 8 weeks, at one fixed price, built in Python and Django."
       },
-      "breadcrumb": "SaaS development",
-      "hero": {
-        "badge": "SaaS development",
-        "titleLead": "SaaS development",
-        "titleHighlight": "for Gulf startups and businesses",
-        "description": "We take your idea from a first call to a working platform in 4 to 8 weeks, at one fixed price agreed before we start."
-      },
-      "answer": {
-        "heading": "Looking for a SaaS development company?",
+      "brand": {
+        "badge": "Brand identity",
+        "heading": "A brand that holds up everywhere",
+        "lead": "$500, fixed price. 2–3 weeks.",
         "paragraphs": [
-          "PickMySaaS is a founder-led studio that builds SaaS platforms and web applications for businesses in Saudi Arabia, the UAE and across the GCC. A first version typically takes 4 to 8 weeks and costs one fixed price, agreed in your proposal before any work starts.",
-          "You work directly with Asfand, the person who designs and builds your product. There are no account managers and no handoffs. We work fully remotely, with a demo every week, so you see the product take shape and can steer it."
-        ]
-      },
-      "types": {
-        "badge": "What we build",
-        "heading": "Software your customers log in to",
-        "lead": "SaaS means customers subscribe to your software and use it online. These are the kinds of product we build.",
+          "A brand identity gives your business one look on your website, your store, your social profiles and anything you print. It is designed in Arabic and English from the start, so both versions feel like the same brand.",
+          "You get four things: a logo, the type your brand uses, a colour system, and guidelines that show how to use them."
+        ],
         "items": [
-          {
-            "icon": "calendar",
-            "title": "Booking platforms",
-            "description": "Customers pick a time and pay or confirm online, and your team manages it all from one screen."
-          },
-          {
-            "icon": "layout-dashboard",
-            "title": "Dashboards",
-            "description": "One place for your customers or staff to see their numbers, orders, reports and status."
-          },
-          {
-            "icon": "map-pin",
-            "title": "Directories and marketplaces",
-            "description": "Searchable listings with maps and owner accounts, earning through paid plans or advertising."
-          },
-          {
-            "icon": "wrench",
-            "title": "Internal tools",
-            "description": "Software that replaces the spreadsheets and WhatsApp threads your team runs on today."
-          },
-          {
-            "icon": "sparkles",
-            "title": "AI products",
-            "description": "Assistants that answer in Arabic and English, and tools that read and process documents."
-          },
-          {
-            "icon": "plug",
-            "title": "APIs and integrations",
-            "description": "Connections between your product and the systems your business already uses."
-          }
+          "Logo",
+          "Type",
+          "Colour system",
+          "Guidelines"
         ]
       },
-      "fit": {
-        "badge": "Before you build",
-        "heading": "Do you actually need SaaS?",
-        "lead": "Often you don’t, at least not yet. This is how we’d decide on a first call.",
-        "options": [
-          {
-            "title": "A website is enough",
-            "when": "Customers need to find you, trust you and contact you. Nobody needs to log in.",
-            "next": "Start with a website from $300.",
-            "link": "websites",
-            "linkLabel": "See website packages"
-          },
-          {
-            "title": "Start with an MVP",
-            "when": "You have an idea but no paying users yet, and you need to find out whether people want it.",
-            "next": "Build the smallest version real users can try.",
-            "link": "mvp",
-            "linkLabel": "See AI-first MVPs"
-          },
-          {
-            "title": "Build the SaaS platform",
-            "when": "People already want it or pay for it by hand, and you need accounts, roles and subscriptions to serve them.",
-            "next": "Book a call and we’ll scope the first version.",
-            "link": "contact",
-            "linkLabel": "Book a free call"
-          }
-        ]
-      },
-      "scope": {
-        "badge": "Scope",
-        "heading": "What goes in the first version",
-        "lead": "Most SaaS projects run late because they try to launch everything. We help you decide what to build first and what can wait.",
-        "nowTitle": "Build first",
-        "now": [
-          "The one job customers will pay for, working from start to finish",
-          "User accounts and roles, so each person sees only what they should",
-          "Plans and subscriptions",
-          "An admin dashboard to run the business without calling a developer",
-          "Arabic and English, with right-to-left layouts from day one",
-          "One payment method that works in your first country"
+      "growth": {
+        "badge": "Growth & care",
+        "heading": "Care after launch",
+        "lead": "$400 a month.",
+        "paragraphs": [
+          "A website keeps earning when someone keeps looking after it. Growth & care covers the site's speed, its search engine optimisation, its analytics, and ongoing care month by month."
         ],
-        "laterTitle": "Usually wait",
-        "later": [
-          "Extra countries, currencies and payment providers",
-          "Advanced reports, until you know what customers ask for",
-          "Integrations nobody has requested yet",
-          "AI features that don’t save time or money",
-          "Features for customer types you don’t have yet"
-        ],
-        "note": "We don’t build native iPhone or Android apps. We build fast web apps that work on any phone, with no app store needed."
-      },
-      "cost": {
-        "badge": "Cost",
-        "heading": "What affects the price of a SaaS product",
-        "lead": "We don’t publish one SaaS price, because a booking tool and a multi-country marketplace are different projects. These are the things that move your fixed price.",
-        "factorLabel": "What we look at",
-        "simplerLabel": "Keeps it simpler",
-        "moreLabel": "Takes more work",
-        "rows": [
-          {
-            "factor": "User types",
-            "simpler": "One customer type and one admin",
-            "more": "Several roles with different screens and permissions"
-          },
-          {
-            "factor": "Payments",
-            "simpler": "Manual invoices or one provider",
-            "more": "Subscriptions across several countries and providers"
-          },
-          {
-            "factor": "Integrations",
-            "simpler": "None, or one well-documented service",
-            "more": "Older systems such as your existing CRM or accounting software"
-          },
-          {
-            "factor": "Countries",
-            "simpler": "One country and currency",
-            "more": "Several countries with their own rules and prices"
-          },
-          {
-            "factor": "AI",
-            "simpler": "No AI, or one clear task",
-            "more": "Assistants trained on your data, in Arabic and English"
-          },
-          {
-            "factor": "Hosting",
-            "simpler": "Standard cloud hosting",
-            "more": "GCC hosting when your sector requires it"
-          }
-        ],
-        "note": "You get one fixed price in your proposal, with no hourly billing. You pay by invoice and bank transfer: 50% upfront and 50% once the job is done."
-      },
-      "gulf": {
-        "badge": "Selling in the Gulf",
-        "heading": "Payments and data rules differ by country",
-        "lead": "A platform that sells across the GCC can’t assume one setup works everywhere. Here is what we checked on 4 November 2026.",
-        "countryLabel": "Country",
-        "stripeLabel": "Stripe lists it as supported",
-        "lawLabel": "Data protection law to plan for",
-        "rows": [
-          {
-            "country": "United Arab Emirates",
-            "stripe": "Yes",
-            "law": "Federal Decree-Law No. 45 of 2021",
-            "url": "https://www.clydeco.com/en/insights/2021/11/uae-issues-landmark-personal-data-protection-law"
-          },
-          {
-            "country": "Saudi Arabia",
-            "stripe": "No",
-            "law": "Personal Data Protection Law, fully enforceable since 14 September 2024",
-            "url": "https://www.clydeco.com/fr/insights/2024/09/saudi-arabia-s-personal-data-protection-law-become"
-          },
-          {
-            "country": "Oman",
-            "stripe": "No",
-            "law": "Personal Data Protection Law, Royal Decree 6/2022",
-            "url": "https://www.clydeco.com/en/insights/2022/2/data-protection-law-issued-in-oman"
-          },
-          {
-            "country": "Qatar",
-            "stripe": "No",
-            "law": "Confirm with a local adviser"
-          },
-          {
-            "country": "Kuwait",
-            "stripe": "No",
-            "law": "Confirm with a local adviser"
-          },
-          {
-            "country": "Bahrain",
-            "stripe": "No",
-            "law": "Confirm with a local adviser"
-          }
-        ],
-        "sourceLabel": "Stripe’s list of supported countries",
-        "sourceUrl": "https://stripe.com/global",
-        "notes": [
-          "What this means for you: where Stripe isn’t an option, we connect PayPal or another provider that works in your country, and we confirm the right one with you before we build.",
-          "The UAE and Oman laws both control the use of personal data and sending it abroad, and the Saudi law sets conditions on transfers too. So where your data is stored, and what users agree to at sign-up, are decisions to make early. This is planning information, not legal advice."
-        ]
-      },
-      "example": {
-        "badge": "A real example",
-        "heading": "How GulfNurseries was built to pay for itself",
-        "lead": "A client project: one directory covering 3,000+ nurseries across all six GCC countries.",
-        "points": [
-          {
-            "title": "The problem",
-            "text": "Parents had no single place to compare nurseries. Information was scattered across social media, outdated listings and word of mouth."
-          },
-          {
-            "title": "How it earns",
-            "text": "Listings are free to claim, which gets owners to keep them up to date. Paid plans and advertising then give owners more visibility."
-          },
-          {
-            "title": "How people use it",
-            "text": "Parents search by city and neighbourhood on a map, compare fees and curriculum, then call or WhatsApp in one tap. In the Gulf, that’s how people contact a business."
-          },
-          {
-            "title": "How it gets found",
-            "text": "Parent guides on licensing, starting age and choosing a nursery are written to rank in search, so growth doesn’t depend only on ads."
-          }
-        ],
-        "link": "Read the GulfNurseries case study",
-        "honest": "GulfNurseries is a directory with paid plans. We’re showing it because it uses the same parts as a SaaS product: accounts, plans and multi-country data."
-      },
-      "stack": {
-        "badge": "How we build",
-        "heading": "Proven technology, and code you own",
-        "lead": "Boring choices are good for a business. These keep your product fast, secure and easy to hand to another developer one day.",
         "items": [
-          {
-            "title": "Python and Django",
-            "text": "The framework behind Instagram. User logins, permissions and an admin area come built in, so your budget goes to what makes your product different."
-          },
-          {
-            "title": "A demo every week",
-            "text": "We work in short sprints, so you see real software early and can change direction before it gets expensive."
-          },
-          {
-            "title": "You own everything",
-            "text": "The domain is registered in your name and the code is handed over when the project is complete. No lock-in."
-          },
-          {
-            "title": "After launch",
-            "text": "We stay reachable, and the monthly care plan keeps your product updated, secure and backed up."
-          }
+          "Speed",
+          "SEO",
+          "Analytics",
+          "Ongoing care"
         ]
       },
-      "faq": {
-        "badge": "Questions",
-        "heading": "SaaS development questions",
-        "lead": "What founders and businesses ask before they start.",
-        "items": [
-          {
-            "question": "How much does SaaS development cost?",
-            "answer": "Every product is different, so you get one fixed price in your proposal, agreed before we start. There is no hourly billing. You pay 50% upfront and 50% once the job is done, by invoice and bank transfer."
-          },
-          {
-            "question": "How long does it take to build a SaaS product?",
-            "answer": "Typically 4 to 8 weeks for a first version. Your proposal names the exact timeline."
-          },
-          {
-            "question": "What is the difference between SaaS and a web application?",
-            "answer": "A web application is software people use in a browser, with nothing to install. SaaS is a web application your customers subscribe to. We build both."
-          },
-          {
-            "question": "Do you work with clients in Saudi Arabia and the UAE without a local office?",
-            "answer": "Yes. We work fully remotely, by video, WhatsApp and email, across Gulf time zones. You never need to meet in person."
-          },
-          {
-            "question": "Can you take over a product someone else built?",
-            "answer": "Usually, yes. We review it first and tell you honestly whether to improve it or rebuild."
-          },
-          {
-            "question": "Can the platform be in Arabic?",
-            "answer": "Yes. Bilingual Arabic and English is our default, not an add-on."
-          },
-          {
-            "question": "Should I hire a local or an international developer?",
-            "answer": "A local team can meet you in person. A remote studio like ours costs you no travel and works by video and WhatsApp. Either way, ask who will actually build your product and whether you’ll own the code."
-          }
-        ]
-      },
-      "cta": {
-        "heading": "Tell us what your platform should do",
-        "description": "Book a free 30-minute call. We’ll talk through your users and your deadline, tell you honestly if you need SaaS at all, and send one clear proposal.",
-        "primary": "Book a free call",
-        "secondary": "Chat on WhatsApp"
-      }
+      "book": "Book a 30-minute call"
     },
     "serviceWebsites": {
       "meta": {
@@ -1073,11 +541,25 @@
         "titleHighlight": "for Gulf businesses",
         "description": "Bilingual websites in Arabic and English, at published fixed prices."
       },
+      "audience": {
+        "heading": "Is a PickMySaaS website right for you?",
+        "goodTitle": "A good fit if you…",
+        "good": [
+          "run a small or growing business in the Gulf and need a site in Arabic and English",
+          "want a fixed price you can see before you call: $300, $500, or from $700",
+          "want a Starter or Business site live in about a week once your content is ready"
+        ],
+        "notTitle": "Not the right fit if you…",
+        "not": [
+          "want a WordPress, Wix or Shopify site to edit yourself inside that platform. Every site we make is custom-built.",
+          "want to pay a developer by the hour. Every package has one fixed price."
+        ]
+      },
       "answer": {
         "heading": "Looking for a web design company?",
         "paragraphs": [
           "PickMySaaS is a founder-led studio that designs and builds business websites for companies in the UAE, Saudi Arabia, Oman and across the GCC. Packages cost $300, $500 or from $700, and the prices are published, so you know the cost before you call.",
-          "Starter and Business websites go live in 1 week from when we have your content. Every site is built in Arabic and English, and the domain and website are in your name."
+          "Starter and Business websites go live in 1 week from when we have your content. Every site is built in Arabic and English, and the code is yours."
         ]
       },
       "guide": {
@@ -1097,7 +579,7 @@
           },
           {
             "situation": "You want to sell online with a small store and get order alerts by email.",
-            "pkg": "Business, $500"
+            "pkg": "Online store, fixed price from $700"
           },
           {
             "situation": "You have up to 15 pages, a bigger store, or need CRM, booking and delivery connected.",
@@ -1106,11 +588,6 @@
           {
             "situation": "You want your Arabic and English copy written for you, with an SEO content plan.",
             "pkg": "Premium, from $700"
-          },
-          {
-            "situation": "Customers need to log in, subscribe or manage accounts.",
-            "pkg": "SaaS, by proposal",
-            "link": "saas"
           }
         ]
       },
@@ -1218,11 +695,11 @@
           },
           {
             "question": "Who will I actually talk to?",
-            "answer": "Asfand, directly. The person on your first call designs and builds your site."
+            "answer": "The founder, directly. The person on your first call designs and builds your site."
           },
           {
             "question": "What exactly does the price include?",
-            "answer": "Hosting and SSL setup are in every package, along with a free domain and Google Business setup. The domain renews yearly at cost. Extra work is quoted separately."
+            "answer": "Each package lists what it includes, and extra work is quoted before we start. You host the finished site on your own account, so ask every supplier what hosting will cost you each year."
           },
           {
             "question": "How many rounds of changes do I get?",
@@ -1320,7 +797,7 @@
     "serviceEcommerce": {
       "meta": {
         "title": "Ecommerce Website Development in the UAE & Saudi Arabia",
-        "description": "Custom online stores in Arabic and English for UAE, Saudi and GCC businesses, from $500. Cards, PayPal, bank transfer and cash on delivery. You own the code."
+        "description": "Custom online stores in Arabic and English for Gulf businesses, at a fixed price from $700. Cards, PayPal, bank transfer and cash on delivery. You own the code."
       },
       "breadcrumb": "Online stores",
       "hero": {
@@ -1330,21 +807,36 @@
         "description": "Custom online stores in Arabic and English that your customers browse, pay for and come back to on their phones. Built in Python and Django, and owned by you.",
         "secondary": "See store prices"
       },
+      "audience": {
+        "heading": "Is a custom store right for you?",
+        "goodTitle": "A good fit if you…",
+        "good": [
+          "sell to Gulf shoppers, mostly on their phones, in Arabic and English",
+          "want a custom store at a fixed price, from $700",
+          "take bank transfer, cash on delivery, or cards through a provider that works in your country",
+          "can give it 4 to 8 weeks from when your products are ready"
+        ],
+        "notTitle": "Not the right fit if you…",
+        "not": [
+          "want a Salla, Zid, Shopify or WooCommerce store. We don't build on those platforms; they suit you better if you'd rather launch on your own and run everything yourself.",
+          "need a shopping app in the App Store or Google Play. We build stores that run in the browser, on phones and computers."
+        ]
+      },
       "answer": {
         "heading": "Looking for an ecommerce development company?",
         "paragraphs": [
-          "PickMySaaS is a founder-led studio that builds custom online stores for businesses in the UAE, Saudi Arabia and across the GCC. A small store starts at $500 with the Business package and goes live in about a week once we have your products. Larger stores start from $700.",
+          "PickMySaaS is a founder-led web design studio that builds custom online stores for businesses in the six Gulf countries. A store is a fixed price, from $700, and goes live in 4 to 8 weeks once we have your products.",
           "Every store is in Arabic and English, works first on phones, and takes Visa, Mastercard and PayPal, plus bank transfer and cash on delivery. The code, the domain and your customer data are in your name, and there is no store-builder subscription or platform commission on your sales."
         ],
         "glanceTitle": "At a glance",
         "glance": [
           {
             "label": "Price",
-            "value": "From $500 (about AED 1,835, SAR 1,875 or OMR 192)"
+            "value": "Fixed price, from $700 (about AED 2,570, SAR 2,625 or OMR 269)"
           },
           {
             "label": "Time to launch",
-            "value": "About 1 week for a Business-package store, from when we have your products"
+            "value": "4 to 8 weeks, from when we have your products"
           },
           {
             "label": "Payments",
@@ -1451,23 +943,23 @@
       "packages": {
         "badge": "Prices",
         "heading": "Which package fits your store",
-        "lead": "Stores come with our website packages. Choose by the size of your catalogue and what your store needs to connect to.",
+        "lead": "One fixed price for your store, agreed in writing before we start.",
         "cards": [
           {
-            "name": "Business",
-            "for": "A small store that needs to start selling quickly.",
+            "name": "Online store",
+            "for": "A custom store in Arabic and English, ready to sell.",
             "features": [
               "Online store with catalogue, cart and checkout",
               "Order alerts by email",
               "Arabic and English",
               "Full SEO and AI-search setup",
-              "Live in about 1 week",
+              "Live in 4 to 8 weeks",
               "1 month of support"
             ]
           },
           {
-            "name": "Premium",
-            "for": "A bigger catalogue, or a store that connects to other tools.",
+            "name": "Larger store",
+            "for": "A bigger catalogue, or a store that connects to delivery, CRM or booking tools.",
             "features": [
               "Advanced store with delivery, CRM or booking connections",
               "Fully custom premium design",
@@ -1476,24 +968,16 @@
               "Timeline based on your project",
               "2 months of priority support"
             ]
-          },
-          {
-            "name": "Marketplace or custom platform",
-            "for": "Several sellers, subscriptions, or a store inside a larger product.",
-            "features": [
-              "Built as a SaaS platform",
-              "Seller accounts and payouts planned with you",
-              "One fixed price in your proposal"
-            ]
           }
         ],
-        "customPrice": "Per proposal",
-        "customLink": "About SaaS platforms",
+        "customPrice": "Fixed price, quoted after a call",
         "detailsLink": "Full package details",
         "guideLink": "Compare with typical UAE website prices",
-        "note": "Prices are in USD; AED, SAR and OMR are approximate conversions. Hosting and SSL are set up in every package, and the domain renews yearly at cost."
+        "note": "Prices are in USD; AED, SAR and OMR are approximate conversions. You host the finished store on your own account, and the code is yours.",
+        "fixedFrom": "Fixed price, from"
       },
       "compare": {
+        "guideLink": "Salla, Shopify or custom? Compare fees and the cost over three years",
         "badge": "Custom or builder",
         "heading": "A custom store or a store builder?",
         "lead": "A store builder is a good way to start some shops. Here is how the two differ, so you can choose.",
@@ -1588,11 +1072,11 @@
         "items": [
           {
             "question": "How much does an ecommerce website cost?",
-            "answer": "A small store comes with the Business package at $500 (about AED 1,835 or SAR 1,875). Larger catalogues and connections to delivery, a CRM or booking tools are in the Premium package, from $700. Marketplaces and stores inside a larger platform get one fixed price in your proposal."
+            "answer": "A custom store is a fixed price, from $700 (about AED 2,570 or SAR 2,625). Larger catalogues and connections to delivery, a CRM or booking tools are priced after a 30-minute call, and you get one fixed price in writing before we start."
           },
           {
             "question": "How long does it take to build an online store?",
-            "answer": "A Business-package store goes live in about a week from when we have your products, photos and prices. Larger stores with connections to other tools get their timeline in your proposal."
+            "answer": "Most stores go live in 4 to 8 weeks from when we have your products, photos and prices. Your proposal names the exact timeline."
           },
           {
             "question": "Can my store take cash on delivery and bank transfer?",
@@ -1629,21 +1113,21 @@
         "description": "What pickmysaas.com collects when you use the site, contact us or book a call, why we use it, who else handles it, and how to control it."
       },
       "heading": "Privacy Policy",
-      "updated": "Last updated: 5 November 2026",
+      "updated": "Last updated: 18 November 2026",
       "intro": "This policy explains what information pickmysaas.com collects, why we use it, who else handles it and what choices you have. It covers this website only. If you become a client, we’ll agree separately how your project’s data is handled.",
       "sections": [
         {
           "heading": "Who we are",
           "paragraphs": [
-            "This website belongs to PickMySaaS, which is responsible for the information collected here. PickMySaaS is a founder-led studio run by Asfand Yar Khan. We work remotely with clients worldwide, with a focus on the Gulf. For anything about your information, email us at the address at the end of this page."
+            "This website belongs to PickMySaaS, which is responsible for the information collected here. PickMySaaS is a founder-led web design studio. We work remotely with clients worldwide, with a focus on the Gulf. For anything about your information, email us at the address at the end of this page."
           ]
         },
         {
           "heading": "What we collect",
           "items": [
             {
-              "lead": "When you use the contact form:",
-              "text": "your name, email address, subject and message. The form sends these to us as an email. The website doesn’t save them in a database."
+              "lead": "When you send a brief:",
+              "text": "your name, email address, WhatsApp number if you give one, what you need, your budget, how you heard about us, and your message. The form sends these to us as an email. The website doesn’t save them in a database."
             },
             {
               "lead": "When you book a call:",
@@ -1753,274 +1237,786 @@
     },
     "contact": {
       "meta": {
-        "title": "Contact — Start Your Project",
-        "description": "Tell us about your website, SaaS or MVP idea. Book a free 30-minute call, message us on WhatsApp, or send the form. We reply within 24 hours."
-      },
-      "hero": {
-        "badge": "Start a project",
-        "titleLead": "Tell us about your",
-        "titleHighlight": "next project",
-        "description": "Book a free call, message us on WhatsApp, or send the form below. However you reach out, Asfand replies personally."
-      },
-      "formTitle": "Project details",
-      "channelsTitle": "Other ways to reach us",
-      "channelsSubtitle": "Prefer to talk? Pick whichever suits you. We reply within 24 hours.",
-      "bookingLabel": "Book a free call",
-      "bookingNote": "30 minutes on video, at a time that suits you",
-      "whatsappNote": "Usually the fastest reply",
-      "emailLabel": "Email",
-      "emailNote": "Drop us a line",
-      "socialNote": "Follow along",
-      "basedIn": "Based in {country}"
+        "title": "Contact: Book a Call or Send a Brief",
+        "description": "Book a free 30-minute call, send a brief, or message us on WhatsApp about your website or online store. Fixed prices, in Arabic and English."
+      }
     },
-    "home": {
+    "serviceArabic": {
       "meta": {
-        "title": "Website Design, SaaS & MVP Development for the GCC",
-        "description": "Website design from $300, plus SaaS and AI MVP development for businesses in the UAE, Saudi Arabia and across the GCC. Arabic and English. Book a free call."
+        "title": "Arabic & RTL Websites for Gulf Businesses",
+        "description": "A true right-to-left Arabic version of your website for $300, fixed price, in 2–3 weeks. Layout and type made for Arabic readers, not a mirrored copy."
       },
+      "breadcrumb": "Arabic & RTL",
       "hero": {
-        "badgeTag": "Open",
-        "badge": "Now taking projects across the GCC",
-        "titleMain": "Website design, SaaS and MVP development",
-        "titleAccent": "for Gulf businesses.",
-        "description": "A founder-led studio designing bilingual websites, SaaS platforms and AI-first MVPs for the UAE, Saudi Arabia and the GCC. Arabic and English, local payments, launched in weeks.",
-        "descriptionMobile": "Websites, SaaS and AI-first MVPs for UAE, Saudi and GCC businesses. Bilingual and ready to launch.",
-        "primaryCta": "Book a free 30-min call",
-        "secondaryCta": "View selected work",
-        "desktopAlt": "The homepage of a website we built, on a desktop screen.",
-        "phoneEnAlt": "The same website on a phone, in English.",
-        "phoneArAlt": "The same website on a phone, in Arabic.",
-        "mockupUrl": ""
+        "badge": "Arabic & RTL",
+        "titleLead": "Arabic websites,",
+        "titleHighlight": "designed right to left.",
+        "description": "A true right-to-left Arabic version of your website: $300, fixed price, in 2–3 weeks. For Gulf businesses whose customers read Arabic first."
       },
-      "work": {
-        "label": "Selected work",
-        "headingMain": "Products we've",
-        "headingAccent": "shipped.",
-        "caseStudy": "Read case study",
-        "viewAll": "View all projects",
-        "concept": "Concept",
-        "mobileAlt": "{name} on a phone.",
-        "thumbAlt": "{name}: {caption}.",
-        "items": [
-          {
-            "slug": "gulfnurseries",
-            "label": "Directory platform",
-            "location": "Client project · 6 GCC countries",
-            "headline": "One directory for every nursery across the Gulf",
-            "results": [
-              {
-                "value": "3,000+",
-                "label": "Nurseries listed"
-              },
-              {
-                "value": "6",
-                "label": "GCC countries"
-              }
-            ],
-            "thumbs": [
-              "Map search",
-              "Nursery page",
-              "Owner plans"
-            ]
-          },
-          {
-            "slug": "healing-with-attia",
-            "label": "Service website",
-            "location": "Client project · Pakistan, UK, UAE, KSA",
-            "headline": "A calm, trust-first website that makes the first step easy",
-            "results": [
-              {
-                "value": "4",
-                "label": "Countries served"
-              },
-              {
-                "value": "5",
-                "label": "Therapy services explained"
-              }
-            ],
-            "thumbs": [
-              "Services",
-              "WhatsApp booking",
-              "Blog"
-            ]
-          }
+      "answer": {
+        "heading": "What you get for $300",
+        "paragraphs": [
+          "Arabic & RTL gives your website an Arabic version that reads right to left: the layout, navigation, type and spacing are set for Arabic readers, not flipped from the English. It is a fixed price of $300 and takes two to three weeks.",
+          "Each Arabic page has its own address and is linked to its English twin, so Google can show the right language to each searcher. This website is built the same way: switch to عربي at the top of any page."
+        ]
+      },
+      "audience": {
+        "heading": "Who this is for, and who it isn't",
+        "goodTitle": "A good fit if",
+        "good": [
+          "Your customers read Arabic first and your site is English only",
+          "Your Arabic pages are a mirrored copy of the English",
+          "You want Arabic and English pages that Google lists separately"
         ],
-        "conceptItem": {
-          "label": "E-commerce",
-          "location": "Noble Muse · London, UK",
-          "headline": "A storefront with checkout built for Gulf shoppers",
-          "description": "Catalogue, cart and checkout with Visa, Mastercard and PayPal, designed mobile-first.",
-          "results": [
-            {
-              "value": "3–4 wks",
-              "label": "Time to launch"
-            },
-            {
-              "value": "3",
-              "label": "Payment methods"
-            }
-          ],
-          "stack": [
-            "Django",
-            "Visa",
-            "Mastercard",
-            "PayPal"
-          ],
-          "thumbs": [
-            "Catalogue",
-            "Product page & cart",
-            "Collection page"
-          ]
-        }
-      },
-      "services": {
-        "label": "Services",
-        "headingMain": "What we",
-        "headingAccent": "build.",
-        "lead": "Fixed scope, fixed price, weekly demos. From a sharper website to a working AI product you can put in front of investors.",
-        "learnMore": "Learn more",
-        "imageAlt": "Example of our {title} work.",
-        "cards": [
-          {
-            "key": "web",
-            "imageAlt": "A dark orange landing page for an AI agents company, with a large headline, two booking buttons and three result figures.",
-            "title": "Web design",
-            "price": "From $300",
-            "description": "Bilingual websites that load fast, rank well and turn visitors into enquiries."
-          },
-          {
-            "key": "shop",
-            "imageAlt": "An online store's product grid: a T-shirt, a hoodie on sale, a cap and desk items, each with its price.",
-            "title": "E-commerce",
-            "price": "From $500",
-            "description": "Stores with Visa, Mastercard and PayPal payments, designed for mobile-first Gulf shoppers."
-          },
-          {
-            "key": "saas",
-            "imageAlt": "A dark SaaS landing page with a 'Start free trial' button and figures for users, uptime and rating.",
-            "title": "SaaS platforms",
-            "price": "Per proposal",
-            "description": "Subscriptions, dashboards and user roles, hosted in the GCC when your sector requires it."
-          },
-          {
-            "key": "mvp",
-            "imageAlt": "A landing page for an AI assistant product, with its headline over a painted desert scene and a 'Start free trial' button.",
-            "title": "AI-first MVPs",
-            "price": "Fixed price",
-            "description": "Arabic chatbots, document processing and automation, shipped in weeks."
-          }
+        "notTitle": "Not a fit if you want",
+        "not": [
+          "A quick machine translation pasted into your current pages",
+          "A site on Shopify, Salla, Zid, WooCommerce, Webflow or WordPress",
+          "A native mobile app"
         ]
       },
       "included": {
-        "label": "What's included",
-        "headingMain": "Included in",
-        "headingAccent": "every build.",
-        "lead": "The things you'd otherwise have to ask for, or pay extra for later.",
+        "badge": "What's included",
+        "heading": "Right to left, done properly",
         "items": [
           {
-            "icon": "languages",
-            "title": "Arabic & English, natively",
-            "description": "Right-to-left layouts and content planned in both languages from the first wireframe."
+            "title": "Right-to-left layout",
+            "text": "Navigation, columns, icons and forms run right to left, the way Arabic readers expect."
           },
           {
-            "icon": "key-round",
-            "title": "Yours to keep",
-            "description": "The domain and website are in your name, and the code is handed over at launch. No lock-in."
+            "title": "Arabic typography",
+            "text": "Arabic type set at its own size and line height, with no letter-spacing pulling the letters apart."
           },
           {
-            "icon": "zap",
-            "title": "Fast on any phone",
-            "description": "Pages that open instantly, even on mobile data."
-          },
-          {
-            "icon": "search",
-            "title": "Found by Google and AI",
-            "description": "SEO and AI-search readiness built in."
-          },
-          {
-            "icon": "message-circle",
-            "title": "WhatsApp-first contact",
-            "description": "WhatsApp, call and enquiry buttons placed where your customers actually use them."
-          },
-          {
-            "icon": "shield-check",
-            "title": "Hosting & SSL set up",
-            "description": "Secure and live from day one, with nothing for you to configure."
-          },
-          {
-            "icon": "life-buoy",
-            "title": "Support after launch",
-            "description": "Included with every package, then an optional monthly care plan."
-          },
-          {
-            "icon": "receipt",
-            "title": "Fixed price, no surprises",
-            "description": "Agreed before we start. Anything beyond the scope is quoted up front."
-          }
-        ],
-        "note": "Website packages also include a free domain and Google Business setup.",
-        "cta": "See website packages"
-      },
-      "process": {
-        "label": "Process",
-        "headingMain": "From first call to",
-        "headingAccent": "launch day.",
-        "timeline": {
-          "scaleLabel": "Weeks",
-          "rows": [
-            {
-              "label": "Website",
-              "sub": "Starter & Business",
-              "value": "About 1 week"
-            },
-            {
-              "label": "E-commerce, SaaS & MVPs",
-              "sub": "Built in weekly sprints",
-              "value": "4–8 weeks"
-            }
-          ],
-          "demoLegend": "A demo you can click through",
-          "rangeLegend": "Depends on scope",
-          "launch": "Launch",
-          "footnote": "Timelines count business days, Sunday to Thursday, from when we have your content."
-        },
-        "steps": [
-          {
-            "title": "Discover",
-            "description": "A free call to understand the problem, the users and the deadline."
-          },
-          {
-            "title": "Scope",
-            "description": "A clear proposal with fixed deliverables and price."
-          },
-          {
-            "title": "Build",
-            "description": "Weekly demos you can click through, not status reports."
-          },
-          {
-            "title": "Launch & grow",
-            "description": "Go live, measure, and keep improving with an optional care plan."
+            "title": "Linked for Google",
+            "text": "Every Arabic page has its own URL and an hreflang link to its English twin."
           }
         ]
       },
-      "stack": {
-        "label": "Built with"
+      "proof": {
+        "badge": "Proof",
+        "heading": "This site is the example",
+        "lead": "Every page on pickmysaas.com exists in Arabic and English. Open any page and press عربي, or drag the demo below."
       },
-      "blog": {
-        "badge": "Insights",
-        "heading": "Notes from the build",
-        "viewAll": "Read all insights"
+      "faq": {
+        "badge": "Questions",
+        "heading": "Questions about Arabic websites",
+        "items": [
+          {
+            "question": "What does Arabic & RTL cost?",
+            "answer": "$300, fixed price. You pay 50% upfront and 50% on completion, by invoice and bank transfer."
+          },
+          {
+            "question": "How long does it take?",
+            "answer": "Two to three weeks."
+          },
+          {
+            "question": "Is it a mirrored copy of the English site?",
+            "answer": "No. A mirror only flips the page. The Arabic version is laid out and typeset for Arabic readers: type size, line height, spacing and the direction of every element."
+          },
+          {
+            "question": "Will Google list the Arabic pages?",
+            "answer": "Yes. Each Arabic page has its own address and declares its English twin with hreflang tags, so Google can show Arabic searchers the Arabic page."
+          }
+        ]
       },
       "cta": {
-        "headingMain": "Let's pick",
-        "headingAccent": "the right build.",
-        "description": "A free 30-minute call. You leave with a scope, the fastest path to launch and a clear estimate, with no obligation.",
-        "contactName": "Talk to Asfand directly",
-        "contactNote": "Replies within a few hours",
-        "primary": "Book a call",
-        "whatsapp": "WhatsApp",
-        "initials": "AY"
+        "heading": "Ready for a real Arabic version?",
+        "description": "Book a free 30-minute call and we'll show you what the Arabic version of your site would look like.",
+        "primary": "Book a free call",
+        "secondary": "Chat on WhatsApp"
       }
+    }
+  },
+  "ds": {
+    "header": {
+      "book": "Book a call",
+      "menu": "Menu",
+      "home": "PickMySaaS home page",
+      "language": "Language",
+      "otherHome": "Arabic home page (this page has no Arabic version)"
+    },
+    "footer": {
+      "tagline": "Web design studio for Gulf businesses",
+      "about": "A founder-led studio. Custom websites and online stores in Arabic and English, built on Python and Django.",
+      "remote": "Works remotely with clients across the six Gulf countries.",
+      "servicesTitle": "Services",
+      "studioTitle": "Studio",
+      "contactTitle": "Contact",
+      "guidesTitle": "Guides",
+      "websites": "Website design",
+      "ecommerce": "E-commerce stores",
+      "allServices": "All services",
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "book": "Book a 30-minute call",
+      "costGuide": "Website cost in the UAE",
+      "comparison": "Salla vs Shopify vs a custom store"
+    },
+    "fab": {
+      "label": "WhatsApp"
+    }
+  },
+  "styleguide": {
+    "meta": {
+      "title": "Styleguide",
+      "description": "Private catalogue of the PickMySaaS design components, in English and Arabic. Not indexed."
+    },
+    "m1": "Design system v2",
+    "m2": "Private page, not indexed",
+    "title": "Styleguide",
+    "lead": "Every component of the v2 design, as it renders on the site, in English and Arabic. This page is for review only.",
+    "colour": {
+      "label": "Colour",
+      "note": "Text on paper is ink, ink-2 or ink-3, never lighter (ink-3 is 5.7:1). Orange always carries ink text: white on orange fails contrast.",
+      "names": {
+        "paper": "Paper",
+        "card": "Card",
+        "sand": "Sand",
+        "ink": "Ink",
+        "ink3": "Ink 3 (labels)",
+        "blue": "Blue",
+        "orange": "Orange",
+        "gold": "Gold",
+        "whatsapp": "WhatsApp green"
+      }
+    },
+    "type": {
+      "label": "Type",
+      "fonts": "Archivo for Latin text, Noto Kufi Arabic for Arabic headings, IBM Plex Sans Arabic for Arabic body text. Arabic is never uppercased or letter-spaced.",
+      "l1": "Websites",
+      "l2": "& stores",
+      "l3a": "that",
+      "l3b": "sell.",
+      "display1": "What we do",
+      "title": "Website design",
+      "lead": "Custom websites and online stores for Gulf businesses, in Arabic and English, built on Python and Django.",
+      "body": "Simple websites take about a week. Everything else takes four to eight weeks. You pay 50% upfront and 50% on completion, by invoice and bank transfer.",
+      "small": "Small text, 14px: meta lines and captions.",
+      "labelSample": "Label, 13px: the smallest text on the site"
+    },
+    "buttons": {
+      "label": "Buttons and links",
+      "book": "Book a call",
+      "brief": "Send a brief",
+      "outline": "See our work",
+      "whatsapp": "Message us on WhatsApp",
+      "disabled": "Not available",
+      "link": "Ask about this",
+      "component": "The shared Button component, restyled:",
+      "onDark": "On a dark section:"
+    },
+    "markers": {
+      "label": "Section markers",
+      "sampleLabel": "Services",
+      "sampleTitle": "What we do",
+      "sampleLead": "Five services, each with a fixed starting price."
+    },
+    "cards": {
+      "label": "Cards",
+      "details": "Details",
+      "items": [
+        {
+          "title": "Website design",
+          "answer": "Company websites and landing pages, designed and built for you.",
+          "deliverables": [
+            "Arabic and English",
+            "WhatsApp, call and map buttons",
+            "Contact form",
+            "Basic SEO"
+          ],
+          "price": "From $300"
+        },
+        {
+          "title": "E-commerce stores",
+          "answer": "A custom online store built on Django, at a fixed price.",
+          "deliverables": [
+            "Arabic and English",
+            "Order alerts by email",
+            "Bank transfer or cash on delivery",
+            "You own the code"
+          ],
+          "price": "Fixed price, from $700"
+        },
+        {
+          "title": "Arabic & RTL",
+          "answer": "A true right-to-left Arabic version of your site, not a mirror of the English.",
+          "deliverables": [
+            "Right-to-left layout",
+            "Arabic typography",
+            "Arabic and English pages paired for search"
+          ],
+          "price": "$300"
+        },
+        {
+          "title": "Brand identity",
+          "answer": "Logo, type, colour system and guidelines.",
+          "deliverables": [
+            "Logo",
+            "Type",
+            "Colour system",
+            "Guidelines"
+          ],
+          "price": "$500"
+        }
+      ]
+    },
+    "pills": {
+      "label": "Pills, chips and switches",
+      "items": [
+        "30 minutes",
+        "Video call",
+        "Arabic + English"
+      ],
+      "legend": "What do you need?",
+      "needs": [
+        "Website",
+        "Online store",
+        "Redesign",
+        "Brand identity",
+        "Arabic version"
+      ],
+      "currency": "Currency"
+    },
+    "forms": {
+      "label": "Form fields",
+      "name": "Name",
+      "email": "Email",
+      "whatsapp": "WhatsApp number (optional)",
+      "heard": "How did you hear about us?",
+      "choose": "Choose one",
+      "heardOptions": [
+        "Google search",
+        "An AI assistant (ChatGPT, Gemini…)",
+        "A referral",
+        "Social media",
+        "Other"
+      ],
+      "message": "Project details",
+      "messagePlaceholder": "A few lines about your business and goals",
+      "errorSample": "Enter an email address we can reply to.",
+      "ok": "Thanks, your brief has been sent.",
+      "error": "Something went wrong. Please try again or message us on WhatsApp.",
+      "send": "Send brief",
+      "demoNote": "Display only: this form sends nothing."
+    },
+    "faq": {
+      "label": "FAQ",
+      "items": [
+        {
+          "question": "How long does a website take?",
+          "answer": "About a week for a simple website, once we have your content. Everything else takes four to eight weeks."
+        },
+        {
+          "question": "How do I pay?",
+          "answer": "50% upfront and 50% on completion, by invoice and bank transfer. There is no hourly billing."
+        },
+        {
+          "question": "What is PickMySaaS?",
+          "answer": "A founder-led web design studio for Gulf businesses."
+        }
+      ]
+    },
+    "table": {
+      "label": "Table",
+      "headers": [
+        "Package",
+        "Price",
+        "Pages"
+      ],
+      "rows": [
+        [
+          "Starter",
+          "$300",
+          "Up to 3"
+        ],
+        [
+          "Business",
+          "$500",
+          "Up to 7"
+        ],
+        [
+          "Premium",
+          "From $700",
+          "Up to 15"
+        ]
+      ]
+    },
+    "stats": {
+      "label": "Figures",
+      "caption": "GulfNurseries, a directory website we built for a client",
+      "items": [
+        {
+          "value": "3 weeks",
+          "label": "from start to launch"
+        },
+        {
+          "value": "100",
+          "label": "nursery owners claimed a listing"
+        },
+        {
+          "value": "45",
+          "label": "of them pay for a plan"
+        },
+        {
+          "value": "$1,500",
+          "label": "build price"
+        }
+      ]
+    },
+    "media": {
+      "label": "Screenshots and demo labels",
+      "demo": "Live demo: a sample store",
+      "shotAlt": "The GulfNurseries home page",
+      "shotCaption": "Client work is shown with its real name and figures. Demo and concept work always carries a visible label."
+    },
+    "chrome": {
+      "label": "Header, footer and WhatsApp button",
+      "note": "The header, footer and WhatsApp button on this page are the live components. Make the window narrower than 1024px to see the phone menu. The WhatsApp button hides while the footer is in view."
+    }
+  },
+  "home": {
+    "meta": {
+      "title": "Web Design & Online Stores for Gulf Businesses",
+      "description": "Founder-led web design studio for Gulf businesses. Custom websites from $300 and online stores from $700, in Arabic and English, built on Django."
+    },
+    "hero": {
+      "m1": "Web design studio for Gulf businesses",
+      "m2": "Arabic + English, built in",
+      "m3": "Fixed prices, from $300",
+      "l1": "Websites",
+      "l2": "& stores",
+      "l3a": "that",
+      "l3b": "sell.",
+      "sub": "Custom websites and online stores for businesses in Saudi Arabia, the UAE, Qatar, Kuwait, Bahrain and Oman. Arabic and English from the first draft, built on Python and Django, at fixed prices.",
+      "book": "Book a 30-minute call",
+      "prices": "See prices"
+    },
+    "demo": {
+      "label": "Live demo: a sample store",
+      "note": "This store is a demo we made to show the work. It is not a client.",
+      "brand": "Type your brand name",
+      "language": "Store language",
+      "style": "Style",
+      "device": "Device",
+      "styles": [
+        "Minimal",
+        "Bold",
+        "Luxe"
+      ],
+      "devices": [
+        "Desktop",
+        "Mobile"
+      ],
+      "pause": "Pause the demo",
+      "play": "Play the demo"
+    },
+    "facts": {
+      "label": "How we build",
+      "items": [
+        "Custom-built on Django",
+        "Arabic and English from day one",
+        "Fixed prices",
+        "You own the code"
+      ]
+    },
+    "bi": {
+      "label": "Bilingual",
+      "title": "Same store. Designed twice.",
+      "sub": "Drag across. Arabic isn't a mirror of English: type, rhythm and layout are set for each reader.",
+      "slider": "Compare the English and Arabic versions"
+    },
+    "work": {
+      "label": "Selected work",
+      "title": "Real clients. Real numbers.",
+      "lead": "Two projects we built for clients, with what they achieved.",
+      "more": "Read the case study",
+      "all": "All projects",
+      "items": [
+        {
+          "name": "GulfNurseries",
+          "kind": "Directory website",
+          "summary": "A directory of more than 3,000 nurseries across the six Gulf countries. Owners claim a free listing, and paid plans give them more visibility.",
+          "alt": "The GulfNurseries home page: a nursery search by name and city, with cards for each Gulf country.",
+          "stats": [
+            {
+              "value": "3 weeks",
+              "label": "from start to launch"
+            },
+            {
+              "value": "100",
+              "label": "owners claimed a listing"
+            },
+            {
+              "value": "45",
+              "label": "of them pay for a plan"
+            },
+            {
+              "value": "$1,500",
+              "label": "build price"
+            }
+          ]
+        },
+        {
+          "name": "Healing with Attia",
+          "kind": "Therapist website",
+          "summary": "A calm website for a UK-certified psychotherapist with clients in Pakistan, the UK, the UAE and Saudi Arabia. Clients book through WhatsApp, the app they already use.",
+          "alt": "The Healing with Attia home page, with a Book on WhatsApp button beside a calm photo.",
+          "points": [
+            "Booking through WhatsApp",
+            "4 countries served",
+            "A blog that answers clients' questions"
+          ]
+        }
+      ]
+    },
+    "services": {
+      "label": "Services",
+      "title": "What we do",
+      "details": "Details",
+      "items": [
+        {
+          "title": "Website design",
+          "answer": "Company websites and landing pages, designed and built for you in Arabic and English.",
+          "deliverables": [
+            "Arabic and English",
+            "Custom design, built on Django",
+            "WhatsApp, call and map buttons",
+            "Basic SEO"
+          ],
+          "price": "From $300",
+          "time": "About 1 week"
+        },
+        {
+          "title": "E-commerce stores",
+          "answer": "A custom online store built on Django, at a fixed price. You host it and you own the code.",
+          "deliverables": [
+            "Arabic and English",
+            "Order alerts by email",
+            "Bank transfer or cash on delivery",
+            "Stripe, PayPal or a provider that works in your country"
+          ],
+          "price": "Fixed price, from $700",
+          "time": "4–8 weeks"
+        },
+        {
+          "title": "Arabic & RTL",
+          "answer": "A true right-to-left Arabic version of your site: layout and type made for Arabic readers, not flipped from English.",
+          "deliverables": [
+            "Right-to-left layout",
+            "Arabic typography",
+            "Arabic and English pages linked for Google"
+          ],
+          "price": "$300",
+          "time": "2–3 weeks"
+        },
+        {
+          "title": "Brand identity",
+          "answer": "Logo, type, colour system and guidelines that hold up from a browser tab to a storefront.",
+          "deliverables": [
+            "Logo",
+            "Type",
+            "Colour system",
+            "Guidelines"
+          ],
+          "price": "$500",
+          "time": "2–3 weeks"
+        },
+        {
+          "title": "Growth & care",
+          "answer": "Speed, SEO, analytics and ongoing care, so the site keeps working after launch.",
+          "deliverables": [
+            "Speed",
+            "SEO",
+            "Analytics",
+            "Ongoing care"
+          ],
+          "price": "$400 a month",
+          "time": "Monthly"
+        }
+      ]
+    },
+    "process": {
+      "label": "Process",
+      "title": "From first call to launch.",
+      "book": "Book a 30-minute call",
+      "steps": [
+        {
+          "time": "Day 1",
+          "title": "Call",
+          "desc": "Thirty minutes on your goals and what you need. We agree the scope, a fixed price and a timeline."
+        },
+        {
+          "time": "Before we start",
+          "title": "Plan",
+          "desc": "You get the scope in writing and an invoice for 50%. Paying it starts the work, and you send us your content."
+        },
+        {
+          "time": "1 week, or 4–8 weeks",
+          "title": "Build",
+          "desc": "A simple website takes about a week once we have your content; everything else takes four to eight weeks. Both languages from the first draft, reviewed together."
+        },
+        {
+          "time": "Launch",
+          "title": "Launch",
+          "desc": "You pay the other 50% on completion. The site goes live on your hosting, and the code is yours."
+        }
+      ]
+    },
+    "pricing": {
+      "label": "Pricing",
+      "title": "Clear prices.",
+      "lead": "Fixed prices in US dollars. You get one number before any work begins, then pay 50% upfront and 50% on completion.",
+      "all": "See all prices",
+      "rows": [
+        {
+          "name": "Website design",
+          "price": "From $300",
+          "note": "Starter $300 · Business $500 · Premium from $700"
+        },
+        {
+          "name": "E-commerce stores",
+          "price": "From $700",
+          "note": "Fixed price, 4–8 weeks"
+        },
+        {
+          "name": "Arabic & RTL",
+          "price": "$300",
+          "note": "Fixed price, 2–3 weeks"
+        },
+        {
+          "name": "Brand identity",
+          "price": "$500",
+          "note": "Fixed price, 2–3 weeks"
+        },
+        {
+          "name": "Growth & care",
+          "price": "$400",
+          "note": "A month"
+        }
+      ]
+    },
+    "about": {
+      "label": "About",
+      "badge": "WEBSITES • STORES • ARABIC • ENGLISH • ",
+      "s1": "A founder-led studio",
+      "s2": "designing bilingual websites and online stores",
+      "s3": "for Gulf businesses that care how they look, and how they sell.",
+      "facts": "Five years of building websites for clients around the world. PickMySaaS works remotely and has no office in the Gulf.",
+      "more": "More about the studio",
+      "principles": [
+        {
+          "t": "Bilingual from day one",
+          "d": "Right-to-left layouts are designed, never just mirrored."
+        },
+        {
+          "t": "Every section has a job",
+          "d": "Each part of a page informs, persuades or converts, or it goes."
+        },
+        {
+          "t": "Yours to keep",
+          "d": "You own the code and host the site. Nothing is locked to us."
+        }
+      ]
+    },
+    "faq": {
+      "label": "FAQ",
+      "title": "Questions, answered.",
+      "items": [
+        {
+          "question": "How much does a website cost?",
+          "answer": "Website packages are Starter $300, Business $500 and Premium from $700. An online store is a fixed price from $700. An Arabic & RTL version is $300, a brand identity $500, and growth and care $400 a month. <a href=\"{pricing}\">See all prices</a>."
+        },
+        {
+          "question": "How long does it take?",
+          "answer": "About a week for a simple website, once we have your content. Online stores and larger sites take four to eight weeks. An Arabic & RTL version or a brand identity takes two to three weeks."
+        },
+        {
+          "question": "Do you build on Shopify, Salla or WordPress?",
+          "answer": "No. Every site is custom-built on Python and Django. You own the code and host the finished site, so nothing is tied to a platform's monthly plan. <a href=\"{comparison}\">How a custom store compares</a>."
+        },
+        {
+          "question": "How do I pay?",
+          "answer": "50% upfront and 50% on completion, by invoice and bank transfer. Prices are fixed; there is no hourly billing."
+        },
+        {
+          "question": "Do you have an office in the Gulf?",
+          "answer": "No. PickMySaaS is founder-led and works remotely with clients in Saudi Arabia, the UAE, Qatar, Kuwait, Bahrain and Oman, by video call, WhatsApp and email."
+        }
+      ]
+    },
+    "contact": {
+      "label": "Contact",
+      "title": "Let's talk.",
+      "sub": "Book a free 30-minute call, send us a brief, or message us on WhatsApp, whichever is easier for you.",
+      "wa": "Message us on WhatsApp",
+      "waNote": "Opens WhatsApp with a message ready to send.",
+      "email": "Or email",
+      "tabs": [
+        "Book a call",
+        "Send a brief"
+      ],
+      "book": {
+        "title": "Book a 30-minute call",
+        "meta": [
+          "Free",
+          "Video call",
+          "30 minutes"
+        ],
+        "steps": [
+          "Choose a day and a time. The calendar shows times in your own time zone.",
+          "You get an email confirming the call, with the video-call link.",
+          "We talk through your project for 30 minutes, free."
+        ],
+        "open": "Choose a time",
+        "fallback": "Or book on Cal.com"
+      },
+      "brief": {
+        "need": "What do you need?",
+        "needs": [
+          "Website",
+          "Online store",
+          "Redesign",
+          "Arabic version",
+          "Brand identity",
+          "Growth & care"
+        ],
+        "budget": "Budget",
+        "budgets": [
+          "Under $500",
+          "$500–1,000",
+          "$1,000–3,000",
+          "$3,000+"
+        ],
+        "name": "Name",
+        "email": "Email",
+        "whatsapp": "WhatsApp number (optional)",
+        "heard": "How did you hear about us?",
+        "choose": "Choose one",
+        "heardOptions": [
+          "Google search",
+          "An AI assistant (ChatGPT, Gemini…)",
+          "A referral",
+          "Social media",
+          "Other"
+        ],
+        "message": "Project details",
+        "messagePlaceholder": "A few lines about your business and what you need",
+        "privacy": "We use your details only to reply to you. See our <a href=\"{privacy}\">privacy policy</a>.",
+        "send": "Send brief",
+        "sending": "Sending…",
+        "ok": "Thanks, your brief has been sent. We'll reply by email.",
+        "again": "Send another brief",
+        "error": "Something went wrong and your brief wasn't sent. Please try again, or message us on WhatsApp.",
+        "errors": {
+          "name": "Enter your name.",
+          "email": "Enter an email address we can reply to.",
+          "heard": "Tell us how you heard about us.",
+          "message": "Tell us a little about the project (at least 10 characters).",
+          "whatsapp": "Enter a phone number with digits only, or leave it empty."
+        }
+      }
+    }
+  },
+  "pricing": {
+    "meta": {
+      "title": "Prices: Websites from $300, Online Stores from $700",
+      "description": "Fixed prices in US dollars: websites from $300, online stores from $700, Arabic & RTL $300, brand identity $500, growth & care $400 a month."
+    },
+    "m1": "Pricing",
+    "m2": "One fixed price before work begins",
+    "l1": "Clear",
+    "l2": "prices.",
+    "sub": "Every project starts from the prices below, in US dollars. Tap the services you need to build an estimate, then book a call to fix the final price.",
+    "currency": "Show prices in",
+    "from": "From",
+    "fixed": "Fixed price",
+    "fixedFrom": "Fixed price, from",
+    "perMonth": "a month",
+    "add": "Add to estimate",
+    "added": "In your estimate",
+    "items": [
+      {
+        "title": "Website design",
+        "desc": "Company websites and landing pages in Arabic and English. Three packages: Starter $300, Business $500 and Premium from $700.",
+        "deliverables": [
+          "Arabic and English",
+          "Custom design, built on Django",
+          "WhatsApp, call and map buttons",
+          "Basic SEO"
+        ],
+        "time": "About 1 week for a simple website; 4–8 weeks for larger sites"
+      },
+      {
+        "title": "E-commerce stores",
+        "desc": "A custom online store built on Django. You host it and you own the code.",
+        "deliverables": [
+          "Arabic and English",
+          "Order alerts by email",
+          "Bank transfer or cash on delivery",
+          "Stripe, PayPal or a provider that works in your country"
+        ],
+        "time": "4–8 weeks"
+      },
+      {
+        "title": "Arabic & RTL",
+        "desc": "A true right-to-left Arabic version of your site, with layout and type made for Arabic readers.",
+        "deliverables": [
+          "Right-to-left layout",
+          "Arabic typography",
+          "Arabic and English pages linked for Google"
+        ],
+        "time": "2–3 weeks"
+      },
+      {
+        "title": "Brand identity",
+        "desc": "Logo, type, colour system and guidelines.",
+        "deliverables": [
+          "Logo",
+          "Type",
+          "Colour system",
+          "Guidelines"
+        ],
+        "time": "2–3 weeks"
+      },
+      {
+        "title": "Growth & care",
+        "desc": "Speed, SEO, analytics and ongoing care after launch.",
+        "deliverables": [
+          "Speed",
+          "SEO",
+          "Analytics",
+          "Ongoing care"
+        ],
+        "time": "Monthly"
+      }
+    ],
+    "note": "Prices are in US dollars. SAR and AED figures are conversions at 3.75 and 3.6725, rounded. You get one fixed price before any work begins, and pay 50% upfront and 50% on completion, by invoice and bank transfer.",
+    "sum": "Your estimate",
+    "sumFrom": "from",
+    "sumEmpty": "Pick services to build an estimate",
+    "cta": "Get a fixed price",
+    "faq": {
+      "label": "Questions",
+      "title": "About the prices.",
+      "items": [
+        {
+          "question": "Are the prices fixed?",
+          "answer": "Yes. After a 30-minute call you get one fixed price in writing before any work begins. There is no hourly billing. Website and store prices are starting prices; Arabic & RTL ($300) and brand identity ($500) are fixed."
+        },
+        {
+          "question": "How do I pay?",
+          "answer": "50% upfront and 50% on completion, by invoice and bank transfer. Growth & care is billed monthly at $400."
+        },
+        {
+          "question": "Why are prices in US dollars?",
+          "answer": "PickMySaaS works with clients in all six Gulf countries, so prices are set in one currency. The SAR and AED figures on this page are conversions at the pegged rates, rounded."
+        },
+        {
+          "question": "Who hosts the website?",
+          "answer": "You do. We build the site and hand it over, and you own the code. Nothing is tied to a platform's monthly plan."
+        }
+      ]
     }
   }
 }

@@ -1,0 +1,836 @@
+---
+/**
+ * Home hero (v2): meta row, the three-line headline, who it's for (fix 5),
+ * the live demo store on the blue panel (fix 6), and the facts strip that
+ * replaces v2's "We build on Shopify, Salla, Zid…" row (fix 7).
+ *
+ * Everything is server-rendered: the demo starts as the Minimal store in
+ * English on a desktop frame. The script only swaps styles, languages and
+ * devices, runs the autoplay tour (with a pause button), and flattens the
+ * frame's tilt as the page scrolls. Reduced motion: no tour, no tilt.
+ */
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import { t, tData, localizedPath, getLocaleDirection } from '@/i18n';
+import { bookingLinkAttrs } from '@/lib/booking';
+import {
+  DEMO_STYLES,
+  DEMO_THEMES,
+  DEMO_CHROME,
+  DEMO_SEQUENCE,
+  demoPrice,
+  type DemoLang,
+} from '@/data/demo-store';
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const rtl = getLocaleDirection(locale) === 'rtl';
+const k = (key: string) => t(`home.${key}`, locale);
+const facts = tData<string[]>('home.facts.items', locale)!;
+const styleLabels = tData<string[]>('home.demo.styles', locale)!;
+const deviceLabels = tData<string[]>('home.demo.devices', locale)!;
+
+const lang: DemoLang = 'en';
+const theme = DEMO_THEMES.minimal;
+const chrome = DEMO_CHROME[lang];
+const styleVars = Object.entries(DEMO_STYLES.minimal)
+  .map(([name, value]) => `${name}:${value}`)
+  .join(';');
+
+const demoData = JSON.stringify({ styles: DEMO_STYLES, themes: DEMO_THEMES, chrome: DEMO_CHROME, sequence: DEMO_SEQUENCE });
+---
+
+<section class="hero ds-wrap" id="top">
+  <div class="ds-meta-row">
+    <span>(01) {k('hero.m1')}</span>
+    <span>{k('hero.m2')}</span>
+    <span class="hero__live"><span class="ds-dot ds-dot--live" aria-hidden="true"></span>{k('hero.m3')}</span>
+  </div>
+
+  <div class="hero__head">
+    <h1 class="ds-display ds-display--hero hero__title">
+      <span class="hero__line"><span class="hero__rise">{k('hero.l1')}</span></span>
+      <span class="hero__line"
+        ><span class="hero__rise hero__rise--2 hero__row"
+          ><span class="hero__chip" aria-hidden="true"><span></span></span><span>{k('hero.l2')}</span></span
+        ></span
+      >
+      <span class="hero__line"
+        ><span class="hero__rise hero__rise--3">{k('hero.l3a')} <span class="ds-accent">{k('hero.l3b')}</span></span></span
+      >
+    </h1>
+    <div class="hero__aside">
+      <p class="hero__sub">{k('hero.sub')}</p>
+      <div class="hero__ctas">
+        <a class="ds-btn" {...bookingLinkAttrs(localizedPath('/contact', locale))} data-booking-open>
+          {k('hero.book')}<span aria-hidden="true">{rtl ? '←' : '→'}</span>
+        </a>
+        <a class="ds-btn ds-btn--outline" href={localizedPath('/pricing', locale)}>{k('hero.prices')}</a>
+      </div>
+    </div>
+  </div>
+
+  <figure class="demo-panel" aria-labelledby="demo-label">
+    <figcaption class="demo-caption">
+      <span class="ds-demo-label" id="demo-label">{k('demo.label')}</span>
+      <span class="sr-only">{k('demo.note')}</span>
+    </figcaption>
+
+    <div class="demo-stage">
+      <div class="demo-tilt" data-demo-tilt>
+        <div class="demo" data-demo data-style="minimal" data-lang={lang} data-device="desktop" style={styleVars} aria-hidden="true">
+          <div class="demo__bar" dir="ltr">
+            <i></i><i></i><i></i>
+            <span class="demo__url"
+              ><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                ><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg
+              ><span data-d="url">{theme.url}</span></span
+            >
+          </div>
+          <div class="demo__page" data-d-page dir="ltr" lang="en">
+            <div class="demo__nav">
+              <span class="demo__name demo__display" data-d="name">{theme.name[lang]}</span>
+              <span class="demo__links">{chrome.links.map((link, i) => <span data-d={`link${i}`}>{link}</span>)}</span>
+              <span class="demo__spacer"></span>
+              <span class="demo__cart" data-d="cart">{chrome.cart}</span>
+            </div>
+            <div class="demo__hero">
+              <div class="demo__hero-card">
+                <span class="demo__kicker" data-d="kicker">{theme.kicker[lang]}</span>
+                <span class="demo__hero-title demo__display" data-d="hero">{theme.hero[lang]}</span>
+                <span class="demo__sub" data-d="sub">{theme.sub[lang]}</span>
+                <span class="demo__cta" data-d="cta">{chrome.cta}</span>
+              </div>
+              <div class="demo__hero-art"><span class="demo__shape"></span></div>
+            </div>
+            <div class="demo__row">
+              <span class="demo__display demo__best" data-d="best">{chrome.best}</span>
+              <span class="demo__all" data-d="all">{chrome.all}</span>
+            </div>
+            <div class="demo__products">
+              {
+                theme.products.map((product, i) => (
+                  <div class="demo__product" data-product={i}>
+                    <div class="demo__thumb" style={`background:${product.tone}`}>
+                      <span style={`background:${product.shade};border-radius:${product.radius};aspect-ratio:${product.ratio}`}></span>
+                    </div>
+                    <div class="demo__meta">
+                      <span data-p="name">{product.name[lang]}</span>
+                      <span data-p="price">{demoPrice(product.price, lang)}</span>
+                    </div>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-controls" data-demo-controls>
+      <label class="sr-only" for="demo-brand">{k('demo.brand')}</label>
+      <input id="demo-brand" class="demo-controls__brand" maxlength="16" placeholder={k('demo.brand')} autocomplete="off" data-demo-brand />
+      <div class="demo-seg" role="group" aria-label={k('demo.language')} dir="ltr">
+        <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-set-lang="ar" aria-pressed="false" lang="ar">عربي</button>
+      </div>
+      <div class="demo-seg" role="group" aria-label={k('demo.style')}>
+        {
+          (['minimal', 'bold', 'luxe'] as const).map((style, i) => (
+            <button type="button" data-set-style={style} aria-pressed={i === 0 ? 'true' : 'false'}>
+              {styleLabels[i]}
+            </button>
+          ))
+        }
+      </div>
+      <div class="demo-seg" role="group" aria-label={k('demo.device')}>
+        {
+          (['desktop', 'mobile'] as const).map((device, i) => (
+            <button type="button" data-set-device={device} aria-pressed={i === 0 ? 'true' : 'false'}>
+              {deviceLabels[i]}
+            </button>
+          ))
+        }
+      </div>
+      <button
+        type="button"
+        class="demo-controls__play"
+        data-demo-play
+        aria-pressed="false"
+        aria-label={k('demo.pause')}
+        data-label-pause={k('demo.pause')}
+        data-label-play={k('demo.play')}
+        hidden
+      >
+        <span class="demo-controls__pause-icon" aria-hidden="true"><i></i><i></i></span>
+      </button>
+    </div>
+  </figure>
+
+  <div class="facts">
+    <span class="facts__label">{k('facts.label')}</span>
+    <ul>
+      {
+        facts.map((fact) => (
+          <li>
+            <Icon name="check" size="sm" />
+            {fact}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <script type="application/json" id="demo-data" set:html={demoData} />
+</section>
+
+<style>
+  .hero {
+    padding-block-start: clamp(28px, 4vw, 40px);
+  }
+  .hero__live {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hero__head {
+    position: relative;
+  }
+  .hero__title {
+    position: relative;
+    z-index: 1;
+  }
+  .hero__line {
+    display: block;
+    overflow: hidden;
+    padding-block: var(--hpad);
+    margin-block: calc(var(--hpad) * -0.6);
+  }
+  .hero__rise {
+    display: block;
+    white-space: nowrap;
+  }
+  .hero__row {
+    display: flex;
+    align-items: center;
+    gap: 0.2em;
+  }
+  .hero__chip {
+    display: inline-grid;
+    place-items: center;
+    width: clamp(0.9em, 11vw, 1.45em);
+    height: 0.72em;
+    border-radius: 999px;
+    background: var(--blue);
+    flex: none;
+  }
+  .hero__chip span {
+    width: 0.38em;
+    height: 0.38em;
+    border-radius: 0.1em;
+    background: var(--paper);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__rise {
+      animation: pm-rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+    .hero__rise--2 {
+      animation-delay: 0.05s;
+    }
+    .hero__rise--3 {
+      animation-delay: 0.1s;
+    }
+    .hero__chip {
+      animation: pm-cycle 6s ease-in-out infinite;
+    }
+    .hero__chip span {
+      animation: pm-spin 8s linear infinite;
+    }
+  }
+
+  /* Who it's for and the two buttons: a row under the headline. (v2 set the
+     text beside "THAT SELL.", where it collided with the headline on most
+     laptop widths.) */
+  .hero__aside {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 20px 40px;
+    margin-block-start: clamp(20px, 2.4vw, 32px);
+  }
+  .hero__sub {
+    margin: 0;
+    max-width: 560px;
+    font-size: clamp(16px, 1.3vw, 19px);
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+  .hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* ---- Demo panel ---- */
+  .demo-panel {
+    position: relative;
+    margin: clamp(28px, 4vw, 48px) 0 0;
+    border-radius: 32px;
+    background: var(--blue);
+    padding: clamp(52px, 4vw, 64px) clamp(10px, 3vw, 56px) 26px;
+    overflow: hidden;
+  }
+  .demo-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgb(255 255 255 / 0.16) 1px, transparent 1px);
+    background-size: 22px 22px;
+    pointer-events: none;
+  }
+  .demo-caption {
+    position: absolute;
+    top: 16px;
+    inset-inline-start: 16px;
+    z-index: 2;
+  }
+  .demo-stage {
+    position: relative;
+    perspective: 1800px;
+    display: flex;
+    justify-content: center;
+  }
+  .demo-tilt {
+    width: 1100px;
+    max-width: 100%;
+    transform-origin: 50% 0;
+    transition: width 0.7s cubic-bezier(0.6, 0, 0.2, 1);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .demo-tilt {
+      transform: rotateX(16deg) scale(0.88);
+      will-change: transform;
+    }
+  }
+  .demo-tilt:has([data-device='mobile']) {
+    width: 380px;
+  }
+
+  .demo {
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--d-bg);
+    color: var(--d-ink);
+    box-shadow:
+      0 60px 100px -40px rgb(0 0 20 / 0.7),
+      0 0 0 1px rgb(255 255 255 / 0.15);
+    transition:
+      background-color 0.5s,
+      color 0.5s,
+      border-radius 0.7s;
+    user-select: none;
+  }
+  .demo[data-device='mobile'] {
+    border-radius: 36px;
+  }
+  .demo__bar {
+    height: 34px;
+    background: rgb(0 0 0 / 0.06);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 14px;
+  }
+  .demo__bar i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #ff5f57;
+  }
+  .demo__bar i:nth-child(2) {
+    background: #febc2e;
+  }
+  .demo__bar i:nth-child(3) {
+    background: #28c840;
+  }
+  .demo__url {
+    margin-inline: auto;
+    font: 500 12px var(--font-latin);
+    opacity: 0.7;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .demo__page {
+    font-family: var(--d-font-en);
+  }
+  .demo__page[lang='ar'] {
+    font-family: var(--font-arabic-body);
+  }
+  .demo__display {
+    font-family: var(--d-font-en);
+    font-weight: var(--d-weight);
+    font-stretch: var(--d-stretch);
+    text-transform: var(--d-tt);
+    letter-spacing: var(--d-ls);
+  }
+  .demo__page[lang='ar'] .demo__display {
+    font-family: var(--d-font-ar);
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight: max(var(--d-weight), 400);
+  }
+  .demo__nav {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 16px 22px;
+  }
+  .demo__name {
+    font-size: 22px;
+  }
+  .demo__links {
+    display: flex;
+    gap: 20px;
+    font-size: 13px;
+    opacity: 0.75;
+  }
+  .demo__spacer {
+    flex: 1;
+  }
+  .demo__cart {
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--d-line);
+  }
+  .demo__hero {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 12px;
+    padding: 6px 22px 22px;
+  }
+  .demo__hero-card {
+    background: var(--d-card);
+    border-radius: 14px;
+    padding: clamp(20px, 3vw, 32px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 300px;
+    transition: background-color 0.5s;
+  }
+  .demo__kicker {
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0.7;
+  }
+  .demo__hero-title {
+    font-size: clamp(30px, 3.6vw, 52px);
+    line-height: var(--d-lh);
+    margin-top: 10px;
+    text-wrap: balance;
+  }
+  .demo__page[lang='ar'] .demo__hero-title {
+    line-height: 1.4;
+  }
+  .demo__sub {
+    font-size: 14px;
+    line-height: 1.5;
+    opacity: 0.75;
+    margin-top: 12px;
+    max-width: 340px;
+  }
+  .demo__cta {
+    margin-top: 20px;
+    align-self: flex-start;
+    background: var(--d-acc);
+    color: var(--d-acc-ink);
+    padding: 11px 18px;
+    border-radius: var(--d-btn-r);
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .demo__hero-art {
+    background: var(--d-tone);
+    border-radius: 14px;
+    min-height: 300px;
+    display: grid;
+    place-items: center;
+    transition: background-color 0.5s;
+  }
+  .demo__shape {
+    width: 34%;
+    aspect-ratio: 1/1.5;
+    border-radius: var(--d-shape-r);
+    background: var(--d-shade);
+    box-shadow: 0 30px 40px -20px rgb(0 0 0 / 0.45);
+    transition: all 0.6s;
+  }
+  .demo__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0 22px 12px;
+  }
+  .demo__best {
+    font-size: 20px;
+  }
+  .demo__all {
+    font-size: 12px;
+    opacity: 0.7;
+    text-decoration: underline;
+  }
+  .demo__products {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    padding: 0 22px 24px;
+  }
+  .demo__thumb {
+    aspect-ratio: 4/5;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    transition: background-color 0.5s;
+  }
+  .demo__thumb span {
+    width: 38%;
+    transition: all 0.6s;
+  }
+  .demo__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 10px;
+    font-size: 13px;
+  }
+  .demo__meta span:first-child {
+    font-weight: 600;
+  }
+  .demo__meta span:last-child {
+    opacity: 0.7;
+  }
+  /* Mobile frame, and narrow screens */
+  .demo[data-device='mobile'] .demo__links {
+    display: none;
+  }
+  .demo[data-device='mobile'] .demo__hero {
+    grid-template-columns: 1fr;
+  }
+  .demo[data-device='mobile'] :is(.demo__hero-card, .demo__hero-art) {
+    min-height: 180px;
+  }
+  .demo[data-device='mobile'] .demo__hero-title {
+    font-size: 30px;
+  }
+  .demo[data-device='mobile'] .demo__products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (max-width: 899.98px) {
+    .demo__links {
+      display: none;
+    }
+    .demo__hero {
+      grid-template-columns: 1fr;
+    }
+    :is(.demo__hero-card, .demo__hero-art) {
+      min-height: 180px;
+    }
+    .demo__hero-title {
+      font-size: 30px;
+    }
+    .demo__products {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* Controls: a dark glass bar under the frame */
+  .demo-controls {
+    position: relative;
+    margin: 30px auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 22px;
+    background: rgb(12 12 40 / 0.38);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgb(255 255 255 / 0.18);
+    width: max-content;
+    max-width: 100%;
+  }
+  .demo-controls__brand {
+    border: 0;
+    border-radius: 999px;
+    padding: 10px 16px;
+    min-height: 40px;
+    width: 180px;
+    background: var(--white);
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .demo-controls__brand::placeholder {
+    color: var(--ink-3);
+  }
+  .demo-controls__brand:focus-visible,
+  .demo-controls :is(button):focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: 2px;
+  }
+  .demo-seg {
+    display: flex;
+    padding: 3px;
+    gap: 2px;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.12);
+  }
+  .demo-seg button,
+  .demo-controls__play {
+    border: 0;
+    min-height: 34px;
+    padding: 7px 13px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    background: transparent;
+    color: var(--white);
+    transition:
+      background-color 0.3s,
+      color 0.3s;
+  }
+  .demo-seg button[lang='ar'] {
+    font-family: var(--font-arabic-body);
+  }
+  .demo-seg button[aria-pressed='true'] {
+    background: var(--white);
+    color: var(--ink);
+  }
+  .demo-controls__play {
+    width: 40px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    background: rgb(255 255 255 / 0.12);
+  }
+  .demo-controls__pause-icon {
+    display: flex;
+    gap: 3px;
+  }
+  .demo-controls__pause-icon i {
+    width: 3px;
+    height: 12px;
+    background: currentColor;
+    border-radius: 1px;
+  }
+  .demo-controls__play[aria-pressed='true'] .demo-controls__pause-icon {
+    gap: 0;
+  }
+  .demo-controls__play[aria-pressed='true'] .demo-controls__pause-icon i:first-child {
+    width: 0;
+    height: 0;
+    background: none;
+    border-style: solid;
+    border-width: 6px 0 6px 10px;
+    border-color: transparent transparent transparent currentColor;
+  }
+  .demo-controls__play[aria-pressed='true'] .demo-controls__pause-icon i:last-child {
+    display: none;
+  }
+  @media (max-width: 599.98px) {
+    .demo-controls__brand {
+      width: 100%;
+    }
+  }
+
+  /* ---- Facts strip ---- */
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 36px;
+    justify-content: center;
+    align-items: center;
+    padding: 28px 8px 0;
+  }
+  .facts__label {
+    font-size: var(--text-label);
+    font-weight: 500;
+    color: var(--ink-3);
+  }
+  .facts ul {
+    display: contents;
+    list-style: none;
+  }
+  .facts li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--fd);
+    font-weight: 700;
+    font-stretch: 115%;
+    font-size: 15px;
+    color: var(--ink-2);
+  }
+  :root:lang(ar) .facts li {
+    font-stretch: 100%;
+  }
+  .facts li :global(svg) {
+    color: var(--blue);
+  }
+</style>
+
+<script>
+  type Lang = 'en' | 'ar';
+  interface Data {
+    styles: Record<string, Record<string, string>>;
+    themes: Record<
+      string,
+      {
+        url: string;
+        name: Record<Lang, string>;
+        kicker: Record<Lang, string>;
+        hero: Record<Lang, string>;
+        sub: Record<Lang, string>;
+        products: { name: Record<Lang, string>; price: number; tone: string; shade: string; radius: string; ratio: string }[];
+      }
+    >;
+    chrome: Record<Lang, { links: string[]; cta: string; cart: string; best: string; all: string }>;
+    sequence: [string, Lang, string][];
+  }
+
+  function initDemo() {
+    const demo = document.querySelector<HTMLElement>('[data-demo]');
+    const controls = document.querySelector<HTMLElement>('[data-demo-controls]');
+    const dataEl = document.getElementById('demo-data');
+    if (!demo || !controls || !dataEl || demo.dataset.ready) return;
+    demo.dataset.ready = 'true';
+
+    const data = JSON.parse(dataEl.textContent || '{}') as Data;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const state = { style: 'minimal', lang: 'en' as Lang, device: 'desktop', brand: '', step: 0 };
+    const page = demo.querySelector<HTMLElement>('[data-d-page]')!;
+    const set = (key: string, value: string) => {
+      const el = demo.querySelector<HTMLElement>(`[data-d="${key}"]`);
+      if (el) el.textContent = value;
+    };
+    const price = (value: number, lang: Lang) => (lang === 'ar' ? `${value} ر.س` : `SAR ${value}`);
+
+    function render() {
+      const theme = data.themes[state.style];
+      const chrome = data.chrome[state.lang];
+      demo!.dataset.style = state.style;
+      demo!.dataset.lang = state.lang;
+      demo!.dataset.device = state.device;
+      for (const [name, value] of Object.entries(data.styles[state.style])) demo!.style.setProperty(name, value);
+      page.dir = state.lang === 'ar' ? 'rtl' : 'ltr';
+      page.lang = state.lang;
+      const slug = state.brand.toLowerCase().replace(/[^a-z0-9]+/g, '');
+      set('url', state.brand ? `${slug || 'yourbrand'}.com` : theme.url);
+      set('name', state.brand || theme.name[state.lang]);
+      set('kicker', theme.kicker[state.lang]);
+      set('hero', theme.hero[state.lang]);
+      set('sub', theme.sub[state.lang]);
+      set('cta', chrome.cta);
+      set('cart', chrome.cart);
+      set('best', chrome.best);
+      set('all', chrome.all);
+      chrome.links.forEach((link, i) => set(`link${i}`, link));
+      theme.products.forEach((product, i) => {
+        const card = demo!.querySelector<HTMLElement>(`[data-product="${i}"]`);
+        if (!card) return;
+        const thumb = card.querySelector<HTMLElement>('.demo__thumb')!;
+        const shape = thumb.querySelector<HTMLElement>('span')!;
+        thumb.style.background = product.tone;
+        shape.style.background = product.shade;
+        shape.style.borderRadius = product.radius;
+        shape.style.aspectRatio = product.ratio;
+        card.querySelector('[data-p="name"]')!.textContent = product.name[state.lang];
+        card.querySelector('[data-p="price"]')!.textContent = price(product.price, state.lang);
+      });
+      controls!.querySelectorAll<HTMLButtonElement>('[data-set-lang]').forEach((b) =>
+        b.setAttribute('aria-pressed', String(b.dataset.setLang === state.lang))
+      );
+      controls!.querySelectorAll<HTMLButtonElement>('[data-set-style]').forEach((b) =>
+        b.setAttribute('aria-pressed', String(b.dataset.setStyle === state.style))
+      );
+      controls!.querySelectorAll<HTMLButtonElement>('[data-set-device]').forEach((b) =>
+        b.setAttribute('aria-pressed', String(b.dataset.setDevice === state.device))
+      );
+    }
+
+    // Autoplay tour, stopped by any control or the pause button.
+    const play = controls.querySelector<HTMLButtonElement>('[data-demo-play]')!;
+    let timer: number | undefined;
+    const stop = () => {
+      window.clearInterval(timer);
+      timer = undefined;
+      play.setAttribute('aria-pressed', 'true');
+      play.setAttribute('aria-label', play.dataset.labelPlay ?? '');
+    };
+    const start = () => {
+      play.setAttribute('aria-pressed', 'false');
+      play.setAttribute('aria-label', play.dataset.labelPause ?? '');
+      timer = window.setInterval(() => {
+        state.step = (state.step + 1) % data.sequence.length;
+        [state.style, state.lang, state.device] = data.sequence[state.step];
+        render();
+      }, 3400);
+    };
+    if (!reduced) {
+      play.hidden = false;
+      start();
+    }
+    play.addEventListener('click', () => (timer ? stop() : start()));
+    // Never cycle while off screen or in a background tab.
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && timer) stop();
+    });
+
+    controls.addEventListener('click', (event) => {
+      const button = (event.target as Element).closest<HTMLButtonElement>('button');
+      if (!button || button === play) return;
+      if (button.dataset.setLang) state.lang = button.dataset.setLang as Lang;
+      if (button.dataset.setStyle) state.style = button.dataset.setStyle;
+      if (button.dataset.setDevice) state.device = button.dataset.setDevice;
+      stop();
+      render();
+    });
+    controls.querySelector<HTMLInputElement>('[data-demo-brand]')!.addEventListener('input', (event) => {
+      state.brand = (event.target as HTMLInputElement).value.slice(0, 16);
+      stop();
+      render();
+    });
+
+    // Tilt flattens over the first 520px of scroll.
+    const tilt = document.querySelector<HTMLElement>('[data-demo-tilt]');
+    if (tilt && !reduced) {
+      let queued = false;
+      const update = () => {
+        queued = false;
+        const p = Math.max(0, Math.min(1, window.scrollY / 520));
+        tilt.style.transform = `rotateX(${(16 * (1 - p)).toFixed(2)}deg) scale(${(0.88 + 0.12 * p).toFixed(3)})`;
+      };
+      window.addEventListener(
+        'scroll',
+        () => {
+          if (!queued) {
+            queued = true;
+            requestAnimationFrame(update);
+          }
+        },
+        { passive: true }
+      );
+      update();
+    }
+  }
+
+  initDemo();
+</script>

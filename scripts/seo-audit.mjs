@@ -10,6 +10,12 @@
  *   - an hreflang target is missing, not indexable or not reciprocal
  *   - a page has zero or several H1s, or an H1 contains a <script>
  *   - two indexable pages share a title
+ *   - an indexable page has no meta description, or no self canonical
+ *   - any page contains a leftover of the v2 design export or a placeholder
+ *     (see BANNED), or an /ar/ page is not lang="ar" dir="rtl" (and the
+ *     rest lang="en" dir="ltr")
+ *   - an indexable page has fewer than 150 words of text in <main> once
+ *     scripts are stripped, which catches pages that need JavaScript
  *
  * Redirect pages (Astro writes a meta-refresh page for each `redirects` entry
  * in a static build) are listed with their target, not treated as pages.
@@ -114,8 +120,39 @@ function parsePage(html) {
     hasScript: /<script\b/i.test(inner),
   }));
 
-  return { refreshTarget, title, description, robots, canonical, hreflang, h1s };
+  // v2 redesign checks: the page's language, and how much text the server
+  // sent inside <main> (a page that needs JavaScript to show its words would
+  // arrive nearly empty), and leftovers of the v2 design export.
+  const htmlTag = html.match(/<html\b[^>]*>/i)?.[0] ?? '';
+  const lang = attr(htmlTag, 'lang');
+  const dir = attr(htmlTag, 'dir');
+  const main = html.match(/<main\b[\s\S]*<\/main>/i)?.[0] ?? '';
+  const mainText = clean(
+    main
+      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+      .replace(/<template[\s\S]*?<\/template>/gi, ' ')
+  );
+  const words = mainText ? mainText.split(/\s+/).filter((w) => /[\p{L}\p{N}]/u.test(w)).length : 0;
+  const banned = BANNED.filter((needle) => html.includes(needle));
+
+  return { refreshTarget, title, description, robots, canonical, hreflang, h1s, lang, dir, words, banned };
 }
+
+/** Strings no built page may contain (v2 redesign, section 10). */
+const BANNED = [
+  '{{',
+  '<x-dc',
+  'support.js',
+  'image-slot',
+  'unpkg.com',
+  'fonts.googleapis.com',
+  '000000000000',
+  'hello@pickmysaas.com',
+  'TODO(owner)',
+];
+/** Fewest words of visible text an indexable page may have in <main>. */
+const MIN_WORDS = 150;
 
 const isNoindex = (robots) => /\bnoindex\b|\bnone\b/i.test(robots || '');
 
@@ -259,7 +296,26 @@ for (const page of pages.values()) {
   if (!page.inSitemap && page.indexable && !isErrorPage(page.path)) {
     err(page.path, 'indexable but not in the sitemap');
   }
+
+  // Leftovers of the v2 design export or placeholders, on any page.
+  for (const needle of page.banned ?? []) err(page.path, `contains "${needle}"`);
+
+  // Language and direction: /ar/ pages are Arabic, right to left.
+  if (page.lang !== undefined) {
+    const arabic = /^\/ar(\/|$)/.test(page.path);
+    const wantLang = arabic ? 'ar' : 'en';
+    const wantDir = arabic ? 'rtl' : 'ltr';
+    if (page.lang !== wantLang) err(page.path, `<html lang="${page.lang ?? ''}">, expected "${wantLang}"`);
+    if (page.dir !== wantDir) err(page.path, `<html dir="${page.dir ?? ''}">, expected "${wantDir}"`);
+  }
+
   if (!page.indexable) continue;
+
+  // Text the server sends: a page that needs JavaScript to show its words
+  // would arrive nearly empty.
+  if (page.words !== undefined && page.words < MIN_WORDS) {
+    err(page.path, `only ${page.words} words of text in <main> (minimum ${MIN_WORDS})`);
+  }
 
   // H1s
   if (page.h1s.length === 0) err(page.path, 'no H1');
@@ -271,14 +327,14 @@ for (const page of pages.values()) {
   if (!page.title) err(page.path, 'no <title>');
   else if ([...page.title].length > 65) warn(page.path, `title is ${[...page.title].length} characters`);
   const d = page.description ? [...page.description].length : 0;
-  if (!d) warn(page.path, 'no meta description');
+  if (!d) err(page.path, 'no meta description');
   else if (d > 160) warn(page.path, `meta description is ${d} characters`);
   else if (d < 70) warn(page.path, `meta description is only ${d} characters`);
 
   // Canonical
   const canonicalPath = page.canonical ? toPath(page.canonical) : null;
-  if (!page.canonical) warn(page.path, 'no canonical');
-  else if (canonicalPath !== page.path) warn(page.path, `canonical points to ${page.canonical}`);
+  if (!page.canonical) err(page.path, 'no canonical');
+  else if (canonicalPath !== page.path) err(page.path, `canonical points to ${page.canonical}`);
 
   // hreflang
   if (page.hreflang.length) {

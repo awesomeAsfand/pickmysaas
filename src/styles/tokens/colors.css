@@ -1,28 +1,147 @@
 /* =============================================================================
-   Astro Rocket Design Tokens - Colors
+   PickMySaaS colour tokens (v2 design)
    =============================================================================
-   This file aggregates primitive color scales and all themes.
-   The active theme is selected at runtime via the data-theme attribute on
-   <html>. Default: blue (DEFAULT_THEME in ThemeSelector.astro).
+   One light theme. The dark sections (process, footer, invert blocks) are part
+   of the design, not a dark mode: there is no colour-mode switch on the site.
 
-   To add a new theme: create a file in ../themes/ following the same token
-   contract, scope it under html[data-theme="name"], import it below, and add
-   it to `colourThemes` in src/lib/themes.ts — the registry the pickers read.
-   A file imported here but missing from that array ships CSS nothing can
-   reach.
+   Two layers:
+   1. Palette: the raw v2 colours. Use these when porting v2 markup.
+   2. Semantic: the names the rest of the site already uses (background,
+      foreground, brand-500 …), mapped onto the palette so every existing page
+      takes the new look without being rewritten.
 
-   Curate what the pickers offer with `showInSelector` in src/lib/themes.ts
-   rather than by removing an import here, so a theme a visitor saved earlier
-   keeps working.
+   Contrast (WCAG 2.2, measured against --paper unless noted):
+   ink 17.0:1 · ink-2 11.0:1 · ink-3 (labels) 5.7:1 · blue as text 6.3:1 ·
+   white on blue 7.5:1 · ink on orange 6.0:1 (white on orange fails: 3.1:1,
+   so orange always carries ink text) · on-ink-muted on ink 7.5:1.
+   v2's #77736B label grey is 4.0:1 and is not used for text.
    ============================================================================= */
 
-@import './primitives.css';
+:root {
+  /* ---- Palette ------------------------------------------------------------ */
+  --paper: #eeebe3; /* page background */
+  --paper-2: #e6e1d7; /* tinted panel */
+  --sand: #dcd6ca; /* fourth card tone, chips */
+  --card-paper: #f8f6f1; /* light card */
+  --white: #ffffff;
 
-@import '../themes/emerald.css';
-@import '../themes/teal.css';
-@import '../themes/cyan.css';
-@import '../themes/sky.css';
-@import '../themes/blue.css';
-@import '../themes/indigo.css';
-@import '../themes/violet.css';
-@import '../themes/purple.css';
+  --ink: #121212; /* text, dark sections */
+  --ink-2: #3a3834; /* body copy on paper */
+  --ink-3: #5e5b55; /* labels, meta (smallest allowed contrast) */
+  --ink-soft: #7a766e; /* display-size secondary text only (3.8:1, large text) */
+
+  --blue: #2d2df5; /* accent */
+  --blue-hover: #1f1fd6;
+  --orange: #ff5a1f;
+  --gold: #c9a45c;
+  --green: #1fa855; /* "available" dot */
+  --whatsapp: #25d366; /* brand green, decorative */
+  --whatsapp-fill: #1da851; /* button fill: white glyph clears 3:1 */
+  --whatsapp-fill-hover: #189146;
+
+  --on-ink: #eeebe3;
+  --on-ink-2: #cfcbc2;
+  --on-ink-muted: #a8a49b;
+
+  --line: rgb(18 18 18 / 0.14);
+  --line-strong: rgb(18 18 18 / 0.3);
+  --line-on-ink: rgb(238 235 227 / 0.16);
+  --line-on-ink-strong: rgb(238 235 227 / 0.35);
+  --field-line: #b9b2a4;
+
+  /* ---- Brand scale (built around --blue, kept for brand-* utilities) ------ */
+  --brand-50: #eeeefe;
+  --brand-100: #e0e0fd;
+  --brand-200: #c2c2fc;
+  --brand-300: #9a9afa;
+  --brand-400: #6b6bf8;
+  --brand-500: #2d2df5;
+  --brand-600: #2424d6;
+  --brand-700: #1c1cb0;
+  --brand-800: #15158a;
+  --brand-900: #0e0e5e;
+
+  /* ---- Status --------------------------------------------------------------- */
+  --success: #1fa855;
+  --success-light: #dcefe2;
+  --success-foreground: #11592c;
+  --success-strong: #157a3d; /* 5.2:1 on paper */
+  --warning: #e0a422;
+  --warning-light: #f6ead0;
+  --warning-foreground: #6b4a06;
+  --warning-strong: #7a5408; /* 6.6:1 */
+  --error: #d92d20;
+  --error-light: #f8dcd8;
+  --error-foreground: #7a1a12;
+  --error-strong: #b42318; /* 5.5:1 */
+  --info: var(--blue);
+  --info-light: var(--brand-100);
+  --info-foreground: var(--brand-800);
+  --info-strong: var(--blue);
+
+  /* ---- Semantic (names used across the site) ------------------------------- */
+  --background: var(--paper);
+  --background-secondary: var(--card-paper);
+  --background-tertiary: var(--paper-2);
+  --background-elevated: var(--card-paper);
+
+  --foreground: var(--ink);
+  --foreground-secondary: var(--ink-2);
+  --foreground-muted: var(--ink-3);
+  --foreground-subtle: var(--ink-3);
+
+  --border: var(--line);
+  --border-strong: var(--line-strong);
+  --border-subtle: rgb(18 18 18 / 0.08);
+
+  --primary: var(--ink);
+  --primary-hover: var(--blue);
+  --primary-foreground: var(--white);
+
+  --secondary: var(--paper-2);
+  --secondary-hover: var(--sand);
+  --secondary-foreground: var(--ink);
+
+  --accent: var(--blue);
+  --accent-hover: var(--blue-hover);
+  --accent-light: var(--brand-100);
+
+  --muted: var(--paper-2);
+  --muted-foreground: var(--ink-3);
+
+  --card: var(--card-paper);
+  --card-border: var(--line);
+
+  --input-bg: transparent;
+  --input-border: var(--field-line);
+  --input-focus: var(--blue);
+
+  --ring: var(--blue);
+
+  --destructive: var(--error-strong);
+  --destructive-foreground: var(--white);
+
+  /* Dark sections */
+  --surface-invert: var(--ink);
+  --surface-invert-secondary: #1c1c1b;
+  --surface-invert-tertiary: #262624;
+  --on-invert: var(--on-ink);
+  --on-invert-secondary: var(--on-ink-2);
+  --on-invert-muted: var(--on-ink-muted);
+  --border-invert: var(--line-on-ink);
+  --border-invert-strong: var(--line-on-ink-strong);
+
+  /* Shadows: warm and soft, used sparingly */
+  --theme-shadow-sm: 0 1px 2px rgb(18 18 18 / 0.06);
+  --theme-shadow-md: 0 10px 30px -12px rgb(18 18 18 / 0.18);
+  --theme-shadow-lg: 0 24px 50px -20px rgb(18 18 18 / 0.3);
+  --theme-shadow-xl: 0 40px 80px -40px rgb(18 18 18 / 0.5);
+
+  /* Radii: pills and large rounded cards */
+  --theme-radius-sm: 8px;
+  --theme-radius-md: 14px;
+  --theme-radius-lg: 18px;
+  --theme-radius-xl: 22px;
+  --theme-radius-2xl: 30px;
+  --theme-radius-full: 999px;
+}

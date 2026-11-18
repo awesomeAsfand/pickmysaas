@@ -14,6 +14,7 @@
 import { Image } from 'astro:assets';
 import PageLayout from '@/layouts/PageLayout.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import ServiceAudience, { type ServiceAudienceCopy } from '@/components/services/ServiceAudience.astro';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
 import Card from '@/components/ui/data-display/Card/Card.astro';
 import ProofTile from '@/components/ui/data-display/ProofTile/ProofTile.astro';
@@ -47,6 +48,7 @@ const page = tData<{
   breadcrumb: string;
   hero: { badge: string; titleLead: string; titleHighlight: string; description: string; secondary: string };
   answer: { heading: string; paragraphs: string[]; glanceTitle: string; glance: { label: string; value: string }[] };
+  audience: ServiceAudienceCopy;
   showcase: { badge: string; heading: string; lead: string; desktopAlt: string; mobileAlt: string; thumbs: string[]; thumbAlt: string };
   features: { badge: string; heading: string; lead: string; items: IconItem[] };
   payments: { badge: string; heading: string; lead: string; methods: { icon: string; title: string; text: string }[]; note: string };
@@ -56,12 +58,12 @@ const page = tData<{
     lead: string;
     cards: { name: string; for: string; features: string[] }[];
     customPrice: string;
-    customLink: string;
+    fixedFrom: string;
     detailsLink: string;
     guideLink: string;
     note: string;
   };
-  compare: { badge: string; heading: string; lead: string; labels: string[]; rows: string[][] };
+  compare: { badge: string; heading: string; lead: string; labels: string[]; rows: string[][]; guideLink: string };
   rules: {
     badge: string;
     heading: string;
@@ -74,13 +76,13 @@ const page = tData<{
   cta: { heading: string; description: string; primary: string; secondary: string };
 }>('pages.serviceEcommerce', locale)!;
 
-// Business and Premium prices, straight from the website packages.
+// The store price: fixed, from $700. Its conversions are the $700 package's,
+// straight from the website packages, so the two can't drift apart.
 const packageItems = tData<{ price: string; pricePrefix: string; priceLocal: string[] }[]>(
   'pages.services.packages.items',
   locale
 )!;
-const priceFor = [packageItems[1], packageItems[2]];
-const fromLabel = (prefix: string) => (prefix ? `${prefix} ` : '');
+const priceFor = [packageItems[2]];
 
 // The Noble Muse concept store screenshots (shared with the homepage card).
 const shot = {
@@ -93,9 +95,10 @@ const shot = {
 
 const contactUrl = localizedPath('/contact', locale);
 const packagesUrl = `${localizedPath('/services/websites', locale)}#packages`;
-const saasUrl = localizedPath('/services/saas', locale);
 // The price guide for this language: the UAE guide in English, the Saudi one in Arabic.
 const guideUrl = locale === defaultLocale ? '/guides/website-cost-uae/' : localizedPath('/guides/website-cost', locale);
+// The Salla vs Shopify vs custom guide exists in both languages (P2-06).
+const compareGuideUrl = localizedPath('/guides/salla-vs-shopify-vs-custom-store', locale);
 const breadcrumbs = [
   { label: t('common.home', locale), href: localizedPath('/', locale) },
   { label: t('nav.items.services', locale), href: localizedPath('/services', locale) },
@@ -114,7 +117,7 @@ const breadcrumbs = [
       <Icon name="shopping-cart" size="sm" />
       {page.hero.badge}
     </Badge>
-    <h1 slot="title" class="!text-4xl md:!text-5xl lg:!text-6xl">
+    <h1 slot="title" >
       <span class="text-foreground">{page.hero.titleLead}</span><br />
       <span class="text-brand-500">{page.hero.titleHighlight}</span>
     </h1>
@@ -156,6 +159,7 @@ const breadcrumbs = [
           </dl>
         </Card>
       </div>
+      <ServiceAudience copy={page.audience} class="mt-10" />
     </div>
   </section>
 
@@ -240,7 +244,7 @@ const breadcrumbs = [
   <section id="prices" class="py-[var(--space-section-md)] bg-background-secondary border-t border-border">
     <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
       <SectionHeading icon="tag" badge={page.packages.badge} heading={page.packages.heading} lead={page.packages.lead} />
-      <div class="grid gap-6 lg:grid-cols-3 lg:items-stretch">
+      <div class="grid gap-6 lg:grid-cols-2 lg:items-stretch">
         {page.packages.cards.map((card, i) => {
           const price = priceFor[i];
           return (
@@ -258,7 +262,7 @@ const breadcrumbs = [
               {price ? (
                 <div class="flex flex-col gap-1">
                   <p class="font-display text-4xl font-bold text-foreground">
-                    <span class="text-base font-medium text-foreground-muted">{fromLabel(price.pricePrefix)}</span>{price.price}
+                    <span class="block text-sm font-semibold text-foreground-muted">{page.packages.fixedFrom}</span>{price.price}
                   </p>
                   <p class="text-xs text-foreground-muted">{price.priceLocal.join(' · ')}</p>
                 </div>
@@ -273,16 +277,9 @@ const breadcrumbs = [
                   </li>
                 ))}
               </ul>
-              {price ? (
-                <Button variant={i === 0 ? 'primary' : 'outline'} {...bookingLinkAttrs(contactUrl)} class="w-full justify-center">
-                  {page.cta.primary}
-                </Button>
-              ) : (
-                <a href={saasUrl} class="inline-flex items-center gap-2 text-sm font-semibold text-brand-700 dark:text-brand-400">
-                  {page.packages.customLink}
-                  <Icon name="arrow-right" size="sm" class="rtl:-scale-x-100" />
-                </a>
-              )}
+              <Button variant={i === 0 ? 'primary' : 'outline'} {...bookingLinkAttrs(contactUrl)} class="w-full justify-center">
+                {page.cta.primary}
+              </Button>
             </Card>
           );
         })}
@@ -308,6 +305,10 @@ const breadcrumbs = [
     <div class="mx-auto max-w-5xl px-6 flex flex-col gap-8">
       <SectionHeading icon="git-compare" badge={page.compare.badge} heading={page.compare.heading} lead={page.compare.lead} />
       <DataTable headers={page.compare.labels} rows={page.compare.rows} />
+      <a href={compareGuideUrl} class="self-center inline-flex items-center gap-2 text-sm font-semibold text-brand-700 dark:text-brand-400">
+        {page.compare.guideLink}
+        <Icon name="arrow-right" size="sm" class="rtl:-scale-x-100" />
+      </a>
     </div>
   </section>
 

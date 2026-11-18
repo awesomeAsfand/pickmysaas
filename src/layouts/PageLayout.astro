@@ -1,12 +1,11 @@
 ---
 /**
- * PageLayout
- * Layout wrapper for standard content pages (non-landing)
- * Uses Header + Footer with content page configuration
+ * PageLayout: header + page + footer, for every standard page.
  */
 import BaseLayout from './BaseLayout.astro';
 import Header from '@/components/layout/Header.astro';
 import Footer from '@/components/layout/Footer.astro';
+import type { Thing, WithContext } from 'schema-dts';
 
 interface Props {
   title?: string;
@@ -15,23 +14,44 @@ interface Props {
   imageAlt?: string;
   noindex?: boolean;
   nofollow?: boolean;
-  showScrollProgress?: boolean;
-  eagerReveal?: boolean;
-  /**
-   * Footer background. Set this to the opposite of the page's last section so
-   * the zebra pattern (bg-background ↔ bg-background-secondary) stays intact:
-   * - last section `bg-background`           → footer `secondary`
-   * - last section `bg-background-secondary` → footer `default`
-   */
-  footerBackground?: 'default' | 'secondary' | 'invert';
   /** Verified `hreflang` alternates, for a page that doesn't exist in every locale. */
   localeAlternates?: { locale: string; url: string }[];
-  /** Language switcher links for a page whose translation isn't at the same path in each locale. */
+  /** Language switch links for a page whose translation isn't at the same path in each locale. */
   languageAlternates?: Record<string, string>;
+  extraSchemas?: WithContext<Thing>[];
+  hideWhatsApp?: boolean;
+  includeOrgSchema?: boolean;
+  includeProfessionalServiceSchema?: boolean;
+  /** No top padding: the page opens with its own hero spacing. */
+  flush?: boolean;
+  /** @deprecated v1 leftover, ignored. Removed when the templates are rebuilt (V5). */
+  showScrollProgress?: boolean;
+  /** @deprecated v1 leftover, ignored. */
+  eagerReveal?: boolean;
+  /** @deprecated v1 leftover, ignored. */
+  footerBackground?: 'default' | 'secondary' | 'invert';
 }
 
-const { title, description, image, imageAlt, noindex, nofollow, localeAlternates, showScrollProgress = false, eagerReveal = false, footerBackground = 'default', languageAlternates } = Astro.props;
+const {
+  title,
+  description,
+  image,
+  imageAlt,
+  noindex,
+  nofollow,
+  localeAlternates,
+  languageAlternates,
+  extraSchemas,
+  hideWhatsApp,
+  includeOrgSchema,
+  includeProfessionalServiceSchema,
+  flush = false,
+} = Astro.props;
 
+// A page in one language only (an hreflang list of one) whose switch points
+// at a related page in the other language: the switch must not call that a
+// translation.
+const notTwin = !!languageAlternates && !!localeAlternates && localeAlternates.length < 2;
 ---
 
 <BaseLayout
@@ -41,24 +61,26 @@ const { title, description, image, imageAlt, noindex, nofollow, localeAlternates
   imageAlt={imageAlt}
   noindex={noindex}
   nofollow={nofollow}
-  eagerReveal={eagerReveal}
   localeAlternates={localeAlternates}
+  extraSchemas={extraSchemas}
+  hideWhatsApp={hideWhatsApp}
+  includeOrgSchema={includeOrgSchema}
+  includeProfessionalServiceSchema={includeProfessionalServiceSchema}
 >
-  <Header
-    slot="header"
-    position="fixed"
-    shape="bar"
-    variant="solid"
-    size="lg"
-    showActiveState
-    showCta={false}
-    showScrollProgress={showScrollProgress}
-    languageAlternates={languageAlternates}
-  />
-
-  <main class="min-h-screen pt-16">
+  <slot name="head" slot="head" />
+  <Header slot="header" languageAlternates={languageAlternates} notTwin={notTwin} />
+  <div class:list={['page', flush && 'page--flush']}>
     <slot />
-  </main>
-
-  <Footer slot="footer" layout="columns" background={footerBackground} />
+  </div>
+  <Footer slot="footer" />
 </BaseLayout>
+
+<style>
+  .page {
+    min-height: 70vh;
+    padding-block-start: var(--header-offset);
+  }
+  .page--flush {
+    padding-block-start: calc(var(--header-offset) + 8px);
+  }
+</style>

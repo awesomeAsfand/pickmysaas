@@ -46,7 +46,7 @@ const TITLE_MAX_LINES = 3;
  * sits near 0.5; the wrap is measured in characters rather than by loading the
  * font, which keeps the whole card a string and needs nothing at runtime.
  */
-const AVERAGE_GLYPH_WIDTH = 0.5;
+const AVERAGE_GLYPH_WIDTH = 0.62;
 
 /**
  * Greedy word-wrap. Falls back to truncating with an ellipsis if the title
@@ -137,51 +137,39 @@ export function renderOgSvg({
   const baseTitleY =
     (HEIGHT - blockHeight) / 2 + lineHeight * 0.78 + (subtitle ? -28 : 0);
 
+  // v2 look: paper ground and ink type above a dark band that carries the
+  // wordmark and the blue dot. Titles keep their own case (Arabic has none).
+  const font = "Archivo, 'Arial Black', system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif";
+  const top = baseTitleY - 30;
+
   const titleEls = lines
     .map(
       (line, i) =>
-        `<text x="80" y="${baseTitleY + i * lineHeight}" font-size="${fontSize}" fill="#ffffff" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="800" letter-spacing="-2.5">${escapeXml(line)}</text>`,
+        `<text x="80" y="${top + i * lineHeight}" font-size="${fontSize}" fill="#121212" font-family="${font}" font-weight="900" letter-spacing="-2">${escapeXml(line)}</text>`,
     )
     .join('\n  ');
 
   const subtitleEl = subtitle
-    ? `<text x="80" y="${baseTitleY + blockHeight + 24}" font-size="28" fill="#ffffff" fill-opacity="0.82" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="500">${escapeXml(truncate(subtitle, Math.floor(CONTENT_WIDTH / (28 * AVERAGE_GLYPH_WIDTH))))}</text>`
+    ? `<text x="80" y="${top + blockHeight + 20}" font-size="28" fill="#3A3834" font-family="${font}" font-weight="500">${escapeXml(truncate(subtitle, Math.floor(CONTENT_WIDTH / (28 * AVERAGE_GLYPH_WIDTH))))}</text>`
     : '';
 
   const kindEl = kind
-    ? `<text x="80" y="98" font-size="22" letter-spacing="6" fill="#ffffff" fill-opacity="0.78" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="700">${escapeXml(kind.toUpperCase())}</text>`
+    ? `<text x="80" y="96" font-size="22" fill="#5E5B55" font-family="${font}" font-weight="600">(${escapeXml(kind.toUpperCase())})</text>`
     : '';
 
-  // The site-wide card puts the site name in the title, where the wordmark
-  // would repeat it back a second time.
-  const wordmarkEl =
-    title.trim() === siteName.trim()
-      ? ''
-      : `<text x="80" y="580" font-size="28" fill="#ffffff" fill-opacity="0.92" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-weight="700">${escapeXml(siteName)}</text>`;
+  const mark = siteName.toUpperCase();
 
   return `<svg width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="og-shade" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#000000" stop-opacity="0"/>
-      <stop offset="1" stop-color="#000000" stop-opacity="0.28"/>
-    </linearGradient>
-  </defs>
-  <rect width="${WIDTH}" height="${HEIGHT}" fill="${brandColor}"/>
-  <rect width="${WIDTH}" height="${HEIGHT}" fill="url(#og-shade)"/>
+  <rect width="${WIDTH}" height="${HEIGHT}" fill="#EEEBE3"/>
+  <circle cx="1104" cy="88" r="16" fill="${brandColor}"/>
 
   ${kindEl}
   ${titleEls}
   ${subtitleEl}
 
-  <line x1="80" y1="538" x2="1120" y2="538" stroke="#ffffff" stroke-opacity="0.3" stroke-width="1"/>
-
-  ${wordmarkEl}
-  <text x="1120" y="580" font-size="22" fill="#ffffff" fill-opacity="0.7" text-anchor="end" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" letter-spacing="1">${escapeXml(domain)}</text>
-
-  <path d="M 36 60 L 36 36 L 60 36" stroke="#ffffff" stroke-width="1.5" fill="none" stroke-opacity="0.45"/>
-  <path d="M 1140 36 L 1164 36 L 1164 60" stroke="#ffffff" stroke-width="1.5" fill="none" stroke-opacity="0.45"/>
-  <path d="M 36 570 L 36 594 L 60 594" stroke="#ffffff" stroke-width="1.5" fill="none" stroke-opacity="0.45"/>
-  <path d="M 1140 594 L 1164 594 L 1164 570" stroke="#ffffff" stroke-width="1.5" fill="none" stroke-opacity="0.45"/>
+  <rect x="0" y="520" width="${WIDTH}" height="110" fill="#121212"/>
+  <text x="80" y="590" font-size="34" fill="#EEEBE3" font-family="${font}" font-weight="900" letter-spacing="-1">${escapeXml(mark)}<tspan fill="${brandColor}">.</tspan></text>
+  <text x="1120" y="586" font-size="22" fill="#A8A49B" text-anchor="end" font-family="${font}" font-weight="500">${escapeXml(domain)}</text>
 </svg>`;
 }
 
