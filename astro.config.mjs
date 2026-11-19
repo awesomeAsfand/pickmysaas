@@ -383,7 +383,14 @@ function seoAuditGate() {
     hooks: {
       'astro:build:done': ({ logger }) => {
         if (deployTarget !== 'cloudflare') return;
-        const result = spawnSync(process.execPath, ['scripts/seo-audit.mjs', '--no-write'], { encoding: 'utf8' });
+        // Audit against the address this build was made for. The script's own
+        // default is the production domain, so a build with any other SITE_URL
+        // (CI uses example.com when the secret is unset) read every canonical
+        // and hreflang as pointing off-site and failed.
+        const base = process.env.SITE_URL || SITE_URL_FALLBACK;
+        const result = spawnSync(process.execPath, ['scripts/seo-audit.mjs', '--no-write', `--base=${base}`], {
+          encoding: 'utf8',
+        });
         const output = `${result.stdout ?? ''}${result.stderr ?? ''}`.trim();
         if (result.status !== 0) {
           throw new Error(`SEO audit failed:\n${output}`);
