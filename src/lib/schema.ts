@@ -96,7 +96,8 @@ export function createProfessionalServiceSchema(): WithContext<LocalBusiness> {
         },
       })),
     },
-    sameAs: siteConfig.socialLinks,
+    // An empty sameAs list is noise in the markup; leave it out until a profile exists.
+    ...(siteConfig.socialLinks.length ? { sameAs: siteConfig.socialLinks } : {}),
   };
 }
 
@@ -113,7 +114,8 @@ export function createOrganizationSchema(): WithContext<Organization> {
     name: siteConfig.name,
     url: siteConfig.url,
     ...(logoUrl ? { logo: logoUrl } : {}),
-    sameAs: siteConfig.socialLinks,
+    // An empty sameAs list is noise in the markup; leave it out until a profile exists.
+    ...(siteConfig.socialLinks.length ? { sameAs: siteConfig.socialLinks } : {}),
     contactPoint: siteConfig.phone
       ? {
           '@type': 'ContactPoint',
