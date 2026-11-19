@@ -108,6 +108,11 @@ export const GET: APIRoute = async ({ site }) => {
     line('How much does a website cost in the UAE?', `${base}/guides/website-cost-uae/`),
     line('Salla, Shopify or a custom store', `${base}/guides/salla-vs-shopify-vs-custom-store/`),
     line('تكلفة تصميم موقع في السعودية (Arabic)', `${base}/ar/guides/website-cost/`),
+    ``,
+    `## Country pages`,
+    ``,
+    line('Website design in Oman', `${base}/services/websites/oman/`),
+    line('تصميم مواقع في السعودية (Arabic, Saudi Arabia)', `${base}/ar/services/websites/saudi-arabia/`),
   ];
 
   if (projectLines) {
