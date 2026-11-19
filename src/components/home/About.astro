@@ -1,14 +1,11 @@
 ---
 /**
- * "(07) About": v2's big statement with inline image pills, now naming the
- * founder and filling the pills with real client screenshots (fix 8), then
- * three principles. The rotating ring is decorative and stops for reduced
+ * "(07) About": v2's big statement, then three principles. The inline image
+ * pills (client screenshots) were taken out at the owner's request on
+ * 19 Nov 2026; put them back here if new images arrive. The rotating ring is decorative and stops for reduced
  * motion.
  */
-import { Image } from 'astro:assets';
 import { t, tData, localizedPath, getLocaleDirection } from '@/i18n';
-import gnMobile from '@/assets/home/work-gulfnurseries-mobile.webp';
-import attiaMobile from '@/assets/home/work-healing-with-attia-mobile.webp';
 
 interface Props {
   locale: string;
@@ -36,9 +33,7 @@ const principles = tData<{ t: string; d: string }[]>('home.about.principles', lo
 
   <h2 class="about__statement">
     {k('s1')}
-    <span class="about__pill about__pill--a"><Image src={gnMobile} alt="" widths={[160, 320]} sizes="160px" /></span>
     {k('s2')}
-    <span class="about__pill about__pill--b"><Image src={attiaMobile} alt="" widths={[120, 240]} sizes="120px" /></span>
     <span class="about__soft">{k('s3')}</span>
   </h2>
 
@@ -113,30 +108,6 @@ const principles = tData<{ t: string; d: string }[]>('home.about.principles', lo
     letter-spacing: var(--ls);
     text-wrap: pretty;
     max-width: 1300px;
-  }
-  .about__pill {
-    display: inline-block;
-    position: relative;
-    height: 0.86em;
-    vertical-align: -0.1em;
-    border-radius: 999px;
-    overflow: hidden;
-    background: var(--sand);
-  }
-  .about__pill--a {
-    width: 2.2em;
-  }
-  .about__pill--b {
-    width: 1.6em;
-    background: var(--blue);
-  }
-  .about__pill :global(img) {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top;
   }
   .about__soft {
     color: var(--ink-soft);
