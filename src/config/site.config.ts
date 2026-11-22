@@ -189,14 +189,17 @@ const siteConfig: SiteConfig = {
   // No address on purpose: PickMySaaS works worldwide. Setting one adds a
   // location card to the contact page and a postal address to the
   // structured data.
-  // Add PickMySaaS profiles here (LinkedIn, X, Instagram…). They feed the
-  // footer and contact-page icons and the structured data's sameAs.
-  // Placeholders (P1-05): the owner is creating these profiles. Uncomment a
-  // line only once the profile is live, with its real address. A sameAs link
-  // to a page that doesn't exist hurts more than no link. Use the approved
-  // brand description (docs/seo/implementation/brand-description.md) as each
-  // profile's bio.
+  // PickMySaaS's public profiles. They feed the structured data's sameAs and
+  // the footer's "Find us on" line (named directories and LinkedIn; other
+  // URLs go to sameAs only). Add a profile only once it loads logged out: a
+  // sameAs link to a page that doesn't exist hurts more than no link. Use the
+  // approved brand description (docs/seo/implementation/brand-description.md)
+  // as each profile's bio. Entasher is not listed yet: its public page is
+  // unconfirmed (22 Nov 2026).
   socialLinks: [
+    'https://clutch.co/profile/pickmysaas',
+    'https://www.sortlist.com/agency/pickmysaas',
+    'https://techbehemoths.com/company/pickmysaas',
     // 'https://www.linkedin.com/company/<your-page>/',
     // 'https://github.com/<your-account>',
     // 'https://x.com/<your-handle>',

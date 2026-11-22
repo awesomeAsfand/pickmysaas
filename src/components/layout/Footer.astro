@@ -3,9 +3,9 @@
  * Site footer (v2): dark, with link columns and the giant PICKMYSAAS. wordmark.
  *
  * Columns: who we are · services · studio pages · guides (each language lists
- * only the guides written in it) · contact. No social links: none have been
- * supplied yet (owner question), and v2's Instagram and LinkedIn links were
- * placeholders.
+ * only the guides written in it) · contact. Under the about text, a "Find us
+ * on" line links the public profiles in `siteConfig.socialLinks` that have a
+ * name below (review directories first, since they carry client reviews).
  *
  * The floating WhatsApp button hides while this footer is on screen.
  */
@@ -18,6 +18,23 @@ const arrow = getLocaleDirection(locale) === 'rtl' ? '←' : '→';
 const year = new Date().getFullYear();
 const lp = (path: string) => localizedPath(path, locale);
 const whatsApp = whatsAppUrl(t('common.whatsappMessage', locale));
+
+// Profile names for the "Find us on" line. A URL with no match here still
+// goes into the structured data's sameAs, just not into the footer.
+const PROFILE_NAMES: Record<string, string> = {
+  'clutch.co': 'Clutch',
+  'sortlist.com': 'Sortlist',
+  'techbehemoths.com': 'TechBehemoths',
+  'entasher.com': 'Entasher',
+  'goodfirms.co': 'GoodFirms',
+  'designrush.com': 'DesignRush',
+  'linkedin.com': 'LinkedIn',
+};
+const profiles = siteConfig.socialLinks.flatMap((href) => {
+  const host = new URL(href).hostname.replace(/^www\./, '');
+  const name = PROFILE_NAMES[host];
+  return name ? [{ href, name }] : [];
+});
 
 const columns = [
   {
@@ -59,6 +76,19 @@ const columns = [
       <p class="ftr__tagline">{t('ds.footer.tagline', locale)}</p>
       <p>{t('ds.footer.about', locale)}</p>
       <p>{t('ds.footer.remote', locale)}</p>
+      {
+        profiles.length > 0 && (
+          <p class="ftr__profiles">
+            {t('ds.footer.profiles', locale)}{' '}
+            {profiles.map((profile, i) => (
+              <>
+                {i > 0 && <span aria-hidden="true"> · </span>}
+                <a href={profile.href} target="_blank" rel="noopener" dir="ltr">{profile.name}</a>
+              </>
+            ))}
+          </p>
+        )
+      }
     </div>
 
     {
@@ -158,11 +188,18 @@ const columns = [
     display: grid;
     gap: 10px;
   }
-  .ftr__col a {
+  .ftr__col a,
+  .ftr__profiles a {
     color: var(--on-ink);
     transition: color 0.2s;
   }
-  .ftr__col a:hover {
+  .ftr__profiles a {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--on-ink-muted);
+  }
+  .ftr__col a:hover,
+  .ftr__profiles a:hover {
     color: var(--white);
     text-decoration: underline;
     text-underline-offset: 4px;
