@@ -491,6 +491,9 @@ export default defineConfig({
       filter: (page) => {
         const { pathname } = new URL(page);
         if (/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?projects\/tag\//.test(pathname)) return false;
+        // Blog tag pages are noindex (a few posts each; the posts themselves
+        // should rank), so they're not listed either.
+        if (/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?blog\/tag\//.test(pathname)) return false;
         // The private design-system page is noindex and never listed.
         if (/^\/(?:[a-z]{2}\/)?styleguide\//.test(pathname)) return false;
         return BLOG_VISIBLE || !/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?blog(\/|$)/.test(pathname);

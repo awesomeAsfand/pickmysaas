@@ -10,6 +10,6 @@
  * read it: that file runs before `astro:env` exists and cannot import
  * `site.config.ts`. Everything else reads it as `siteConfig.blog.visible`.
  *
- * Flip to `true` once the first post is published.
+ * Switched on 25 November 2026, with four posts in English and Arabic.
  */
-export const BLOG_VISIBLE = false;
+export const BLOG_VISIBLE = true;

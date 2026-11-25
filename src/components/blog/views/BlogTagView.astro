@@ -16,7 +16,7 @@ import Icon from '@/components/ui/primitives/Icon/Icon.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
 import { Hero } from '@/components/hero';
 import { t, defaultLocale } from '@/i18n';
-import { BLOG_VISIBLE, getBlogBaseUrl, getPostUrl, tagToSlug } from '@/lib/blog';
+import { getBlogBaseUrl, getBlogTagAlternates, getPostUrl, tagToSlug } from '@/lib/blog';
 import { getBlogTagOgPath } from '@/lib/og/svg';
 import BlogCta from '@/components/blog/BlogCta.astro';
 
@@ -35,13 +35,16 @@ const { locale = defaultLocale, tag, posts, visibleTags } = Astro.props;
 
 const blogHref = getBlogBaseUrl(locale);
 const countKey = posts.length === 1 ? 'blog.tagCountOne' : 'blog.tagCountOther';
+// Tags are translated, so the switcher needs the matching tag's real URL.
+const languageAlternates = await getBlogTagAlternates(tag, locale);
 ---
 
 <PageLayout
   title={t('blog.tagMetaTitle', locale, { tag })}
   description={t('blog.tagMetaDescription', locale, { tag })}
   image={getBlogTagOgPath(tagToSlug(tag))}
-  noindex={!BLOG_VISIBLE}
+  noindex
+  languageAlternates={languageAlternates}
   eagerReveal
 >
   <Hero layout="centered" size="sm" class="isolate" showHeroHalo>

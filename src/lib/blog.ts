@@ -69,6 +69,43 @@ export function getTagUrl(tag: string, locale: string = defaultLocale): string {
 }
 
 /**
+ * Language switcher links for a blog tag page. Tag names are translated
+ * ("AI" / "الذكاء الاصطناعي"), so swapping the locale prefix of the URL lands
+ * on a tag that doesn't exist. Instead, find a post carrying the tag, find its
+ * translation (same `uid`, or the same slug when neither post has one), and
+ * take the tag in the same position: a translated post lists its tags in the
+ * original's order. A locale with no match gets its blog index, so switching
+ * language never 404s.
+ */
+export async function getBlogTagAlternates(
+  tag: string,
+  currentLocale: string = defaultLocale
+): Promise<Record<string, string>> {
+  const all = await getCollection('blog', ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true;
+  });
+  const sources = all.filter((p) => p.data.locale === currentLocale && p.data.tags.includes(tag));
+
+  const isTranslation = (source: CollectionEntry<'blog'>, other: CollectionEntry<'blog'>) =>
+    source.data.uid || other.data.uid
+      ? source.data.uid === other.data.uid
+      : getPostSlug(source.id, source.data.locale) === getPostSlug(other.id, other.data.locale);
+
+  return Object.fromEntries(
+    getLocales().map((locale) => {
+      if (locale === currentLocale) return [locale, getTagUrl(tag, locale)];
+      for (const source of sources) {
+        const position = source.data.tags.indexOf(tag);
+        const translation = all.find((p) => p.data.locale === locale && isTranslation(source, p));
+        const translatedTag = translation?.data.tags[position];
+        if (translatedTag) return [locale, getTagUrl(translatedTag, locale)];
+      }
+      return [locale, getBlogBaseUrl(locale)];
+    })
+  );
+}
+
+/**
  * URL of the RSS feed for a locale (`/rss.xml` or `/<locale>/rss.xml`).
  *
  * There used to be one feed. It carried the default locale's posts and
