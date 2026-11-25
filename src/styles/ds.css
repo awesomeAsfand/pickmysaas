@@ -978,9 +978,13 @@ main h1.font-display {
 }
 /* A heading inside a card is a card title, not a section title. */
 main [class*='bg-card'] h2.font-display,
-main .ds-card h2.font-display {
+main .ds-card h2.font-display,
+main .blog-card h2.font-display {
   font-size: clamp(20px, 1.8vw, 26px);
   text-transform: none;
   line-height: 1.15;
   letter-spacing: var(--ls);
+  /* The wide display face can't fit a long word in a narrow card. */
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }

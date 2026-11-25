@@ -57,7 +57,7 @@ const locale = getLocaleFromPath(Astro.url.pathname);
 const readingTime = getReadingTime(body ?? description);
 ---
 
-<article class:list={["group rounded-lg border border-brand-500/30 bg-background p-6 shadow-lg transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-brand-500 hover:shadow-xl", className]} data-reveal data-reveal-delay={revealDelay || undefined} data-reveal-eager={eager ? '' : undefined}>
+<article class:list={["blog-card group rounded-lg border border-brand-500/30 bg-background p-6 shadow-lg transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-brand-500 hover:shadow-xl", className]} data-reveal data-reveal-delay={revealDelay || undefined} data-reveal-eager={eager ? '' : undefined}>
 
   <a href={href} class="block">
     <div
