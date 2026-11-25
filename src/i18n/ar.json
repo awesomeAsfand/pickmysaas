@@ -89,6 +89,7 @@
   },
   "blog": {
     "title": "المدوّنة",
+    "faqHeading": "أسئلة شائعة",
     "description": "أحدث المقالات والمستجدات",
     "readingTime": "مدة القراءة: {minutes} دقيقة",
     "publishedOn": "نُشر في {date}",

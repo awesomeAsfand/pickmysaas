@@ -17,6 +17,7 @@ import { t, getLocaleFromPath, localizedPath, getLocales } from '@/i18n';
 import { BLOG_VISIBLE, getPostSlug, getBlogBaseUrl } from '@/lib/blog';
 import { getPostTranslations } from '@/lib/post-links';
 import BlogCta from '@/components/blog/BlogCta.astro';
+import FaqList from '@/components/services/FaqList.astro';
 
 const locale = getLocaleFromPath(Astro.url.pathname);
 
@@ -123,7 +124,12 @@ const blogPostingSchema = createBlogPostSchema({
       : { name: author, url: siteConfig.url },
 });
 
-const faqSchema = faqs && faqs.length > 0 ? createFAQSchema(faqs) : null;
+// The FAQs show on the page too (Google only honours FAQ markup it can see).
+// Answers may hold links, so the markup gets a plain-text copy.
+const faqSchema =
+  faqs && faqs.length > 0
+    ? createFAQSchema(faqs.map((f) => ({ question: f.question, answer: f.answer.replace(/<[^>]+>/g, '') })))
+    : null;
 const schemas = faqSchema ? [blogPostingSchema, faqSchema] : [blogPostingSchema];
 
 // Resolve this post's real per-locale URLs so the hreflang tags and the
@@ -231,6 +237,15 @@ const languageAlternates = Object.fromEntries(
         >
           <slot />
         </div>
+
+        {faqs && faqs.length > 0 && (
+          <section class="mt-12" aria-labelledby="post-faq-heading">
+            <h2 id="post-faq-heading" class="font-display text-3xl font-bold mb-6">
+              {t('blog.faqHeading', locale)}
+            </h2>
+            <FaqList items={faqs} name="post-faq" />
+          </section>
+        )}
       </div>
 
       <!-- Share buttons (centered, above the divider) -->

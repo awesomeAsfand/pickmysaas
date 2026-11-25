@@ -89,6 +89,7 @@
   },
   "blog": {
     "title": "Blog",
+    "faqHeading": "Common questions",
     "description": "Latest articles and updates",
     "readingTime": "{minutes} min read",
     "publishedOn": "Published on {date}",
