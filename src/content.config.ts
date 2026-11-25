@@ -23,7 +23,8 @@ const blog = defineCollection({
       description: z.string().max(200),
       publishedAt: z.coerce.date(),
       updatedAt: z.coerce.date().optional(),
-      author: z.string().default('Team'),
+      // The owner's choice: posts carry the studio's name, not a person's.
+      author: z.string().default('PickMySaaS'),
       image: image().optional(),
       imageAlt: z.string().optional(),
       tags: z.array(z.string()).default([]),
@@ -154,6 +155,35 @@ const projects = defineCollection({
       client: z.string().optional(),
       role: z.string().optional(),
       services: z.array(z.string()).default([]),
+      /**
+       * Case-study facts, shown as an "At a glance" panel above the write-up
+       * and repeated in the page's structured data. Answer engines quote
+       * short, labelled facts far more readily than prose, so keep each one
+       * plain and verifiable. Every field is optional; unset rows are hidden.
+       */
+      industry: z.string().optional(),
+      /** Countries the client's customers are in. */
+      markets: z.array(z.string()).default([]),
+      /** Start to launch, e.g. "3 weeks". */
+      timeline: z.string().optional(),
+      /** What the site is built with. Only list what's confirmed. */
+      stack: z.array(z.string()).default([]),
+      /** Languages the client's site is published in. */
+      languages: z.array(z.string()).default([]),
+      /** Last time the case study's facts were checked. */
+      updatedAt: z.coerce.date().optional(),
+      /**
+       * Questions about the project, shown under the write-up and emitted as
+       * FAQPage markup. Answers may hold trusted HTML (links).
+       */
+      faqs: z
+        .array(
+          z.object({
+            question: z.string(),
+            answer: z.string(),
+          })
+        )
+        .default([]),
       /** Optional editorial tagline — short facts rendered as a single line under the hero description with brand-coloured dot separators. */
       meta: z.array(z.string()).default([]),
       /**

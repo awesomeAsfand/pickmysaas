@@ -1,7 +1,7 @@
 ---
 title: "GulfNurseries"
-seoTitle: "GulfNurseries: A Gulf Nursery Directory Website"
-seoDescription: "A custom directory website we built for a client: 3,000+ nurseries in six Gulf countries, launched in 3 weeks for $1,500, with 45 owners on paid plans."
+seoTitle: "GulfNurseries Case Study: A GCC Directory Website"
+seoDescription: "How we built GulfNurseries in 3 weeks for $1,500: 3,000+ nurseries in six Gulf countries, map search, WhatsApp contact and 45 owners on paid plans."
 locale: en
 description: "A custom directory website we built for a client, listing 3,000+ nurseries across Saudi Arabia, the UAE, Kuwait, Qatar, Oman and Bahrain. Parents compare and contact nurseries on WhatsApp; owners upgrade to paid plans."
 url: "https://gulfnurseries.com/"
@@ -22,22 +22,62 @@ featured: true
 order: 1
 client: "GulfNurseries"
 role: "Design & Development"
-services: ["Product Design", "Web Development", "SEO"]
+industry: "Childcare directory (nurseries and early years)"
+markets: ["Saudi Arabia", "UAE", "Kuwait", "Qatar", "Oman", "Bahrain"]
+timeline: "3 weeks, for a fixed $1,500"
+services: ["Product design", "Web development", "SEO"]
+stack: ["Python", "Django", "Leaflet maps", "Cloudflare"]
+languages: ["English"]
+updatedAt: 2026-11-25
 meta: ["3,000+ nurseries", "6 GCC countries", "Client project"]
+faqs:
+  - question: "How much did GulfNurseries cost to build?"
+    answer: "$1,500, as a fixed price agreed before we started. That covered the design, the build and the launch of the directory, the owner plans and the parent guides. A directory or platform like this is quoted after a call, as one fixed price in writing. Our standard website prices are on the <a href=\"/pricing/\">pricing page</a>."
+  - question: "How long does it take to build a directory website like GulfNurseries?"
+    answer: "GulfNurseries took 3 weeks from the start of the project to launch. That pace depends on having the listing data ready and the scope agreed up front; a directory with bookings or payments built in would take longer."
+  - question: "How does a directory like GulfNurseries make money?"
+    answer: "Nursery owners claim their listing for free, then pay for Featured or Premium plans that give them more visibility. Plans are priced per country and invoiced monthly or yearly, paid by bank transfer or card. Parents use the site for free, and the directory takes no booking fee or commission."
+  - question: "What is GulfNurseries built with?"
+    answer: "Python and Django, with Leaflet for the maps, served through Cloudflare. It's custom code, not a WordPress directory plugin or a ready-made theme, so the search, page structure and owner plans work exactly as the client needs."
 ---
+
+GulfNurseries is a nursery directory for the six Gulf countries that we designed and built for a client in 3 weeks, for a fixed $1,500. It lists more than 3,000 nurseries, lets parents search by city and neighbourhood on a map and contact a nursery on WhatsApp, and earns from nursery owners on paid plans: 45 of the 100 owners who have claimed a listing pay for one.
 
 ## The brief
 
-Parents across the Gulf had no single place to find and compare nurseries. Information was scattered across social media, outdated listings and word of mouth. Our client wanted one trusted directory that covers the whole GCC and gives nursery owners a reason to keep their listing up to date.
+Parents across the Gulf had no single place to find and compare nurseries. Information was scattered across social media, outdated listings and word of mouth. Our client wanted one trusted directory that covers the whole GCC, and gives nursery owners a reason to keep their listing up to date.
+
+That meant three audiences to build for: parents who need answers quickly, nursery owners who need a reason to pay, and search engines that need to understand thousands of pages.
 
 ## What we built
 
-- A directory of more than 3,000 nurseries in Saudi Arabia, the UAE, Kuwait, Qatar, Oman and Bahrain
-- Search by city and neighbourhood, with results on a map
-- Nursery pages that compare photos, curriculum, age groups, fees, opening hours and Google reviews
-- Call and WhatsApp buttons on every listing, so parents can book a visit in one tap
-- Free listings that owners can claim, with paid plans and advertising on top
-- Parent guides on licensing, starting age and choosing a nursery, written to rank in search
+### For parents
+
+- Search by nursery name, city and neighbourhood, with results on a map
+- Area pages, such as Mohammed Bin Zayed City in Abu Dhabi, that list every nursery nearby with filters for curriculum and opening hours
+- Curriculum pages, such as British or Montessori nurseries in Abu Dhabi
+- Nursery pages that show photos, curriculum, age groups, fees, opening hours and Google reviews
+- Call and WhatsApp buttons on every listing, so a parent can arrange a visit in one tap. Parents contact the nursery directly, with no booking step in between.
+
+### For nursery owners
+
+- A free listing that the owner claims and keeps up to date. Every claim is checked by hand before the owner gets access.
+- Featured and Premium plans, priced per country, for owners who want to stand out
+- Plans paid by invoice in the local currency, by bank transfer or card, monthly or yearly, with nothing renewing automatically
+- An advertising page for brands that want to reach Gulf parents
+
+### For search engines and AI assistants
+
+- A page structure that matches how parents search: country, then city, then neighbourhood, then nursery. In November 2026 the sitemap lists about 1,450 pages.
+- Structured data on every nursery page (ChildCare, with address, map position and opening hours), so search engines read a listing as a real local business
+- Lists and FAQ markup on the area pages, and breadcrumbs everywhere
+- 20 parent guides on nursery licensing, starting age and choosing a nursery in each country, plus fee guides for Saudi Arabia and the UAE
+
+## How it's built
+
+The directory runs on Python and Django, the same stack we use for [our websites](/services/websites/) and online stores. Django suits a directory: thousands of listings, an admin where the client checks claims and edits nurseries, and pages generated from the data rather than written one by one. The maps use Leaflet, an open-source map library, and Cloudflare serves the site.
+
+Because the code is custom, nothing limits the page structure or the plans. There's no directory plugin deciding what a listing page looks like, or how the owner plans work.
 
 ## Results
 
@@ -49,4 +89,10 @@ As of November 2026:
 - **45 of them** pay for a plan, which is 45% of the owners who claimed a listing
 - **More than 3,000 nurseries** listed across all six GCC countries
 
-Listings are free to claim, and paid plans give owners more visibility, so the directory earns from the nurseries that want to stand out, not from parents. It is the kind of product we build for the region — local in how people search and contact businesses, and built to grow across six countries.
+Listings are free to claim, and paid plans give owners more visibility, so the directory earns from the nurseries that want to stand out, not from parents.
+
+## What it doesn't do yet
+
+The directory is in English. Many Gulf parents search in Arabic, so an Arabic version would reach more of them; that's a decision for the client. Parents also can't book a visit on the site itself. They call or message the nursery, which is how most families already do it.
+
+If you're planning a directory, a marketplace or another custom platform for the Gulf, [tell us about it](/contact/).

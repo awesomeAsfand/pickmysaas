@@ -115,7 +115,12 @@ const blogPostingSchema = createBlogPostSchema({
   image: new URL(ogImage, Astro.site).toString(),
   datePublished: publishedAt,
   dateModified: updatedAt,
-  author: { name: author, url: siteConfig.url },
+  // Posts by the studio (the owner's default) are credited to an Organization,
+  // not a Person called "PickMySaaS".
+  author:
+    author === siteConfig.name
+      ? { type: 'Organization', name: author, url: siteConfig.url }
+      : { name: author, url: siteConfig.url },
 });
 
 const faqSchema = faqs && faqs.length > 0 ? createFAQSchema(faqs) : null;

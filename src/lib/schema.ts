@@ -3,6 +3,7 @@ import type {
   Organization,
   LocalBusiness,
   BlogPosting,
+  Article,
   BreadcrumbList,
   FAQPage,
   WithContext,
@@ -206,5 +207,64 @@ export function createFAQSchema(
         text: faq.answer,
       },
     })),
+  };
+}
+
+/**
+ * Create the structured data for a case study: an Article written by the
+ * studio, `about` the client's live website, which the studio is named as the
+ * creator of. That second link is the point: it tells search engines and
+ * answer engines, in a form they can read without guessing, that PickMySaaS
+ * built that site, what it's built with and who it's for.
+ */
+export function createCaseStudySchema(study: {
+  title: string;
+  description: string;
+  url: string;
+  image: string;
+  locale: string;
+  dateModified?: Date;
+  client?: string;
+  clientUrl?: string;
+  industry?: string;
+  markets?: string[];
+  stack?: string[];
+  languages?: string[];
+  services?: string[];
+}): WithContext<Article> {
+  const studio = {
+    '@type': 'Organization' as const,
+    name: siteConfig.name,
+    url: siteConfig.url,
+  };
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: study.title,
+    description: study.description,
+    url: study.url,
+    image: study.image,
+    inLanguage: study.locale,
+    ...(study.dateModified ? { dateModified: study.dateModified.toISOString() } : {}),
+    author: studio,
+    publisher: studio,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': study.url },
+    ...(study.services?.length ? { keywords: study.services.join(', ') } : {}),
+    ...(study.client
+      ? {
+          about: {
+            '@type': 'WebSite',
+            name: study.client,
+            ...(study.clientUrl ? { url: study.clientUrl } : {}),
+            creator: studio,
+            ...(study.industry ? { genre: study.industry } : {}),
+            ...(study.markets?.length
+              ? { spatialCoverage: study.markets.map((name) => ({ '@type': 'Country' as const, name })) }
+              : {}),
+            ...(study.languages?.length ? { inLanguage: study.languages } : {}),
+            ...(study.stack?.length ? { keywords: study.stack.join(', ') } : {}),
+          },
+        }
+      : {}),
   };
 }

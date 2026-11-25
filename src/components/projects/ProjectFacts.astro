@@ -1,0 +1,102 @@
+---
+/**
+ * "At a glance" panel for a case study: client, industry, markets, timeline,
+ * services, stack and languages as a labelled list (<dl>). Search engines and
+ * AI assistants lift short labelled facts like these into answers far more
+ * readily than they summarise prose, and a buyer skimming the page gets the
+ * same facts in five seconds. Rows without a value are left out.
+ */
+import { t, getLocaleFromPath } from '@/i18n';
+
+interface Props {
+  client?: string;
+  industry?: string;
+  markets?: string[];
+  timeline?: string;
+  services?: string[];
+  stack?: string[];
+  languages?: string[];
+  url?: string;
+}
+
+const { client, industry, markets = [], timeline, services = [], stack = [], languages = [], url } =
+  Astro.props;
+const locale = getLocaleFromPath(Astro.url.pathname);
+const separator = locale === 'ar' ? '، ' : ', ';
+const join = (items: string[]) => items.join(separator);
+
+const rows = [
+  { label: t('projects.factsClient', locale), value: client },
+  { label: t('projects.factsIndustry', locale), value: industry },
+  { label: t('projects.factsMarkets', locale), value: markets.length ? join(markets) : undefined },
+  { label: t('projects.factsTimeline', locale), value: timeline },
+  { label: t('projects.factsServices', locale), value: services.length ? join(services) : undefined },
+  { label: t('projects.factsStack', locale), value: stack.length ? join(stack) : undefined },
+  { label: t('projects.factsLanguages', locale), value: languages.length ? join(languages) : undefined },
+].filter((row) => row.value);
+
+const host = url ? new URL(url).hostname.replace(/^www\./, '') : undefined;
+---
+
+{
+  rows.length > 0 && (
+    <section class="ds-card pjf" aria-labelledby="project-facts-heading" data-reveal>
+      <h2 id="project-facts-heading" class="pjf__heading">{t('projects.factsHeading', locale)}</h2>
+      <dl class="pjf__list">
+        {rows.map((row) => (
+          <div class="pjf__row">
+            <dt>{row.label}</dt>
+            <dd>{row.value}</dd>
+          </div>
+        ))}
+        {url && host && (
+          <div class="pjf__row">
+            <dt>{t('projects.factsLiveSite', locale)}</dt>
+            <dd>
+              <a class="ds-link" href={url} target="_blank" rel="noopener noreferrer">{host}</a>
+            </dd>
+          </div>
+        )}
+      </dl>
+    </section>
+  )
+}
+
+<style>
+  .pjf {
+    margin-block-end: 2.5rem;
+  }
+  .pjf__heading {
+    font-family: var(--font-display, inherit);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
+  }
+  .pjf__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: 1rem 2rem;
+    margin: 0;
+  }
+  .pjf__row {
+    display: grid;
+    gap: 0.25rem;
+    align-content: start;
+  }
+  .pjf__row dt {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-foreground-muted, currentColor);
+  }
+  :global([dir='rtl']) .pjf__row dt {
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .pjf__row dd {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+</style>

@@ -7,6 +7,9 @@ import Header from '@/components/layout/Header.astro';
 import Footer from '@/components/layout/Footer.astro';
 import Breadcrumbs from '@/components/seo/Breadcrumbs.astro';
 import ProjectHero from '@/components/projects/ProjectHero.astro';
+import ProjectFacts from '@/components/projects/ProjectFacts.astro';
+import FaqList from '@/components/services/FaqList.astro';
+import { createCaseStudySchema, createFAQSchema } from '@/lib/schema';
 import TableOfContents from '@/components/blog/TableOfContents.astro';
 import CtaBand from '@/components/patterns/CtaBand.astro';
 import Button from '@/components/ui/form/Button/Button.astro';
@@ -44,6 +47,17 @@ interface Props {
   toc?: boolean;
   /** Named client quote; nothing renders without one. */
   quote?: { text: string; name: string; city?: string };
+  /** "At a glance" facts and structured data (see ProjectFacts). */
+  client?: string;
+  industry?: string;
+  markets?: string[];
+  timeline?: string;
+  services?: string[];
+  stack?: string[];
+  languages?: string[];
+  updatedAt?: Date;
+  /** Questions about the project: shown under the write-up, emitted as FAQPage. */
+  faqs?: { question: string; answer: string }[];
 }
 
 const {
@@ -63,6 +77,15 @@ const {
   headings = [],
   toc: tocOverride,
   quote,
+  client,
+  industry,
+  markets = [],
+  timeline,
+  services = [],
+  stack = [],
+  languages = [],
+  updatedAt,
+  faqs = [],
 } = Astro.props;
 
 const locale = getLocaleFromPath(Astro.url.pathname);
@@ -112,6 +135,33 @@ const translationByLocale = new Map(projectTranslations.map((tr) => [tr.locale, 
 const languageAlternates = Object.fromEntries(
   getLocales().map((loc) => [loc, translationByLocale.get(loc) ?? getProjectsBaseUrl(loc)])
 );
+
+// Case-study markup: an Article about the client's site that names PickMySaaS
+// as its creator, plus FAQPage when the project has questions. FAQ answers may
+// hold links, so the markup gets a plain-text copy.
+const pageUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const caseStudySchema = createCaseStudySchema({
+  title: seoTitle ?? title,
+  description: seoDescription ?? description,
+  url: pageUrl,
+  image: new URL(ogImage, Astro.site).toString(),
+  locale,
+  dateModified: updatedAt,
+  client,
+  clientUrl: url,
+  industry,
+  markets,
+  stack,
+  languages,
+  services,
+});
+const stripTags = (html: string) => html.replace(/<[^>]+>/g, '');
+const extraSchemas = faqs.length
+  ? [
+      caseStudySchema,
+      createFAQSchema(faqs.map((f) => ({ question: f.question, answer: stripTags(f.answer) }))),
+    ]
+  : [caseStudySchema];
 ---
 
 <BaseLayout
@@ -120,6 +170,7 @@ const languageAlternates = Object.fromEntries(
   image={ogImage}
   imageAlt={ogImageAlt}
   localeAlternates={projectTranslations}
+  extraSchemas={extraSchemas}
 >
   <Header slot="header" languageAlternates={languageAlternates} />
 
@@ -157,6 +208,17 @@ const languageAlternates = Object.fromEntries(
         <div class="min-w-0 max-w-4xl w-full">
           <Breadcrumbs items={breadcrumbs} class="mb-8" />
 
+          <ProjectFacts
+            client={client}
+            industry={industry}
+            markets={markets}
+            timeline={timeline}
+            services={services}
+            stack={stack}
+            languages={languages}
+            url={url}
+          />
+
           {sidebarActive && (
             <div class="xl:hidden mb-10">
               <TableOfContents
@@ -185,6 +247,15 @@ const languageAlternates = Object.fromEntries(
           <div class="prose prose-lg max-w-none" data-reveal-content>
             <slot />
           </div>
+
+          {faqs.length > 0 && (
+            <section class="mt-12" aria-labelledby="project-faq-heading" data-reveal>
+              <h2 id="project-faq-heading" class="font-display text-3xl font-bold mb-6">
+                {t('projects.faqHeading', locale)}
+              </h2>
+              <FaqList items={faqs} name="project-faq" />
+            </section>
+          )}
 
           {quote && (
             <figure class="ds-card ds-card--blue mt-10" data-reveal>

@@ -175,7 +175,17 @@
     "ctaPrimary": "Book a free call",
     "ctaSecondary": "About PickMySaaS",
     "closingHeading": "Have a project in mind?",
-    "closingLead": "Whether it's a new build or something that needs a fresh perspective, we'd love to hear about it."
+    "closingLead": "Whether it's a new build or something that needs a fresh perspective, we'd love to hear about it.",
+    "factsHeading": "At a glance",
+    "factsClient": "Client",
+    "factsIndustry": "Industry",
+    "factsMarkets": "Customers in",
+    "factsTimeline": "Start to launch",
+    "factsServices": "What we did",
+    "factsStack": "Built with",
+    "factsLanguages": "Site language",
+    "factsLiveSite": "Live site",
+    "faqHeading": "Questions about this project"
   },
   "pagination": {
     "page": "Page {current} of {total}",
@@ -731,7 +741,7 @@
       "example": {
         "badge": "A real example",
         "heading": "Healing with Attia: a website that has to earn trust",
-        "lead": "A client project for a UK-certified psychotherapist with clients in Pakistan, the UK, the UAE and Saudi Arabia.",
+        "lead": "A client project for a UK-qualified psychotherapist with clients in Pakistan, the UK, the UAE and Saudi Arabia.",
         "points": [
           {
             "title": "The problem",
@@ -1661,7 +1671,7 @@
         {
           "name": "Healing with Attia",
           "kind": "Therapist website",
-          "summary": "A calm website for a UK-certified psychotherapist with clients in Pakistan, the UK, the UAE and Saudi Arabia. Clients book through WhatsApp, the app they already use.",
+          "summary": "A calm website for a UK-qualified psychotherapist with clients in Pakistan, the UK, the UAE and Saudi Arabia. Clients book through WhatsApp, the app they already use.",
           "alt": "The Healing with Attia home page, with a Book on WhatsApp button beside a calm photo.",
           "points": [
             "Booking through WhatsApp",
