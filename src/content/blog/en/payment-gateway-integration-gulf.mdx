@@ -1,0 +1,115 @@
+---
+title: "Payment Gateway Integration in the Gulf: A Guide"
+description: "How to take card payments on your website in the Gulf: local card networks, gateways, what you need to apply, fees and setup."
+publishedAt: 2026-11-25
+author: "PickMySaaS"
+uid: "payment-gateway-integration-gulf"
+tags: ["Payments", "E-commerce", "GCC"]
+locale: en
+faqs:
+  - question: "What is the best payment gateway in Saudi Arabia?"
+    answer: "There's no single best one. Choose a gateway licensed by the Saudi Central Bank (SAMA) that accepts mada, Visa, Mastercard and Apple Pay, then compare fees, how fast it pays out to your bank, and how good its support and documentation are. Moyasar, HyperPay, Tap Payments and PayTabs are among the gateways Saudi businesses use."
+  - question: "How much does payment gateway integration cost?"
+    answer: "There are two costs. The gateway charges fees on each payment, usually a percentage plus a fixed amount, and sometimes a setup or monthly fee. Then there's the developer's time to connect it to your website and test it. Ask the gateway for its rates in writing, and ask your developer whether connecting the gateway is included in their quote."
+  - question: "Do I need mada to sell online in Saudi Arabia?"
+    answer: "Yes, in practice. mada is Saudi Arabia's national debit card network, and Saudi bank debit cards run on it. A store that only takes Visa and Mastercard credit cards turns away many customers at checkout."
+  - question: "How long does it take to get a payment gateway approved?"
+    answer: "Usually from a few days to a few weeks. Most of the time goes on documents: your commercial registration, bank account details, ID, and a live website with clear prices and policies. Having those ready before you apply is the fastest way through."
+  - question: "Can I accept online payments without a commercial registration?"
+    answer: "Most gateways need a registered business with a local bank account in its name. Check each gateway's requirements for your country before you build your checkout around it."
+---
+
+**The short answer:** to take card payments on your website, you sign up with a payment gateway licensed in your country, connect it to your site, and switch on the local card network your customers use: mada in Saudi Arabia, KNET in Kuwait, BENEFIT in Bahrain, OmanNet in Oman and NAPS in Qatar, alongside Visa, Mastercard and Apple Pay. Approval usually takes days to weeks, and you'll need a commercial registration, a local bank account and a website with clear prices and policies.
+
+The rest of this guide covers which networks and gateways exist, what to prepare before you apply, how the connection works, and what to compare on fees.
+
+## What a payment gateway does
+
+A payment gateway sits between your checkout and the banks. When a customer pays, it collects the card details on a secure page, asks the customer's bank to approve the payment, and later pays the money into your bank account, minus its fees. Your website never stores the card number. That matters, because handling card data yourself brings strict security rules (PCI DSS) that a small business doesn't want to carry.
+
+## The local card networks you need
+
+Each Gulf country has a domestic debit card network, and many customers pay with it rather than a credit card. Make sure your gateway supports the one in each country you sell to.
+
+| Country | Local network | Note |
+| --- | --- | --- |
+| Saudi Arabia | mada | The national debit network; Saudi bank debit cards run on it |
+| Kuwait | KNET | The national debit network |
+| Bahrain | BENEFIT | The national debit network |
+| Oman | OmanNet | The national debit network |
+| Qatar | NAPS | Online debit payments run through the QPay gateway |
+| UAE | Jaywan | A new domestic card scheme; Visa and Mastercard are still the main cards, and some gateways have [started adding Jaywan](https://telr.com/blog/telr-jaywan) |
+
+Add Apple Pay too. Many Gulf shoppers pay by phone, and most gateways in the region support it.
+
+## Gateways that operate in the Gulf
+
+These are some of the gateways Gulf businesses use. Countries and fees change, so check each provider's own site for its current coverage and rates before you choose.
+
+| Gateway | Background |
+| --- | --- |
+| **Tap Payments** | Founded in Kuwait, works with merchants across the GCC |
+| **MyFatoorah** | Founded in Kuwait, works in several GCC countries |
+| **PayTabs** | Works in Saudi Arabia, the UAE and other Middle East markets |
+| **Moyasar** | Based in Riyadh, [licensed by the Saudi Central Bank](https://moyasar.com/en/about); supports mada, Apple Pay and STC Pay |
+| **HyperPay** | Saudi gateway [licensed by the Saudi Central Bank](https://thefintechtimes.com/hyperpay-secures-licence-from-saudi-central-bank-in-aim-to-support-regional-digital-transformation/) |
+| **Amazon Payment Services** | Formerly PayFort, [renamed in 2020](https://gulfbusiness.com/en/2020/tech/amazon-payment-services-replaces-payfort-across-mena); works across the Middle East and North Africa |
+| **Telr** | Based in Dubai; works in the UAE and Saudi Arabia, and [added Bahrain and Jordan](https://telr.com/blog/telr-expands-to-jordan-and-bahrain) in 2024 |
+| **Thawani Pay** | Omani; the [first non-bank payment provider licensed](https://timesofoman.com/article/3015374/business/cbo-grants-first-payment-service-provider-license-to-thawani) by the Central Bank of Oman |
+| **Stripe** | Accepts businesses registered in the UAE, [its first Middle East market](https://stripe.com/en-ca/newsroom/news/stripe-launches-uae); check its availability list for other Gulf countries |
+
+### Buy now, pay later
+
+Tabby and Tamara let customers split a purchase into instalments while you're paid upfront. Tabby works in Saudi Arabia, the UAE and Kuwait, and Tamara in Saudi Arabia and the UAE. You can connect them directly, and some gateways offer them as an option at checkout. They suit stores where a typical basket is large enough that customers think twice about paying in one go.
+
+## What you need before you apply
+
+Most gateways ask for the same things. Have them ready and approval goes much faster:
+
+- **A commercial registration or trade licence** whose activity covers selling online
+- **A bank account in the business's name**, in the country where you register with the gateway
+- **ID for the owner** and anyone who signs for the business
+- **A live website** that shows:
+  - your business name, address and contact details
+  - clear product or service descriptions with prices, including VAT where it applies
+  - delivery, refund and return policies, and terms of use
+  - a privacy policy
+  - a secure connection (https)
+
+In Saudi Arabia, the e-commerce law also requires an online store to show who's selling and the total price including tax, so these pages do double duty.
+
+## How the gateway connects to your website
+
+There are three common ways:
+
+1. **Hosted payment page.** The customer is sent to the gateway's secure page to pay, then back to your site. It's the simplest and keeps card data furthest from your site.
+2. **Embedded payment fields.** The card form appears inside your checkout but is served by the gateway. The customer never leaves your site.
+3. **A ready-made plugin** for an e-commerce platform, where one exists.
+
+Whichever you use, a good integration also:
+
+- confirms each payment with the gateway behind the scenes (a webhook), not just by trusting the customer's browser
+- handles failed and cancelled payments clearly, in Arabic and English
+- lets you issue refunds without logging in to two systems
+- is tested end to end in the gateway's test mode before you go live
+
+## What to compare on fees
+
+Ask every gateway for its rates in writing, and compare:
+
+- **The fee per payment**, usually a percentage plus a fixed amount, and whether local debit cards, international cards and Apple Pay have different rates
+- **Setup and monthly fees**, if any
+- **Settlement time:** how many days until the money reaches your bank
+- **Refund and chargeback fees**
+- **Currency conversion,** if you sell to customers in other countries
+
+The cheapest headline rate isn't always cheapest. If most of your customers pay with mada or KNET, the rate on those cards matters more than the credit card rate.
+
+## Choosing a gateway
+
+- **Selling in one country?** Choose a gateway licensed there that supports its local network.
+- **Selling across several Gulf countries?** Choose one that covers all of them, so you have one integration, one dashboard and one set of reports.
+- **Large baskets?** Add a buy now, pay later option.
+- **Not ready for cards yet?** Bank transfer and cash on delivery still work, especially in the first months of a store.
+
+The online stores we build take cards, PayPal, bank transfer or cash on delivery, through whichever provider works in your country. See [our online stores](/services/ecommerce/), or [book a free call](/contact/) to talk through which gateway fits your business.
